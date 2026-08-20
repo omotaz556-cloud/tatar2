@@ -1,0 +1,123 @@
+diff --git a/tatar/tatar/tatar/css/rtl.css b/tatar/tatar/tatar/css/rtl.css
+index f881f28..13962d1 100644
+--- a/tatar/tatar/tatar/css/rtl.css
++++ b/tatar/tatar/tatar/css/rtl.css
+@@ -41,6 +41,7 @@ html[dir="rtl"] body {
+  * unicode-bidi:isolate keeps their internal number/text runs from
+  * being reordered by any RTL text that happens to sit near them.
+  */
++html[dir="rtl"] #header,
+ html[dir="rtl"] #mtop,
+ html[dir="rtl"] #village_map_wrap,
+ html[dir="rtl"] div#village_map,
+@@ -51,11 +52,39 @@ html[dir="rtl"] #container,
+ html[dir="rtl"] #stime,
+ html[dir="rtl"] #ltime,
+ html[dir="rtl"] #res,
+-html[dir="rtl"] #resWrap {
++html[dir="rtl"] #resWrap,
++html[dir="rtl"] #footer,
++html[dir="rtl"] #mbig {
+     direction: ltr;
+     unicode-bidi: isolate;
+ }
+ 
++/* #mbig (Templates/Map/mapviewlarge.tpl, loaded by karte2.php - the
++   full-size world map popup/lightbox) is exactly the kind of
++   pixel-coordinate image map this file already keeps LTR for #map /
++   #village_map, but it was missed. Its child #lightframe is a
++   non-floated, fixed-width block positioned with position:relative and
++   a pixel "left" offset and no auto margin - the same over-constrained
++   pattern as #mtop above - so it also silently anchored to the wrong
++   edge under an inherited direction:rtl, breaking the enlarged map view
++   and the building-tile icons positioned inside it. */
++
++/* #header's only child is #mtop (see Templates/header.tpl) - #mtop is a
++   non-floated, fixed-width block positioned with position:relative and a
++   pixel "left" offset. Per CSS2.1 10.3.3, when a non-floated block's width
++   + margins are over-constrained (the case here: explicit width, margins
++   not auto), the browser resolves it based on the *containing block's*
++   `direction` - not the block's own. #header inheriting direction:rtl from
++   <html dir="rtl"> (its own text-align:right below does NOT set direction)
++   silently flipped which edge #mtop anchors to, shoving the entire
++   village/map/reports/messages icon row (the game's main tab bar) off to
++   the wrong side and out of view. Forcing #header back to direction:ltr
++   fixes #mtop's anchor edge exactly as in the original LTR layout, so the
++   main navigation tabs render again. Same over-constrained-anchor risk
++   applies to #footer's absolutely-positioned ul.menu (no left/right set,
++   falls back to a static-position calculation that also reads the
++   containing block's direction), so it gets the same protection. */
++
+ /* #mtop's own children (village/map/report/message nav icons, gold,
+    plus button, day/night icon) keep their left-to-right reading order
+    and pixel offsets exactly as designed. */
+@@ -96,10 +125,26 @@ html[dir="rtl"] #header {
+  * ---------------------------------------------------------------------
+  * Original LTR order (document order, all float:left):
+  *   #side_navi -> #content -> #side_info
+- * In RTL reading order the player menu should be the column closest
+- * to the reading start (right edge) and the village-list/quests/news
+- * column should sit at the reading end (left edge) - i.e. their
+- * FLOATS swap, not their DOM order (we do not touch the templates).
++ * None of the three columns has an explicit width on #content - it is a
++ * shrink-to-fit float sandwiched between the other two, and the design
++ * only works because side_navi width + content's shrink-to-fit width +
++ * side_info width sums to EXACTLY the #mid container width (980px), so
++ * all three fit on one line with zero slack.
++ *
++ * The original attempt here kept #content/#side_info on float:left and
++ * only switched #side_navi to float:right. That mixes a right-float with
++ * two left-floats sharing the same zero-slack line - a well-known fragile
++ * combination that different browsers/box-model roundings resolve
++ * differently, and it is what was pushing #side_info (village list,
++ * quests, news) off the end of the line and out of view.
++ *
++ * The robust mirror of the original technique is to flip ALL THREE
++ * floats to float:right (not just side_navi) while leaving DOM order
++ * untouched. With every column float:right, the browser places them
++ * right-to-left in document order - side_navi first (rightmost), then
++ * content, then side_info (leftmost) - which is exactly the desired RTL
++ * reading order, using the identical "widths sum to container width"
++ * mechanism as the original, just mirrored instead of mixed.
+  */
+ html[dir="rtl"] #side_navi {
+     float: right;
+@@ -114,8 +159,22 @@ html[dir="rtl"] #side_navi td.link {
+     padding-left: 10px;
+ }
+ 
++/* .facebookteaser (promo box in the sidebar) is a non-floated, fixed-
++   width block with an explicit margin-left:15px and no margin-right -
++   another instance of the over-constrained anchor pattern fixed for
++   #mtop/#mbig above, just small enough that it is easier to swap the
++   margin directly than to isolate the whole widget as an LTR island. */
++html[dir="rtl"] #side_navi .facebookteaser {
++    margin-left: 0;
++    margin-right: 15px;
++}
++html[dir="rtl"] #side_navi .facebookteaser p.teaser1 {
++    left: 0;
++    right: 0;
++}
++
+ html[dir="rtl"] #side_info {
+-    float: left;
++    float: right;
+     padding-left: 0;
+     padding-right: 10px;
+     text-align: right;
+@@ -140,10 +199,11 @@ html[dir="rtl"] #side_info td.link {
+     padding-left: 10px;
+ }
+ 
+-/* #content keeps float:left in the source (compact.css); it sits
+-   naturally between the two flipped side columns either way, so no
+-   change needed there - only its internal text alignment. */
++/* #content's float:right is set alongside side_navi/side_info above, so
++   all three columns flip using the same mechanism. Here we only add its
++   internal text alignment. */
+ html[dir="rtl"] #content {
++    float: right;
+     text-align: right;
+ }
+ html[dir="rtl"] #content h1,

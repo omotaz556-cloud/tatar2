@@ -1,0 +1,148 @@
+@CHARSET "UTF-8";
+
+/*
+ * Arabic (RTL) stylesheet.
+ *
+ * Loaded LAST in <head> (see tz_rtl_stylesheet_tag() in GameEngine/config.php),
+ * after lang/en/compact.css, lang/en/lang.css and novaterra.css, which are
+ * always loaded first regardless of language. That load order means the
+ * rules below override the English/LTR layout on equal selector specificity,
+ * without editing the base English files.
+ *
+ * There is no separate Arabic sprite/graphic set in this pack, so button
+ * artwork and sprite icons keep their original English images; what is
+ * mirrored here is direction, text alignment, column order (menu / content /
+ * hero) and the font used for text.
+ */
+
+html, body {
+    direction: rtl;
+}
+
+body,
+div#mid,
+div#content,
+div#side_navi,
+div#side_info,
+div#footer {
+    text-align: right;
+    font-family: Tahoma, Arial, "Segoe UI", sans-serif;
+}
+
+/* --- village overview (dorf1.php): remove the gap between the resource
+   bar above and the village title + map below. Base rule in
+   lang/en/compact.css sets padding: 43px 0 0 15px on div.village1 - only
+   the top value is overridden here, right/bottom/left stay as they are.
+   padding-top is 0 (was 8px) and the title's own bottom margin (8px,
+   from the global "h1 { margin-bottom: 8px; }" rule in compact.css) is
+   zeroed here too, so nothing separates the resource bar from the
+   village title/map under the RTL zoom. */
+div.village1 {
+    padding-top: 0;
+}
+div.village1 h1 {
+    margin-bottom: 0;
+}
+
+/* --- swap the 3-column layout: menu (side_navi) / map (content) / hero (side_info) --- */
+div#side_navi {
+    float: right;
+    /* the base LTR stylesheet paints this shadow at the box's right edge,
+       which used to be the edge touching #content. Now that the column is
+       mirrored to float:right, that same right edge is the outer page edge
+       instead - so swap in the mirrored asset and flip the anchor to the
+       left edge (now the one touching #content). */
+    background-image: url(../../images/shadow-a-rtl.png);
+    background-position: left top;
+}
+div#side_navi p a {
+    padding-left: 0;
+    padding-right: 12px;
+}
+div#side_navi p.deltimer {
+    margin-left: 0;
+    margin-right: 5px;
+}
+div#side_navi table {
+    padding-left: 0;
+    padding-right: 12px;
+}
+div#side_navi table td {
+    text-align: right;
+}
+div#side_navi td.link {
+    padding-right: 0;
+    padding-left: 10px;
+}
+
+div#content {
+    float: right;
+}
+
+div#side_info {
+    float: right;
+    padding-left: 0;
+    padding-right: 10px;
+}
+/* same mirroring fix as #side_navi above. The base rule in
+   modules/new_images.css is actually a GROUPED selector:
+       div#side_info,
+       body.mod1 div#side_info,
+       body.mod2 div#side_info,
+       body.mod3 div#side_info { background: ... shadow-b-ltr.png ... left top; }
+   The bare "div#side_info" (no body class needed) is what paints the
+   shadow on every page regardless of mod state - only overriding the
+   "body.mod3" variant (as an earlier version of this file did) misses
+   every page that isn't in mod3 and leaves the unmirrored LTR shadow
+   showing on the left. All four selectors must be repeated here so the
+   override wins in every case, same as the base rule does. */
+div#side_info,
+body.mod1 div#side_info,
+body.mod2 div#side_info,
+body.mod3 div#side_info {
+    background-image: url(../../images/shadow-b-rtl.png);
+    background-position: right top;
+}
+div#side_info h5 {
+    margin-left: 0;
+    margin-right: 10px;
+}
+div#side_info div.news {
+    margin-left: 0;
+    margin-right: 10px;
+}
+div#side_info div.news h5 {
+    margin-left: 0;
+}
+div#side_info div.news ul {
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+/* --- top bar icon groups --- */
+div#mtop div#n5 .reports {
+    float: right;
+}
+div#mtop div#n5 .messages {
+    float: left;
+}
+
+/* --- footer --- */
+div#footer ul.menu li {
+    float: right;
+    margin: 0 5px;
+}
+div#footer div.footer-menu,
+div#footer div#mfoot,
+div#footer div#mfoot div.copyright {
+    text-align: right;
+}
+div#footer ul.menu li.copyright {
+    direction: ltr;
+}
+
+/* --- opt-in helper kept for existing scoped usages in the templates --- */
+.arabic-text {
+    direction: rtl;
+    text-align: right;
+}

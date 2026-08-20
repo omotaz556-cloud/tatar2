@@ -1,0 +1,549 @@
+/* Arabic (RTL) layout overrides - the ONE shared RTL stylesheet for the
+   whole game.
+
+   Loaded on EVERY game page (dorf1.php, dorf2.php, dorf3.php, karte.php,
+   karte2.php, build.php, berichte.php, nachrichten.php, allianz.php,
+   spieler.php, and every other page that renders the standard
+   #side_navi / #content / #side_info layout via Templates/menu.tpl) through
+   the single shared tz_rtl_stylesheet_tag() function in
+   GameEngine/config.php - never linked directly by an individual page. This
+   is what keeps the RTL layout intact when navigating between pages: fix it
+   here once and every page that calls tz_rtl_stylesheet_tag() picks it up.
+
+   Scoped strictly to html[dir="rtl"] - has ZERO effect on the English
+   (LTR) layout, does not touch village/map coordinates or sprites, and
+   does NOT change the central container's original width. The
+   #side_navi / #content / #side_info column repositioning below (float
+   side only, via CSS) applies site-wide since those three IDs are shared
+   by every page. The village-map-specific rules (map/production
+   sub-pair, village title offset, resource table typography) are scoped
+   under "div.village1" and so only ever match on dorf1.php, the one page
+   that actually renders that markup.
+
+   One small template change accompanies this stylesheet: dorf1.php had a
+   bug where #side_info (the "Hero" column: character portrait + village
+   list) was left NESTED inside #content (div.village1: fixed 537px
+   width, overflow:hidden) instead of being #content's sibling under
+   #mid, unlike every other page with this same layout (dorf2.php,
+   dorf3.php, ...), which already close #content before #side_info opens.
+   A nested, floated #side_info can never become a real third column -
+   it just wraps or gets clipped inside the 537px box - which is why an
+   earlier fix attempt widened the container to force it to fit instead
+   of fixing the actual bug. dorf1.php now closes #content one div early,
+   ONLY when tz_is_rtl_lang() is true, so #side_info renders as an actual
+   sibling for Arabic; the English branch emits the exact same markup in
+   the exact same order as before, byte-for-byte, so English is
+   unaffected. See the comment in dorf1.php itself for the full diff. */
+
+/* ---------------------------------------------------------------------
+ * Whole-page zoom for Arabic: scales EVERYTHING (text, icons, map,
+ * spacing) uniformly to 150%, as if the player pressed Ctrl/Cmd "+"
+ * twice in Chrome at 100% browser zoom.
+ *
+ * Applied to html[dir="rtl"] BODY rather than .wrapper: .wrapper has
+ * "height:100% / min-height:100%" set in modules/new_layout_ltr.css
+ * (percentage heights resolve against the ORIGINAL, un-zoomed parent
+ * box), which visually cancels the zoom on some Chrome builds - the
+ * box reports zoomed width but keeps its original height, so nothing
+ * looked like it actually grew. BODY has no such percentage height
+ * dependency, so zooming it scales the whole page reliably.
+ *
+ * !important guards against any later, more specific selector in a
+ * gpack stylesheet re-setting zoom/transform on body or html.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body {
+    zoom: 1.5 !important;
+}
+
+@supports not (zoom: 1.5) {
+    html[dir="rtl"] body {
+        transform: scale(1.5) !important;
+        transform-origin: top center !important;
+        width: 66.6667% !important;
+    }
+}
+
+/* ---------------------------------------------------------------------
+ * Pixel-coordinate / fixed-layout regions: keep them internally LTR so
+ * the top nav icons, resource bar and the village map are not mirrored
+ * or shoved off-screen by the inherited RTL direction.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] #header,
+html[dir="rtl"] #mtop,
+html[dir="rtl"] #village_map_wrap,
+html[dir="rtl"] div#village_map,
+html[dir="rtl"] #container,
+html[dir="rtl"] #stime,
+html[dir="rtl"] #ltime,
+html[dir="rtl"] #res,
+html[dir="rtl"] #resWrap,
+html[dir="rtl"] #footer,
+html[dir="rtl"] #mbig {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+/* ---------------------------------------------------------------------
+ * Three main columns, DOM order #side_navi, #content, #side_info,
+ * all siblings under #mid (980px, untouched):
+ *   #side_navi  (Templates/menu.tpl - nav: Home/Guide/Profile/Logout/
+ *                Forum/Discord/Plus/Support)      - 155px
+ *   #content    (village map / production / title / page content,
+ *                div.village1 on dorf1.php)        - 537px
+ *   #side_info  ("Hero": character portrait + village list)  - 257px
+ * 155 + 537 + 257 = 949px, comfortably under #mid's 980px, so all
+ * three sit on one row with no width changes anywhere.
+ *
+ * lang/en/compact.css floats all three float:left (reading order:
+ * menu, village, hero). To mirror that into RTL reading order
+ * [Hero] [Village] [Menu] without touching any width or the template
+ * markup, all three are flipped to float:right instead. DOM order is
+ * untouched; floating every column the same direction just stacks
+ * them right-to-left in source order, so side_navi (first in DOM)
+ * lands rightmost, #content lands in the middle, and side_info
+ * (last in DOM) lands on the left - the target Arabic layout. This
+ * only works because #side_info is an actual sibling of #content -
+ * see the dorf1.php note above for the one-page DOM fix that makes
+ * that true.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] #side_navi {
+    float: right;
+    margin-right: 100px;
+}
+/* gpack/novaterra_classic/modules/new_images.css sets
+ * "#side_navi { margin-top: 30px; }" (shared by LTR and RTL). Nudging
+ * it down a bit further for Arabic only - scoped to html[dir="rtl"],
+ * so English is untouched. */
+html[dir="rtl"] #side_navi {
+    margin-top: 150px;
+}
+/* Templates/menu.tpl groups the nav links into separate <p> blocks
+ * (main links / Forum / Discord / Plus+Support). compact.css puts
+ * 28px margin-bottom on every "#side_navi p", which reads as large
+ * empty gaps between groups. Tightening it stacks all the links
+ * (Home/Guide/Profile/Logout/Forum/Discord/Plus/Support) close under
+ * each other, matching the reference; #side_navi's own position
+ * (float:right, outside #content) above is untouched. */
+html[dir="rtl"] #side_navi p {
+    margin: 0 0 2px;
+}
+html[dir="rtl"] #side_navi p a {
+    padding-left: 0;
+    padding-right: 12px;
+}
+html[dir="rtl"] #side_navi table {
+    padding-left: 0;
+    padding-right: 12px;
+}
+html[dir="rtl"] #side_navi td.link {
+    padding-right: 0;
+    padding-left: 10px;
+}
+
+html[dir="rtl"] #content {
+    float: right;
+    text-align: right;
+}
+
+html[dir="rtl"] #side_info {
+    float: right;
+    padding-left: 0;
+    padding-right: 10px;
+    text-align: right;
+}
+html[dir="rtl"] #side_info h5,
+html[dir="rtl"] #side_info div.news {
+    margin-left: 0;
+    margin-right: 10px;
+}
+html[dir="rtl"] #side_info td.link {
+    padding-right: 0;
+    padding-left: 10px;
+}
+
+/* ---------------------------------------------------------------------
+ * Village title (h1, dorf1.php / dorf2.php / dorf3.php).
+ * lang/en/compact.css nudges the title with
+ * "div.village1 h1 { position:relative; left:10px }" - a cosmetic 10px
+ * offset from its own static position. #content (div.village1) clips
+ * overflow ("overflow:hidden"), and the title's static box already
+ * spans #content's full inner width, so that +10px offset pushes the
+ * title's right edge 10px past #content's real (clipped) right edge.
+ * In English this is invisible: text-align is left by default, so the
+ * title hugs the LEFT side of its box and never reaches that clipped
+ * right edge. Under RTL, "#content h1 { text-align:right }" (above)
+ * hugs the title against that same box - now 10px inside the clipped
+ * zone - so the start of the Arabic title (its rightmost glyphs, read
+ * first in RTL) was being cut off by the fixed container.
+ * Mirroring the offset to "right:10px" keeps the same 10px cosmetic
+ * inset, on the correct side for RTL, but pulls the box back inside
+ * #content's visible bounds instead of past them, so the full title
+ * (e.g. "قرية <username>") renders without clipping. Village naming
+ * logic itself (tz_display_village_name() in GameEngine/config.php)
+ * is untouched - this is a display-only CSS position fix.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] div.village1 h1 {
+    left: auto;
+    right: 10px;
+}
+
+/* ---------------------------------------------------------------------
+ * "(العاصمة)" capital label (div#cap, dorf1.php) sits between the title
+ * and #village_map_wrap with no CSS of its own anywhere in the gpacks,
+ * so it inherits "line-height: 26px" from the html[dir="rtl"] #content
+ * typography rule above. That 26px line-box (39px once the page's
+ * zoom:1.5 is applied) was rendering as dead vertical space between the
+ * title/capital line and the top of the village map, even though the
+ * capital text itself is short. Collapsing its line-height and margin
+ * pulls the map back up flush under the title, matching the reference
+ * layout, without touching the div's content or the English page (no
+ * html[dir="rtl"] ancestor there, so #cap keeps its old default box).
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] div.village1 div#cap {
+    line-height: 14px;
+    margin: 0;
+    min-height: 0;
+}
+
+/* ---------------------------------------------------------------------
+ * Map / production pane (dorf1.php: #village_map inside
+ * #village_map_wrap, and #map_details - movement/production/troops -
+ * a sibling of #village_map_wrap, pulled up next to it with a negative
+ * margin-top). In English these sit map on the left, production info
+ * on the right (lang/en/compact.css: village_map float:left,
+ * map_details float:right). The Arabic reference mirrors this pair:
+ * production/movement/troops on the LEFT, village map on the RIGHT.
+ * Only the float side of these two boxes flips here - #village_map's
+ * own internal pixel coordinates (resource field icons etc.) stay
+ * LTR/isolated via the direction:ltr rule above, so no sprite or
+ * coordinate is touched, just which side of the row each box renders
+ * on. margin-right/-left swap for the same reason td.ico padding was
+ * swapped below: keep the existing 1px visual gap, on the new side.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] div.village1 div#village_map {
+    float: right;
+}
+html[dir="rtl"] div.village1 div#map_details {
+    float: left;
+    margin-right: 0;
+    margin-left: 1px;
+}
+
+/* ---------------------------------------------------------------------
+ * Arabic typography.
+ * lang/en/compact.css hardcodes "Verdana, Arial, Helvetica, sans-serif"
+ * on BODY - those have no proper Arabic glyphs, so the browser falls
+ * back to whatever default Arabic font it has, at the base size/
+ * line-height tuned for Latin text (too cramped for Arabic script).
+ * This swaps in a standard Arabic-friendly stack and loosens size/
+ * line-height slightly, matching the reference screenshot. Does not
+ * touch #header/#mtop/#village_map/#res (kept LTR/isolated above).
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
+html[dir="rtl"] #mid,
+html[dir="rtl"] #content,
+html[dir="rtl"] #side_navi,
+html[dir="rtl"] #side_info {
+    font-size: 13pt;
+    width:max-content;
+    line-height: 2px;
+    margin-right: 30px;
+    
+}
+html[dir="rtl"] #content h1 {
+    text-align: center;
+}
+
+/* ---------------------------------------------------------------------
+ * Typography-only pass (no positioning/structure touched below).
+ *
+ * The 11pt -> 13pt / 22px -> 26px bump above (~+18%) covers ordinary
+ * flowed text under #mid/#content/#side_navi/#side_info (nav links,
+ * news, quest text, etc). It does NOT reach table cells: compact.css
+ * sets "table td, table th { font-size:13px }" directly on the
+ * elements (production/troops/movement rows, td.ico/td.res/td.num/
+ * td.per, td.un), which is a same-or-higher-specificity sibling rule
+ * that the ancestor font-size bump can't override through inheritance
+ * alone. Those are sized/weighted explicitly below instead, each
+ * scoped to div.village1 table so English (div.village1 with no
+ * html[dir="rtl"] ancestor) is untouched. No width/height/float/
+ * position property appears in this block - text metrics only, so
+ * table column layout and cell positions are unaffected.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] div.village1 table thead th {
+    font-size: 15px;
+    font-weight: 700;
+}
+html[dir="rtl"] div.village1 table td.res {
+    font-size: 14px;
+    font-weight: 600;
+}
+html[dir="rtl"] div.village1 table td.un {
+    font-size: 14px;
+    font-weight: 600;
+}
+html[dir="rtl"] div.village1 table td.num {
+    font-size: 15px;
+    font-weight: 700;
+}
+html[dir="rtl"] div.village1 table td.per {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Village title: bold + moderately larger, but kept inside the exact
+ * 29px height the map/production alignment above depends on
+ * ("#map_details { margin-top:-29px }" pulls production up to sit
+ * flush with the title row) - height/left-right position are left
+ * untouched from the fix above, only font metrics change, and
+ * line-height is set to the box's own 29px so the larger bold glyphs
+ * still fit with no vertical clipping under #content's overflow:hidden. */
+html[dir="rtl"] div.village1 h1 {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 29px;
+    margin-top: 30px;
+}
+
+/* Sidebar / navigation links (Home, Guide, Profile, Logout, Forum,
+ * Discord, Plus, Support) and the left "hero" sidebar's own headings
+ * and village-list links - bold only, no size/position change to the
+ * links themselves (padding/float already fixed above). */
+html[dir="rtl"] #side_navi p a {
+    font-weight: 600;
+}
+html[dir="rtl"] #side_info h5 {
+    font-weight: 700;
+}
+html[dir="rtl"] #side_info table#vlist td.link a {
+    font-weight: 600;
+}
+
+/* "في الساعة" - Templates/production.tpl td.per, already sized/bolded
+ * above; this adds a touch more visual weight (slightly muted color
+ * kept as-is, no color change requested) via letter-spacing so it
+ * reads clearly next to the bold resource numbers beside it. */
+html[dir="rtl"] div.village1 table td.per {
+    letter-spacing: 0.2px;
+}
+
+/* Hero/character image (Templates/quest.tpl #qge img - the tribe
+ * guide illustration inside #side_info, the left "hero" sidebar).
+ * The template sets a fixed inline "style=height:174px", which beats
+ * any external stylesheet rule regardless of selector specificity, so
+ * !important is required here to size it up at all; scoped to
+ * html[dir="rtl"] #side_info #qge img only, so the English page (no
+ * html[dir="rtl"] ancestor) keeps the original inline 174px untouched.
+ * +12% (174px -> 195px) is inside the requested 10-15% range. Width is
+ * left auto so the image's own aspect ratio scales it proportionally -
+ * no crop, no distortion, no change to #qge's own left position. */
+html[dir="rtl"] #side_info #qge img {
+    height: 195px !important;
+    width: auto !important;
+}
+
+/* ---------------------------------------------------------------------
+ * Village map image: intentionally NOT resized.
+ * div.village1 div#village_map is fixed at 300x264px, and every
+ * resource-field icon inside it (img.rf1 .. img.rf18) is positioned
+ * with absolute left/top pixel offsets tuned to exactly that box. The
+ * map already sits directly beside #map_details (production, 229px)
+ * inside #content's fixed 537px width, floated right/left above with
+ * only a few px of spare room. Enlarging the map 10-15% (~330-345px)
+ * would either overlap #map_details or get cut by #content's
+ * overflow:hidden - i.e. exactly the "breaks the game's coordinate
+ * system / map layout" case flagged as a do-not-resize condition, so
+ * per that instruction its original dimensions are kept unchanged.
+ * --------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------
+ * Production table (Templates/production.tpl - #production, and the
+ * other div.village1 tables sharing the same td.ico/td.num classes).
+ * Column DOM order is icon, resource-name, number, "per hour" - under
+ * dir="rtl" the browser already renders table columns in mirrored
+ * (right-to-left) order on its own, so icon+name correctly end up on
+ * the right and "per hour" on the left with NO markup changes needed.
+ * What's left is that lang/en/compact.css hardcodes physical
+ * left/right on individual cells (thead text-align:left, td.ico
+ * padding-left, td.num text-align:right), which fight the mirrored
+ * column order instead of following it. Flipping just those keeps
+ * every column mirrored consistently, matching the reference spacing.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] div.village1 table thead th {
+    text-align: right;
+}
+html[dir="rtl"] div.village1 table td.ico {
+    padding-left: 0;
+    padding-right: 4px;
+}
+html[dir="rtl"] div.village1 table td.num {
+    text-align: left;
+}
+
+/* ---------------------------------------------------------------------
+ * Plus page feature table (Templates/Plus/3.tpl, table.plusFunctions,
+ * inside div.plus - fixed 502px content width). The table has no width
+ * of its own in compact.css (auto layout), which is fine in English at
+ * 11pt/no zoom - the row text fits inside 502px without help. Under
+ * Arabic's larger 13pt font and the page-wide zoom:1.5 above, the same
+ * row content (especially the long "desc" cell text) no longer fits at
+ * its natural (shrink-to-fit) width, so the table grows wider than its
+ * 502px container. Because div.plus/#content is "overflow:hidden" and
+ * text-align:right, that extra width overflows to the LEFT - and since
+ * dir="rtl" also mirrors the table's column order (man rightmost, then
+ * desc, dur, cost, act running right-to-left), it is exactly the dur/
+ * cost/act columns - the ones mirrored onto the left - that end up
+ * pushed past the clipped left edge and disappear, leaving only the
+ * "؟" (man) and description columns visible.
+ * Giving the table an explicit width:100% (of its 502px parent) makes
+ * the browser fit the auto-layout column widths inside that box instead
+ * of growing past it - long cell text wraps onto multiple lines instead
+ * of forcing the table wider, so every column (including the ones that
+ * were being clipped) stays inside the visible area. Scoped narrowly to
+ * this table only; English (no html[dir="rtl"] ancestor) is untouched. */
+html[dir="rtl"] div.plus table.plusFunctions {
+    width: 100%;
+}
+
+/* ---------------------------------------------------------------------
+ * Resource bar (#res, Templates/res.tpl) as green "pill" badges,
+ * matching the reference screenshot: each resource is one rounded
+ * green box with the number then its icon. Templates/res.tpl now
+ * emits a single "respill" <td> per resource (RTL branch only, gated
+ * by tz_is_rtl_lang()) instead of two separate <td>s, so each pill is
+ * one real box - no cross-cell border tricks needed. #res itself is
+ * already forced direction:ltr above, so "number then icon" in the
+ * markup renders left-to-right as intended (matches the reference,
+ * where the number sits left of its icon inside each pill).
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] #res table {
+    border-collapse: separate;
+    border-spacing: 6px 0;
+    background-color: transparent;
+}
+html[dir="rtl"] #res table td.respill {
+    background-color: #8bc34a;
+    border-radius: 12px;
+    padding: 3px 8px;
+    white-space: nowrap;
+}
+html[dir="rtl"] #res table td.respill span {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 13px;
+    margin-right: 4px;
+}
+html[dir="rtl"] #res table td.respill img {
+    vertical-align: middle;
+    margin-left: 0;
+}
+
+/* ---------------------------------------------------------------------
+ * Gold badge (#goldHeader, Templates/header.tpl) - low contrast fix.
+ * header.tpl's own inline <style> block (loaded in <body>, AFTER
+ * css/rtl.css in <head>, so it would normally win on source order)
+ * draws the coin as a 16px SVG with a near-white background circle
+ * (.tzCoinBg fill #f6f5f2) and a thin, muted stroke - easy to lose
+ * against the header's own light background, which is what made it
+ * hard to see. Every selector here is prefixed "html[dir="rtl"]",
+ * giving it higher specificity than header.tpl's plain "#goldHeader
+ * ..." rules regardless of source order, so this wins in Arabic only;
+ * English keeps the original small/subtle coin untouched. Wrapping
+ * .tzCoinRow in its own light pill + enlarging the coin to 20px + a
+ * darker/thicker stroke on both the coin's outer ring and its gold
+ * disc gives the icon a real edge to read against, instead of relying
+ * on color alone. */
+html[dir="rtl"] #goldHeader .tzCoinRow {
+    background-color: #fdf6e3;
+    border: 1px solid #d9c98a;
+    border-radius: 10px;
+    padding: 3px 8px;
+}
+html[dir="rtl"] #goldHeader .tzCoinStack {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+}
+html[dir="rtl"] #goldHeader .tzCoinBg {
+    fill: #ffffff;
+    stroke: #c9a227;
+    stroke-width: 1.5;
+}
+html[dir="rtl"] #goldHeader .tzCoin-gold .tzCoinDisc {
+    fill: #f0b90b;
+    stroke: #7a5c00;
+    stroke-width: 1;
+}
+html[dir="rtl"] #goldHeader .tzCoin-gold .tzCoinShine {
+    fill: #fff4c2;
+}
+html[dir="rtl"] #goldHeader .tzCoinValue {
+    color: #7a5c00;
+    font-size: 13px;
+}
+
+/* Move the gold badge to the LEFT edge of #mtop instead of the right
+ * (header.tpl's own rule: "right: 8px; left: auto;"). #mtop itself is
+ * "position:relative" (compact.css) and #goldHeader is
+ * "position:absolute" inside it, so this repositions it within that
+ * same box rather than the page - matching the reference's top-left
+ * gold badge without touching #mtop's own centering. text-align is
+ * flipped too so the pill hugs its new left anchor the same way it
+ * hugged the right one before. */
+html[dir="rtl"] #goldHeader {
+    left: -100px;
+    right: auto;
+    text-align: left;
+}
+html[dir="rtl"] #goldHeader .tzCoinRow {
+    justify-content: flex-start;
+}
+
+/* Day/night icon (Templates/header.tpl .dayNightIcon - the sun/moon
+ * .day_image/.night_image sprite near the Plus button) was sitting
+ * close enough to #ltime (server/local time, anchored left:5px) to
+ * collide with it once the gold badge moved off that same right-hand
+ * area. Pushing it down clears the time block without touching its
+ * own horizontal position or the Plus button layout around it. */
+html[dir="rtl"] .dayNightIcon {
+    margin-top: 22px;
+    padding-left: 100px;
+}
+
+/* ---------------------------------------------------------------------
+ * Hero/character image sits ~150px lower than #content/#side_navi on
+ * EVERY page that uses this shared layout (statiskiten.php, spieler.php,
+ * dorf1/2/3.php, karte.php, berichte.php, etc.) - not a bug in this
+ * stylesheet's positioning rules, but a side effect of them combined
+ * with markup those pages already share.
+ *
+ * Each of those pages hardcodes the exact same four stray line breaks
+ * directly between #content and #side_info in its own markup:
+ *   </div>
+ *   <br /><br /><br /><br /><div id="side_info">
+ * These four <br /> are plain, non-floated content, so before this fix
+ * they render as an ordinary paragraph of blank lines *inside #mid*,
+ * pushing everything after them - #side_info, i.e. the hero image -
+ * down by 4 line-heights. In English that is a modest, mostly-hidden
+ * gap (4 x ~20px). Under Arabic's zoom:1.5 and the 26px line-height
+ * set on #mid above, the same four <br /> expand to roughly 4 x 26px
+ * x 1.5 =~ 156px of dead space - which is the empty gap that shows up
+ * above the character image in every page (confirmed by rendering the
+ * real markup: #content/#side_navi start at the same top offset, but
+ * #side_info was measured ~156px further down, matching that math).
+ *
+ * Fixing the four <br /> tags themselves means editing markup on 21
+ * different PHP files. Since this stylesheet is the single shared file
+ * already loaded on every one of those pages, neutralizing them here
+ * fixes every page at once and keeps the change contained to RTL only:
+ * any <br> that is a direct sibling immediately following #content
+ * (i.e. exactly these spacer tags, not the "<br><br><br><br>" that
+ * some pages print *inside* #side_info before Templates/links.tpl -
+ * those are descendants, not siblings, and are untouched by this
+ * selector) is collapsed to zero height. #side_info then floats up
+ * flush with #content/#side_navi, same as the English layout. */
+html[dir="rtl"] #content ~ br {
+    display: none;
+}

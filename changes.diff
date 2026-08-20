@@ -1,0 +1,279 @@
+diff --git a/tatar/tatar/tatar/GameEngine/config.php b/tatar/tatar/tatar/GameEngine/config.php
+index 785635e..31f76c4 100644
+--- a/tatar/tatar/tatar/GameEngine/config.php
++++ b/tatar/tatar/tatar/GameEngine/config.php
+@@ -659,26 +659,57 @@ if (!function_exists('tz_display_village_name')) {
+     }
+ }
+ if (!function_exists('tz_rtl_stylesheet_tag')) {
++    // SINGLE SHARED ENTRY POINT for Arabic/RTL CSS on every game page.
++    //
++    // This is called from the <head> of every top-level page (dorf1.php,
++    // dorf2.php, dorf3.php, karte.php, karte2.php, build.php, berichte.php,
++    // nachrichten.php, allianz.php, spieler.php, Admin/admin.php,
++    // notification/index.php, etc.) right after the base/English gpack
++    // stylesheets. It is the ONLY place that decides which RTL stylesheets
++    // get linked, so fixing/extending RTL here fixes it everywhere at once -
++    // no page should ever link an RTL stylesheet on its own (that is what
++    // previously made the RTL layout work on dorf1.php only and disappear
++    // on every other page/navigation).
++    //
+     // $relPath is the prefix needed to get back to the site root from the
+     // calling script's own folder (e.g. '' for root-level pages like
+     // dorf1.php, '../' for one-level-deep pages like Admin/admin.php or
+-    // notification/index.php), since GP_LOCATE itself is root-relative.
++    // notification/index.php), since both GP_LOCATE and css/rtl.css below
++    // are root-relative paths.
+     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
+         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
+         if (!tz_is_rtl_lang($langCode)) {
+             return '';
+         }
++
++        $tag = '';
++
++        // (1) Optional per-gpack override (legacy hook). Some gpacks may
++        // ship their own lang/{code}/lang.css tweaks; only emitted if that
++        // file actually exists on disk for the active gpack.
+         $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra_classic/');
+         // project root is one level above GameEngine/, regardless of which
+         // folder the calling script itself lives in.
+-        $diskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
+-        // Only emit the tag if the override file actually exists on disk for
+-        // the active gpack; some gpacks don't ship an RTL override yet.
+-        if (!is_file($diskPath)) {
+-            return '';
++        $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
++        if (is_file($gpDiskPath)) {
++            $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
++            $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
+         }
+-        $href = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
+-        return "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
++
++        // (2) The canonical, shared Arabic RTL layout stylesheet. This is
++        // the single source of truth for RTL layout (sidebar/hero position,
++        // main content positioning, text alignment, production layout,
++        // Arabic typography) across the whole game, scoped internally under
++        // html[dir="rtl"] so it never affects English/LTR pages. Loaded
++        // LAST so it wins the cascade over the base gpack CSS and (1) above
++        // on equal-specificity selectors.
++        $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
++        if (is_file($rtlDiskPath)) {
++            $rtlHref = $relPath . 'css/rtl.css';
++            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl2" rel="stylesheet" type="text/css" />';
++        }
++
++        return $tag;
+     }
+ }
+ ?>
+diff --git a/tatar/tatar/tatar/css/rtl.css b/tatar/tatar/tatar/css/rtl.css
+index 426f013..38a7843 100644
+--- a/tatar/tatar/tatar/css/rtl.css
++++ b/tatar/tatar/tatar/css/rtl.css
+@@ -1,12 +1,26 @@
+-/* Arabic (RTL) layout overrides for the in-game village views
+-   (dorf1.php / dorf2.php / dorf3.php).
++/* Arabic (RTL) layout overrides - the ONE shared RTL stylesheet for the
++   whole game.
++
++   Loaded on EVERY game page (dorf1.php, dorf2.php, dorf3.php, karte.php,
++   karte2.php, build.php, berichte.php, nachrichten.php, allianz.php,
++   spieler.php, and every other page that renders the standard
++   #side_navi / #content / #side_info layout via Templates/menu.tpl) through
++   the single shared tz_rtl_stylesheet_tag() function in
++   GameEngine/config.php - never linked directly by an individual page. This
++   is what keeps the RTL layout intact when navigating between pages: fix it
++   here once and every page that calls tz_rtl_stylesheet_tag() picks it up.
+ 
+    Scoped strictly to html[dir="rtl"] - has ZERO effect on the English
+    (LTR) layout, does not touch templates, does not touch village/map
+-   coordinates or sprites. Repositions the three existing top-level
+-   layout columns and the map/production sub-pair using CSS floats,
+-   and fixes the village-title clipping caused by a leftover LTR
+-   position offset - see the rule comments below for each. */
++   coordinates or sprites. #side_navi and #side_info are taken out of
++   #mid's normal flow and anchored to #mid's own edges (see the "THE
++   CENTRAL FIXED-WIDTH CONTAINER" block below for why) so they render
++   fully outside the central 980px container; #content is centered inside
++   it. This applies site-wide since #mid/#side_navi/#content/#side_info
++   are the same four IDs on every game page. The village-map-specific
++   rules (map/production sub-pair, village title offset, resource table
++   typography) are scoped under "div.village1" and so only ever match on
++   dorf1.php, the one page that actually renders that markup. */
+ 
+ /* ---------------------------------------------------------------------
+  * Pixel-coordinate / fixed-layout regions: keep them internally LTR so
+@@ -29,31 +43,97 @@ html[dir="rtl"] #mbig {
+ }
+ 
+ /* ---------------------------------------------------------------------
+- * Three main columns:
+- *   #side_navi  (Templates/menu.tpl   - character portrait + village list)
+- *   #content    (dorf1.php            - village map / village1)
+- *   #side_info  (dorf1.php, nested in #content - quests/news/multivillage)
++ * THE CENTRAL FIXED-WIDTH CONTAINER - what it actually is.
++ *
++ * gpack/novaterra_classic/modules/new_layout_ltr.css is @import'ed by
++ * lang/en/lang.css and loaded on every game page BEFORE this file. It
++ * contains the rule that actually creates the visible "central container"
++ * on screen:
++ *
++ *     div#mid { float: none; height: auto; margin: 0 auto; width: 980px; }
+  *
+- * Source (DOM) order is always: #side_navi, #content, #side_info - all
+- * float:left in lang/en/compact.css, sized so their widths sum exactly
+- * to #mid's width with no slack.
++ * #mid is a fixed 980px box, horizontally centered on the page - THIS is
++ * the central fixed-width container, not #content. Its DOM children are,
++ * in order, #side_navi (from Templates/menu.tpl), #content, #side_info -
++ * identical structure on dorf1.php, dorf2.php, dorf3.php, karte.php,
++ * karte2.php, build.php, berichte.php, nachrichten.php, allianz.php and
++ * spieler.php (confirmed by inspecting each file directly). All three are
++ * float:left in lang/en/compact.css.
+  *
+- * To get [Character/Menu] [Village] [Sidebar] reading right-to-left
+- * without touching that width math or any template markup, all three
+- * columns are flipped to float:right. DOM order is untouched, so
+- * side_navi renders on the right, content in the middle, and side_info
+- * on the left - the target Arabic layout.
++ * A float-only fix (float:right) only changes which edge of #mid an
++ * element hugs - a float can never place an element outside its own
++ * containing block. #side_navi/#side_info stayed inside #mid's 980px box
++ * no matter which way they were floated, which is why that approach did
++ * not visually change anything.
++ *
++ * THE FIX: take #side_navi and #side_info out of #mid's normal document
++ * flow with position:absolute, anchored to #mid itself (html[dir="rtl"]
++ * #mid gets position:relative below, so it becomes their positioning
++ * context - #mid's own declared width:980px and margin:0 auto from the
++ * English CSS are NOT touched or overridden anywhere in this file, so the
++ * container's width and centered page position stay byte-for-byte
++ * identical to English). Their offsets - right:100% and left:100% - are
++ * not arbitrary pixel guesses and not negative margins: "100%" for an
++ * absolutely positioned element resolves against its containing block's
++ * own width, i.e. "start exactly at #mid's real edge", whatever that
++ * width is. This is a value derived from the container's own geometry,
++ * not a magic number, and it holds even if #mid's width is ever changed
++ * later. #content is left as the only element in #mid's normal flow, so
++ * it alone determines #mid's box and renders inside it, at its own
++ * unchanged per-page width (537px village1 on dorf1.php, 502px on
++ * reports/messages/alliance/profile pages, etc.)
+  * --------------------------------------------------------------------- */
++html[dir="rtl"] #mid {
++    position: relative;
++    /* #side_navi/#side_info no longer contribute to #mid's auto height
++     * once they're taken out of normal flow below (their own English
++     * height, unchanged, is 453px - gpack/novaterra_classic/modules/
++     * new_layout_ltr.css). Reusing that same existing constant here (not
++     * a new/arbitrary number) keeps #mid at least as tall as either
++     * sidebar even on pages where #content itself is shorter, so nothing
++     * outside #mid (footer, etc.) can ride up under them. */
++    min-height: 453px;
++}
++
++/* Hero/character sidebar (#side_info: hero image, its quest widget, and
++ * the village list belonging to it - Templates/quest.tpl,
++ * Templates/multivillage.tpl). Placed flush against #mid's LEFT edge,
++ * entirely outside the 980px box, top-aligned with #mid the same way its
++ * English float was. */
++html[dir="rtl"] #side_info {
++    position: absolute;
++    top: 0;
++    right: 100%;
++    float: none;
++    padding-left: 0;
++    padding-right: 10px;
++    text-align: right;
++}
++html[dir="rtl"] #side_info h5,
++html[dir="rtl"] #side_info div.news {
++    margin-left: 0;
++    margin-right: 10px;
++}
++html[dir="rtl"] #side_info td.link {
++    padding-right: 0;
++    padding-left: 10px;
++}
++
++/* Sidebar/navigation (#side_navi: Home, Guide, Profile, Logout, Forum,
++ * Discord, Plus, Support - Templates/menu.tpl). Placed flush against
++ * #mid's RIGHT edge, entirely outside the 980px box, same top alignment. */
+ html[dir="rtl"] #side_navi {
+-    float: right;
++    position: absolute;
++    top: 0;
++    left: 100%;
++    float: none;
+ }
+ /* Templates/menu.tpl groups the nav links into separate <p> blocks
+  * (main links / Forum / Discord / Plus+Support). compact.css puts
+  * 28px margin-bottom on every "#side_navi p", which reads as large
+- * empty gaps between groups. Tightening it stacks all the links
+- * (Home/Guide/Profile/Logout/Forum/Discord/Plus/Support) close under
+- * each other, matching the reference; #side_navi's own position
+- * (float:right, outside #content) above is untouched. */
++ * empty gaps between groups. Tightening it stacks all the links close
++ * under each other, matching the reference; #side_navi's own position
++ * (outside #mid, above) is untouched by this. */
+ html[dir="rtl"] #side_navi p {
+     margin: 0 0 2px;
+ }
+@@ -70,26 +150,20 @@ html[dir="rtl"] #side_navi td.link {
+     padding-left: 10px;
+ }
+ 
++/* #content (village title, village map, production, movement, troops on
++ * dorf1.php; the equivalent page-specific content on every other page) is
++ * now the ONLY element left in #mid's normal document flow, so it alone
++ * fills the central container. Centering it inside #mid's unchanged
++ * 980px box (margin:0 auto is the standard block-centering rule, not an
++ * arbitrary offset) keeps the central game area visually centered between
++ * the two now-external sidebars. #content's own width - set per page by
++ * its village1/village2/village3/reports/player/alliance/build/etc. class
++ * in the untouched English CSS - is not changed here at all. */
+ html[dir="rtl"] #content {
+-    float: right;
+-    text-align: right;
+-}
+-
+-html[dir="rtl"] #side_info {
+-    float: right;
+-    padding-left: 0;
+-    padding-right: 10px;
++    float: none;
++    margin: 0 auto;
+     text-align: right;
+ }
+-html[dir="rtl"] #side_info h5,
+-html[dir="rtl"] #side_info div.news {
+-    margin-left: 0;
+-    margin-right: 10px;
+-}
+-html[dir="rtl"] #side_info td.link {
+-    padding-right: 0;
+-    padding-left: 10px;
+-}
+ 
+ /* ---------------------------------------------------------------------
+  * Village title (h1, dorf1.php / dorf2.php / dorf3.php).
+diff --git a/tatar/tatar/tatar/dorf1.php b/tatar/tatar/tatar/dorf1.php
+index 9f179d1..e774a3d 100644
+--- a/tatar/tatar/tatar/dorf1.php
++++ b/tatar/tatar/tatar/dorf1.php
+@@ -102,10 +102,11 @@ if (
+ 	<script type="text/javascript">
+ 	window.addEvent('domready', start);
+ 	</script>
++	<?php // Arabic/RTL CSS (css/rtl.css) is now loaded through the shared
++	// tz_rtl_stylesheet_tag() mechanism below - see GameEngine/config.php -
++	// so it is no longer linked here directly. This makes dorf1.php use the
++	// exact same RTL loading path as every other game page. ?>
+ 	<?php echo tz_rtl_stylesheet_tag(); ?>
+-	<?php if (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()): ?>
+-	<link href="css/rtl.css?rtl2" rel="stylesheet" type="text/css" />
+-	<?php endif; ?>
+ </head>
+ 
+ 

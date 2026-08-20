@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+/* Novaterra Classic Redesign Graphic Pack */
+/* Version 1.05 */
+
+/* بند 15 — طبقة الاستجابة للشاشات المختلفة، مشتركة بين الـ 3 gpacks */
+@import url("../_responsive/responsive.css");
+
+
+

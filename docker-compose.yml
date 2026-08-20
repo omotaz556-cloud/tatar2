@@ -1,0 +1,75 @@
+services:
+  # SECURITY NOTE (2026-08-15): db and phpmyadmin ports below are bound to
+  # 127.0.0.1 only (not 0.0.0.0), so they are reachable from the host machine
+  # for local tooling but NOT from the network/internet by default.
+  #
+  # REQUIRED: copy .env.example to .env and set real values BEFORE running
+  # `docker compose up`. The weak "rootpassword" fallback has been removed —
+  # if MARIADB_ROOT_PASSWORD is not set, the db/phpmyadmin containers will
+  # fail to start with a clear "variable is not set" error instead of
+  # silently running with a guessable password.
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: novaterra-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - novaterra-network
+    restart: unless-stopped
+
+  db:
+    image: mariadb:latest
+    container_name: novaterra-db
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-${MYSQL_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in your .env file (copy .env.example first)}}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-${MYSQL_DATABASE:-novaterra}}
+      MARIADB_USER: ${MARIADB_USER:-${MYSQL_USER:-novaterra}}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-${MYSQL_PASSWORD:-novaterrapass}}
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "127.0.0.1:3306:3306"
+    networks:
+      - novaterra-network
+    restart: unless-stopped
+    command: --sql_mode=""
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: novaterra-phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${MARIADB_ROOT_PASSWORD:-${MYSQL_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in your .env file (copy .env.example first)}}
+    ports:
+      - "127.0.0.1:8081:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - novaterra-network
+    restart: unless-stopped
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  novaterra-network:
+    driver: bridge

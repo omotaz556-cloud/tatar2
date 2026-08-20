@@ -1,0 +1,88 @@
+@CHARSET "UTF-8";
+
+/* =====================================================================
+ * Responsive layer (بند 15)
+ * ---------------------------------------------------------------------
+ * الملف ده بيتحمّل تلقائيًا من كل الـ gpacks التلاتة (novaterra,
+ * novaterra_classic, novaterra_t4) عن طريق @import في:
+ *   - main.css / main_en.css   (صفحات الدخول: index/anmelden/register)
+ *   - novaterra.css            (صفحات اللعب: dorf1/dorf2/build/...)
+ *
+ * التصميم الأصلي كله fixed-width (980px wrapper, absolute/fixed
+ * positioning بـ left:50% + margin-left سالب). إعادة بناء كل قالب من
+ * الصفر مش مضمون بدون اختبار بصري فعلي على كل صفحة (ده بالظبط سبب
+ * البند 14 "Visual density" اللي محتاج قياس على المتصفح مش قابل للفحص
+ * من الكود بس). اللي هنا هو：
+ *   1) تثبيت viewport صحيح (مضاف في header.tpl).
+ *   2) على الشاشات المتوسطة (تابلت): تصغير كل حاجة بمقياس واحد
+ *      (transform: scale) عشان الـ layout الأصلي يفضل سليم بصريًا
+ *      من غير ما نكسر أي إحداثيات absolute جوه القرية/الخريطة.
+ *   3) على الموبايل: نفس فكرة التصغير + سماح بالتمرير الأفقي كـ
+ *      fallback آمن لأي عنصر لسه أعرض من الشاشة (زي جداول الموارد
+ *      الطويلة وتقارير المعارك)، بدل ما يكسر الصفحة أو يظهر مقطوع.
+ *   4) عناصر بيانتفع فعلاً تتقلب لعمودي (الأخبار / التقارير / الجداول
+ *      البسيطة) بناخدها بمحاذاة مباشرة من غير transform.
+ * ===================================================================== */
+
+/* 1) يمنع تكبير iOS التلقائي وبيخلي القياسات دقيقة */
+html { -webkit-text-size-adjust: 100%; }
+
+/* حاوية عامة تلف الصفحة عشان نقدر نطبق transform/scroll من غيرما
+   نلمس الـ .wrapper الأصلي المستخدم في مئات الأماكن */
+@media screen and (max-width: 1040px) {
+	body { overflow-x: hidden; }
+}
+
+/* ---------------------------------------------------------------
+ * Tablet / small-desktop (<=1040px): تصغير اللعبة كلها بمقياس ثابت
+ * بدل إعادة توزيع العناصر. ده أأمن حل لواجهة قديمة مبنية بالكامل
+ * على إحداثيات مطلقة (left:50%; margin-left:-Npx) لأن التصغير بيحافظ
+ * على كل النسب زي ما هي.
+ * --------------------------------------------------------------- */
+@media screen and (max-width: 1040px) and (min-width: 641px) {
+	.wrapper {
+		transform: scale(0.82);
+		transform-origin: top center;
+		width: 1220px !important;
+		margin-left: calc(50% - 610px) !important;
+	}
+	body { min-width: 0 !important; }
+}
+
+/* ---------------------------------------------------------------
+ * Mobile (<=640px): تصغير أكبر + سماح بالتمرير الأفقي كخط دفاع
+ * أخير لو عنصر معين (جدول تقرير طويل مثلاً) لسه أعرض من الشاشة.
+ * --------------------------------------------------------------- */
+@media screen and (max-width: 640px) {
+	.wrapper {
+		transform: scale(0.46);
+		transform-origin: top left;
+		width: 2174px !important;
+		margin-left: 0 !important;
+	}
+	body {
+		min-width: 0 !important;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+}
+
+/* ---------------------------------------------------------------
+ * عناصر عامة (تسري على كل الأحجام) بتقلل احتمال overflow لأي محتوى
+ * ديناميكي (صور رفعها الأدمن، نصوص طويلة في الأخبار/التقارير) —
+ * دول تحسينات آمنة مش بتغيّر شكل الديسكتوب.
+ * --------------------------------------------------------------- */
+img { max-width: 100%; height: auto; }
+table.row_table_data, table.transparent, table.vis { max-width: 100%; }
+
+/* صناديق النصوص الطويلة (تقارير، تحالف، أخبار) لو احتاجت تمرير أفقي
+   على الموبايل بدل ما تتقص */
+.mobile-scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* لوحة الأدمن: الجداول الطويلة (config.tpl / editServerSet وغيرها)
+   بتاخد سكرول أفقي على الشاشات الصغيرة بدل ما تتكسر */
+@media screen and (max-width: 640px) {
+	#panel_content table,
+	#panel_content .grid-2,
+	#panel_content .grid-1 { display: block; overflow-x: auto; }
+}
