@@ -226,13 +226,13 @@ html[dir="rtl"] #regwiz{text-align:right;}
           border-radius:4px;box-shadow:0 2px 3px rgba(0,0,0,.16);overflow:hidden}
 .rw-info{display:none}
 .rw-info.on{display:block}
-.rw-name{margin:2px 0 12px;font:bold 26px/26px "Times New Roman",Georgia,serif;color:#7c2f22;
-         text-transform:uppercase;letter-spacing:1px}
-.rw-lines{margin:0;padding:0;list-style:none;position:relative;z-index:2}
+.rw-name{margin:45px 0 12px;font:bold 26px/26px "Times New Roman",Georgia,serif;color:#7c2f22;
+		 text-transform:uppercase;letter-spacing:1px;position:relative;z-index:2;width:220px;margin-right:219px;text-align:left}
+.rw-lines{margin:0 234px 0 0;padding:0;list-style:none;position:relative;z-index:2;width:220px}
 .rw-lines li{min-height:24px;padding:3px 0 3px 30px;font:bold 12px/18px Arial,Helvetica,sans-serif;color:#5b4a36;
-             background-repeat:no-repeat;text-align:left;background-position:0 50%;background-size:20px auto}
+			 background-repeat:no-repeat;text-align:left;background-position:0 50%;background-size:20px auto}
 .rw-portrait{position:absolute;right:0;bottom:0;height:100%;width:auto;z-index:1;border:0}
-.rw-badge{position:absolute;top:-2px;right:38%;width:150px;max-width:31%;z-index:3;border:0}
+.rw-badge{position:absolute;top:-2px;left:50%;right:auto;width:150px;max-width:31%;margin-left:-72px;z-index:3;border:0}
 
 /* --- step 2 : starting position ----------------------------------------- */
 .rw-map{position:relative;width:340px;max-width:100%;margin:0 auto 4px}

@@ -45,12 +45,141 @@
  * The !important guard prevents a graphic pack from changing this value.
  * --------------------------------------------------------------------- */
 html[dir="rtl"] body {
-    zoom: 1 !important;
+    zoom: 1.5 !important;
 }
 
 /* شريط الموارد absolute، لذلك نترك مساحة واضحة تحته قبل بداية الأعمدة. */
 html[dir="rtl"] #mid {
     margin-top: 28px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* بعض الصفحات تضع فواصل BR قبل العمود الجانبي، وتبقى ظاهرة إذا كانت
+ * طبقة الحزمة القديمة مخزنة في المتصفح. */
+html[dir="rtl"] #mid > br {
+    display: none !important;
+}
+html[dir="rtl"] #mid::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+html[dir="rtl"] #side_info {
+    box-sizing: border-box;
+    margin-top: 0 !important;
+    width: 267px;
+}
+
+html[dir="rtl"] #footer {
+    clear: both;
+    margin-top: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+}
+
+/* النص العربي في الصفحات الداخلية يرث text-align:left من الحزمة القديمة؛
+ * نوحد محاذاته يمينًا مع إبقاء المناطق الرسومية مستثناة أدناه. */
+html[dir="rtl"] body {
+    direction: rtl;
+    text-align: right;
+}
+html[dir="rtl"] #mid,
+html[dir="rtl"] #content:not(.map),
+html[dir="rtl"] #side_navi,
+html[dir="rtl"] #side_info {
+    text-align: right;
+}
+html[dir="rtl"] #content:not(.map) h1,
+html[dir="rtl"] #content:not(.map) h2,
+html[dir="rtl"] #content:not(.map) h3,
+html[dir="rtl"] #content:not(.map) h4,
+html[dir="rtl"] #content:not(.map) h5,
+html[dir="rtl"] #content:not(.map) h6,
+html[dir="rtl"] #content:not(.map) p,
+html[dir="rtl"] #content:not(.map) li,
+html[dir="rtl"] #content:not(.map) th,
+html[dir="rtl"] #content:not(.map) td,
+html[dir="rtl"] #content:not(.map) label,
+html[dir="rtl"] #content:not(.map) form {
+    text-align: right;
+}
+html[dir="rtl"] #content:not(.map) input,
+html[dir="rtl"] #content:not(.map) select,
+html[dir="rtl"] #content:not(.map) textarea {
+    direction: rtl;
+    text-align: right;
+}
+html[dir="rtl"] .footer-stopper {
+    height: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* صفحات البناء الطويلة تحتاج نهاية واضحة قبل الفوتر بعد تكبير RTL. */
+html[dir="rtl"] body.build-id-2 #mid,
+html[dir="rtl"] body.build-id-21 #mid {
+    padding-bottom: 30px;
+}
+html[dir="rtl"] body.build-id-2 #footer,
+html[dir="rtl"] body.build-id-21 #footer {
+    box-sizing: border-box;
+    height: auto !important;
+    min-height: 90px;
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+/* أزرار الإحصائيات كانت absolute على إحداثيات ثابتة، فتتداخل مع تبويبات
+ * الصفحة بعد تكبير RTL. وضعها في تدفق مستقل يحافظ على المسافات بينها. */
+html[dir="rtl"] div.statistics div#submenu {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin: 6px 0 4px;
+    position: static;
+    right: auto;
+    top: auto;
+}
+html[dir="rtl"] div.statistics div#submenu img,
+html[dir="rtl"] div.statistics div#submenu2 img {
+    float: none;
+    margin: 0;
+}
+html[dir="rtl"] div.statistics div#submenu2 {
+    align-items: center;
+    display: flex;
+    float: none;
+    gap: 5px;
+    justify-content: center;
+    margin: 4px 0 8px;
+    overflow: visible;
+}
+
+/* جدول تفاصيل الخريطة موضوع فوق طبقات الخريطة المطلقة؛ خلفية كاملة تمنع
+ * نصوص البلاطات والعناصر الموجودة تحته من الظهور داخله بعد الزوم. */
+html[dir="rtl"] div.map table#map_infobox {
+    background: #fff;
+    border-collapse: collapse;
+    z-index: 200;
+    top: 385px !important;
+}
+html[dir="rtl"] div.map table#map_infobox th,
+html[dir="rtl"] div.map table#map_infobox td {
+    background: #fff;
+}
+html[dir="rtl"] div#content.map {
+    min-height: 540px;
+    overflow: visible;
+}
+
+/* dorf1 يحتوي على قوالب القرية القديمة التي تجعل side_info خارج mid عند
+ * parsing في بعض المتصفحات؛ نثبته بجوار المحتوى بدون تغيير الخريطة. */
+html[dir="rtl"] body.dorf1Page #side_info {
+    left: 0;
+    position: absolute;
+    top: 200px;
 }
 
 /* ---------------------------------------------------------------------
@@ -105,7 +234,7 @@ html[dir="rtl"] #side_navi {
  * it down a bit further for Arabic only - scoped to html[dir="rtl"],
  * so English is untouched. */
 html[dir="rtl"] #side_navi {
-    margin-top: 0 !important;
+    margin-top: 120px !important;
 }
 /* Templates/menu.tpl groups the nav links into separate <p> blocks
  * (main links / Forum / Discord / Plus+Support). compact.css puts
@@ -140,6 +269,10 @@ html[dir="rtl"] #side_info {
     padding-left: 0;
     padding-right: 10px;
     text-align: right;
+}
+html[dir="rtl"] body.pg-anmelden .rw-name,
+html[dir="rtl"] body.pg-anmelden .rw-lines li {
+    text-align: left !important;
 }
 html[dir="rtl"] #side_info h5,
 html[dir="rtl"] #side_info div.news {
@@ -241,6 +374,49 @@ html[dir="rtl"] #side_info {
 }
 html[dir="rtl"] #content h1 {
     text-align: center;
+}
+
+@media screen and (max-width: 640px) {
+    html[dir="rtl"] body {
+        zoom: 1 !important;
+        width: auto !important;
+        overflow-x: hidden;
+    }
+    html[dir="rtl"] #mid {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    html[dir="rtl"] body.dorf1Page #side_info {
+        left: 0;
+        position: static;
+        top: auto;
+    }
+    html[dir="rtl"] div#content.map {
+        direction: ltr !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        width: 100% !important;
+    }
+    html[dir="rtl"] div#content.map #map {
+        left: 0 !important;
+        margin-left: 0 !important;
+    }
+    html[dir="rtl"] body.dorf1Page #village_map_wrap {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+    html[dir="rtl"] #footer {
+        clear: both;
+        float: none;
+        position: relative !important;
+        top: auto !important;
+        bottom: auto !important;
+        height: auto;
+        min-height: 90px;
+        margin-left: 0 !important;
+        width: 100%;
+    }
 }
 
 /* ---------------------------------------------------------------------

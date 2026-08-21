@@ -110,7 +110,7 @@ if (
 </head>
 
 
-<body class="v35 ie ie8">
+<body class="v35 ie ie8 dorf1Page">
 <div class="wrapper">
 <img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
 <div id="dynamic_header">
@@ -170,6 +170,7 @@ if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
 ?>
 </div>
 <div class="clear"></div>
+</div>
 <div class="footer-stopper"></div>
 <div class="clear"></div>
 

@@ -501,7 +501,7 @@ if ($isAjaxFragment) {
 </head>
 
 
-<body class="v35 ie ie8 pg-build">
+<body class="v35 ie ie8 pg-build build-id-<?php echo isset($_GET['id']) ? (int) $_GET['id'] : 0; ?>">
 <div class="wrapper">
 <img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
 <div id="dynamic_header">
