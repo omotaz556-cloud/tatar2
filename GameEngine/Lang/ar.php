@@ -4835,3 +4835,33 @@ tz_def('TZ_TASK_4_OTHER_PLAYERS', 'المهمة 4: اللاعبون الآخرو
 tz_def('TZ_TASK_5_TWO_BUILDING_ORDERS', 'المهمة 5: أمران بالبناء');
 tz_def('TZ_TASK_6_MESSAGES', 'المهمة 6: الرسائل');
 tz_def('TZ_Q8_STORY_BEFORE', 'علينا الآن زيادة إنتاج مواردك قليلًا. طوّر جميع حقول الموارد لديك إلى المستوى 1.');
+
+// --- build_croppers.php (admin crop finder builder) — hardcoded-text fix ---
+tz_def('TZ_CB_TITLE', 'بناء باحث المحاصيل');
+tz_def('TZ_CB_PAGE_TITLE_SUFFIX', 'بناء قرى المحاصيل');
+tz_def('TZ_CB_STATUS', 'الحالة');
+tz_def('TZ_CB_WORLD', 'العالم');
+tz_def('TZ_CB_9C15C_IN_MAP', 'قرى 9/15 حقلًا في الخريطة');
+tz_def('TZ_CB_ROWS_IN_TABLE', 'عدد الصفوف في الجدول');
+tz_def('TZ_CB_LAST_UPDATED', 'آخر تحديث');
+tz_def('TZ_CB_TABLE_NOTE', 'يخزّن جدول قرى المحاصيل فقط <b>wref,x,y,fieldtype,best_oasis_bonus</b>. أما حالة الملكية والإشغال فيتم جلبها مباشرة من <code>vdata/users</code> بواسطة الباحث.');
+tz_def('TZ_CB_ACTIONS', 'الإجراءات');
+tz_def('TZ_CB_BATCH_SIZE', 'حجم الدفعة');
+tz_def('TZ_CB_BUILD_REBUILD', 'بناء / إعادة بناء');
+tz_def('TZ_CB_ESTIMATE', 'تقدير');
+tz_def('TZ_CB_REINDEX', 'إعادة الفهرسة');
+tz_def('TZ_CB_TRUNCATE', 'تفريغ الجدول');
+tz_def('TZ_CB_CONFIRM_TRUNCATE', 'هل تريد فعلاً تفريغ الجدول؟');
+tz_def('TZ_CB_STREAM_NOTE', 'سيظهر تقدّم عملية البناء أدناه أولاً بأول. يمكنك مغادرة هذه الصفحة؛ ستتوقف العملية عند انتهاء الطلب.');
+tz_def('TZ_CB_INVALID_CSRF', 'رمز الحماية (CSRF) غير صالح. الرجاء إعادة تحميل الصفحة.');
+tz_def('TZ_CB_TRUNCATED_NOTICE', 'تم تفريغ جدول قرى المحاصيل.');
+tz_def('TZ_CB_REINDEXED_NOTICE', 'تمت إعادة بناء الفهارس.');
+tz_def('TZ_CB_ESTIMATED_NOTICE', 'تم تحديث الأعداد التقديرية.');
+tz_def('TZ_CB_WORLD_UNKNOWN', 'غير معروف');
+tz_def('TZ_CB_LOG_STARTED', 'بدأ باني قرى المحاصيل');
+tz_def('TZ_CB_LOG_DETECTED', 'تم رصد %d قرية محاصيل.');
+tz_def('TZ_CB_LOG_QUERY_FAILED', 'فشل الاستعلام: %s');
+tz_def('TZ_CB_LOG_UPSERT_FAILED', 'فشل التحديث: %s');
+tz_def('TZ_CB_LOG_PROCESSED', 'تمت معالجة %d / %d');
+tz_def('TZ_CB_LOG_ANALYZE_COMPLETE', 'اكتمل التحليل.');
+tz_def('TZ_CB_LOG_DONE', 'تم.');

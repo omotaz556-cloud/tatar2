@@ -149,6 +149,10 @@ if (count($session->villages) > 1) {
             ? $villageData['name']
             : '';
 
+        if (function_exists('tz_display_village_name')) {
+            $villageName = tz_display_village_name($villageName, $session->username ?? null);
+        }
+
         $villageX = isset($villageData['x'])
             ? (int)$villageData['x']
             : 0;

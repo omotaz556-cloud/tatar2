@@ -151,10 +151,14 @@ foreach ($varray as $vil) {
 	// ==========================================================
 	// OUTPUT ROW
 	// ==========================================================
+	$vdispname = function_exists('tz_display_village_name')
+		? tz_display_village_name($vdata['name'], $session->username ?? null)
+		: $vdata['name'];
+
 	echo '
 	<tr class="'.$class.'">
 		<td class="vil fc">
-			<a href="dorf1.php?newdid='.$vid.'">'.$vdata['name'].'</a>
+			<a href="dorf1.php?newdid='.$vid.'">'.$vdispname.'</a>
 		</td>
 		<td class="att">'.$att.'</td>
 		<td class="bui">'.$bui.'</td>

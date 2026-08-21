@@ -106,7 +106,7 @@ function worldSizeLabel(): string {
         $max = (int)WORLD_MAX; $min = -$max;
         return ($max - $min + 1) . "×" . ($max - $min + 1) . " (" . $min . " .. " . $max . ")";
     }
-    return "unknown";
+    return defined('TZ_CB_WORLD_UNKNOWN') ? TZ_CB_WORLD_UNKNOWN : "unknown";
 }
 
 function getCounts($db, $WDATA, $CROP_TABLE) {
@@ -127,7 +127,7 @@ function startStreaming() {
     while (ob_get_level()) { @ob_end_flush(); }
     ob_implicit_flush(true);
     echo "<pre id=\"log\" style=\"background:#0b0f17;color:#d7e1f8;padding:12px;border-radius:12px;max-height:60vh;overflow:auto;\">";
-    echo htmlspecialchars("[".date('H:i:s')."] Croppers builder started")."\n";
+    echo htmlspecialchars("[".date('H:i:s')."] ".TZ_CB_LOG_STARTED)."\n";
     flush();
 }
 function logLine($msg) { echo htmlspecialchars("[".date('H:i:s')."] ".$msg)."\n"; flush(); }
@@ -139,13 +139,13 @@ $okCsrf = isset($_POST['csrf']) && hash_equals($_SESSION['csrf_cb'], $_POST['csr
 $notice = null;
 
 if ($action && !$okCsrf) {
-    $notice = "Invalid CSRF token. Please reload the page.";
+    $notice = TZ_CB_INVALID_CSRF;
     $action = null;
 }
 
 if ($action === 'truncate') {
     mysqli_query($database->dblink, "TRUNCATE TABLE `$CROP_TABLE`");
-    $notice = "Croppers table truncated.";
+    $notice = TZ_CB_TRUNCATED_NOTICE;
 }
 if ($action === 'reindex') {
     dropIndexIfExists($database->dblink, $CROP_TABLE, 'idx_ft_bonus_xy');
@@ -154,10 +154,10 @@ if ($action === 'reindex') {
     createIndexIfMissing($database->dblink, $CROP_TABLE, 'idx_ft_bonus_xy', '`fieldtype`, `best_oasis_bonus`, `x`, `y`');
     createIndexIfMissing($database->dblink, $CROP_TABLE, 'idx_xy', '`x`, `y`');
     createIndexIfMissing($database->dblink, $CROP_TABLE, 'idx_bonus', '`best_oasis_bonus`');
-    $notice = "Indexes rebuilt.";
+    $notice = TZ_CB_REINDEXED_NOTICE;
 }
 if ($action === 'estimate') {
-    $notice = "Estimated counts refreshed.";
+    $notice = TZ_CB_ESTIMATED_NOTICE;
 }
 
 $stats = getCounts($database->dblink, $WDATA, $CROP_TABLE);
@@ -168,7 +168,7 @@ $worldLabel = worldSizeLabel();
 <html <?php echo tz_html_dir_attrs(); ?>>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME ?> - Build Croppers</title>
+	<title><?php echo SERVER_NAME ?> - <?php echo TZ_CB_PAGE_TITLE_SUFFIX; ?></title>
 	<link rel="shortcut icon" href="favicon.ico"/>
 	<meta http-equiv="cache-control" content="max-age=0" />
 	<meta http-equiv="pragma" content="no-cache" />
@@ -248,7 +248,7 @@ $worldLabel = worldSizeLabel();
         <!-- IMPORTANT: Use the normal game content style instead of "login" -->
         <div id="content" class="player">
             <div class="cb-container">
-                <h1 style="text-align:center;margin:12px 0 16px;">Build crop finder</h1>
+                <h1 style="text-align:center;margin:12px 0 16px;"><?php echo TZ_CB_TITLE; ?></h1>
 
                 <?php if ($notice): ?>
                     <div class="cb-notice"><?php echo h($notice); ?></div>
@@ -256,32 +256,31 @@ $worldLabel = worldSizeLabel();
 
                 <div class="cb-grid">
                     <div class="cb-card">
-                        <h3 class="cb-title">Status</h3>
-                        <div class="cb-muted">World: <?php echo h($worldLabel); ?></div>
+                        <h3 class="cb-title"><?php echo TZ_CB_STATUS; ?></h3>
+                        <div class="cb-muted"><?php echo TZ_CB_WORLD; ?>: <?php echo h($worldLabel); ?></div>
                         <div class="cb-kpis">
-                            <div class="cb-kpi"><b>9c/15c in map:</b> <?php echo number_format($stats['croppers_world']); ?></div>
-                            <div class="cb-kpi"><b>Rows in table:</b> <?php echo number_format($stats['croppers_table']); ?></div>
-                            <div class="cb-kpi"><b>Last updated:</b> <?php echo $stats['last_updated'] ? h($stats['last_updated']) : '—'; ?></div>
+                            <div class="cb-kpi"><b><?php echo TZ_CB_9C15C_IN_MAP; ?>:</b> <?php echo number_format($stats['croppers_world']); ?></div>
+                            <div class="cb-kpi"><b><?php echo TZ_CB_ROWS_IN_TABLE; ?>:</b> <?php echo number_format($stats['croppers_table']); ?></div>
+                            <div class="cb-kpi"><b><?php echo TZ_CB_LAST_UPDATED; ?>:</b> <?php echo $stats['last_updated'] ? h($stats['last_updated']) : '—'; ?></div>
                         </div>
                         <div class="cb-note">
-                            The croppers table stores only <b>wref,x,y,fieldtype,best_oasis_bonus</b>.
-                            Ownership and occupied status are pulled live from <code>vdata/users</code> by the finder.
+                            <?php echo TZ_CB_TABLE_NOTE; ?>
                         </div>
                     </div>
 
                     <div class="cb-card cb-actions">
-                        <h3 class="cb-title">Actions</h3>
+                        <h3 class="cb-title"><?php echo TZ_CB_ACTIONS; ?></h3>
                         <form method="post">
                             <input type="hidden" name="csrf" value="<?php echo h($csrf); ?>" />
-                            <label>Batch size:</label>
+                            <label><?php echo TZ_CB_BATCH_SIZE; ?>:</label>
                             <input class="cb-input" type="number" min="1000" max="20000" step="1000" name="batch" value="<?php echo isset($_POST['batch']) ? (int)$_POST['batch'] : 5000; ?>" />
-                            <button class="cb-btn" name="action" value="build">Build / Rebuild</button>
-                            <button class="cb-btn gray" name="action" value="estimate" type="submit">Estimate</button>
-                            <button class="cb-btn gray" name="action" value="reindex" type="submit">Reindex</button>
-                            <button class="cb-btn red" name="action" value="truncate" type="submit" onclick="return confirm('Really truncate the table?');">Truncate</button>
+                            <button class="cb-btn" name="action" value="build"><?php echo TZ_CB_BUILD_REBUILD; ?></button>
+                            <button class="cb-btn gray" name="action" value="estimate" type="submit"><?php echo TZ_CB_ESTIMATE; ?></button>
+                            <button class="cb-btn gray" name="action" value="reindex" type="submit"><?php echo TZ_CB_REINDEX; ?></button>
+                            <button class="cb-btn red" name="action" value="truncate" type="submit" onclick="return confirm('<?php echo h(TZ_CB_CONFIRM_TRUNCATE); ?>');"><?php echo TZ_CB_TRUNCATE; ?></button>
                         </form>
                         <div class="cb-muted" style="margin-top:8px;">
-                            Building streams progress below. You can leave this page; the process stops when the request ends.
+                            <?php echo TZ_CB_STREAM_NOTE; ?>
                         </div>
                     </div>
                 </div>
@@ -294,7 +293,7 @@ if ($action === 'build' && $okCsrf) {
 
     $cnt = mysqli_fetch_assoc(mysqli_query($database->dblink, "SELECT COUNT(*) AS c FROM `$WDATA` WHERE `fieldtype` IN (1,6)"));
     $target = (int)($cnt['c'] ?? 0);
-    logLine("Detected $target croppers.");
+    logLine(sprintf(TZ_CB_LOG_DETECTED, $target));
 
     $offset = 0; $total = 0;
     while (true) {
@@ -303,7 +302,7 @@ if ($action === 'build' && $okCsrf) {
                 WHERE `fieldtype` IN (1,6)
                 LIMIT $offset, $batch";
         $res = mysqli_query($database->dblink, $sql);
-        if (!$res) { logLine('Query failed: '.mysqli_error($database->dblink)); break; }
+        if (!$res) { logLine(sprintf(TZ_CB_LOG_QUERY_FAILED, mysqli_error($database->dblink))); break; }
 
         $rows = [];
         while ($r = mysqli_fetch_assoc($res)) { $rows[] = $r; }
@@ -324,19 +323,19 @@ if ($action === 'build' && $okCsrf) {
                     (`wref`,`x`,`y`,`fieldtype`,`best_oasis_bonus`)
                     VALUES ".implode(',', $values);
             if (!mysqli_query($database->dblink, $sql)) {
-                logLine('Upsert failed: '.mysqli_error($database->dblink));
+                logLine(sprintf(TZ_CB_LOG_UPSERT_FAILED, mysqli_error($database->dblink)));
                 break;
             }
         }
         $countThis = count($rows);
         $total += $countThis;
         $offset += $batch;
-        logLine("Processed $total / $target");
+        logLine(sprintf(TZ_CB_LOG_PROCESSED, $total, $target));
     }
 
     @mysqli_query($database->dblink, "ANALYZE TABLE `$CROP_TABLE`");
-    logLine("Analyze complete.");
-    logLine("Done.");
+    logLine(TZ_CB_LOG_ANALYZE_COMPLETE);
+    logLine(TZ_CB_LOG_DONE);
     endStreaming();
 
     // Refresh stats after build

@@ -141,7 +141,7 @@ foreach ($varray as $vil) {
 	echo '<tr class="'.$class.'">';
 
 	echo '<td class="vil fc">
-			<a href="dorf1.php?newdid='.$vid.'">'.$vil['name'].'</a>
+			<a href="dorf1.php?newdid='.$vid.'">'.(function_exists('tz_display_village_name') ? tz_display_village_name($vil['name'], $session->username ?? null) : $vil['name']).'</a>
 		  </td>';
 
 	// units

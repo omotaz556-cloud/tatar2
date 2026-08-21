@@ -221,7 +221,7 @@ foreach ($varray as $vil) {
 	<tr class="'.$class.'">
 
 		<td class="vil fc">
-			<a href="dorf1.php?newdid='.$vid.'">'.$vdata['name'].'</a>
+			<a href="dorf1.php?newdid='.$vid.'">'.(function_exists('tz_display_village_name') ? tz_display_village_name($vdata['name'], $session->username ?? null) : $vdata['name']).'</a>
 		</td>
 
 		<td class="lum '.$critW.'" title="'.$wood.'/'.$maxs.'">'.$percentW.'%</td>

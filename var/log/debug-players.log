@@ -2243,3 +2243,5 @@
 [2026-08-21 13:55:20] WARNING: Trying to access array offset on null in /var/www/html/GameEngine/Village.php:211 | uid=0 | page=/maintenance.php
 [2026-08-21 13:55:20] WARNING: Trying to access array offset on null in /var/www/html/GameEngine/Village.php:247 | uid=0 | page=/maintenance.php
 [2026-08-21 14:23:12] NOTICE: session_start(): Ignoring session_start() because a session is already active (started from /var/www/html/GameEngine/config.php on line 133) in /var/www/html/build_croppers.php:43 | uid=6 (admin) | page=/build_croppers.php
+[2026-08-21 14:55:58] NOTICE: session_start(): Ignoring session_start() because a session is already active (started from /var/www/html/GameEngine/config.php on line 133) in /var/www/html/build_croppers.php:43 | uid=6 (admin) | page=/build_croppers.php
+[2026-08-21 15:00:01] NOTICE: session_start(): Ignoring session_start() because a session is already active (started from /var/www/html/GameEngine/config.php on line 133) in /var/www/html/build_croppers.php:43 | uid=6 (admin) | page=/build_croppers.php

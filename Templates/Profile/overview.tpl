@@ -329,9 +329,13 @@ foreach ($varray as $vil) {
     $hasArtifact = $database->villageHasArtefact($vil['wref']);
     $coor = $database->getCoor($vil['wref']);
 
+    $displayVname = function_exists('tz_display_village_name')
+        ? tz_display_village_name($vil['name'], $displayarray['username'] ?? null)
+        : $vil['name'];
+
     echo "<tr><td class=\"nam\">
           <a href=\"karte.php?d=" . (int)$vil['wref'] . "&amp;c=" . $generator->getMapCheck($vil['wref']) . "\">"
-          . htmlspecialchars($vil['name'], ENT_QUOTES, 'UTF-8') .
+          . htmlspecialchars($displayVname, ENT_QUOTES, 'UTF-8') .
           "</a>";
 
     if ($vil['capital'] == 1) echo "<span class=\"none3\"> (".CAPITAL_TAG.")</span>";
