@@ -337,7 +337,14 @@ function __construct() {
 
         if ($user && ($admin || isset($_SESSION['sessid']))) {
 
-            $this->maintenance();
+            // FIX (redirect loop / ERR_TOO_MANY_REDIRECTS): legacy $_SESSION['ok']==2
+            // check removed. It was superseded by the new server-wide maintenance
+            // check in the constructor ($database->getMaintenance()), but was left
+            // active here. When a user's stale 'ok' session value was 2 while the
+            // new maintenance flag was 0, this page <-> maintenance.php would
+            // redirect forever (maintenance.php sends them to dorf1.php because
+            // maintenance is off, dorf1.php sends them back here because ok==2).
+            // $this->maintenance();
             $this->isWinner();
 
             if ($user == 'Support') {
@@ -672,7 +679,15 @@ function __construct() {
 
         $pagearray = [
             "index.php", "anleitung.php", "tutorial.php",
-            "login.php", "activate.php", "anmelden.php", "xaccount.php"
+            "login.php", "activate.php", "anmelden.php", "xaccount.php",
+            // FIX (redirect loop / ERR_TOO_MANY_REDIRECTS): "maintenance.php" was
+            // missing from the guest whitelist. When server maintenance is active,
+            // the constructor's maintenance check sends a guest to maintenance.php,
+            // but SurfControl() (called right after, at the end of the constructor)
+            // did not recognize maintenance.php as guest-accessible and bounced them
+            // straight back to login.php -> which redirects to maintenance.php again
+            // -> infinite loop between login.php and maintenance.php.
+            "maintenance.php"
         ];
 
         if (!$this->logged_in) {

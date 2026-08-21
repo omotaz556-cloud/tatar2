@@ -74,7 +74,17 @@ html[dir="rtl"] #side_info {
 html[dir="rtl"] #footer {
     clear: both;
     margin-top: 0 !important;
-  ;
+    /* FIX: the base gpack CSS sets #footer to position:absolute (pinned
+     * via bottom:0). Overriding bottom to auto WITHOUT also overriding
+     * position left it absolutely positioned with both top and bottom
+     * auto, which forces the browser to fall back to the CSS2.1 "static
+     * position" algorithm - unreliable here (zoom:1.5 + other absolutely
+     * positioned siblings like #country_select), and it was landing the
+     * footer near the top of the page instead of after the content.
+     * position:relative makes it a normal in-flow block again, right
+     * where it sits in the DOM - this already matches the working fix
+     * used further down in this same file inside the mobile media query. */
+    position: relative !important;
     top: auto !important;
     bottom: auto !important;
 }
