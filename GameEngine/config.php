@@ -706,7 +706,7 @@ if (!function_exists('tz_rtl_stylesheet_tag')) {
         $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
         if (is_file($rtlDiskPath)) {
             $rtlHref = $relPath . 'css/rtl.css';
-            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl2" rel="stylesheet" type="text/css" />';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl4" rel="stylesheet" type="text/css" />';
         }
 
         return $tag;

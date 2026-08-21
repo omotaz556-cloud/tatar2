@@ -40,27 +40,17 @@
  * spacing) uniformly to 150%, as if the player pressed Ctrl/Cmd "+"
  * twice in Chrome at 100% browser zoom.
  *
- * Applied to html[dir="rtl"] BODY rather than .wrapper: .wrapper has
- * "height:100% / min-height:100%" set in modules/new_layout_ltr.css
- * (percentage heights resolve against the ORIGINAL, un-zoomed parent
- * box), which visually cancels the zoom on some Chrome builds - the
- * box reports zoomed width but keeps its original height, so nothing
- * looked like it actually grew. BODY has no such percentage height
- * dependency, so zooming it scales the whole page reliably.
- *
- * !important guards against any later, more specific selector in a
- * gpack stylesheet re-setting zoom/transform on body or html.
+ * Keep the page at its natural scale. The responsive layer handles narrow
+ * screens by reflowing the shared columns instead of shrinking all text.
+ * The !important guard prevents a graphic pack from changing this value.
  * --------------------------------------------------------------------- */
 html[dir="rtl"] body {
-    zoom: 1.5 !important;
+    zoom: 1 !important;
 }
 
-@supports not (zoom: 1.5) {
-    html[dir="rtl"] body {
-        transform: scale(1.5) !important;
-        transform-origin: top center !important;
-        width: 66.6667% !important;
-    }
+/* شريط الموارد absolute، لذلك نترك مساحة واضحة تحته قبل بداية الأعمدة. */
+html[dir="rtl"] #mid {
+    margin-top: 28px !important;
 }
 
 /* ---------------------------------------------------------------------
@@ -108,14 +98,14 @@ html[dir="rtl"] #mbig {
  * --------------------------------------------------------------------- */
 html[dir="rtl"] #side_navi {
     float: right;
-    margin-right: 100px;
+    margin-right: 0 !important;
 }
 /* gpack/novaterra_classic/modules/new_images.css sets
  * "#side_navi { margin-top: 30px; }" (shared by LTR and RTL). Nudging
  * it down a bit further for Arabic only - scoped to html[dir="rtl"],
  * so English is untouched. */
 html[dir="rtl"] #side_navi {
-    margin-top: 150px;
+    margin-top: 0 !important;
 }
 /* Templates/menu.tpl groups the nav links into separate <p> blocks
  * (main links / Forum / Discord / Plus+Support). compact.css puts
@@ -246,17 +236,18 @@ html[dir="rtl"] #mid,
 html[dir="rtl"] #content,
 html[dir="rtl"] #side_navi,
 html[dir="rtl"] #side_info {
-    font-size: 13pt;
-    line-height: 2px;
+    font-size: 13px;
+    line-height: 1.6;
 }
 html[dir="rtl"] #content h1 {
     text-align: center;
 }
 
 /* ---------------------------------------------------------------------
- * Typography-only pass (no positioning/structure touched below).
+ * Typography pass (no positioning/structure touched below).
  *
- * The 11pt -> 13pt / 22px -> 26px bump above (~+18%) covers ordinary
+ * Keep ordinary flowed text readable without changing the dimensions of
+ * the pixel-based game areas. The 11pt -> 13px bump covers ordinary
  * flowed text under #mid/#content/#side_navi/#side_info (nav links,
  * news, quest text, etc). It does NOT reach table cells: compact.css
  * sets "table td, table th { font-size:13px }" directly on the

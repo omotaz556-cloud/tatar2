@@ -14,57 +14,112 @@
  * البند 14 "Visual density" اللي محتاج قياس على المتصفح مش قابل للفحص
  * من الكود بس). اللي هنا هو：
  *   1) تثبيت viewport صحيح (مضاف في header.tpl).
- *   2) على الشاشات المتوسطة (تابلت): تصغير كل حاجة بمقياس واحد
- *      (transform: scale) عشان الـ layout الأصلي يفضل سليم بصريًا
- *      من غير ما نكسر أي إحداثيات absolute جوه القرية/الخريطة.
- *   3) على الموبايل: نفس فكرة التصغير + سماح بالتمرير الأفقي كـ
- *      fallback آمن لأي عنصر لسه أعرض من الشاشة (زي جداول الموارد
- *      الطويلة وتقارير المعارك)، بدل ما يكسر الصفحة أو يظهر مقطوع.
+ *   2) على الشاشات المتوسطة: الحفاظ على التدفق الأصلي مع تمرير أفقي
+ *      عند الحاجة، لأن تصغير الواجهة يضعف قراءة النصوص.
+ *   3) على الموبايل: ترتيب الأعمدة العامة رأسيًا مع تمرير محلي للعناصر
+ *      التي تعتمد على مساحة ثابتة (مثل الخريطة والتقارير الطويلة).
  *   4) عناصر بيانتفع فعلاً تتقلب لعمودي (الأخبار / التقارير / الجداول
  *      البسيطة) بناخدها بمحاذاة مباشرة من غير transform.
  * ===================================================================== */
 
-/* 1) يمنع تكبير iOS التلقائي وبيخلي القياسات دقيقة */
+/* 1) يمنع تكبير iOS التلقائي ويحافظ على قياسات الواجهة */
 html { -webkit-text-size-adjust: 100%; }
 
-/* حاوية عامة تلف الصفحة عشان نقدر نطبق transform/scroll من غيرما
-   نلمس الـ .wrapper الأصلي المستخدم في مئات الأماكن */
+/* الفراغات القديمة قبل العمود الجانبي كانت تدفع الشخصية والقرى لأسفل
+ * الصفحة، خصوصًا عندما يكون المحتوى الرئيسي قصيرًا. */
+div#mid > br { display: none; }
+
+/* الخريطة تعتمد على عناصر مطلقة داخل مساحة 552px. بدون عرض ثابت تتمدد
+ * حسب محتواها، فيسقط العمود الجانبي أسفلها بدل أن يبقى في الصف نفسه. */
+div#content.map {
+	box-sizing: border-box;
+	width: 552px;
+}
+
+/* شريط الموارد موضوع absolute ولا يحجز مساحة في التدفق، لذلك يبدأ الصف
+ * الرئيسي تحته بدل أن يمر المحتوى من خلاله. */
+div#mid {
+	margin-top: 28px;
+}
+
+/* الشاشات الأصغر من مساحة التصميم لا تحتاج تصغير الصفحة كلها؛ التصغير
+ * يجعل النص والأزرار غير قابلة للقراءة ويترك فراغات كبيرة حول المحتوى. */
 @media screen and (max-width: 1040px) {
-	body { overflow-x: hidden; }
-}
-
-/* ---------------------------------------------------------------
- * Tablet / small-desktop (<=1040px): تصغير اللعبة كلها بمقياس ثابت
- * بدل إعادة توزيع العناصر. ده أأمن حل لواجهة قديمة مبنية بالكامل
- * على إحداثيات مطلقة (left:50%; margin-left:-Npx) لأن التصغير بيحافظ
- * على كل النسب زي ما هي.
- * --------------------------------------------------------------- */
-@media screen and (max-width: 1040px) and (min-width: 641px) {
-	.wrapper {
-		transform: scale(0.82);
-		transform-origin: top center;
-		width: 1220px !important;
-		margin-left: calc(50% - 610px) !important;
-	}
-	body { min-width: 0 !important; }
-}
-
-/* ---------------------------------------------------------------
- * Mobile (<=640px): تصغير أكبر + سماح بالتمرير الأفقي كخط دفاع
- * أخير لو عنصر معين (جدول تقرير طويل مثلاً) لسه أعرض من الشاشة.
- * --------------------------------------------------------------- */
-@media screen and (max-width: 640px) {
-	.wrapper {
-		transform: scale(0.46);
-		transform-origin: top left;
-		width: 2174px !important;
-		margin-left: 0 !important;
-	}
 	body {
 		min-width: 0 !important;
 		overflow-x: auto;
 		-webkit-overflow-scrolling: touch;
 	}
+	.wrapper { transform: none; }
+}
+
+/* على الهاتف تتحول الأعمدة العامة إلى تدفق رأسي. مناطق القرية والخريطة
+ * تبقى ثابتة داخليًا لأنها تعتمد على إحداثيات رسومية، مع تمرير أفقي محلي. */
+@media screen and (max-width: 640px) {
+	div#header,
+	div#mid,
+	div#ltime,
+	div#res,
+	div#footer {
+		min-width: 0 !important;
+	}
+	div#mid {
+		display: flex;
+		flex-direction: column;
+		width: 100% !important;
+	}
+	div#side_navi,
+	div#content,
+	div#side_info {
+		box-sizing: border-box;
+		float: none !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		width: 100% !important;
+		min-width: 0 !important;
+	}
+	div#side_navi {
+		min-height: 0 !important;
+		padding: 12px 16px;
+		text-align: center;
+	}
+	div#side_navi p {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 12px;
+		justify-content: center;
+		margin: 0 0 8px;
+	}
+	div#side_navi p a { padding: 4px 0; }
+	div#content {
+		min-height: 0 !important;
+		overflow: visible;
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+	div#content:not(.village1):not(.village2):not(.village3):not(.map) > * {
+		max-width: 100%;
+	}
+	div#side_info {
+		min-height: 0 !important;
+		padding: 12px 16px;
+	}
+	div#side_info table,
+	div#content table {
+		display: block;
+		max-width: 100%;
+		overflow-x: auto;
+	}
+	div.village1,
+	div.village2,
+	div.village3,
+	div.map,
+	#village_map_wrap,
+	#map_details {
+		max-width: 100%;
+		overflow-x: auto;
+	}
+	div#footer { position: relative; height: auto; min-height: 90px; }
 }
 
 /* ---------------------------------------------------------------

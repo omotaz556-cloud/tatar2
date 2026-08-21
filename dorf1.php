@@ -153,17 +153,10 @@ if($building->NewBuilding) include("Templates/Building.tpl");
  * constrained by the central container; the earlier (reverted) fix worked
  * around it by widening the container instead of fixing this.
  *
- * We only reorder these two closing/opening tags, and only when the
- * language is RTL, by closing #content here (matching dorf2.php/dorf3.php)
- * and re-opening the exact same #side_info markup as a sibling. English
- * keeps the original (unchanged) nested structure below - same markup,
- * same order, byte-for-bit identical to before this fix - so its layout
- * cannot be affected by this change.
+ * Close #content here for every language, matching dorf2.php/dorf3.php,
+ * so the shared three-column layout is identical across the game.
  */
-$__tz_rtl_dorf1 = function_exists('tz_is_rtl_lang') && tz_is_rtl_lang();
-if ($__tz_rtl_dorf1) {
-	echo "</div>\n"; // close #content early, so #side_info below is a sibling
-}
+echo "</div>\n"; // close #content early, so #side_info is a sibling
 ?>
 <br /><br /><br /><br /><div id="side_info">
 <?php
@@ -177,9 +170,6 @@ if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
 ?>
 </div>
 <div class="clear"></div>
-<?php if (!$__tz_rtl_dorf1) { ?>
-</div>
-<?php } ?>
 <div class="footer-stopper"></div>
 <div class="clear"></div>
 
