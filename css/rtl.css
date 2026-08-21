@@ -721,3 +721,34 @@ html[dir="rtl"] .dayNightIcon {
 html[dir="rtl"] #content ~ br {
     display: none;
 }
+
+/* tutorial.php / anleitung.php (and the other pages sharing
+ * img/tutorial/main.css's body.contentPage layout) render their text
+ * inside a box built for LTR: body{direction:ltr} and body.contentPage
+ * .grit had no RTL rule at all, so Arabic paragraphs, lists and the
+ * troop-stat tables kept their LTR flow/alignment instead of following
+ * the page's actual reading direction - "الكلام مش متناسق". Scoped to
+ * html[dir="rtl"] only, so English/LTR installs are untouched. */
+html[dir="rtl"] body.contentPage {
+    direction: rtl;
+}
+html[dir="rtl"] body.contentPage #content .grit {
+    text-align: right;
+}
+html[dir="rtl"] body.contentPage #content .grit table {
+    direction: rtl;
+}
+html[dir="rtl"] body.contentPage #content .grit ul,
+html[dir="rtl"] body.contentPage #content .grit ol {
+    margin-right: 20px;
+    margin-left: 0;
+    padding-right: 0;
+}
+html[dir="rtl"] .grit .infobox {
+    float: right;
+    margin-left: 9px;
+    margin-right: 15px;
+}
+html[dir="rtl"] .grit .secondarybox {
+    float: right;
+}

@@ -373,7 +373,19 @@ body.contentPage #content {padding-top: 177px;padding-bottom: 160px;}
 #content .grit {position: relative;margin: 0 auto;}
 
 body.indexPage #content .grit {width: 830px; background: transparent none;}
-body.contentPage #content .grit {width: 840px; min-height: 400px; background: transparent url("images/content_background.jpg") no-repeat top left; }
+body.contentPage #content .grit {
+	width: 840px;
+	min-height: 400px;
+	/* FIX: the old fixed-size background image (840x414) cut off any content
+	   taller than 414px, so long/Arabic pages visibly ran outside the box.
+	   A CSS-drawn box grows with the content instead. */
+	background: #ffffff;
+	background: linear-gradient(180deg, #eef8ff 0px, #ffffff 60px, #ffffff 100%);
+	border-radius: 14px;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+	padding-bottom: 30px;
+	box-sizing: border-box;
+}
 
 .grit .infobox {
 	float: left;

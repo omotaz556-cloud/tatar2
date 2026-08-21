@@ -5,6 +5,21 @@
  * other page. Loaded AFTER compact.css on dorf1.php only.
  * ============================================================ */
 
+/* FIX: div#mid (compact.css) has width:100% with no max-width, so
+ * on any screen wider than the ~980px the game was designed for, it
+ * stretches to the full browser width. #side_navi (130px) floats
+ * left and #content.village1 (537px) floats right inside it, so the
+ * unused space in between just shows up as a big blank gap. Capping
+ * #mid back to its own min-width (980px) and centering it removes
+ * that gap. Scoped to body.dorf1Page (this page's body class), so it
+ * can never affect any other page's layout. */
+body.dorf1Page div#mid {
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+}
+
 
 div.village1 {
     padding: 43px 0 0 15px;
