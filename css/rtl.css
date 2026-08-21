@@ -74,7 +74,7 @@ html[dir="rtl"] #side_info {
 html[dir="rtl"] #footer {
     clear: both;
     margin-top: 0 !important;
-    position: relative !important;
+  ;
     top: auto !important;
     bottom: auto !important;
 }
