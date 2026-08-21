@@ -449,6 +449,9 @@ include("Templates/res.tpl");
 
 <div id="ce"></div>
 
+</body>
+</html>
+
 <?php
     /**
      * Stop execution after announcement page
@@ -458,6 +461,3 @@ include("Templates/res.tpl");
 ?>
 
 <?php } ?>
-
-</body>
-</html>
