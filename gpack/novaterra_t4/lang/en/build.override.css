@@ -1,0 +1,31 @@
+/* ============================================================
+ * build.override.css - page-specific fix for build.php
+ * Loaded LAST, scoped to body.pg-build so it cannot affect
+ * any other page.
+ *
+ * Fix: with the TravianZ base style, the field description
+ * paragraph (p.build_desc) was overlapping the h1 title and
+ * the building icon on RTL builds. Force it to sit on its own
+ * line below both, regardless of underlying compact.css values.
+ * ============================================================ */
+
+body.pg-build div#build h1 {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 8px;
+}
+
+body.pg-build div#build a.build_logo img {
+    top: 50px; /* matches original spacing under the title */
+}
+
+body.pg-build div#build p.build_desc {
+    display: block;
+    clear: both;
+    position: relative;
+    z-index: 1;
+    margin: 0 0 10px;
+    padding-top: 4px;
+    padding-right: 70px;
+    line-height: 1.5;
+}

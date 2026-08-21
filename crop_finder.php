@@ -188,7 +188,6 @@ if ($wrefs) {
 <?php // GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
 	// e permisa si valida, altfel pachetul serverului (vezi config.php).
 	echo " <link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />";
-	echo " <link href='".GP_LOCATE."lang/en/crop_finder.override.css?e21d2' rel='stylesheet' type='text/css' />";
     echo " <link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />"; ?>
 <script type="text/javascript">window.addEvent('domready', start);</script>
 	<?php echo tz_rtl_stylesheet_tag(); ?>

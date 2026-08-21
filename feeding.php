@@ -125,7 +125,6 @@ $fsCanAddMore = $fsSettings['enabled'] && $fsCount < $fsSettings['max_linked_per
 	<?php
 	echo "
 	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/feeding.override.css?e21d2' rel='stylesheet' type='text/css' />
 	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
 	?>
 	<style>

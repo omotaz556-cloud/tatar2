@@ -211,7 +211,6 @@ $worldLabel = worldSizeLabel();
 	// GP_LOCATE contine deja pachetul efectiv (vezi config.php).
 	echo "
 	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/build_croppers.override.css?e21d2' rel='stylesheet' type='text/css' />
 	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
 	?>
 	<script type="text/javascript">

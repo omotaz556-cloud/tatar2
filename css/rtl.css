@@ -247,10 +247,7 @@ html[dir="rtl"] #content,
 html[dir="rtl"] #side_navi,
 html[dir="rtl"] #side_info {
     font-size: 13pt;
-    width:max-content;
     line-height: 2px;
-    margin-right: 30px;
-    
 }
 html[dir="rtl"] #content h1 {
     text-align: center;
