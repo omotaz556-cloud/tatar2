@@ -467,7 +467,18 @@ class Technology {
 
 	private function procTrain($post, $great = false) {
 		global $session;
-			
+
+		// Admin-applied army freeze (Punishment system): block training new
+		// troops while active. Silently redirect back, same as a no-op
+		// submission - resources stay untouched.
+		if (!class_exists('Punishment')) {
+			require_once __DIR__ . '/Punishment.php';
+		}
+		if (isset($session->uid) && Punishment::isActive((int) $session->uid, Punishment::TYPE_ARMY)) {
+			header("Location: build.php?id=" . $post['id']);
+			exit;
+		}
+
 		// first of all, check if we're not trying to train chieftain
 		// and settlers together - which we cannot, since that can result
 		// in 1 chieftain and 3 settlers, then conquering a village, then

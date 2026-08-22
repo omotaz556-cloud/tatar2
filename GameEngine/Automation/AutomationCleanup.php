@@ -41,6 +41,17 @@ trait AutomationCleanup {
 
         global $database;
 
+        // Punishment expiry (mute / market restriction / army freeze): a
+        // single indexed UPDATE, cheap enough to run every tick so a
+        // time-boxed restriction actually lifts on schedule instead of
+        // waiting for the next hourly cleanup pass below. Punishment::
+        // isActive() already self-heals on read, so this is a belt-and-
+        // braces sweep purely for the admin panel's "active" counts.
+        if (!class_exists('Punishment')) {
+            require_once __DIR__ . '/../Punishment.php';
+        }
+        Punishment::expireOld();
+
         $interval = defined('CLEANUP_INTERVAL') ? (int) CLEANUP_INTERVAL : 3600;
 
         if ($interval < 60) {

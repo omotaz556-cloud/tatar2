@@ -55,6 +55,17 @@ class Market
             return;
         }
 
+        // Admin-applied market restriction (Punishment system): block every
+        // marketplace action (send, offer, trade, gold-buy) while active.
+        // Browsing offers is still allowed above via loadMarket()/loadOnsale().
+        global $session;
+        if (!class_exists('Punishment')) {
+            require_once __DIR__ . '/Punishment.php';
+        }
+        if (isset($session->uid) && Punishment::isActive((int) $session->uid, Punishment::TYPE_MARKET)) {
+            return;
+        }
+
         switch ($post['ft']) {
             case 'mk1':
                 $this->sendResource($post);

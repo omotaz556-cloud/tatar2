@@ -1,0 +1,170 @@
+diff --git a/Admin/admin.php b/Admin/admin.php
+index ec78d8d..b650013 100644
+--- a/Admin/admin.php
++++ b/Admin/admin.php
+@@ -95,7 +95,7 @@ function admin_validated_page(string $raw): string
+     static $whitelist = [
+         'server_info', 'online', 'notregistered', 'inactive', 'report',
+         'message', 'massmessage', 'sysmessage', 'map', 'map_tile', 'natars',
+-        'search', 'ban', 'maintenance', 'cleanban', 'gold', 'usergold',
++        'search', 'ban', 'punishments', 'maintenance', 'cleanban', 'gold', 'usergold',
+         'centralGold', 'xtatarGold', 'feedingSystem', 'relatedAccountProtection', 'chat',
+         'maintenenceResetGold', 'delmedal', 'delallymedal', 'givePlus',
+         'maintenenceResetPlus', 'givePlusRes', 'maintenenceResetPlusBonus',
+@@ -252,6 +252,10 @@ if ($page !== '') {
+             $subpage = ADMIN_BAN_UNBAN_PLAYERS;
+             break;
+ 
++        case 'punishments':
++            $subpage = 'Punishments (Mute / Market / Army)';
++            break;
++
+         case 'maintenance':
+             $subpage = ADMIN_SERVER_MAINTENANCE;
+             break;
+@@ -899,6 +903,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
+                         <li class="sub"><a href="#"><?php echo ADMIN_BAN; ?></a>
+                             <ul>
+                                 <li><a href="?p=ban"><?php echo ADMIN_BAN_UNBAN_PLAYERS; ?></a></li>
++                                <li><a href="?p=punishments"><font color="Red"><b>Punishments (Mute / Market / Army)</b></font></a></li>
+                                 <li><a href="?p=cleanban"><?php echo ADMIN_CLEAN_BANLIST_DATA; ?></a></li>
+                             </ul>
+                         </li>
+@@ -962,6 +967,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
+                         <li><a href="?p=search"><?php echo ADMIN_SEARCH; ?></a></li>
+                         <li><a href="?p=message"><?php echo ADMIN_MSG_REP; ?></a></li>
+                         <li><a href="?p=ban"><?php echo ADMIN_BAN; ?></a></li>
++                        <li><a href="?p=punishments">Punishments</a></li>
+                         <li><a href="?p=multiacc"><?php echo ADMIN_MULTI_ACCOUNT_DETECTION; ?></a></li>
+                         <li><a href="?p=pushprot"><?php echo ADMIN_PUSH_PROTECTION; ?></a></li>
+                         <li><a href="?p=heatmap"><?php echo ADMIN_WORLD_MAP_HEATMAP; ?></a></li>
+diff --git a/GameEngine/Automation/AutomationCleanup.php b/GameEngine/Automation/AutomationCleanup.php
+index f57c9a2..ed8cfac 100644
+--- a/GameEngine/Automation/AutomationCleanup.php
++++ b/GameEngine/Automation/AutomationCleanup.php
+@@ -41,6 +41,17 @@ trait AutomationCleanup {
+ 
+         global $database;
+ 
++        // Punishment expiry (mute / market restriction / army freeze): a
++        // single indexed UPDATE, cheap enough to run every tick so a
++        // time-boxed restriction actually lifts on schedule instead of
++        // waiting for the next hourly cleanup pass below. Punishment::
++        // isActive() already self-heals on read, so this is a belt-and-
++        // braces sweep purely for the admin panel's "active" counts.
++        if (!class_exists('Punishment')) {
++            require_once __DIR__ . '/../Punishment.php';
++        }
++        Punishment::expireOld();
++
+         $interval = defined('CLEANUP_INTERVAL') ? (int) CLEANUP_INTERVAL : 3600;
+ 
+         if ($interval < 60) {
+diff --git a/GameEngine/Chat.php b/GameEngine/Chat.php
+index cd7a501..aae14b2 100644
+--- a/GameEngine/Chat.php
++++ b/GameEngine/Chat.php
+@@ -380,6 +380,17 @@ if (!isset($SAJAX_INCLUDED)) {
+ 		}
+ 
+ 		$id_user = (int) $session->uid;
++
++		// Admin-applied mute (Punishment system) takes priority over the
++		// message: muted players never reach chat, silently (same UX as a
++		// dropped ChatModeration offense below).
++		if (!class_exists('Punishment')) {
++			require_once __DIR__ . '/Punishment.php';
++		}
++		if (Punishment::isActive($id_user, Punishment::TYPE_MUTE)) {
++			return;
++		}
++
+ 		$name = addslashes((string) $session->username);
+ 		$isPublicChat = !empty($_GET['public']) || basename($_SERVER['PHP_SELF'] ?? '') === 'public_chat.php';
+ 		$chatScope = $isPublicChat ? '__public__' : (string) ($session->alliance ?? '');
+diff --git a/GameEngine/Market.php b/GameEngine/Market.php
+index 2a78580..bec1657 100644
+--- a/GameEngine/Market.php
++++ b/GameEngine/Market.php
+@@ -55,6 +55,17 @@ class Market
+             return;
+         }
+ 
++        // Admin-applied market restriction (Punishment system): block every
++        // marketplace action (send, offer, trade, gold-buy) while active.
++        // Browsing offers is still allowed above via loadMarket()/loadOnsale().
++        global $session;
++        if (!class_exists('Punishment')) {
++            require_once __DIR__ . '/Punishment.php';
++        }
++        if (isset($session->uid) && Punishment::isActive((int) $session->uid, Punishment::TYPE_MARKET)) {
++            return;
++        }
++
+         switch ($post['ft']) {
+             case 'mk1':
+                 $this->sendResource($post);
+diff --git a/GameEngine/Technology.php b/GameEngine/Technology.php
+index f4d1636..dc1b327 100644
+--- a/GameEngine/Technology.php
++++ b/GameEngine/Technology.php
+@@ -467,7 +467,18 @@ class Technology {
+ 
+ 	private function procTrain($post, $great = false) {
+ 		global $session;
+-			
++
++		// Admin-applied army freeze (Punishment system): block training new
++		// troops while active. Silently redirect back, same as a no-op
++		// submission - resources stay untouched.
++		if (!class_exists('Punishment')) {
++			require_once __DIR__ . '/Punishment.php';
++		}
++		if (isset($session->uid) && Punishment::isActive((int) $session->uid, Punishment::TYPE_ARMY)) {
++			header("Location: build.php?id=" . $post['id']);
++			exit;
++		}
++
+ 		// first of all, check if we're not trying to train chieftain
+ 		// and settlers together - which we cannot, since that can result
+ 		// in 1 chieftain and 3 settlers, then conquering a village, then
+diff --git a/GameEngine/Units.php b/GameEngine/Units.php
+index d2b5849..75009df 100644
+--- a/GameEngine/Units.php
++++ b/GameEngine/Units.php
+@@ -27,12 +27,25 @@ class Units {
+         if(isset($post['c'])) {
+             if (!isset($post['disabled'])) $post['disabled'] = '';
+ 
++            // Admin-applied army freeze (Punishment system): block actually
++            // sending troops out (attack/raid/reinforce) while active, but
++            // still let the page render normally (same path as an invalid
++            // security check) so the player sees why nothing happened.
++            $armyFrozen = false;
++            global $session;
++            if (!class_exists('Punishment')) {
++                require_once __DIR__ . '/Punishment.php';
++            }
++            if (isset($session->uid) && Punishment::isActive((int) $session->uid, Punishment::TYPE_ARMY)) {
++                $armyFrozen = true;
++            }
++
+             switch($post['c']) {
+                 case 1:
+                 case 2:
+                 case 3:
+                 case 4:
+-                    if (isset($post['a']) && $post['a'] == 533374 && empty($post['disabled'])) $this->sendTroops($post);
++                    if (!$armyFrozen && isset($post['a']) && $post['a'] == 533374 && empty($post['disabled'])) $this->sendTroops($post);
+                     else
+                     {
+                         $post = $this->loadUnits($post);
+@@ -41,7 +54,7 @@ class Units {
+                     break;
+ 
+                 case 5:
+-                    if (isset($post['a']) && $post['a'] == "new") $this->Settlers($post);
++                    if (!$armyFrozen && isset($post['a']) && $post['a'] == "new") $this->Settlers($post);
+                     else
+                     {
+                         $post = $this->loadUnits($post);

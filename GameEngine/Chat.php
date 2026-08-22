@@ -380,6 +380,17 @@ if (!isset($SAJAX_INCLUDED)) {
 		}
 
 		$id_user = (int) $session->uid;
+
+		// Admin-applied mute (Punishment system) takes priority over the
+		// message: muted players never reach chat, silently (same UX as a
+		// dropped ChatModeration offense below).
+		if (!class_exists('Punishment')) {
+			require_once __DIR__ . '/Punishment.php';
+		}
+		if (Punishment::isActive($id_user, Punishment::TYPE_MUTE)) {
+			return;
+		}
+
 		$name = addslashes((string) $session->username);
 		$isPublicChat = !empty($_GET['public']) || basename($_SERVER['PHP_SELF'] ?? '') === 'public_chat.php';
 		$chatScope = $isPublicChat ? '__public__' : (string) ($session->alliance ?? '');

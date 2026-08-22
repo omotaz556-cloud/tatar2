@@ -95,7 +95,7 @@ function admin_validated_page(string $raw): string
     static $whitelist = [
         'server_info', 'online', 'notregistered', 'inactive', 'report',
         'message', 'massmessage', 'sysmessage', 'map', 'map_tile', 'natars',
-        'search', 'ban', 'maintenance', 'cleanban', 'gold', 'usergold',
+        'search', 'ban', 'punishments', 'maintenance', 'cleanban', 'gold', 'usergold',
         'centralGold', 'xtatarGold', 'feedingSystem', 'relatedAccountProtection', 'chat',
         'maintenenceResetGold', 'delmedal', 'delallymedal', 'givePlus',
         'maintenenceResetPlus', 'givePlusRes', 'maintenenceResetPlusBonus',
@@ -250,6 +250,10 @@ if ($page !== '') {
 
         case 'ban':
             $subpage = ADMIN_BAN_UNBAN_PLAYERS;
+            break;
+
+        case 'punishments':
+            $subpage = 'Punishments (Mute / Market / Army)';
             break;
 
         case 'maintenance':
@@ -899,6 +903,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                         <li class="sub"><a href="#"><?php echo ADMIN_BAN; ?></a>
                             <ul>
                                 <li><a href="?p=ban"><?php echo ADMIN_BAN_UNBAN_PLAYERS; ?></a></li>
+                                <li><a href="?p=punishments"><font color="Red"><b>Punishments (Mute / Market / Army)</b></font></a></li>
                                 <li><a href="?p=cleanban"><?php echo ADMIN_CLEAN_BANLIST_DATA; ?></a></li>
                             </ul>
                         </li>
@@ -962,6 +967,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                         <li><a href="?p=search"><?php echo ADMIN_SEARCH; ?></a></li>
                         <li><a href="?p=message"><?php echo ADMIN_MSG_REP; ?></a></li>
                         <li><a href="?p=ban"><?php echo ADMIN_BAN; ?></a></li>
+                        <li><a href="?p=punishments">Punishments</a></li>
                         <li><a href="?p=multiacc"><?php echo ADMIN_MULTI_ACCOUNT_DETECTION; ?></a></li>
                         <li><a href="?p=pushprot"><?php echo ADMIN_PUSH_PROTECTION; ?></a></li>
                         <li><a href="?p=heatmap"><?php echo ADMIN_WORLD_MAP_HEATMAP; ?></a></li>

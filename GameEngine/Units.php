@@ -27,12 +27,25 @@ class Units {
         if(isset($post['c'])) {
             if (!isset($post['disabled'])) $post['disabled'] = '';
 
+            // Admin-applied army freeze (Punishment system): block actually
+            // sending troops out (attack/raid/reinforce) while active, but
+            // still let the page render normally (same path as an invalid
+            // security check) so the player sees why nothing happened.
+            $armyFrozen = false;
+            global $session;
+            if (!class_exists('Punishment')) {
+                require_once __DIR__ . '/Punishment.php';
+            }
+            if (isset($session->uid) && Punishment::isActive((int) $session->uid, Punishment::TYPE_ARMY)) {
+                $armyFrozen = true;
+            }
+
             switch($post['c']) {
                 case 1:
                 case 2:
                 case 3:
                 case 4:
-                    if (isset($post['a']) && $post['a'] == 533374 && empty($post['disabled'])) $this->sendTroops($post);
+                    if (!$armyFrozen && isset($post['a']) && $post['a'] == 533374 && empty($post['disabled'])) $this->sendTroops($post);
                     else
                     {
                         $post = $this->loadUnits($post);
@@ -41,7 +54,7 @@ class Units {
                     break;
 
                 case 5:
-                    if (isset($post['a']) && $post['a'] == "new") $this->Settlers($post);
+                    if (!$armyFrozen && isset($post['a']) && $post['a'] == "new") $this->Settlers($post);
                     else
                     {
                         $post = $this->loadUnits($post);
