@@ -40,82 +40,51 @@
  * spacing) uniformly to 150%, as if the player pressed Ctrl/Cmd "+"
  * twice in Chrome at 100% browser zoom.
  *
- * Keep the page at its natural scale. The responsive layer handles narrow
- * screens by reflowing the shared columns instead of shrinking all text.
+ * FIX: this must be set on <html>, not <body>. zoom on <body> resizes
+ * body's rendered box (and everything inside it, including #mid) while
+ * <html> - body's own containing block - stays unzoomed, so body's
+ * width/centering math is computed in the ORIGINAL unzoomed frame and
+ * only scaled afterwards, anchored at body's top-left corner. Anything
+ * centered inside (like #mid, fixed with margin:0 auto elsewhere in
+ * this file) ends up rendered well to the right of true center, and
+ * often clipped past the right edge of the viewport entirely - which is
+ * exactly what made every page look pushed to one side no matter what
+ * width/margin was set on #mid itself: the distortion happens one level
+ * up, at body, so no #mid-level fix could ever undo it.
+ * Setting zoom on <html> instead scales the whole document AND its
+ * effective viewport together, the same way real browser zoom (Ctrl/Cmd
+ * "+") works - so #mid's centering math and what's actually visible on
+ * screen agree, with nothing shifted off-axis or clipped.
  * The !important guard prevents a graphic pack from changing this value.
  * --------------------------------------------------------------------- */
-html[dir="rtl"] body {
+html[dir="rtl"] {
     zoom: 1.5 !important;
-    overflow-x: hidden;
-}
-
-body.indexPage {
-    background-color: #fff !important;
-    background-image: none !important;
-    isolation: isolate;
-    overflow: visible !important;
-    position: static !important;
-}
-
-body.indexPage::before {
-    background: #fff url("../gpack/novaterra/images/main_background_front.jpg") 50% 0 / auto auto repeat-x;
-    background-attachment: fixed;
-    content: "";
-    inset: 0;
-    pointer-events: none;
-    position: fixed;
-    z-index: -1;
-}
-
-body.indexPage::after {
-    background: transparent url("../gpack/novaterra/images/artwork-ltr.jpg") 50% 0 / auto auto repeat-x;
-    background-attachment: fixed;
-    content: "";
-    inset: 44px 0 0;
-    pointer-events: none;
-    position: fixed;
-    z-index: -1;
-}
-
-body.indexPage #header {
-    background: none !important;
-}
-
-body.indexPage #homepage_background {
-    background: transparent url("../gpack/novaterra/images/artwork-ltr.jpg") 50% 0 / auto auto repeat-x fixed !important;
-    inset: 44px 0 0;
-    pointer-events: none;
-    position: fixed !important;
-    transform: translateZ(0);
-    will-change: auto;
-    z-index: 0;
-}
-
-body.indexPage .wrapper,
-body.indexPage #login_layer,
-body.indexPage #signup_layer,
-body.indexPage #iframe_layer,
-body.indexPage #screenshot_layer {
-    position: relative;
-    z-index: 1;
-}
-
-html[dir="rtl"]:has(body.indexPage) {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    min-height: 0;
 }
 
 /* شريط الموارد absolute، لذلك نترك مساحة واضحة تحته قبل بداية الأعمدة. */
+/* ---------------------------------------------------------------------
+ * CENTERING FIX: lang/en/compact.css sets "#mid { float:left; width:100%;
+ * min-width:980px; }" - a full-width floated box. margin:auto on a
+ * width:100% box has no visual effect (there is no leftover space to
+ * distribute), so the three floated columns inside it (#side_navi,
+ * #content, #side_info - only ~949px combined) end up hugging one edge
+ * of the viewport instead of sitting in the middle, which is what made
+ * every page look pushed to one side instead of centered.
+ * Giving #mid back its own fixed content width (980px - big enough for
+ * the 949px column group, same value already assumed everywhere else in
+ * this file's comments) and switching float:left -> float:none turns it
+ * back into a normal block box, so margin-left/right:auto now has
+ * something to center - equal space on both sides on every page that
+ * loads this stylesheet. The existing #mid::after clearfix above still
+ * contains the floated columns inside it, so nothing about their
+ * internal layout changes, only the outer box's own width/position. */
 html[dir="rtl"] #mid {
-    margin-top: 28px !important;
-    margin-left: 0 !important;
-    margin-right: auto !important;
-    position: relative;
-    left: 60px;
+    float: none !important;
     width: 980px !important;
-    max-width: none !important;
-    height: auto !important;
+    min-width: 0 !important;
+    margin-top: 28px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 /* بعض الصفحات تضع فواصل BR قبل العمود الجانبي، وتبقى ظاهرة إذا كانت
@@ -150,12 +119,6 @@ html[dir="rtl"] #footer {
     position: relative !important;
     top: auto !important;
     bottom: auto !important;
-}
-
-html[dir="rtl"] body.dorf1Page #footer {
-    margin-top: 0 !important;
-    top: -50px !important;
-    transform: translateY(-40px);
 }
 
 /* النص العربي في الصفحات الداخلية يرث text-align:left من الحزمة القديمة؛
@@ -256,7 +219,7 @@ html[dir="rtl"] div#content.map {
 /* dorf1 يحتوي على قوالب القرية القديمة التي تجعل side_info خارج mid عند
  * parsing في بعض المتصفحات؛ نثبته بجوار المحتوى بدون تغيير الخريطة. */
 html[dir="rtl"] body.dorf1Page #side_info {
-    left: 30px;
+    left: 0;
     position: absolute;
     top: 200px;
 }
@@ -401,15 +364,10 @@ html[dir="rtl"] div.village1 h1 {
  * layout, without touching the div's content or the English page (no
  * html[dir="rtl"] ancestor there, so #cap keeps its old default box).
  * --------------------------------------------------------------------- */
-html[dir="rtl"] div.village1 #cap {
-    display: inline-block;
-    font-size: 14px;
-    font-weight: 400;
+html[dir="rtl"] div.village1 div#cap {
     line-height: 14px;
     margin: 0;
-    margin-right: 10px;
     min-height: 0;
-    vertical-align: middle;
 }
 
 /* ---------------------------------------------------------------------
@@ -461,17 +419,17 @@ html[dir="rtl"] #content h1 {
 }
 
 @media screen and (max-width: 640px) {
-    html[dir="rtl"] body {
+    html[dir="rtl"] {
         zoom: 1 !important;
+    }
+    html[dir="rtl"] body {
         width: auto !important;
         overflow-x: hidden;
     }
     html[dir="rtl"] #mid {
+        width: 100% !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
-        left: 0;
-        max-width: 100% !important;
-        width: auto !important;
     }
     html[dir="rtl"] body.dorf1Page #side_info {
         left: 0;
@@ -529,7 +487,7 @@ html[dir="rtl"] div.village1 table thead th {
 }
 html[dir="rtl"] div.village1 table td.res {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
 }
 html[dir="rtl"] div.village1 table td.un {
     font-size: 14px;
@@ -541,7 +499,7 @@ html[dir="rtl"] div.village1 table td.num {
 }
 html[dir="rtl"] div.village1 table td.per {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 /* Village title: bold + moderately larger, but kept inside the exact
@@ -555,18 +513,21 @@ html[dir="rtl"] div.village1 h1 {
     font-size: 26px;
     font-weight: 700;
     line-height: 29px;
+    margin-top: 30px;
 }
 
-/* Sidebar and village-list links stay normal; headings and key status values
- * retain the stronger weight for a clear visual hierarchy. */
+/* Sidebar / navigation links (Home, Guide, Profile, Logout, Forum,
+ * Discord, Plus, Support) and the left "hero" sidebar's own headings
+ * and village-list links - bold only, no size/position change to the
+ * links themselves (padding/float already fixed above). */
 html[dir="rtl"] #side_navi p a {
-    font-weight: 400;
+    font-weight: 600;
 }
 html[dir="rtl"] #side_info h5 {
     font-weight: 700;
 }
 html[dir="rtl"] #side_info table#vlist td.link a {
-    font-weight: 400;
+    font-weight: 600;
 }
 
 /* "في الساعة" - Templates/production.tpl td.per, already sized/bolded
@@ -825,4 +786,20 @@ html[dir="rtl"] .grit .infobox {
 }
 html[dir="rtl"] .grit .secondarybox {
     float: right;
+}
+
+/* ---------------------------------------------------------------------
+ * Homepage background moves with the page while scrolling: gpack/
+ * novaterra/main_en.css sets "body.indexPage{background:#fff
+ * url(main_background_front.jpg) repeat-x top;}" with no
+ * background-attachment, which defaults to "scroll" - the image is
+ * painted once at the top of the (tall) document and scrolls away with
+ * the rest of the content instead of staying put behind it.
+ * background-attachment:fixed anchors the image to the viewport itself,
+ * so it stays visually still while everything else scrolls over it -
+ * the same fix applies to body.contentPage (tutorial.php, anleitung.php,
+ * ...), which shares the exact same pattern one line below in that file. */
+html[dir="rtl"] body.indexPage,
+html[dir="rtl"] body.contentPage {
+    background-attachment: fixed !important;
 }
