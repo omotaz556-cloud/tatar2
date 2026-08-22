@@ -89,6 +89,33 @@ html[dir="rtl"] #mid {
     left: -105px;
 }
 
+html[dir="rtl"] body.indexPage .world_list .w_big .label_players,
+html[dir="rtl"] body.indexPage .world_list .w_big .label_online {
+    left: auto;
+    right: 20px;
+    text-align: right;
+    width: 100px;
+}
+
+html[dir="rtl"] body.indexPage .world_list .w_big .players,
+html[dir="rtl"] body.indexPage .world_list .w_big .online {
+    left: auto;
+    right: 90px;
+    color: #000 !important;
+    text-align: center;
+    width: 30px;
+    z-index: 31;
+}
+
+html[dir="rtl"] body.indexPage #login_list h2,
+html[dir="rtl"] body.indexPage #signup_list h2 {
+    max-width: none;
+    position: relative;
+    left: -20px;
+    white-space: nowrap;
+    width: max-content;
+}
+
 /* بعض الصفحات تضع فواصل BR قبل العمود الجانبي، وتبقى ظاهرة إذا كانت
  * طبقة الحزمة القديمة مخزنة في المتصفح. */
 html[dir="rtl"] #mid > br {
