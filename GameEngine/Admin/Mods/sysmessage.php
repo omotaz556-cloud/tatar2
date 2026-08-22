@@ -6,10 +6,18 @@
 ##  Filename       sysmessage.php                                              ##
 ##  Type           BACKEND                                                     ##
 ##  Purpose        Handler for the Admin Panel "Create System Message" form    ##
-##                 (Admin/Templates/sysmessage.tpl). Displays a global system  ##
-##                 message to all players (same mechanism as sysmsg.php):      ##
-##                 writes Templates/text.tpl from text_format.tpl and sets     ##
-##                 users.ok = 1 so every player sees it on their next page.    ##
+##                 (Admin/Templates/sysmessage.tpl). Delivers a message to     ##
+##                 every player's normal inbox (mdata), from the System        ##
+##                 account, same delivery mechanism as massmessage.php.        ##
+##                                                                             ##
+##  FIX: this used to write Templates/text.tpl (from text_format.tpl) and set  ##
+##  users.ok = 1, which forces menu.tpl to swap EVERY page for every player    ##
+##  with a raw PHP include() of that generated file instead of the normal     ##
+##  village view (see menu.tpl ~line 362, "$sessionOk" block). Any message     ##
+##  content that didn't survive the string-escaping perfectly broke that      ##
+##  include for the whole server ("broken screen" on returning to the game),  ##
+##  and even when it didn't, replacing the whole page with a bare announcement ##
+##  box looked broken. Sending as a normal inbox message avoids all of that.   ##
 ##  License        : GPLv3 (derived from TravianZ; see project LICENSE)       ##
 ##  Copyright      : Novaterra mods (c) 2010-2026; base engine (c) TravianZ authors (GPLv3). ##
 ##                                                                             ##
@@ -31,17 +39,6 @@ if (!isset($_SESSION['access']) || $_SESSION['access'] < ADMIN) {
 require_once(__DIR__ . '/../csrf.php');
 csrf_verify();
 
-// ---------------------------------------------------------------------------
-// Resolve project root (so we can read/write Templates/*.tpl)
-// ---------------------------------------------------------------------------
-$autoprefix = '';
-for ($i = 0; $i < 6; $i++) {
-    $autoprefix = str_repeat('../', $i);
-    if (file_exists($autoprefix . 'autoloader.php')) {
-        break;
-    }
-}
-
 /*
 |--------------------------------------------------------------------------
 | STEP 1 - PREPARE (show confirmation)
@@ -54,7 +51,15 @@ if (isset($_POST['action']) && $_POST['action'] == 'prepare') {
 
     $_SESSION['sys_subject'] = trim($_POST['subject']);
     $_SESSION['sys_message'] = trim($_POST['message']);
-    $_SESSION['sys_color']   = trim($_POST['color'] ?? 'black');
+
+    // Same whitelist as massmessage.php, so the subject color is handled
+    // identically for both admin message forms.
+    $allowedColors = array('black', 'red', 'green', 'blue', 'orange', 'purple', 'brown');
+    $color = strtolower(trim($_POST['color'] ?? ''));
+    if (!in_array($color, $allowedColors, true)) {
+        $color = 'black';
+    }
+    $_SESSION['sys_color'] = $color;
 
     header("Location: ../../../Admin/admin.php?p=sysmessage&confirm=1");
     exit;
@@ -62,7 +67,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'prepare') {
 
 /*
 |--------------------------------------------------------------------------
-| STEP 2 - EXECUTE (write the global system message)
+| STEP 2 - EXECUTE (deliver the system message to every player's inbox)
 |--------------------------------------------------------------------------
 */
 if (isset($_POST['action']) && $_POST['action'] == 'execute') {
@@ -79,50 +84,95 @@ if (isset($_POST['action']) && $_POST['action'] == 'execute') {
         exit;
     }
 
-    $subject = trim($_SESSION['sys_subject']);
-    $message = trim($_SESSION['sys_message']);
-    $color   = trim($_SESSION['sys_color'] ?: 'black');
+    $subject = $database->escape($_SESSION['sys_subject']);
+    $message = $_SESSION['sys_message'];
+    $color   = $database->escape($_SESSION['sys_color'] ?: 'black');
 
-    // Compose the HTML body: coloured subject heading + message (line breaks kept).
-    $body  = '<div style="color:' . $color . ';font-weight:bold;font-size:14px;margin-bottom:8px">' . $subject . '</div>';
-    $body .= $message;
+    /*
+    |--------------------------------------------------------------------------
+    | [color=#hex]...[/color] -> inline <span>, same conversion sysmessage.tpl's
+    | own preview already does. BBCode.php (the parser that renders every
+    | inbox message) has no [color] support, so leaving the tag as-is would
+    | show the raw bbcode instead of colored text.
+    |--------------------------------------------------------------------------
+    */
+    $message = preg_replace('/\[color=(#[0-9a-fA-F]{3,6})\]/', '<span style="color:$1">', $message);
+    $openSpans = substr_count($message, '<span style="color:');
+    $message = preg_replace('/\[\/color\]/', '</span>', $message, $openSpans);
+    $message = str_replace('[/color]', '', $message);
 
-    // %TEKST% is injected into a PHP double-quoted string inside text_format.tpl,
-    // so escape backslash, double-quote and $ to avoid breaking the string or
-    // allowing code injection. str_replace (not preg_replace) so the replacement
-    // is treated literally.
-    $safe = str_replace(['\\', '"', '$'], ['\\\\', '\\"', '\\$'], $body);
+    $message = "[message]" . $message . "[/message]";
+    $message = $database->escape($message);
 
-    $format = @file_get_contents($autoprefix . 'Templates/text_format.tpl');
-    if ($format === false) {
-        die("Cannot read Templates/text_format.tpl");
+    /*
+    |--------------------------------------------------------------------------
+    | ALL PLAYERS (same target set + row shape as massmessage.php, so this
+    | shows up as a normal inbox message "from" the System account instead of
+    | the old full-page text.tpl takeover.)
+    |--------------------------------------------------------------------------
+    */
+    $result = mysqli_query(
+        $database->dblink,
+        "SELECT id
+         FROM ".TB_PREFIX."users
+         WHERE id > 5
+         ORDER BY id ASC"
+    );
+
+    $rows = [];
+    $time = time();
+
+    while ($user = mysqli_fetch_assoc($result)) {
+
+        $uid = (int)$user['id'];
+
+        $rows[] =
+        "(".
+            $uid.",".
+            "1,".
+            "'<span style=\"color:".$color.";\">".$subject."</span>',".
+            "'".$message."',".
+            "0,".
+            "0,".
+            "0,".
+            $time.",".
+            "0,".
+            "0,".
+            "0,".
+            "0,".
+            "0,".
+            "0".
+        ")";
     }
 
-    // Inlocuim DOAR atribuirea reala, nu orice aparitie a marcajului.
-    //
-    // BUG REPARAT: text_format.tpl continea marcajul si intr-un comentariu din
-    // antetul de credite ("Preserved original placeholder logic (%TEKST%)").
-    // str_replace le lovea pe amandoua, deci mesajul ajungea si in mijlocul
-    // comentariului. Textul avea ghilimele si linii noi, care inchideau blocul
-    // de comentariu si rupeau fisierul - de aici "imi rupe jocul".
-    //
-    // Tiparul de mai jos prinde exact linia de atribuire, deci un marcaj ramas
-    // intr-un comentariu nu mai poate face rau.
-    $pattern = '/\$txt\s*=\s*"%TEKST%"\s*;/';
-    $out     = preg_replace($pattern, '$txt = "' . str_replace('$', '\\$', $safe) . '";', $format, 1, $count);
+    if (!empty($rows)) {
 
-    if ($out === null || $count !== 1) {
-        // Sablonul nu mai arata cum ne asteptam: mai bine oprim decat sa
-        // scriem un fisier stricat peste unul care functioneaza.
-        die("Cannot update Templates/text.tpl: the placeholder was not found exactly once in text_format.tpl");
+        $sql =
+        "INSERT INTO ".TB_PREFIX."mdata
+        (
+            target,
+            owner,
+            topic,
+            message,
+            viewed,
+            archived,
+            send,
+            time,
+            deltarget,
+            delowner,
+            alliance,
+            player,
+            coor,
+            report
+        )
+        VALUES
+        ".implode(",", $rows);
+
+        mysqli_query(
+            $database->dblink,
+            $sql
+        );
     }
-
-    if (@file_put_contents($autoprefix . 'Templates/text.tpl', $out) === false) {
-        die("Cannot write Templates/text.tpl (check permissions)");
-    }
-
-    // Make the message visible to every player (they will see it on next page).
-    $database->setUsersOk(1);
 
     unset($_SESSION['sys_subject'], $_SESSION['sys_message'], $_SESSION['sys_color']);
 
