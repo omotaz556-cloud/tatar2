@@ -85,6 +85,8 @@ html[dir="rtl"] #mid {
     margin-top: 28px !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    position: relative;
+    left: -105px;
 }
 
 /* بعض الصفحات تضع فواصل BR قبل العمود الجانبي، وتبقى ظاهرة إذا كانت
@@ -789,17 +791,16 @@ html[dir="rtl"] .grit .secondarybox {
 }
 
 /* ---------------------------------------------------------------------
- * Homepage background moves with the page while scrolling: gpack/
- * novaterra/main_en.css sets "body.indexPage{background:#fff
- * url(main_background_front.jpg) repeat-x top;}" with no
- * background-attachment, which defaults to "scroll" - the image is
- * painted once at the top of the (tall) document and scrolls away with
- * the rest of the content instead of staying put behind it.
- * background-attachment:fixed anchors the image to the viewport itself,
- * so it stays visually still while everything else scrolls over it -
- * the same fix applies to body.contentPage (tutorial.php, anleitung.php,
- * ...), which shares the exact same pattern one line below in that file. */
-html[dir="rtl"] body.indexPage,
-html[dir="rtl"] body.contentPage {
-    background-attachment: fixed !important;
-}
+ * REVERTED (see history below): background-attachment:fixed was tried
+ * here to keep the body background from "scrolling away", but
+ * main_background_front.jpg is a tall, narrow (3x426px) blue/white/green
+ * vertical strip tiled repeat-x to form a hero backdrop behind the
+ * header only - it was never meant to cover the full (much taller) page.
+ * Pinning it to the viewport with background-attachment:fixed makes
+ * many browsers (especially mobile/touch scrolling) repaint that fixed
+ * background on every scroll frame, which shows up as the green band
+ * visibly jumping/flickering up and down while scrolling - exactly the
+ * bug this was meant to fix, just moved from "disappears" to "jitters".
+ * Reverting to the default (background-attachment: scroll) lets the
+ * strip scroll normally with the document again - no jitter, and the
+ * green portion still lands in its designed spot just below the header. */
