@@ -22,6 +22,17 @@ if($_SESSION['access'] < MULTIHUNTER) die("Access Denied!");
 $error = '';
 $success = '';
 
+// Ban reasons: DB value stays a stable English key, label is localized for display.
+$banReasons = [
+    'Pushing'       => ADM_BAN_REASON_PUSHING,
+    'Cheat'         => ADM_BAN_REASON_CHEAT,
+    'Hack'          => ADM_BAN_REASON_HACK,
+    'Bug'           => ADM_BAN_REASON_BUG,
+    'Bad Name'      => ADM_BAN_REASON_BADNAME,
+    'Multi Account' => ADM_BAN_REASON_MULTI,
+    'Swearing'      => ADM_BAN_REASON_SWEARING,
+];
+
 // ========================= HANDLE ADD BAN =========================
 if(isset($_POST['action']) && $_POST['action'] == 'addBan') {
     $uid = (int)($_POST['uid']??0);
@@ -29,14 +40,14 @@ if(isset($_POST['action']) && $_POST['action'] == 'addBan') {
     $time = (int)($_POST['time']??0);
     $blocked = [1,2,3,4,5];
 
-    if($uid <= 0) $error = "Invalid User ID!";
-    elseif(in_array($uid,$blocked)) $error = "You cannot ban system accounts!";
+    if($uid <= 0) $error = ADM_BAN_ERR_INVALID_UID;
+    elseif(in_array($uid,$blocked)) $error = ADM_BAN_ERR_SYSTEM_ACC;
     else {
         $userCheck = mysqli_query($database->dblink,"SELECT id,username FROM ".TB_PREFIX."users WHERE id=$uid LIMIT 1");
-        if(!$userCheck || mysqli_num_rows($userCheck)==0) $error = "This user does not exist!";
+        if(!$userCheck || mysqli_num_rows($userCheck)==0) $error = ADM_BAN_ERR_NO_USER;
         else {
             $check = mysqli_query($database->dblink,"SELECT id FROM ".TB_PREFIX."banlist WHERE uid=$uid AND active=1 LIMIT 1");
-            if(mysqli_num_rows($check)>0) $error = "User is already banned!";
+            if(mysqli_num_rows($check)>0) $error = ADM_BAN_ERR_ALREADY_BANNED;
             else {
                 $user = mysqli_fetch_assoc($userCheck);
                 $name = $user['username'];
@@ -47,7 +58,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'addBan') {
                 $stmt->execute(); $stmt->close();
                 $stmt2 = $database->dblink->prepare("UPDATE `".TB_PREFIX."users` SET access=0 WHERE id=? LIMIT 1");
                 $stmt2->bind_param("i",$uid); $stmt2->execute(); $stmt2->close();
-                $success = "User <b>$name</b> has been banned successfully!";
+                $success = sprintf(ADM_BAN_SUCCESS_USER, htmlspecialchars($name));
             }
         }
     }
@@ -60,13 +71,13 @@ if(isset($_POST['action']) && $_POST['action'] == 'addIpBan') {
     $time   = (int)($_POST['time'] ?? 0);
 
     if(@inet_pton($ip) === false) {
-        $error = "Invalid IP address!";
+        $error = ADM_BAN_ERR_INVALID_IP;
     } else {
         $end = $time > 0 ? time() + $time : 0;
         if($admin->AddIpBan($ip, $end, $reason)) {
-            $success = "IP <b>".htmlspecialchars($ip)."</b> has been banned successfully!";
+            $success = sprintf(ADM_BAN_SUCCESS_IP, htmlspecialchars($ip));
         } else {
-            $error = "Could not ban this IP!";
+            $error = ADM_BAN_ERR_IP_FAILED;
         }
     }
 }
@@ -147,10 +158,10 @@ $historyCount = $banHistory ? mysqli_num_rows($banHistory) : 0;
         <input type="hidden" name="action" value="addBan">
         <div class="row">
           <input type="number" name="uid" placeholder="<?php echo ADM_USER_ID; ?>" required>
-          <select name="reason"><?php foreach(['Pushing','Cheat','Hack','Bug','Bad Name','Multi Account','Swearing'] as $r){ echo "<option>$r</option>"; }?></select>
+          <select name="reason"><?php foreach($banReasons as $rv=>$rl){ echo '<option value="'.htmlspecialchars($rv).'">'.htmlspecialchars($rl).'</option>'; }?></select>
         </div>
         <div class="row two">
-          <select name="time"><?php foreach([1,2,5,10,12] as $h) echo "<option value='".($h*3600)."'>$h hour/s</option>"; foreach([1,2,5,10,30,50,90] as $d) echo "<option value='".($d*86400)."'>$d day/s</option>"; ?><option value="0"><?php echo ADM_FOREVER; ?></option></select>
+          <select name="time"><?php foreach([1,2,5,10,12] as $h) echo "<option value='".($h*3600)."'>$h ".ADM_HOUR_UNIT."</option>"; foreach([1,2,5,10,30,50,90] as $d) echo "<option value='".($d*86400)."'>$d ".ADM_DAY_UNIT."</option>"; ?><option value="0"><?php echo ADM_FOREVER; ?></option></select>
           <button type="submit"><?php echo ADM_BAN_USER; ?></button>
         </div>
       </form>
@@ -163,9 +174,9 @@ $historyCount = $banHistory ? mysqli_num_rows($banHistory) : 0;
         <?php if($bannedUsers){ foreach($bannedUsers as $b){ $name = $database->getUserField($b['uid'],'username',0) ?: $b['name']; $end = $b['end'] ? date("d.m H:i",$b['end']) : '∞'; ?>
           <div class="ban-item">
             <div><div class="user"><a href="?p=player&uid=<?php echo $b['uid'];?>"><?php echo htmlspecialchars($name);?></a></div><div class="meta"><?php echo date("d.m H:i",$b['time']);?> → <?php echo $end;?></div></div>
-            <div class="right"><span class="reason"><?php echo htmlspecialchars($b['reason']);?></span><a class="del" href="?action=delBan&uid=<?php echo $b['uid'];?>&id=<?php echo $b['id'];?>" onclick="return confirm('Unban?')">✕</a></div>
+            <div class="right"><span class="reason"><?php echo htmlspecialchars($banReasons[$b['reason']] ?? $b['reason']);?></span><a class="del" href="?action=delBan&uid=<?php echo $b['uid'];?>&id=<?php echo $b['id'];?>" onclick="return confirm('<?php echo ADM_CONFIRM_UNBAN_USER; ?>')">✕</a></div>
           </div>
-        <?php }} else { echo '<div class="empty">No active bans</div>'; }?>
+        <?php }} else { echo '<div class="empty">'.ADM_NO_ACTIVE_BANS.'</div>'; }?>
       </div>
     </div>
 
@@ -177,10 +188,10 @@ $historyCount = $banHistory ? mysqli_num_rows($banHistory) : 0;
         <input type="hidden" name="action" value="addIpBan">
         <div class="row">
           <input type="text" name="ip" placeholder="<?php echo ADM_IPV4_OR_IPV6; ?>" required>
-          <select name="reason"><?php foreach(['Pushing','Cheat','Hack','Bug','Bad Name','Multi Account','Swearing'] as $r){ echo "<option>$r</option>"; }?></select>
+          <select name="reason"><?php foreach($banReasons as $rv=>$rl){ echo '<option value="'.htmlspecialchars($rv).'">'.htmlspecialchars($rl).'</option>'; }?></select>
         </div>
         <div class="row two">
-          <select name="time"><?php foreach([1,2,5,10,12] as $h) echo "<option value='".($h*3600)."'>$h hour/s</option>"; foreach([1,2,5,10,30,50,90] as $d) echo "<option value='".($d*86400)."'>$d day/s</option>"; ?><option value="0"><?php echo ADM_FOREVER; ?></option></select>
+          <select name="time"><?php foreach([1,2,5,10,12] as $h) echo "<option value='".($h*3600)."'>$h ".ADM_HOUR_UNIT."</option>"; foreach([1,2,5,10,30,50,90] as $d) echo "<option value='".($d*86400)."'>$d ".ADM_DAY_UNIT."</option>"; ?><option value="0"><?php echo ADM_FOREVER; ?></option></select>
           <button type="submit"><?php echo ADM_BAN_IP; ?></button>
         </div>
       </form>
@@ -193,9 +204,9 @@ $historyCount = $banHistory ? mysqli_num_rows($banHistory) : 0;
         <?php if($bannedIps){ foreach($bannedIps as $b){ $end = $b['end'] ? date("d.m H:i",$b['end']) : '∞'; ?>
           <div class="ban-item">
             <div><div class="user"><strong><?php echo htmlspecialchars($b['ip_text']);?></strong></div><div class="meta"><?php echo date("d.m H:i",$b['time']);?> → <?php echo $end;?></div></div>
-            <div class="right"><span class="reason"><?php echo htmlspecialchars($b['reason']);?></span><a class="del" href="?p=ban&action=delIpBan&id=<?php echo (int)$b['id'];?>" onclick="return confirm('Unban this IP?')">✕</a></div>
+            <div class="right"><span class="reason"><?php echo htmlspecialchars($banReasons[$b['reason']] ?? $b['reason']);?></span><a class="del" href="?p=ban&action=delIpBan&id=<?php echo (int)$b['id'];?>" onclick="return confirm('<?php echo ADM_CONFIRM_UNBAN_IP; ?>')">✕</a></div>
           </div>
-        <?php }} else { echo '<div class="empty">No active IP bans</div>'; }?>
+        <?php }} else { echo '<div class="empty">'.ADM_NO_ACTIVE_IP_BANS.'</div>'; }?>
       </div>
     </div>
 
@@ -206,9 +217,9 @@ $historyCount = $banHistory ? mysqli_num_rows($banHistory) : 0;
         <?php if($banHistory && $historyCount>0){ while($h=mysqli_fetch_assoc($banHistory)){ $end = $h['end'] ? date("d.m H:i",$h['end']) : '∞'; ?>
           <div class="ban-item" style="opacity:.8">
             <div><div class="user"><strong><?php echo htmlspecialchars($h['name']);?></strong></div><div class="meta"><?php echo date("d.m H:i",$h['time']);?> → <?php echo $end;?></div></div>
-            <span class="reason"><?php echo htmlspecialchars($h['reason']);?></span>
+            <span class="reason"><?php echo htmlspecialchars($banReasons[$h['reason']] ?? $h['reason']);?></span>
           </div>
-        <?php }} else { echo '<div class="empty">No history</div>'; }?>
+        <?php }} else { echo '<div class="empty">'.ADM_NO_BAN_HISTORY.'</div>'; }?>
       </div>
     </div>
   </div>

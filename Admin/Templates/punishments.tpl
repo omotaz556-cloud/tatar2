@@ -24,6 +24,14 @@ $success = '';
 $adminId = (int) ($_SESSION['id'] ?? 0);
 $validTypes = Punishment::validTypes();
 
+// Localized labels for display only; Punishment::label() / TYPE_* stay
+// untouched since they're also used internally by GameEngine/Punishment.php.
+$punLabels = [
+    Punishment::TYPE_MUTE   => ADM_PUN_LABEL_MUTE,
+    Punishment::TYPE_MARKET => ADM_PUN_LABEL_MARKET,
+    Punishment::TYPE_ARMY   => ADM_PUN_LABEL_ARMY,
+];
+
 // ========================= HANDLE APPLY =========================
 // Note: admin.php already runs csrf_verify() on every POST before this
 // template is included (see the CheckLogin() block), so no extra check
@@ -36,23 +44,23 @@ if (isset($_POST['action']) && $_POST['action'] === 'applyPunishment') {
     $blocked = [1, 2, 3, 4, 5];
 
     if ($uid <= 0) {
-        $error = "Invalid User ID!";
+        $error = ADM_PUN_ERR_INVALID_UID;
     } elseif (in_array($uid, $blocked, true)) {
-        $error = "You cannot restrict system accounts!";
+        $error = ADM_PUN_ERR_SYSTEM_ACC;
     } elseif (!in_array($type, $validTypes, true)) {
-        $error = "Invalid restriction type!";
+        $error = ADM_PUN_ERR_INVALID_TYPE;
     } elseif ($reason === '') {
-        $error = "A reason is required!";
+        $error = ADM_PUN_ERR_REASON_REQUIRED;
     } else {
         $userCheck = mysqli_query($database->dblink, "SELECT id, username FROM " . TB_PREFIX . "users WHERE id=$uid LIMIT 1");
         if (!$userCheck || mysqli_num_rows($userCheck) == 0) {
-            $error = "This user does not exist!";
+            $error = ADM_PUN_ERR_NO_USER;
         } else {
             $user = mysqli_fetch_assoc($userCheck);
             if (Punishment::apply($uid, $type, $hours, $reason, $adminId)) {
-                $success = "Applied <b>" . htmlspecialchars(Punishment::label($type)) . "</b> restriction to <b>" . htmlspecialchars($user['username']) . "</b>.";
+                $success = sprintf(ADM_PUN_SUCCESS_APPLY, htmlspecialchars($punLabels[$type] ?? Punishment::label($type)), htmlspecialchars($user['username']));
             } else {
-                $error = "Could not apply this restriction!";
+                $error = ADM_PUN_ERR_APPLY_FAILED;
             }
         }
     }
@@ -66,9 +74,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'liftPunishment') {
     $type = (string) ($_GET['type'] ?? '');
     if ($uid > 0 && in_array($type, $validTypes, true)) {
         Punishment::lift($uid, $type, $adminId);
-        $success = "Restriction lifted.";
+        $success = ADM_PUN_LIFTED;
     } else {
-        $error = "Invalid request.";
+        $error = ADM_PUN_ERR_INVALID_REQUEST;
     }
 }
 
@@ -115,47 +123,47 @@ $totalActive = array_sum(array_map('count', $activeByType));
 <div class="pun-wrap">
   <div class="pun-head">
     <svg viewBox="0 0 24 24" width="26" height="26" fill="none"><circle cx="12" cy="12" r="10" fill="#c0392b"/><path d="M12 7v6M12 16h.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
-    <h2>Punishments (Mute / Market / Army Freeze)</h2>
+    <h2><?php echo ADM_PUN_TITLE; ?></h2>
   </div>
 
   <?php if ($error) { ?><div class="alert error"><?php echo htmlspecialchars($error); ?></div><?php } ?>
   <?php if ($success) { ?><div class="alert success"><?php echo $success; ?></div><?php } ?>
 
   <div class="pun-stats">
-    <div class="stat"><div class="lbl">Muted now</div><div class="val"><?php echo count($activeByType[Punishment::TYPE_MUTE]); ?></div></div>
-    <div class="stat"><div class="lbl">Market-restricted now</div><div class="val"><?php echo count($activeByType[Punishment::TYPE_MARKET]); ?></div></div>
-    <div class="stat"><div class="lbl">Army-frozen now</div><div class="val"><?php echo count($activeByType[Punishment::TYPE_ARMY]); ?></div></div>
+    <div class="stat"><div class="lbl"><?php echo ADM_PUN_MUTED_NOW; ?></div><div class="val"><?php echo count($activeByType[Punishment::TYPE_MUTE]); ?></div></div>
+    <div class="stat"><div class="lbl"><?php echo ADM_PUN_MARKET_NOW; ?></div><div class="val"><?php echo count($activeByType[Punishment::TYPE_MARKET]); ?></div></div>
+    <div class="stat"><div class="lbl"><?php echo ADM_PUN_ARMY_NOW; ?></div><div class="val"><?php echo count($activeByType[Punishment::TYPE_ARMY]); ?></div></div>
   </div>
 
   <div class="pun-stack">
     <!-- Apply new restriction -->
     <div class="pun-card">
-      <h3>Apply Restriction</h3>
+      <h3><?php echo ADM_PUN_APPLY_TITLE; ?></h3>
       <form method="post" class="pun-form">
         <?php echo csrf_field(); ?>
         <input type="hidden" name="action" value="applyPunishment">
         <div class="row">
-          <input type="number" name="uid" placeholder="User ID" required>
+          <input type="number" name="uid" placeholder="<?php echo ADM_PUN_USER_ID; ?>" required>
           <select name="type" required>
-            <option value="mute">Mute (chat)</option>
-            <option value="market">Market restriction</option>
-            <option value="army">Army freeze</option>
+            <option value="mute"><?php echo ADM_PUN_TYPE_MUTE; ?></option>
+            <option value="market"><?php echo ADM_PUN_TYPE_MARKET; ?></option>
+            <option value="army"><?php echo ADM_PUN_TYPE_ARMY; ?></option>
           </select>
           <select name="duration">
-            <?php foreach ([1, 2, 6, 12, 24] as $h) echo "<option value='$h'>$h hour/s</option>"; ?>
-            <?php foreach ([2, 5, 10, 30] as $d) echo "<option value='" . ($d * 24) . "'>$d day/s</option>"; ?>
-            <option value="0">Permanent (until lifted)</option>
+            <?php foreach ([1, 2, 6, 12, 24] as $h) echo "<option value='$h'>$h ".ADM_HOUR_UNIT."</option>"; ?>
+            <?php foreach ([2, 5, 10, 30] as $d) echo "<option value='" . ($d * 24) . "'>$d ".ADM_DAY_UNIT."</option>"; ?>
+            <option value="0"><?php echo ADM_PUN_PERMANENT; ?></option>
           </select>
         </div>
-        <input type="text" name="reason" placeholder="Reason (required, shown to the player)" required>
-        <button type="submit">Apply Restriction</button>
+        <input type="text" name="reason" placeholder="<?php echo ADM_PUN_REASON_PH; ?>" required>
+        <button type="submit"><?php echo ADM_PUN_APPLY_BTN; ?></button>
       </form>
     </div>
 
-    <?php foreach ($validTypes as $t) { $list = $activeByType[$t]; ?>
+    <?php foreach ($validTypes as $t) { $list = $activeByType[$t]; $tLabel = $punLabels[$t] ?? Punishment::label($t); ?>
     <!-- Active list per type -->
     <div class="pun-card">
-      <h3><?php echo htmlspecialchars(ucfirst(Punishment::label($t))); ?> — Active<span class="badge-count"><?php echo count($list); ?></span></h3>
+      <h3><?php echo htmlspecialchars(ucfirst($tLabel)); ?> — <?php echo ADM_PUN_ACTIVE; ?><span class="badge-count"><?php echo count($list); ?></span></h3>
       <div class="pun-list">
         <?php if ($list) { foreach ($list as $p) { $end = $p['end'] ? date("d.m H:i", $p['end']) : '∞'; ?>
           <div class="pun-item">
@@ -165,10 +173,10 @@ $totalActive = array_sum(array_map('count', $activeByType));
             </div>
             <div style="display:flex;align-items:center;gap:8px">
               <span class="reason"><?php echo htmlspecialchars($p['reason']); ?></span>
-              <a class="lift" href="?p=punishments&action=liftPunishment&uid=<?php echo (int) $p['uid']; ?>&type=<?php echo $t; ?>" onclick="return confirm('Lift this restriction?')">✕</a>
+              <a class="lift" href="?p=punishments&action=liftPunishment&uid=<?php echo (int) $p['uid']; ?>&type=<?php echo $t; ?>" onclick="return confirm('<?php echo ADM_PUN_CONFIRM_LIFT; ?>')">✕</a>
             </div>
           </div>
-        <?php } } else { echo '<div class="empty">No active ' . htmlspecialchars(Punishment::label($t)) . ' restrictions</div>'; } ?>
+        <?php } } else { echo '<div class="empty">' . sprintf(ADM_PUN_NO_ACTIVE, htmlspecialchars($tLabel)) . '</div>'; } ?>
       </div>
     </div>
     <?php } ?>
