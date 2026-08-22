@@ -120,8 +120,7 @@ if (
 <div id="mid">
 <?php include("Templates/menu.tpl"); ?>
 <div id="content"  class="village1">
-<h1><?php echo tz_display_village_name($village->vname, $session->username ?? null); if($village->loyalty!='100'){ if($village->loyalty>'33'){ $color="gr"; }else{ $color="re"; } ?><div id="loyality" class="<?php echo $color; ?>"><?php echo LOYALTY; ?> <?php echo floor($village->loyalty); ?>%</div><?php } ?></h1>
-<div id="cap" align="left"><?php if($village->capital!='0') { echo "<font color=gray>(".CAPITAL1.")</font>"; } ?></div>
+<h1><?php echo tz_display_village_name($village->vname, $session->username ?? null); if($village->capital!='0') { ?><span id="cap"><font color="gray">(<?php echo CAPITAL1; ?>)</font></span><?php } if($village->loyalty!='100'){ if($village->loyalty>'33'){ $color="gr"; }else{ $color="re"; } ?><div id="loyality" class="<?php echo $color; ?>"><?php echo LOYALTY; ?> <?php echo floor($village->loyalty); ?>%</div><?php } ?></h1>
 <div id="village_map_wrap">
 <?php include("Templates/field.tpl"); ?>
 </div>

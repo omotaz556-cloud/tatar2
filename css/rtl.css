@@ -344,10 +344,15 @@ html[dir="rtl"] div.village1 h1 {
  * layout, without touching the div's content or the English page (no
  * html[dir="rtl"] ancestor there, so #cap keeps its old default box).
  * --------------------------------------------------------------------- */
-html[dir="rtl"] div.village1 div#cap {
+html[dir="rtl"] div.village1 #cap {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
     line-height: 14px;
     margin: 0;
+    margin-right: 10px;
     min-height: 0;
+    vertical-align: middle;
 }
 
 /* ---------------------------------------------------------------------
