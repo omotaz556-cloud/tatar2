@@ -63,7 +63,7 @@ if (isset($_POST['buy_protection']) && isset($session->uid)) {
 	$option = (int) $_POST['buy_protection'];
 	$uid = (int) $session->uid;
 
-	if (!isset($protectionOptions[$option])) {
+		if (!isset($protectionOptions[$option])) {
 		$protectionMsg = install_is_rtl() ? 'اختيار حماية غير صالح.' : 'Invalid protection option.';
 	} else {
 		$database->query("CREATE TABLE IF NOT EXISTS " . TB_PREFIX . "protection_purchases (
@@ -78,17 +78,20 @@ if (isset($_POST['buy_protection']) && isset($session->uid)) {
 			$protectionMsg = install_is_rtl() ? 'لقد استخدمت فرص الحماية الخمس.' : 'All five protection opportunities have been used.';
 		} else {
 			$email = trim((string) ($session->userinfo['email'] ?? ''));
-			$goldResult = CentralGold::debit(
-				$email,
-				$session->username,
-				$uid,
-				$protectionOptions[$option]['cost'],
-				'beginner_protection',
-				'Protection opportunity ' . ($uses + 1)
-			);
-			if (!$goldResult[0]) {
-				$protectionMsg = install_is_rtl() ? 'تحتاج إلى ذهب مشتَرى كافٍ لتفعيل الحماية.' : 'You need enough paid gold to activate protection.';
+			if (!CentralGold::isEmailVerified($email)) {
+				$protectionMsg = install_is_rtl() ? 'يجب تأكيد البريد الإلكتروني لاستخدام الذهب المشتَرى.' : 'Verify your email before using purchased gold.';
 			} else {
+				$goldResult = CentralGold::debit(
+					$email,
+					$session->username,
+					$uid,
+					$protectionOptions[$option]['cost'],
+					'beginner_protection',
+					'Protection opportunity ' . ($uses + 1)
+				);
+				if (!$goldResult[0]) {
+				$protectionMsg = install_is_rtl() ? 'تحتاج إلى ذهب مشتَرى كافٍ لتفعيل الحماية.' : 'You need enough paid gold to activate protection.';
+				} else {
 				$seconds = $protectionOptions[$option]['seconds'];
 				mysqli_begin_transaction($database->dblink);
 				$updated = $database->query("INSERT INTO " . TB_PREFIX . "protection_purchases (uid, uses)
@@ -105,6 +108,7 @@ if (isset($_POST['buy_protection']) && isset($session->uid)) {
 					mysqli_rollback($database->dblink);
 					CentralGold::credit($email, $session->username, $uid, $protectionOptions[$option]['cost'], 'beginner_protection_refund', 'Protection update failed');
 					$protectionMsg = install_is_rtl() ? 'تعذر تفعيل الحماية، وتمت إعادة الذهب.' : 'Protection could not be activated; the gold was refunded.';
+				}
 				}
 			}
 		}

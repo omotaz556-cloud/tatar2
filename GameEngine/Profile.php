@@ -432,7 +432,7 @@ class Profile {
 			// Vacation is a paid-gold action. Free activity rewards are kept
 			// outside CentralGold and cannot be used to activate it.
 			$userEmail = trim((string)($session->userinfo['email'] ?? ''));
-			if (!class_exists('CentralGold') || !CentralGold::isConfigured() || $userEmail === '') {
+			if (!class_exists('CentralGold') || !CentralGold::isConfigured() || $userEmail === '' || !CentralGold::isEmailVerified($userEmail)) {
 				$_SESSION['vac_error'] = TZ_VACATION_PAID_GOLD_REQUIRED;
 				header("Location: spieler.php?s=5");
 				exit;

@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS `central_gold_accounts` (
   `username`   varchar(100) NOT NULL DEFAULT '',
   `paid_gold`  int(11) NOT NULL DEFAULT 0,
   `created`    int(11) NOT NULL DEFAULT 0,
+  `email_verified` tinyint(1) NOT NULL DEFAULT 0,
+  `email_verified_at` int(11) NOT NULL DEFAULT 0,
   `updated`    int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)

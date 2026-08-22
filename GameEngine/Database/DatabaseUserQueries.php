@@ -106,14 +106,8 @@ trait DatabaseUserQueries {
 		if (!class_exists('CentralGold') || !CentralGold::isConfigured()) {
 			return;
 		}
-		$central = CentralGold::balance($email);
-		if ($central === null) {
-			return; // central service unreachable this request — try again next login
-		}
-		CentralGold::resolveAccount($email, $username, $id);
-		if ($central > 0) {
-			$this->modifyGold($id, $central, 1); // mode 1 = add, mirrors grantRegistrationGold above
-		}
+		$verified = $this->getUserField($id, 'act', 0, false) === '';
+		CentralGold::resolveAccount($email, $username, $id, $verified);
 	}
 	
 	/**

@@ -134,11 +134,17 @@ if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 $__user_lang = isset($_SESSION['lang']) ? preg_replace('/[^a-z_]/', '', strtolower((string) $_SESSION['lang'])) : '';
 define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang . ".php")) ? $__user_lang : SERVER_LANG);
 
-// ***** Speed
-// Choose your server speed. NOTICE: Higher speed, more likely
-// to have some bugs. Lower speed, most likely no major bugs.
-// Values: 1 (normal), 3 (3x speed) etc...
-define("SPEED", "1");
+// ***** Server duration / speed
+// Supported presets are 7, 10, 20, 21, 30 and 60 days. The game speed is
+// derived from the selected duration so every timed endgame feature uses the
+// same server scale. Keep this value in config so admins can change a preset
+// without editing gameplay code.
+$__server_duration_days = (int) getenv('SERVER_DURATION_DAYS');
+if (!in_array($__server_duration_days, [7, 10, 20, 21, 30, 60], true)) {
+    $__server_duration_days = 60;
+}
+define('SERVER_DURATION_DAYS', $__server_duration_days);
+define('SPEED', 300 / SERVER_DURATION_DAYS);
 
 // ***** World size
 // Defines world size. NOTICE: DO NOT EDIT!!
@@ -193,8 +199,8 @@ define('TEST_SERVER_STARTED', (int) getenv('TEST_SERVER_STARTED'));
 if (!defined('MYFATOORAH_WEBHOOK_SECRET')) define('MYFATOORAH_WEBHOOK_SECRET', (string) getenv('MYFATOORAH_WEBHOOK_SECRET'));
 
 // ***** Troop Speed
-// Values: 1 (normal), 3 (3x speed) etc...
-define("INCREASE_SPEED","1");
+// Army movement remains fixed at 2x regardless of server duration.
+define("INCREASE_SPEED","2");
 
 // ***** Evasion Speed
 define("EVASION_SPEED","1");

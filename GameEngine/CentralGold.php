@@ -102,6 +102,8 @@ class CentralGold
             return null;
         }
         mysqli_query($link, "SET NAMES 'utf8mb4'");
+        @mysqli_query($link, "ALTER TABLE central_gold_accounts ADD COLUMN email_verified tinyint(1) NOT NULL DEFAULT 0");
+        @mysqli_query($link, "ALTER TABLE central_gold_accounts ADD COLUMN email_verified_at int(11) NOT NULL DEFAULT 0");
         self::$link = $link;
         return self::$link;
     }
@@ -121,7 +123,7 @@ class CentralGold
      * @return int|null central account id, or null if central gold is
      *                   unavailable / email invalid.
      */
-    public static function resolveAccount($email, $username, $worldUserId)
+    public static function resolveAccount($email, $username, $worldUserId, $emailVerified = false)
     {
         $link = self::link();
         if (!$link) {
@@ -146,14 +148,16 @@ class CentralGold
             $accountId = (int) $row['id'];
             // Keep username fresh (players may have registered the email
             // under a different name previously on another world).
-            $u = mysqli_prepare($link, "UPDATE central_gold_accounts SET username = ?, updated = ? WHERE id = ?");
-            mysqli_stmt_bind_param($u, 'sii', $username, $now, $accountId);
+            $u = mysqli_prepare($link, "UPDATE central_gold_accounts SET username = ?, email_verified = GREATEST(email_verified, ?), email_verified_at = IF(? = 1 AND email_verified_at = 0, ?, email_verified_at), updated = ? WHERE id = ?");
+            $verified = $emailVerified ? 1 : 0;
+            mysqli_stmt_bind_param($u, 'siiiii', $username, $verified, $verified, $now, $now, $accountId);
             mysqli_stmt_execute($u);
             mysqli_stmt_close($u);
         } else {
             $ins = mysqli_prepare($link,
-                "INSERT INTO central_gold_accounts (email, username, paid_gold, created, updated) VALUES (?,?,0,?,?)");
-            mysqli_stmt_bind_param($ins, 'ssii', $email, $username, $now, $now);
+                "INSERT INTO central_gold_accounts (email, username, paid_gold, email_verified, email_verified_at, created, updated) VALUES (?,?,0,?,?,?,?)");
+            $verifiedAt = $verified ? $now : 0;
+            mysqli_stmt_bind_param($ins, 'ssiiiii', $email, $username, $verified, $verifiedAt, $now, $now);
             if (!mysqli_stmt_execute($ins)) {
                 mysqli_stmt_close($ins);
                 // Lost a race with another world creating the same account
@@ -214,6 +218,21 @@ class CentralGold
         $row = $res ? mysqli_fetch_assoc($res) : null;
         mysqli_stmt_close($stmt);
         return $row ? (int) $row['paid_gold'] : 0;
+    }
+
+    public static function isEmailVerified($email)
+    {
+        $link = self::link();
+        if (!$link) return false;
+        $email = self::normEmail($email);
+        $stmt = mysqli_prepare($link, "SELECT email_verified FROM central_gold_accounts WHERE email = ? LIMIT 1");
+        if (!$stmt) return false;
+        mysqli_stmt_bind_param($stmt, 's', $email);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        $row = $res ? mysqli_fetch_assoc($res) : null;
+        mysqli_stmt_close($stmt);
+        return $row && (int) $row['email_verified'] === 1;
     }
 
     /* ---- Balance mutation (atomic) ---------------------------------------- */
@@ -341,6 +360,10 @@ class CentralGold
         $toEmail = self::normEmail($toEmail);
         if ($fromEmail === $toEmail) {
             return [false, 'Cannot transfer gold to the same account.'];
+        }
+
+        if (!self::isEmailVerified($fromEmail) || !self::isEmailVerified($toEmail)) {
+            return [false, 'Both email addresses must be verified before paid gold can be transferred.'];
         }
 
         $fromAccountId = self::resolveAccount($fromEmail, $fromUsername, $fromWorldUserId);

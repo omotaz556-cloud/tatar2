@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: mariadb:latest
+    image: mariadb:10.11
     container_name: novaterra-db
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-${MYSQL_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in your .env file (copy .env.example first)}}

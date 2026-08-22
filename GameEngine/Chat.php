@@ -533,6 +533,13 @@ class ChatModeration
 
         $lower = mb_strtolower($msg, 'UTF-8');
 
+		// Links are forbidden in both public and alliance chat. Keep this
+		// server-side so the rule cannot be bypassed by disabling JavaScript.
+		$linkPattern = '~(?:https?://|ftp://|www\.|(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:com|net|org|io|co|me|tv|ly|ru|de|uk|us|info|biz|app|dev)(?:[/:?#]|$))~iu';
+		if (preg_match($linkPattern, $msg)) {
+			return ['code' => 'link', 'score' => 30, 'message' => 'Links are not allowed in chat'];
+		}
+
         $adPatterns = [
             'myfatoorah','fatoorah','webhook','website','site','invoice','payment','paypal','pay','buy gold','buy package','gold package','plus package','package gold',
             'شراء الذهب','شراء باقة','شراء جواهر','شراء الذهب','حزمة الذهب','باقة الذهب','فاتورة','الفاتورة','الدفع','الدفع عبر','تجديد الذهب','بيع الذهب','موقع الدفع','متجر الذهب',
@@ -547,8 +554,7 @@ class ChatModeration
             }
         }
 
-        $linkPattern = '/(https?:\/\/|www\.)/i';
-        if ($matchFound || (preg_match($linkPattern, $msg) && preg_match('/\b(click|free|gold|bonus|join|vip|offer|discord|telegram|t\.me)\b/i', $lower))) {
+		if ($matchFound) {
             return ['code' => 'ad_spam', 'score' => 30, 'message' => 'Chat spam / payment or promotion pattern'];
         }
 

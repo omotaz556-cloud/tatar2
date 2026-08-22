@@ -84,6 +84,11 @@ function send_data() {
         return false;
     }
 
+    if (/(https?:\/\/|ftp:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|io|co|me|tv|ly|ru|de|uk|us|info|biz|app|dev)([\/:?#]|$))/i.test(msg)) {
+        alert("لا يُسمح بنشر الروابط في الدردشة.");
+        return false;
+    }
+
     // optional spam protection (client-side)
     if (msg.length > 250) {
         msg = msg.substring(0, 250);

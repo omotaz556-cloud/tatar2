@@ -19,7 +19,7 @@
 
 <?php
 /* Natars announcement: the deadline is calculated server-side from config. */
-$tzNatarsSpawnAt = strtotime(START_DATE) + ((int) NATARS_SPAWN_TIME * 86400);
+$tzNatarsSpawnAt = strtotime(START_DATE) + ((int) NATARS_SPAWN_TIME * 86400 / SPEED);
 $tzNatarsSpawned = method_exists($database, 'areArtifactsSpawned') && (bool) $database->areArtifactsSpawned();
 $tzNatarsRemaining = max(0, $tzNatarsSpawnAt - time());
 ?>
