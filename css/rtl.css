@@ -53,6 +53,8 @@ html[dir="rtl"] #mid {
     margin-top: 28px !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    position: relative;
+    left: -120px;
 }
 
 /* بعض الصفحات تضع فواصل BR قبل العمود الجانبي، وتبقى ظاهرة إذا كانت
@@ -395,6 +397,7 @@ html[dir="rtl"] #content h1 {
     html[dir="rtl"] #mid {
         margin-left: 0 !important;
         margin-right: 0 !important;
+        left: 0;
     }
     html[dir="rtl"] body.dorf1Page #side_info {
         left: 0;
