@@ -41,11 +41,11 @@ if ($session->userinfo['sit2'] != 0) $count += 1;
  * perm1[], perm2[] si perm_new[], fiecare continand valorile bitilor bifati.
  */
 $sitterPermList = array(
-    SITTER_PERM_ATTACK => defined('SITTER_P_ATTACK') ? SITTER_P_ATTACK : 'send attacks',
-    SITTER_PERM_RAID   => defined('SITTER_P_RAID')   ? SITTER_P_RAID   : 'send raids',
-    SITTER_PERM_REINF  => defined('SITTER_P_REINF')  ? SITTER_P_REINF  : 'send reinforcements',
-    SITTER_PERM_RES    => defined('SITTER_P_RES')    ? SITTER_P_RES    : 'send resources to other players',
-    SITTER_PERM_GOLD   => defined('SITTER_P_GOLD')   ? SITTER_P_GOLD   : 'spend Gold',
+    SITTER_PERM_ATTACK => defined('SITTER_P_ATTACK') ? SITTER_P_ATTACK : 'إرسال هجمات',
+    SITTER_PERM_RAID   => defined('SITTER_P_RAID')   ? SITTER_P_RAID   : 'إرسال غارات',
+    SITTER_PERM_REINF  => defined('SITTER_P_REINF')  ? SITTER_P_REINF  : 'إرسال تعزيزات',
+    SITTER_PERM_RES    => defined('SITTER_P_RES')    ? SITTER_P_RES    : 'إرسال موارد للاعبين آخرين',
+    SITTER_PERM_GOLD   => defined('SITTER_P_GOLD')   ? SITTER_P_GOLD   : 'إنفاق الذهب',
 );
 
 /**
@@ -200,6 +200,53 @@ if (!empty($emailError)) {
 
 #sitter .sitterCard { text-align: left; }
 
+html[dir="rtl"] body.pg-spieler #content.player {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account {
+    width: 100%;
+    margin: 0 0 12px 0;
+    border-collapse: separate;
+    border-spacing: 1px;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account thead th {
+    background: linear-gradient(#edf8e7, #d6ebca);
+    color: #202820;
+    border-bottom: 1px solid #a9c69b;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 5px 8px;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account tbody th,
+html[dir="rtl"] body.pg-spieler #content.player > table.account tbody td {
+    padding: 5px 8px;
+    vertical-align: middle;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account tbody th {
+    width: 34%;
+    color: #383838;
+    font-weight: 700;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account tbody td {
+    background: #fafafa;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account input.text,
+html[dir="rtl"] body.pg-spieler #content.player > table.account input[type="password"] {
+    box-sizing: border-box;
+    min-height: 23px;
+    border: 1px solid #b7d889;
+    background: #ffffff;
+    padding: 2px 5px;
+}
+
 #sitter .sitterHead {
     padding-bottom: 6px;
     margin-bottom: 7px;
@@ -329,7 +376,7 @@ html[dir="rtl"] #sitter .permMark {
         <div class="sitterCard addSitter">
             <div class="sitterHead">
                 <span class="name"><?php
-                    echo defined('SITTER_P_HINT') ? SITTER_P_HINT : 'Permissions for the new sitter:';
+                    echo defined('SITTER_P_HINT') ? SITTER_P_HINT : 'صلاحيات الوكيل الجديد:';
                 ?></span>
             </div>
             <?php
@@ -349,7 +396,7 @@ html[dir="rtl"] #sitter .permMark {
 // OWN SITTERS (sit1/sit2)
 // =========================
 if ($count == 0) {
-    echo "<span class=\"none\">You have no sitters.</span>";
+    echo "<span class=\"none\">ليس لديك وكلاء حاليًا.</span>";
 }
 
 $sitSlots = [1 => 'sit1', 2 => 'sit2'];
@@ -402,7 +449,7 @@ if (count($sitee) == 0) {
     // conturile pe care esti TU sitter - doua lucruri diferite
     echo "<span class=\"none\">"
        . (defined('SITTER_P_NOT_SITTING') ? SITTER_P_NOT_SITTING
-          : 'You are not a sitter on any account.')
+          : 'لست وكيلًا على أي حساب.')
        . "</span>";
 } else {
     foreach ($sitee as $sit) {

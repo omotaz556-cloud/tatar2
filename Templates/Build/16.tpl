@@ -23,6 +23,21 @@ if (isset($_GET['refresh'])) {
     $village->unitarray = $database->getUnit($village->wid, false);
 }
 $hasRally = $village->resarray['f39'] > 0;
+if (!function_exists('rallyPointDisplayName')) {
+    function rallyPointDisplayName($name)
+    {
+        $name = (string) $name;
+        if ($name === 'Unoccupied Oasis') return 'واحة غير محتلة';
+        if ($name === "admin's village") return 'قرية admin';
+        return $name;
+    }
+}
+if (!function_exists('rallyPointDisplayDay')) {
+    function rallyPointDisplayDay($day)
+    {
+        return $day === 'today' ? 'اليوم' : $day;
+    }
+}
 ?>
 <div id="build" class="gid16">
     <a href="#" onclick="return Popup(16,4);" class="build_logo">
@@ -57,7 +72,7 @@ $hasRally = $village->resarray['f39'] > 0;
     <table class="troop_details" cellpadding="1" cellspacing="1">
         <thead>
             <tr>
-                <td class="role"><a href="karte.php?d=<?= $village->wid ?>&c=<?= $generator->getMapCheck($village->wid) ?>"><?= $village->vname ?></a></td>
+                <td class="role"><a href="karte.php?d=<?= $village->wid ?>&c=<?= $generator->getMapCheck($village->wid) ?>"><?= rallyPointDisplayName($village->vname) ?></a></td>
                 <td colspan="<?= $village->unitarray['hero'] ? 11 : 10 ?>"><a href="spieler.php?uid=<?= $session->uid ?>"><?= OWN_TROOPS ?></a></td>
             </tr>
         </thead>
@@ -93,7 +108,7 @@ $hasRally = $village->resarray['f39'] > 0;
         </tbody>
         <tbody class="infos"><tr><th><?= UPKEEP ?></th><td colspan="<?= $colspan ?>">
             <div class="sup"><?= $technology->getUpkeep($e,$tribe) ?><img class="r4" src="img/x.gif"> <?= PER_HR ?></div>
-            <div class="sback"><?php if(!$isTaskmaster): ?><a href="a2b.php?w=<?= $e['id'] ?>"><?= SEND_BACK ?></a><?php elseif (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4): ?><a href="a2b.php?releaseanimals=<?= $e['id'] ?>" onclick="return confirm('<?= defined('HERO_RELEASE_CONFIRM') ? HERO_RELEASE_CONFIRM : 'Release these animals? They will be gone for good.' ?>');"><?= defined('HERO_RELEASE_ANIMALS') ? HERO_RELEASE_ANIMALS : 'Release' ?></a><?php else: ?><span class="none"><b><?= SEND_BACK ?></b></span><?php endif; ?></div>
+            <div class="sback"><?php if(!$isTaskmaster): ?><a href="a2b.php?w=<?= $e['id'] ?>"><?= SEND_BACK ?></a><?php elseif (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4): ?><a href="a2b.php?releaseanimals=<?= $e['id'] ?>" onclick="return confirm('<?= defined('HERO_RELEASE_CONFIRM') ? HERO_RELEASE_CONFIRM : 'هل تريد إطلاق هذه الحيوانات؟ لن يمكن استعادتها.' ?>');"><?= defined('HERO_RELEASE_ANIMALS') ? HERO_RELEASE_ANIMALS : 'إطلاق' ?></a><?php else: ?><span class="none"><b><?= SEND_BACK ?></b></span><?php endif; ?></div>
         </td></tr></tbody>
     </table>
     <?php endforeach; ?>
@@ -141,7 +156,7 @@ $hasRally = $village->resarray['f39'] > 0;
             <thead><tr>
                 <td class="role"><a href="karte.php?d=<?= $e['vref'] ?>&c=<?= $generator->getMapCheck($e['vref']) ?>"><?= $database->getVillageField($e['conqured'],'name') ?></a></td>
                 <td colspan="<?= $colspan ?>">
-                    <a href="spieler.php?uid=<?= $owner ?>"><?= $database->getUserField($owner,'username',0) ?> <?= TROOPS ?></a> <?= FROM ?> <a href="karte.php?d=<?= $e['from'] ?>&c=<?= $generator->getMapCheck($e['from']) ?>"><?= $database->getVillageField($e['from'],'name') ?></a>
+                    <a href="spieler.php?uid=<?= $owner ?>"><?= $database->getUserField($owner,'username',0) ?> <?= TROOPS ?></a> <?= FROM ?> <a href="karte.php?d=<?= $e['from'] ?>&c=<?= $generator->getMapCheck($e['from']) ?>"><?= rallyPointDisplayName($database->getVillageField($e['from'],'name')) ?></a>
                 </td>
             </tr></thead>
             <tbody class="units">

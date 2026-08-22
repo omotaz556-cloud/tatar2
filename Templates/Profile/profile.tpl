@@ -75,8 +75,8 @@ value="<?php echo $bday[2] ?? ''; ?>" maxlength="2" />
 
 <?php
 $months = [
-1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'May',6=>'June',
-7=>'July',8=>'Aug',9=>'Sep',10=>'Oct',11=>'Nov',12=>'Dec'
+1=>'يناير',2=>'فبراير',3=>'مارس',4=>'أبريل',5=>'مايو',6=>'يونيو',
+7=>'يوليو',8=>'أغسطس',9=>'سبتمبر',10=>'أكتوبر',11=>'نوفمبر',12=>'ديسمبر'
 ];
 
 foreach ($months as $k => $v) {
@@ -95,7 +95,8 @@ maxlength="4" class="text year">
 
 <!-- DESCRIPTION RIGHT -->
 <td rowspan="<?php echo 7 + count($database->getProfileVillages($session->uid)); ?>" class="desc1">
-<textarea tabindex="7" name="be1" maxlength="3000"><?= htmlspecialchars($session->userinfo['desc2'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+<textarea tabindex="7" name="be1" id="desc_be1" maxlength="3000" hidden><?= htmlspecialchars($session->userinfo['desc2'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+<div class="profile-editor" contenteditable="true" data-source="be1" tabindex="7"></div>
 </td>
 </tr>
 
@@ -143,7 +144,7 @@ for ($i = 0; $i < count($varray); $i++):
 <td>
 <input tabindex="6" type="text"
 name="dname<?php echo $i; ?>"
-value="<?= htmlspecialchars($varray[$i]['name'], ENT_QUOTES, 'UTF-8') ?>"
+value="<?= htmlspecialchars(function_exists('tz_display_village_name') ? tz_display_village_name($varray[$i]['name'], $session->username) : $varray[$i]['name'], ENT_QUOTES, 'UTF-8') ?>"
 maxlength="30" class="text">
 </td>
 </tr>
@@ -152,7 +153,8 @@ maxlength="30" class="text">
 <!-- DESCRIPTION LEFT -->
 <tr>
 <td colspan="2" class="desc2">
-<textarea tabindex="8" name="be2" maxlength="3000"><?= htmlspecialchars($session->userinfo['desc1'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+<textarea tabindex="8" name="be2" id="desc_be2" maxlength="3000" hidden><?= htmlspecialchars($session->userinfo['desc1'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+<div class="profile-editor" contenteditable="true" data-source="be2" tabindex="8"></div>
 </td>
 </tr>
 
@@ -211,8 +213,8 @@ foreach ($varmedal as $medal) {
 ?>
 
 <tr>
-<td><?php echo BEGINPRO; ?></td><td></td><td></td>
-<td><a href="#" onclick="insertMedal('[#0]'); return false;">[#0]</a></td>
+<td><?php echo BEGINPRO; ?></td><td>غير متاح</td><td>غير متاح</td>
+<td><a href="#" title="[#0]" onclick="insertMedal('[#0]'); return false;"><img class="badge-option" src="<?php echo GP_LOCATE; ?>img/t/tn.gif" alt="[#0]"></a></td>
 </tr>
 
 <?php if (NEW_FUNCTIONS_MEDAL_3YEAR): ?>
@@ -235,9 +237,9 @@ foreach ($varmedal as $medal) {
 $tribeMedals = [];
 
 if (defined('NEW_FUNCTIONS_TRIBE_IMAGES') && NEW_FUNCTIONS_TRIBE_IMAGES) {
-    $tribeMedals[1] = ['Romans', 'roman'];
-    $tribeMedals[2] = ['Teutons', 'teuton'];
-    $tribeMedals[3] = ['Gauls', 'gaul'];
+    $tribeMedals[1] = [TRIBE1, 'roman'];
+    $tribeMedals[2] = [TRIBE2, 'teuton'];
+    $tribeMedals[3] = [TRIBE3, 'gaul'];
 }
 
 if (defined('NEW_FUNCTION_TRIBE_HUNS') && NEW_FUNCTION_TRIBE_HUNS) {
@@ -260,9 +262,10 @@ $tribe = $session->userinfo['tribe'] ?? 0;
 
 if (isset($tribeMedals[$tribe])) {
     [$name, $tag] = $tribeMedals[$tribe];
+    $badgeImage = ['roman' => 'roman.gif', 'teuton' => 'teutons.gif', 'gaul' => 'gauls.gif'][$tag] ?? 'roman.gif';
 
-    echo "<tr><td>Tribe {$name}</td><td></td><td></td>
-    <td><a href='#' onclick=\"insertMedal('[#{$tag}]'); return false;\">[#{$tag}]</a></td></tr>";
+    echo "<tr><td>القبيلة {$name}</td><td>غير متاح</td><td>غير متاح</td>
+    <td><a href='#' title='[#{$tag}]' onclick=\"insertMedal('[#{$tag}]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/{$badgeImage}' alt='[#{$tag}]'></a></td></tr>";
 }
 
 // =========================
@@ -272,25 +275,25 @@ if(defined('NEW_FUNCTIONS_MHS_IMAGES') && NEW_FUNCTIONS_MHS_IMAGES){
 
     if(($session->userinfo['access'] ?? 0) == 9){
 
-        echo "<tr><td>".ADMIN1."</td><td></td><td></td>
-        <td><a href='#' onclick=\"insertMedal('[#MULTIHUNTER]'); return false;\">[#MULTIHUNTER]</a></td></tr>";
+        echo "<tr><td>".ADMIN1."</td><td>غير متاح</td><td>غير متاح</td>
+        <td><a href='#' title='[#MULTIHUNTER]' onclick=\"insertMedal('[#MULTIHUNTER]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/t6_1.png' alt='[#MULTIHUNTER]'></a></td></tr>";
 
-        echo "<tr><td>".ADMIN1."</td><td></td><td></td>
-        <td><a href='#' onclick=\"insertMedal('[#MH]'); return false;\">[#MH]</a></td></tr>";
+        echo "<tr><td>".ADMIN1."</td><td>غير متاح</td><td>غير متاح</td>
+        <td><a href='#' title='[#MH]' onclick=\"insertMedal('[#MH]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/MH.png' alt='[#MH]'></a></td></tr>";
 
-        echo "<tr><td>".ADMIN1."</td><td></td><td></td>
-        <td><a href='#' onclick=\"insertMedal('[#TEAM]'); return false;\">[#TEAM]</a></td></tr>";
+        echo "<tr><td>".ADMIN1."</td><td>غير متاح</td><td>غير متاح</td>
+        <td><a href='#' title='[#TEAM]' onclick=\"insertMedal('[#TEAM]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/team.png' alt='[#TEAM]'></a></td></tr>";
 
     } elseif(($session->userinfo['access'] ?? 0) == 8){
 
-        echo "<tr><td>".MULTIH1."</td><td></td><td></td>
-        <td><a href='#' onclick=\"insertMedal('[#MULTIHUNTER]'); return false;\">[#MULTIHUNTER]</a></td></tr>";
+        echo "<tr><td>".MULTIH1."</td><td>غير متاح</td><td>غير متاح</td>
+        <td><a href='#' title='[#MULTIHUNTER]' onclick=\"insertMedal('[#MULTIHUNTER]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/t6_1.png' alt='[#MULTIHUNTER]'></a></td></tr>";
 
-        echo "<tr><td>".MULTIH1."</td><td></td><td></td>
-        <td><a href='#' onclick=\"insertMedal('[#MH]'); return false;\">[#MH]</a></td></tr>";
+        echo "<tr><td>".MULTIH1."</td><td>غير متاح</td><td>غير متاح</td>
+        <td><a href='#' title='[#MH]' onclick=\"insertMedal('[#MH]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/MH.png' alt='[#MH]'></a></td></tr>";
 
-        echo "<tr><td>".MULTIH1."</td><td></td><td></td>
-        <td><a href='#' onclick=\"insertMedal('[#TEAM]'); return false;\">[#TEAM]</a></td></tr>";
+        echo "<tr><td>".MULTIH1."</td><td>غير متاح</td><td>غير متاح</td>
+        <td><a href='#' title='[#TEAM]' onclick=\"insertMedal('[#TEAM]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/team.png' alt='[#TEAM]'></a></td></tr>";
     }
 }
 
@@ -417,24 +420,63 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
 </table>
 </p>
 
+<style>
+.profile-editor { min-height: 170px; padding: 4px; border: 1px solid #71d000; background: #fff; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+.profile-editor img { width: 64px; height: 64px; object-fit: contain; margin: 0 5px; vertical-align: middle; }
+.badge-option { display: inline-block; width: 26px; height: 26px; object-fit: contain; vertical-align: middle; margin: 0 3px; }
+.tbg td:last-child { white-space: nowrap; }
+</style>
+
 <!-- JS -->
 <script>
+function renderProfileEditor(textarea, editor) {
+    const badges = {
+        roman: 'img/t/roman.gif',
+        multihunter: 'img/t/t6_1.png',
+        mh: 'img/t/MH.png',
+        team: 'img/t/team.png'
+    };
+    editor.innerHTML = '';
+    const parts = textarea.value.split(/(\[(?:#?[a-z0-9_]+|[a-z0-9_]+#)\])/ig);
+    parts.forEach(function (part) {
+        const key = part.replace(/[\[\]#]/g, '').toLowerCase();
+        if (badges[key]) {
+            const image = document.createElement('img');
+            image.src = '<?php echo GP_LOCATE; ?>' + badges[key];
+            image.alt = part;
+            image.dataset.code = part;
+            editor.appendChild(image);
+        } else {
+            editor.appendChild(document.createTextNode(part));
+        }
+    });
+}
+
+function syncProfileEditor(editor) {
+    const textarea = document.getElementById('desc_' + editor.dataset.source);
+    if (!textarea) return;
+    let value = '';
+    editor.childNodes.forEach(function (node) {
+        value += node.nodeName === 'IMG' ? (node.dataset.code || '') : node.textContent;
+    });
+    textarea.value = value.substring(0, 3000);
+}
+
 function insertMedal(code) {
     const textarea = document.querySelector('textarea[name="be1"]');
     if (!textarea) return;
 
-    textarea.focus();
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    textarea.value =
-        textarea.value.substring(0, start) +
-        code +
-        textarea.value.substring(end);
-
-    textarea.selectionStart = textarea.selectionEnd = start + code.length;
+    textarea.value += code;
+    const editor = document.querySelector('.profile-editor[data-source="be1"]');
+    if (editor) renderProfileEditor(textarea, editor);
 }
+
+document.querySelectorAll('.profile-editor').forEach(function (editor) {
+    const textarea = document.getElementById('desc_' + editor.dataset.source);
+    if (!textarea) return;
+    renderProfileEditor(textarea, editor);
+    editor.addEventListener('input', function () { syncProfileEditor(editor); });
+});
 </script>
 
 <p class="btn">

@@ -32,13 +32,13 @@ if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4) {
 <?php foreach ($advWalking as $m):
     $session->timer++;
     $action = $m['t4adv'] === 'out'
-        ? (defined('HERO_ADV_MOV_OUT') ? HERO_ADV_MOV_OUT : 'Hero on an adventure')
-        : (defined('HERO_ADV_MOV_BACK') ? HERO_ADV_MOV_BACK : 'Hero returning from an adventure');
+        ? (defined('HERO_ADV_MOV_OUT') ? HERO_ADV_MOV_OUT : 'البطل في مغامرة')
+        : (defined('HERO_ADV_MOV_BACK') ? HERO_ADV_MOV_BACK : 'البطل عائد من مغامرة');
     $dt = $generator->procMtime($m['endtime']);
 ?>
 <table class="troop_details" cellpadding="1" cellspacing="1">
     <thead><tr>
-        <td class="role"><a href="karte.php?d=<?= $village->wid?>&c=<?= $generator->getMapCheck($village->wid)?>"><?= $village->vname?></a></td>
+        <td class="role"><a href="karte.php?d=<?= $village->wid?>&c=<?= $generator->getMapCheck($village->wid)?>"><?= rallyPointDisplayName($village->vname)?></a></td>
         <td colspan="2"><?= $action?></td>
     </tr></thead>
     <tbody class="units">
@@ -48,8 +48,8 @@ if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4) {
     <tbody class="infos"><tr>
         <th><?= ARRIVAL?></th>
         <td colspan="2">
-            <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($m['endtime']-time())?></span> h</div>
-            <div class="at"><?= $dt[0]!='today'?ON.' '.$dt[0].' ':''?><?= AT?> <?= $dt[1]?></div>
+            <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($m['endtime']-time())?></span> ساعة</div>
+            <div class="at"><?= rallyPointDisplayDay($dt[0])?> <?= AT?> <?= $dt[1]?></div>
         </td>
     </tr></tbody>
 </table>
@@ -74,8 +74,8 @@ if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4) {
 ?>
 <table class="troop_details" cellpadding="1" cellspacing="1">
     <thead><tr>
-        <td class="role"><a href="karte.php?d=<?= $village->wid?>&c=<?= $generator->getMapCheck($village->wid)?>"><?= $village->vname?></a></td>
-        <td colspan="<?= $colspan?>"><a href="karte.php?d=<?= $to['wref']?>&c=<?= $generator->getMapCheck($to['wref'])?>"><?= $action?> <?= $to['name']?></a></td>
+        <td class="role"><a href="karte.php?d=<?= $village->wid?>&c=<?= $generator->getMapCheck($village->wid)?>"><?= rallyPointDisplayName($village->vname)?></a></td>
+        <td colspan="<?= $colspan?>"><a href="karte.php?d=<?= $to['wref']?>&c=<?= $generator->getMapCheck($to['wref'])?>"><?= $action?> <?= rallyPointDisplayName($to['name'])?></a></td>
     </tr></thead>
     <tbody class="units">
         <tr><th>&nbsp;</th>
@@ -90,16 +90,16 @@ if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4) {
     <?php if (defined('NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET') && NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET && $m['t8']>0 && $atk==3 &&!$database->isVillageOases($m['to'])):?>
     <tbody><tr>
         <th><?= CATAPULT_TARGET?></th>
-        <td style="text-align:center" colspan="5"><?= $m['ctar1']==0?'Random':Building::procResType($m['ctar1'])?></td>
-        <td style="text-align:center" colspan="<?= $m['t11']?6:5?>"><?= $m['ctar2']==99?'Random':($m['ctar2']==0?'-':Building::procResType($m['ctar2']))?></td>
+        <td style="text-align:center" colspan="5"><?= $m['ctar1']==0?'عشوائي':Building::procResType($m['ctar1'])?></td>
+        <td style="text-align:center" colspan="<?= $m['t11']?6:5?>"><?= $m['ctar2']==99?'عشوائي':($m['ctar2']==0?'-':Building::procResType($m['ctar2']))?></td>
     </tr></tbody>
     <?php endif;?>
 
     <tbody class="infos"><tr>
         <th><?= ARRIVAL?></th>
         <td colspan="<?= $colspan?>">
-            <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($m['endtime']-time())?></span> h</div>
-            <div class="at"><?= $dt[0]!='today'?ON.' '.$dt[0].' ':''?><?= AT?> <?= $dt[1]?></div>
+            <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($m['endtime']-time())?></span> ساعة</div>
+            <div class="at"><?= rallyPointDisplayDay($dt[0])?> <?= AT?> <?= $dt[1]?></div>
             <?php if(($m['starttime']+90)>time()):?>
                 <div class="abort"><a href="build.php?id=<?= $_GET['id']?>&mode=troops&cancel=1&moveid=<?= $m['moveid']?>"><img src="img/x.gif" class="del"></a></div>
             <?php endif;?>
@@ -114,7 +114,7 @@ foreach ($settlers as $s):
 ?>
 <table class="troop_details" cellpadding="1" cellspacing="1">
     <thead><tr>
-        <td class="role"><a href="karte.php?d=<?= $village->wid?>&c=<?= $generator->getMapCheck($village->wid)?>"><?= $village->vname?></a></td>
+        <td class="role"><a href="karte.php?d=<?= $village->wid?>&c=<?= $generator->getMapCheck($village->wid)?>"><?= rallyPointDisplayName($village->vname)?></a></td>
         <td colspan="10"><a href="karte.php?d=<?= $s['to']?>&c=<?= $generator->getMapCheck($s['to'])?>"><?= FOUNDNEWVILLAGE?></a></td>
     </tr></thead>
     <tbody class="units">
@@ -123,8 +123,8 @@ foreach ($settlers as $s):
     </tbody>
     <tbody class="infos"><tr>
         <th><?= ARRIVAL?></th><td colspan="10">
-            <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($s['endtime']-time())?></span> h</div>
-            <div class="at small"><?= $dt[0]!='today'?ON.' '.$dt[0].' ':''?><?= AT?> <?= $dt[1]?></div>
+            <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($s['endtime']-time())?></span> ساعة</div>
+                <div class="at small"><?= rallyPointDisplayDay($dt[0])?> <?= AT?> <?= $dt[1]?></div>
             <?php if(($s['starttime']+90)>time()):?>
                 <div class="abort"><a href="build.php?id=<?= $_GET['id']?>&mode=troops&cancel=1&moveid=<?= $s['moveid']?>"><img src="img/x.gif" class="del"></a></div>
             <?php endif;?>

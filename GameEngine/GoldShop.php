@@ -349,19 +349,6 @@ class GoldShop
             }
         }
 
-        // Mirror this grant into the central, cross-world PAID gold ledger
-        // (no-ops entirely if CENTRAL_GOLD_* isn't configured for this
-        // deployment — see GameEngine/CentralGold.php). Promo-redeemed gold
-        // counts as "paid" gold per the client brief: it is portable to any
-        // other world the same email registers on, same as a real purchase.
-        if (class_exists('CentralGold') && CentralGold::isConfigured()) {
-            $userRow = mysqli_query($link, "SELECT username, email FROM `" . TB_PREFIX . "users` WHERE id = " . $uid . " LIMIT 1");
-            $userRow = $userRow ? mysqli_fetch_assoc($userRow) : null;
-            if ($userRow && !empty($userRow['email'])) {
-                CentralGold::credit($userRow['email'], $userRow['username'], $uid, $gold, 'promo_redeem', 'code: ' . $code);
-            }
-        }
-
         // Record the redemption.
         $ins = mysqli_prepare($link,
             "INSERT INTO `" . TB_PREFIX . "gold_promo_redeem` (promo_id, uid, gold, time)

@@ -166,6 +166,16 @@ if (!flock($runLockHandle, LOCK_EX | LOCK_NB)) {
 // -----------------------------------------------------------------------------
 include_once($autoprefix . 'GameEngine/Database.php');
 
+// Take one daily backup before the first automation tick changes the world.
+$backupMarker = $autoprefix . 'var/backups/.last_daily_backup';
+if (!is_file($backupMarker) || (time() - (int) @file_get_contents($backupMarker)) >= 86400) {
+    $backupOutput = [];
+    $backupCode = 1;
+    @exec(PHP_BINARY . ' ' . escapeshellarg($autoprefix . 'backup.php'), $backupOutput, $backupCode);
+    if ($backupCode !== 0) { if ($isCli) fwrite(STDERR, "cron: daily backup failed; automation skipped\n"); exit(1); }
+    @file_put_contents($backupMarker, (string) time(), LOCK_EX);
+}
+
 if (!isset($database) || !$database) {
     if ($isCli) { fwrite(STDERR, "cron: conexiunea la baza de date a esuat\n"); }
     flock($runLockHandle, LOCK_UN);

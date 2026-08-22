@@ -218,6 +218,9 @@ class Artifacts
      
     NATARS_BASE_SPY = 1500,
 
+    /** @var int Scouts used for the one-time phase-start announcement */
+    NATARS_ANNOUNCEMENT_SCOUTS = 1,
+
     /**
      * @var int the base amount of Natars' WW villages 
      */
@@ -275,6 +278,13 @@ class Artifacts
     
     public function createNatars(){
         global $database;
+
+        // The spawn job can be retried after a timeout. Keep the fixed Natar
+        // account idempotent so a retry cannot produce a duplicate-key error.
+        $existingNatars = $database->query_return("SELECT id FROM " . TB_PREFIX . "users WHERE id = " . self::NATARS_UID . " LIMIT 1");
+        if ($existingNatars && !empty($existingNatars[0])) {
+            return;
+        }
         
         //Register the Natars account, the Natars' password is the same as the MH's one
         $password = $database->getUserField(5, 'password', 0);
@@ -330,7 +340,10 @@ class Artifacts
         $vils = [];
         
         foreach($array as $vill){
-            $refs[] = $database->addAttack($wid, 0, 0, 0, self::NATARS_BASE_SPY * NATARS_UNITS, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0, 0);
+            // One symbolic scout per player's capital creates one visible
+            // attack report without turning the phase announcement into a
+            // real military strike.
+            $refs[] = $database->addAttack($wid, 0, 0, 0, self::NATARS_ANNOUNCEMENT_SCOUTS * NATARS_UNITS, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0, 0);
             $vils[] = $vill['wref'];
         }
         

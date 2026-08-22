@@ -179,7 +179,18 @@ define("PW_MIN_LENGTH", 4);
 // true = activation mail will be sent, users will have to finish registration
 //        by clicking on link recieved in mail.
 // false =  users can register with any mail. Not needed to be real one.
-define("AUTH_EMAIL",false);
+define("AUTH_EMAIL",true);
+define('REGISTRATION_MAX_PER_IP', 2);
+define('REGISTRATION_MAX_PER_DEVICE', 3);
+define('REGISTRATION_LIMIT_WINDOW', 86400);
+define('BACKUP_DIR', __DIR__ . '/../var/backups');
+define('TEST_SERVER_MODE', false);
+define('TEST_SERVER_DAYS', 7);
+define('TEST_SERVER_STARTED', (int) getenv('TEST_SERVER_STARTED'));
+
+// MyFatoorah sends payment status updates here. Keep this secret outside the
+// repository in production and provide it as an environment variable.
+if (!defined('MYFATOORAH_WEBHOOK_SECRET')) define('MYFATOORAH_WEBHOOK_SECRET', (string) getenv('MYFATOORAH_WEBHOOK_SECRET'));
 
 // ***** Troop Speed
 // Values: 1 (normal), 3 (3x speed) etc...
@@ -400,15 +411,15 @@ define("LOG_TECH",false);
 // LOG USER LOGIN (IP's)
 define("LOG_LOGIN",false);
 // LOG GOLD
-define("LOG_GOLD_FIN",false);
+define("LOG_GOLD_FIN",true);
 // LOG ADMIN
-define("LOG_ADMIN",false);
+define("LOG_ADMIN",true);
 // LOG ATTACK REPORTS
 define("LOG_WAR",false);
 // LOG MARKET REPORTS
 define("LOG_MARKET",false);
 // LOG ILLEGAL ACTIONS
-define("LOG_ILLEGAL",false);
+define("LOG_ILLEGAL",true);
 
 //////////////////////////////////
 // ****  NEWSBOX SETTINGS  **** //
@@ -519,19 +530,19 @@ define("NEW_FUNCTIONS_OASIS", false);
 define("NEW_FUNCTIONS_ALLIANCE_INVITATION", false);
 define("NEW_FUNCTIONS_EMBASSY_MECHANICS", false);
 define("NEW_FUNCTIONS_FORUM_POST_MESSAGE", false);
-define("NEW_FUNCTIONS_TRIBE_IMAGES", false);
-define("NEW_FUNCTIONS_MHS_IMAGES", false);
+define("NEW_FUNCTIONS_TRIBE_IMAGES", true);
+define("NEW_FUNCTIONS_MHS_IMAGES", true);
 define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", false);
 define("NEW_FUNCTIONS_DISPLAY_WONDER", false);
 define("NEW_FUNCTIONS_VACATION", false);
 define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", false);
-define("NEW_FUNCTIONS_MANUAL_NATURENATARS", false);
+define("NEW_FUNCTIONS_MANUAL_NATURENATARS", true);
 define("NEW_FUNCTIONS_DISPLAY_LINKS", false);
 define("NEW_FUNCTIONS_MEDAL_3YEAR", false);
 define("NEW_FUNCTIONS_MEDAL_5YEAR", false);
 define("NEW_FUNCTIONS_MEDAL_10YEAR", false);
 define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", false);
-define("NEW_FUNCTIONS_MILESTONES", false);
+define("NEW_FUNCTIONS_MILESTONES", true);
 define("NEW_FUNCTIONS_MEDAL_RESET", false);
 define("NEW_FUNCTIONS_HERO_T4", false);
 define("NEW_FUNCTION_TRIBE_HUNS", false);

@@ -19,8 +19,9 @@
 #################################################################################
 
 // -------------------------------------------------
-// SAFE ALLIANCE ID
+// Chat scope: alliance chat or public chat
 // -------------------------------------------------
+$isPublicChat = !empty($_GET['public']) || basename($_SERVER['PHP_SELF'] ?? '') === 'public_chat.php';
 if (!isset($aid)) {
     $aid = (int)$session->alliance;
 }
@@ -28,17 +29,23 @@ if (!isset($aid)) {
 // -------------------------------------------------
 // LOAD ALLIANCE DATA
 // -------------------------------------------------
-$allianceinfo = $database->getAlliance($aid);
+$allianceinfo = $isPublicChat ? [] : $database->getAlliance($aid);
 
 // header (XSS safe)
-echo "<h1>" 
-    . htmlspecialchars($allianceinfo['tag'], ENT_QUOTES, 'UTF-8') 
-    . " - " 
-    . htmlspecialchars($allianceinfo['name'], ENT_QUOTES, 'UTF-8') 
-    . "</h1>";
+if ($isPublicChat) {
+    echo '<h1>الدردشة العامة</h1>';
+} else {
+    echo "<h1>"
+        . htmlspecialchars($allianceinfo['tag'], ENT_QUOTES, 'UTF-8')
+        . " - "
+        . htmlspecialchars($allianceinfo['name'], ENT_QUOTES, 'UTF-8')
+        . "</h1>";
+}
 
 // menu
-include("alli_menu.tpl");
+if (!$isPublicChat) {
+    include("alli_menu.tpl");
+}
 ?>
 
 <script type="text/javascript">
@@ -96,7 +103,7 @@ function send_data() {
 
 <form name="form1" onsubmit="return send_data();">
 
-    <div id="TitleName" class="chatHeader"><?php echo TZ_ALLY_CHAT; ?></div>
+    <div id="TitleName" class="chatHeader"><?php echo $isPublicChat ? 'الدردشة العامة' : TZ_ALLY_CHAT; ?></div>
 
     <div id="chatContainer"
          style="position:relative; height:220px; width:500px; overflow:hidden; background:#FFF; border:1px solid #C0C0C0;">

@@ -82,24 +82,25 @@ if(isset($_GET['aid']) || isset($_GET['fid']) || isset($_GET['fid2']) ||
 	if(!empty($_GET['s'])){
 		switch($_GET['s']){
 			case '2' :
-				if($session->alliance == 0) echo 'Forum (No alliance)';
-				else echo 'Forum ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				if($session->alliance == 0) echo 'المنتدى (بدون تحالف)';
+				else echo 'المنتدى ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
 				break;
 			
 			case '6' :
-				echo 'Chat ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				if (!empty($_GET['public'])) echo 'الدردشة العامة';
+				else echo 'الدردشة ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
 				break;
 			
 			case '3' :
-				echo 'Attacks ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				echo 'الهجمات ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
 				break;
 			
 			case '4' :
-				echo 'News ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				echo 'الأخبار ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
 				break;
 			
 			case '5' :
-				echo 'Options ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				echo 'الخيارات ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
 				break;
 		}
 	}

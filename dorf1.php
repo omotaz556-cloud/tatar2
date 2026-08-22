@@ -160,8 +160,8 @@ echo "</div>\n"; // close #content early, so #side_info is a sibling
 ?>
 <br /><br /><br /><br /><div id="side_info">
 <?php
-include("Templates/multivillage.tpl");
 include("Templates/quest.tpl");
+include("Templates/multivillage.tpl");
 include("Templates/news.tpl");
 if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
 	echo "<br><br><br><br>";

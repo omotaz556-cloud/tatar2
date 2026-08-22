@@ -46,7 +46,7 @@ $trainlist = $technology->getTrainingList(2);
                     <?php if ($session->tribe!= 4) include("20_train.tpl");?>
                 </tbody>
             </table>
-            <p><input type="image" id="btn_train" class="dynamic_img" value="ok" name="s1" src="img/x.gif" alt="<?php echo TRAIN; ?>" /></p>
+            <p><input type="image" id="btn_train" class="dynamic_img" value="ok" name="s1" src="img/x.gif" alt="<?php echo TRAIN; ?>" /><?php include("training_gold.tpl"); ?></p>
         </form>
     <?php else:?>
         <b><?php echo TRAINING_COMMENCE_STABLE;?></b><br />

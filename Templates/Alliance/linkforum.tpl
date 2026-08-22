@@ -61,7 +61,7 @@ include("alli_menu.tpl");
 <tbody>
 
 <tr>
-    <th>URL</th>
+    <th>الرابط</th>
     <td>
         <input
             class="link text"

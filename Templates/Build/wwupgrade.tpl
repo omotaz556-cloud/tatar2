@@ -24,7 +24,7 @@ global $village, $building, $database, $generator, $session, $id;
 $bid = (int)$village->resarray['f'.$id.'t'];
 $bindicate = $building->canBuild($id, $bid);
 $wwlevel = (int)$village->resarray['f99'];
-$needed_plan = $wwlevel >= 50? 1 : 0;
+$needed_plan = $wwlevel >= 49? 1 : 0;
 
 if (!$building->allowWwUpgrade()) {
     echo $needed_plan == 0

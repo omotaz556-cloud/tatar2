@@ -801,7 +801,7 @@ trait DatabaseUserQueries {
         $time = time() + $days1;
         $q = "UPDATE " . TB_PREFIX . "users SET vac_mode = '1' , vac_time=" . $time . " WHERE id=" . $uid . "";
         $result = mysqli_query($this->dblink, $q);
-		return;
+		return $result;
     }
 
     function removevacationmode($uid){

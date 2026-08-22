@@ -187,14 +187,14 @@ trait DatabaseTroopQueries {
         $typeKeys = [];
         $values = [];
 	    
-	    if($troopsArray != null){
-            $typeKeys = $troopsArray[0];
-	        $values = $troopsArray[1];
+        if($troopsArray != null && isset($troopsArray[0]) && isset($troopsArray[1])){
+            $typeKeys = is_array($troopsArray[0]) ? $troopsArray[0] : [];
+	        $values = is_array($troopsArray[1]) ? $troopsArray[1] : [];
 	        
             $types = ",u".implode(",u", $typeKeys);
 	    }    
 	    
-        foreach ($vid as $index => $vidValue) $vid[$index] = (int) $vidValue.($troopsArray != null ? ",".implode(",", $values[$index]) : "");
+        foreach ($vid as $index => $vidValue) $vid[$index] = (int) $vidValue.(!empty($typeKeys) && isset($values[$index]) && is_array($values[$index]) ? ",".implode(",", $values[$index]) : "");
 
         $duplicateUpdate = "";
         if(!empty($typeKeys)){
@@ -554,6 +554,29 @@ trait DatabaseTroopQueries {
 		$result = mysqli_query($this->dblink,$q);
 		return $this->mysqli_fetch_all($result);
 	}
+
+    function speedUpTraining($vid) {
+        list($vid) = $this->escape_input((int) $vid);
+        $now = time();
+        return mysqli_query($this->dblink, "UPDATE " . TB_PREFIX . "training SET timestamp = $now, timestamp2 = $now WHERE vref = $vid AND amt > 0");
+    }
+
+    function completeTraining($vid) {
+        list($vid) = $this->escape_input((int) $vid);
+        $rows = $this->getTraining($vid);
+        foreach ($rows as $row) {
+            $amount = (int) $row['amt'];
+            $unit = (int) $row['unit'];
+            if ($amount <= 0) {
+                continue;
+            }
+        $unit = ($unit > 1000 && $unit != 99) ? $unit - 1000 : $unit;
+        $this->modifyUnit($vid, [$unit], [$amount], [1]);
+        $this->trainUnit($row['id'], 0, 0, 0, 0, 1);
+    }
+    self::clearUnitsCache();
+    return true;
+}
 
 	function trainUnit($vid, $unit, $amt, $pop, $each, $mode) {
 	    list($vid, $unit, $amt, $pop, $each, $mode) = $this->escape_input((int) $vid, (int) $unit, (int) $amt, (int) $pop, (int) $each, $mode);

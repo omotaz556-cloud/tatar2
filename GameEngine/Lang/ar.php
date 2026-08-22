@@ -969,7 +969,7 @@ tz_def('PREFERENCES', 'التفضيلات');
 tz_def('VACATION', 'وضع الإجازة');
 tz_def('ACTIVATE_VACATION', 'هل تريد تفعيل وضع الإجازة');
 tz_def('GRAPH_PACK', 'الحزمة الرسومية');
-tz_def('PLAYER_PROFILE', 'الملف الشخصي للاعب');
+tz_def('PLAYER_PROFILE', 'عضوية اللاعب');
 tz_def('CHANGE_PASSWORD', 'تغيير كلمة المرور');
 tz_def('OLD_PASSWORD', 'كلمة المرور القديمة');
 tz_def('NEW_PASSWORD', 'كلمة المرور الجديدة');
@@ -1202,7 +1202,7 @@ tz_def('WWVILLAGEMSG', '<h1><b>قرى عجائب الدنيا</b></h1>
 tz_def('WILL_SPAWN_IN', 'سيظهر خلال');
 tz_def('PLAN', 'مخطط بناء قديم');
 tz_def('PLANVILLAGE', 'مخطط بناء عجيبة الدنيا');
-tz_def('PLAN_DESC', 'بهذا المخطط القديم ستتمكن من بناء عجيبة الدنيا حتى المستوى 50. للبناء أكثر من ذلك، يجب أن يملك تحالفك مخططين على الأقل.');
+tz_def('PLAN_DESC', 'بهذا المخطط القديم ستتمكن من بناء عجيبة الدنيا حتى المستوى 49. بدءًا من المستوى 50، يجب أن يملك عضو آخر في تحالفك مخططًا ثانيًا.');
 tz_def('PLAN_INFO', '<h1><b>مخططات بناء عجيبة الدنيا</b></h1>
 
 
@@ -2271,6 +2271,13 @@ tz_def('TZ_N_2_CONSTRUCT_A_BUILDING', '2. ابنِ مبنى');
 tz_def('TZ_N_2_DAYS', 'يومان');
 tz_def('TZ_N_2_EXTEND_THE_RESOURCE_FIELD', '2. ارفع حقل الموارد');
 tz_def('TZ_N_3_5_BUILDINGS', '(3/5) المباني');
+tz_def('TZ_TITLE_LARGEST_EMPIRE', 'أكبر إمبراطورية في السيرفر');
+tz_def('TZ_TITLE_TOP_ATTACKER', 'الأول على المهاجمين');
+tz_def('TZ_TITLE_TOP_DEFENDER', 'الأول على المدافعين');
+tz_def('TZ_TITLE_TOP_RAIDER', 'الأول على السارقين');
+tz_def('TZ_VACATION_PAID_GOLD_REQUIRED', 'وضع الإجازة يحتاج إلى ذهب مشتَرى موثّق.');
+tz_def('TZ_VACATION_PAID_GOLD_COST', 'يحتاج تفعيل وضع الإجازة إلى ذهب مشتَرى واحد.');
+tz_def('TZ_VACATION_ACTIVATION_FAILED', 'تعذر تفعيل وضع الإجازة، وتمت إعادة الذهب المشتَرى.');
 tz_def('TZ_N_4_5_NEIGHBOURS', '(4/5) الجيران');
 tz_def('TZ_N_5_5_NAVIGATION', '(5/5) التنقّل');
 tz_def('TZ_OFFER_A_CONFEDERATION', 'عرض اتحاد كونفدرالي');

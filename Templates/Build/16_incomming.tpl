@@ -135,7 +135,7 @@ function cycleMarker(moveid, el){
     <tbody class="infos"><tr>
         <th><?= ARRIVAL?></th>
         <td colspan="<?= $colspan?>">
-            <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($u['endtime']-time())?></span> h</div>
+            <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($u['endtime']-time())?></span> ساعة</div>
             <div class="at small"><?= $dt[0]!='today'? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?> <?= HRS?></div>
         </td>
     </tr></tbody>
@@ -165,7 +165,7 @@ function cycleMarker(moveid, el){
     </td></tr></tbody>
     <?php endif;?>
     <tbody class="infos"><tr><th><?= ARRIVAL?></th><td colspan="<?= $colspan?>">
-        <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($u['endtime']-time())?></span> h</div>
+        <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($u['endtime']-time())?></span> ساعة</div>
         <div class="at"><?= $dt[0]!='today'? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?></div>
     </td></tr></tbody>
 </table>
@@ -190,7 +190,7 @@ function cycleMarker(moveid, el){
         endfor;?></tr>
     </tbody>
     <tbody class="infos"><tr><th><?= ARRIVAL?></th><td colspan="<?= $colspan?>">
-        <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($m['endtime']-time())?></span> h</div>
+        <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($m['endtime']-time())?></span> ساعة</div>
         <div class="at"><?= $dt[0]!='today'? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?> <?= HRS?></div>
     </td></tr></tbody>
 </table>
@@ -209,7 +209,7 @@ function cycleMarker(moveid, el){
         <tr><th><?= TROOPS?></th><?php for($i=1;$i<=10;$i++): $v=($i==10?3:0);?><td class="<?= $v==0?'none':''?>"><?= $v?></td><?php endfor;?></tr>
     </tbody>
     <tbody class="infos"><tr><th><?= ARRIVAL?></th><td colspan="10">
-        <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($s['endtime']-time())?></span> h</div>
+        <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($s['endtime']-time())?></span> ساعة</div>
         <div class="at"><?= $dt[0]!='today'? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?></div>
     </td></tr></tbody>
 </table>

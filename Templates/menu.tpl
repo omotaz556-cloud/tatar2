@@ -156,6 +156,17 @@ $idUser      = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
             <?php echo FORUM; ?>
         </a>
     </p>
+
+
+    <p>
+        <a href="#" onclick="document.getElementById('socialPopup').style.display='block'; return false;">الدردشة</a>
+    </p>
+
+    <div id="socialPopup" style="display:none;position:fixed;z-index:10000;top:120px;right:20px;width:190px;padding:12px;background:#fff;border:1px solid #b8c9d1;box-shadow:0 3px 12px rgba(0,0,0,.25);text-align:right;">
+        <strong style="display:block;margin-bottom:8px;color:#28566a;">الدردشة</strong>
+        <a style="display:block;padding:6px 0;" href="allianz.php?s=6&amp;public=1">الدردشة العامة</a>
+        <a style="display:block;padding-top:8px;border-top:1px solid #e1e8eb;" href="#" onclick="document.getElementById('socialPopup').style.display='none'; return false;">إغلاق</a>
+    </div>
 	
 	<!-- Discord -->
 	<p>
@@ -165,6 +176,10 @@ $idUser      = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 	</p>
 
     <!-- Plus / Support / Custom links -->
+    <p>
+        <a href="activity.php">مكافأة النشاط</a>
+    </p>
+
     <p>
 
         <?php

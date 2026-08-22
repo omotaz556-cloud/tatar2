@@ -43,7 +43,7 @@ if ($session->alliance == $aid && $session->alliance > 0) {
     </a>
 
     | <!-- Chat -->
-    <a href="allianz.php?s=6" <?php if ($s === 6) { echo 'class="selected"'; } ?>>
+    <a href="allianz.php?s=6" title="الدردشة" <?php if ($s === 6) { echo 'class="selected"'; } ?>>
         <?php echo TZ_CHAT; ?>
     </a>
 

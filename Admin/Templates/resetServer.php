@@ -29,6 +29,20 @@ if (!isset($_SESSION['access']) || (int)$_SESSION['access'] < ADMIN) {
 }
 set_time_limit(0);
 
+// Preserve final player stats, medals, and paid-gold ownership before the
+// world tables are reset. CentralGold is a separate database and is never
+// truncated, so purchased balances remain portable to the new server.
+$archiveTable = TB_PREFIX . 'server_archive';
+mysqli_query($GLOBALS["link"], "CREATE TABLE IF NOT EXISTS `" . $archiveTable . "` (id int(11) NOT NULL AUTO_INCREMENT, archive_key varchar(32) NOT NULL, payload longtext NOT NULL, created int(11) NOT NULL, PRIMARY KEY(id), KEY archive_key(archive_key)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+foreach (['users', 'medal', 'allimedal'] as $archiveName) {
+    $archiveRows = [];
+    $archiveSelect = $archiveName === 'users' ? 'id,username,email,tribe,access,gold,plus,protect,timestamp,regtime' : '*';
+    $archiveResult = mysqli_query($GLOBALS["link"], "SELECT " . $archiveSelect . " FROM `" . TB_PREFIX . $archiveName . "`");
+    while ($archiveResult && ($archiveRow = mysqli_fetch_assoc($archiveResult))) $archiveRows[] = $archiveRow;
+    $archivePayload = mysqli_real_escape_string($GLOBALS["link"], json_encode($archiveRows, JSON_UNESCAPED_UNICODE));
+    mysqli_query($GLOBALS["link"], "INSERT INTO `" . $archiveTable . "` (archive_key,payload,created) VALUES ('" . $archiveName . "','" . $archivePayload . "'," . time() . ")");
+}
+
 // 1. Salvăm adminul dacă e bifat
 $keepAdmin = isset($_POST['keep_admin']) && $_POST['keep_admin'] == '1';
 $adminData = null;

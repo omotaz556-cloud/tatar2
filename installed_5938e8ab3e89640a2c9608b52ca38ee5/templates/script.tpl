@@ -43,6 +43,16 @@ body{margin:0;background:#f1f5f9!important;font-family:system-ui,-apple-system,S
 .btn{display:inline-block;background:var(--primary);color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:600;cursor:pointer;text-decoration:none;box-shadow:0 6px 16px rgba(22,163,74,.2);}
 .btn:hover{filter:brightness(1.05);}
 .input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff;}
+.server-speed-control{min-width:0;}
+.server-speed-help{font-size:11px;color:var(--muted);margin-top:4px;}
+.server-speed-reference{grid-column:1 / -1;background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px;}
+.server-speed-reference table{width:100%;border-collapse:collapse;text-align:inherit;margin-bottom:12px;}
+.server-speed-reference th,.server-speed-reference td{border:1px solid #cbd5e1;padding:7px 10px;}
+.server-speed-reference th{background:#ecfdf5;color:#166534;}
+.server-speed-reference td:last-child,.server-speed-formula{unicode-bidi:isolate;}
+.server-speed-formula{font-weight:700;}
+.server-speed-note{border-right:4px solid #16a34a;background:#f0fdf4;padding:10px 12px;margin-top:12px;}
+html[dir="ltr"] .server-speed-note{border-left:4px solid #16a34a;border-right:0;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:900px){#mid{grid-template-columns:1fr!important;}.tz-header{margin:12px 16px 0;}}
 
@@ -83,6 +93,15 @@ document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('img, div, footer').forEach(el=>{
     if(el.textContent && el.textContent.includes('GAMEBRAND')) el.style.display='none';
   });
+
+  var duration = document.getElementById('server_duration');
+  var speed = document.getElementById('speed');
+  if(duration && speed){
+    duration.addEventListener('change',function(){
+      var selected = duration.options[duration.selectedIndex];
+      speed.value = selected.getAttribute('data-speed');
+    });
+  }
 });
 </script>
 

@@ -71,6 +71,30 @@ $totalpop = 0;
 foreach ($varray as $vil) {
     $totalpop += (int)$vil['pop'];
 }
+
+// Live titles: these are calculated from the same current ranking values
+// shown in Statistics, so a title changes automatically when rankings change.
+$classificationTitles = [];
+$rankingWhere = "u.access < " . (INCLUDE_ADMIN ? "10" : "8") . " AND u.id > 5 AND u.tribe IN (1,2,3,6,7,8,9)";
+$classificationQueries = [
+    'population' => "SELECT u.id AS userid FROM " . TB_PREFIX . "users u LEFT JOIN " . TB_PREFIX . "vdata v ON v.owner = u.id WHERE $rankingWhere GROUP BY u.id ORDER BY COALESCE(SUM(v.pop), 0) DESC, COUNT(CASE WHEN v.type != 99 THEN v.wref END) DESC, u.id DESC LIMIT 1",
+    'attack' => "SELECT u.id AS userid FROM " . TB_PREFIX . "users u WHERE $rankingWhere ORDER BY u.apall DESC, u.id DESC LIMIT 1",
+    'defense' => "SELECT u.id AS userid FROM " . TB_PREFIX . "users u WHERE $rankingWhere ORDER BY u.dpall DESC, u.id DESC LIMIT 1",
+    'raider' => "SELECT u.id AS userid FROM " . TB_PREFIX . "users u WHERE $rankingWhere ORDER BY u.RR DESC, u.id DESC LIMIT 1"
+];
+$classificationLabels = [
+    'population' => TZ_TITLE_LARGEST_EMPIRE,
+    'attack' => TZ_TITLE_TOP_ATTACKER,
+    'defense' => TZ_TITLE_TOP_DEFENDER,
+    'raider' => TZ_TITLE_TOP_RAIDER
+];
+foreach ($classificationQueries as $classification => $query) {
+    $result = mysqli_query($database->dblink, $query);
+    $row = $result ? mysqli_fetch_assoc($result) : null;
+    if ($row && (int)$row['userid'] === $uid) {
+        $classificationTitles[] = $classificationLabels[$classification];
+    }
+}
 ?>
 
 <h1><?php echo PLAYER_PROFILE; ?></h1>
@@ -113,6 +137,9 @@ if ($displayarray['access'] == BANNED)
 
 if ($displayarray['vac_mode'] == 1)
     echo "<tr><th colspan='2'><font color='Maroon'><center><b>".PROFILE_FLAG_VACATION."</b></center></font></th></tr>";
+
+foreach ($classificationTitles as $classificationTitle)
+    echo "<tr><th colspan='2'><font color='DarkGreen'><center><b>" . htmlspecialchars($classificationTitle, ENT_QUOTES, 'UTF-8') . "</b></center></font></th></tr>";
 ?>
 
 <tr>
@@ -376,10 +403,7 @@ foreach ($varray as $vil) {
     }
 
     echo "<td class=\"hab\">" . (int)$vil['pop'] . "</td>
-          <td class=\"aligned_coords\">
-          <div class=\"cox\">(" . $coor['x'] . "</div>
-          <div class=\"pi\">|</div>
-          <div class=\"coy\">" . $coor['y'] . ")</div></td></tr>";
+          <td class=\"aligned_coords\"><span dir=\"ltr\">(" . (int)$coor['x'] . "|" . (int)$coor['y'] . ")</span></td></tr>";
 }
 ?>
 

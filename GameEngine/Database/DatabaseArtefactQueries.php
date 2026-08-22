@@ -504,52 +504,59 @@ trait DatabaseArtefactQueries {
 	
     // no need to cache this method
     public function canClaimArtifact($from, $vref, $size, $type) {
-        list($size, $type) = $this->escape_input((int) $size, (int) $type);
+		list($size, $type) = $this->escape_input((int) $size, (int) $type);
 
-        $artifact = $this->getOwnArtefactInfo($from);
-        if (!empty($artifact)) return  "Treasury is full. Your hero could not claim the artefact";
-        
-        $uid = $this->getVillageField($from, "owner");
-        $vuid = $this->getVillageField($vref, "owner");
+		// The receiving village must have an empty treasury before the attack
+		// arrives. The artifact is transferred into this village immediately.
+		if (!empty($this->getOwnArtefactInfo($from, false))) {
+			return "Treasury is full. Your hero could not claim the artefact";
+		}
 
-        $artifact = $this->getOwnArtifactsSum($uid);
+		$uid = (int) $this->getVillageField($from, "owner");
+		$vuid = (int) $this->getVillageField($vref, "owner");
+		$artifacts = $this->getOwnArtifactsSum($uid);
 
-        if ($artifact['totals'] < 3 || $uid == $vuid) {
-			$DefenderFields = $this->getResourceLevel( $vref );
-            $defcanclaim    = true;
+		if ($artifacts['totals'] >= 3 && $uid != $vuid) {
+			return "Max num. of artefacts. Your hero could not claim the artefact";
+		}
 
-            for ($i = 19; $i <= 38; $i++) {
-                if ($DefenderFields['f'.$i.'t'] == 27) {
-                    $defTresuaryLevel = $DefenderFields['f'.$i];
-                    if ($defTresuaryLevel > 0) {
-                        $defcanclaim = false;
-                        return "Treasury has not been destroyed. Your hero could not claim the artefact";                   
-                    }
-                    else $defcanclaim = true;
-                }
-            }
+		// A defending treasury must be destroyed before its artifact can be
+		// captured. A missing/destroyed treasury is the only valid state.
+		$defenderTreasuryLevel = $this->getTreasuryLevel($vref);
+		if ($defenderTreasuryLevel > 0) {
+			return "Treasury has not been destroyed. Your hero could not claim the artefact";
+		}
 
-            $AttackerFields = $this->getResourceLevel( $from, 2 );
+		$attackerTreasuryLevel = $this->getTreasuryLevel($from, 2);
+		$hasVillageTreasury = $attackerTreasuryLevel >= 10;
+		$hasAccountTreasury = $attackerTreasuryLevel >= 20;
 
-            for($i = 19; $i <= 38; $i++) {
-                if($AttackerFields['f'.$i.'t'] == 27) {
-                    $attTresuaryLevel = $AttackerFields['f'.$i];
-                    $villageartifact = $attTresuaryLevel >= 10;
-                    $accountartifact = $attTresuaryLevel >= 20;
-                }
-            }
+		if (($artifacts['great'] > 0 || $artifacts['unique'] > 0) && $size > 1 && $uid != $vuid) {
+			return "Max num. of great/unique artefacts. Your hero could not claim the artefact";
+		}
 
-            if(($artifact['great'] > 0 || $artifact['unique'] > 0) && $size > 1 && $uid != $vuid) {
-                return "Max num. of great/unique artefacts. Your hero could not claim the artefact";
-            }
+		if (($size == 1 && ($hasVillageTreasury || $hasAccountTreasury)) || (($size == 2 || $size == 3) && $hasAccountTreasury)) {
+			return "";
+		}
 
-            if(($size == 1 && ($villageartifact || $accountartifact)) || (($size == 2 || $size == 3) && $accountartifact)) {
-                return "";
-            }
-            else return "Your level treasury is low. Your hero could not claim the artefact";
-        } 
-        else return "Max num. of artefacts. Your hero could not claim the artefact";
+		return "Your level treasury is low. Your hero could not claim the artefact";
     }
+
+	/**
+	 * Return the level of the treasury in a village.
+	 * Mode 2 reads the village's own fields when the village is receiving an
+	 * artifact; the default reads the target fields used for capture checks.
+	 */
+	private function getTreasuryLevel($vref, $mode = 0) {
+		$fields = $this->getResourceLevel((int) $vref, $mode);
+		for ($i = 19; $i <= 38; $i++) {
+			if ((int) ($fields['f'.$i.'t'] ?? 0) === 27) {
+				return (int) ($fields['f'.$i] ?? 0);
+			}
+		}
+
+		return 0;
+	}
 
     /**
      * Get the informations of a single artifact

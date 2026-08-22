@@ -182,6 +182,55 @@ html[dir="rtl"] #content:not(.map) textarea {
     direction: rtl;
     text-align: right;
 }
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target {
+    text-align: right;
+}
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil *,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target * {
+    display: inline-block;
+    float: none;
+    margin-right: 0;
+    margin-left: 10px;
+}
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target {
+    direction: rtl;
+}
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target {
+    direction: ltr;
+    text-align: right;
+}
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target {
+    display: flex;
+    align-items: center;
+    direction: rtl !important;
+    justify-content: flex-start;
+    flex-direction: row !important;
+    text-align: right;
+}
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil *,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target * {
+    display: inline-block;
+    float: none;
+}
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil input,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target input { order: 1; }
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil span,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target span { order: 2; }
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target input[name="x"] { order: 1; }
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target span:first-of-type { order: 2; }
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target input[name="y"] { order: 3; }
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target span:last-of-type { order: 4; }
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.vil input,
+html[dir="rtl"] body.pg-a2b div.a2b table#coords td.target input {
+    direction: ltr !important;
+    text-align: left !important;
+}
 html[dir="rtl"] .footer-stopper {
     height: 0 !important;
     margin-bottom: 0 !important;
@@ -393,10 +442,20 @@ html[dir="rtl"] div.village1 h1 {
  * layout, without touching the div's content or the English page (no
  * html[dir="rtl"] ancestor there, so #cap keeps its old default box).
  * --------------------------------------------------------------------- */
-html[dir="rtl"] div.village1 div#cap {
+html[dir="rtl"] div.village1 span#cap {
+    color: #c0c0c0;
+    font-size: 13px;
+    font-weight: 400;
     line-height: 14px;
     margin: 0;
     min-height: 0;
+    position: relative;
+    right: 10px;
+}
+html[dir="rtl"] div.village1 span#cap font {
+    color: #c0c0c0 !important;
+    font-size: inherit;
+    font-weight: inherit;
 }
 
 /* ---------------------------------------------------------------------
@@ -516,11 +575,11 @@ html[dir="rtl"] div.village1 table thead th {
 }
 html[dir="rtl"] div.village1 table td.res {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
 }
 html[dir="rtl"] div.village1 table td.un {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
 }
 html[dir="rtl"] div.village1 table td.num {
     font-size: 15px;
@@ -528,7 +587,7 @@ html[dir="rtl"] div.village1 table td.num {
 }
 html[dir="rtl"] div.village1 table td.per {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 /* Village title: bold + moderately larger, but kept inside the exact
@@ -545,18 +604,26 @@ html[dir="rtl"] div.village1 h1 {
     margin-top: 30px;
 }
 
-/* Sidebar / navigation links (Home, Guide, Profile, Logout, Forum,
- * Discord, Plus, Support) and the left "hero" sidebar's own headings
- * and village-list links - bold only, no size/position change to the
- * links themselves (padding/float already fixed above). */
+/* Sidebar typography: headings and the selected village are emphasized,
+ * while ordinary navigation and village links stay at normal weight. */
 html[dir="rtl"] #side_navi p a {
-    font-weight: 600;
+    font-weight: 400;
 }
 html[dir="rtl"] #side_info h5 {
     font-weight: 700;
 }
+html[dir="rtl"] #side_info table#vlist thead td,
+html[dir="rtl"] #side_info table#vlist thead td a,
 html[dir="rtl"] #side_info table#vlist td.link a {
-    font-weight: 600;
+    font-weight: 400;
+}
+html[dir="rtl"] #side_info table#vlist thead td {
+    text-align: right;
+}
+html[dir="rtl"] #side_info table#vlist thead td,
+html[dir="rtl"] #side_info table#vlist thead td a,
+html[dir="rtl"] #side_info table#vlist td.dot.hl ~ td.link a {
+    font-weight: 700;
 }
 
 /* "في الساعة" - Templates/production.tpl td.per, already sized/bolded
@@ -831,3 +898,66 @@ html[dir="rtl"] .grit .secondarybox {
  * Reverting to the default (background-attachment: scroll) lets the
  * strip scroll normally with the document again - no jitter, and the
  * green portion still lands in its designed spot just below the header. */
+
+html[dir="rtl"] body.pg-spieler #villages td.nam {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-spieler #villages {
+    margin-bottom: 32px;
+}
+
+html[dir="rtl"] body.pg-dorf2 #content.village2,
+html[dir="rtl"] body.pg-dorf2 #side_info,
+html[dir="rtl"] body.pg-dorf2 #side_navi {
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] body.pg-dorf2 #content.village2 {
+    font-size: 14px;
+    position: relative;
+    left: 20px !important;
+    font-weight: 400;
+}
+html[dir="rtl"] body.pg-dorf2 #content.village2 h1 {
+    left: auto;
+    right: 25px;
+    top: 10px;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-dorf2 #side_info {
+    text-align: right;
+    font-weight: 400;
+}
+
+html[dir="rtl"] body.pg-dorf2 #content.village2 p,
+html[dir="rtl"] body.pg-dorf2 #content.village2 a,
+html[dir="rtl"] body.pg-dorf2 #side_info p,
+html[dir="rtl"] body.pg-dorf2 #side_info a,
+html[dir="rtl"] body.pg-dorf2 #side_info td {
+    font-weight: 400;
+}
+
+html[dir="rtl"] body.pg-dorf2 #side_info #vlist {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-dorf2 #side_info #vlist td.link {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-dorf2 #side_info #vlist td.aligned_coords {
+    text-align: left;
+    white-space: nowrap;
+}
+
+html[dir="rtl"] div#build.gid25 a.build_logo img.g25 {
+    top: -25px !important;
+    right: -17px !important;
+}
+
+html[dir="rtl"] body.pg-build div#build.gid16 a.build_logo img.g16 {
+    top: 74px !important;
+}

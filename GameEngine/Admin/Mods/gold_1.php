@@ -48,29 +48,10 @@ if(!$acc || $acc['access'] != 9) admin_deny('You must be signed in as an adminis
 // 1. UPDATE GOLD
 mysqli_query($GLOBALS["link"], "UPDATE ".TB_PREFIX."users SET gold = gold + $amount WHERE id = $id") or die(mysqli_error($GLOBALS["link"]));
 
-// 1b. Mirror into the cross-world paid-gold ledger (see GameEngine/CentralGold.php)
-// so this grant follows the player if they register on another Novaterra world
-// with the same email. Fails soft: if central gold isn't configured, or the
-// player has no email on file yet, the local grant above still stands — this
-// world just won't be able to offer portability for it.
+// Admin adjustments are local free-gold adjustments. The cross-world
+// purchased-gold ledger changes only after a confirmed payment webhook.
 $userRow = mysqli_fetch_assoc(mysqli_query($GLOBALS["link"],
     "SELECT username, email FROM ".TB_PREFIX."users WHERE id = $id"));
-if ($userRow && !$localOnly && class_exists('CentralGold') && CentralGold::isConfigured()
-    && !empty($userRow['email'])) {
-    if ($amount > 0) {
-        CentralGold::credit($userRow['email'], $userRow['username'], $id, $amount,
-            'admin_grant', 'Admin gift by ' . ($acc['username'] ?? ''), $admid);
-    } else {
-        // Negative amount = admin deduction. debit() never takes the central
-        // balance below zero; if the player's central balance is lower than
-        // the local deduction (e.g. they already spent central gold on
-        // another world), it simply debits what's available rather than
-        // failing the whole request — the local users.gold change above is
-        // authoritative for this world either way.
-        CentralGold::debit($userRow['email'], $userRow['username'], $id, abs($amount),
-            'admin_deduct', 'Admin deduction by ' . ($acc['username'] ?? ''), $admid);
-    }
-}
 
 // 2. ADMIN LOG
 $name = $userRow['username'] ?? '';

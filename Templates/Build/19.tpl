@@ -46,7 +46,7 @@ $trainlist = $technology->getTrainingList(1);
                     <?php include("19_train.tpl");?>
                 </tbody>
             </table>
-            <p><button type="submit" id="btn_train" class="trav_buttons" name="s1" onclick="this.disabled=true;this.form.submit();"><?php echo TRAIN; ?></button></p>
+            <p><button type="submit" id="btn_train" class="trav_buttons" name="s1" onclick="this.disabled=true;this.form.submit();"><?php echo TRAIN; ?></button><?php include("training_gold.tpl"); ?></p>
         </form>
     <?php else:?>
         <b><?php echo TRAINING_COMMENCE_BARRACKS;?></b><br />

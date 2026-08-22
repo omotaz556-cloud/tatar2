@@ -213,8 +213,11 @@ class Building {
         );
     }
 
+    // One personal plan covers levels 0-49. Level 50 and every level after
+    // it require a second active plan owned by another member of the same
+    // alliance.
     return $this->wwUpgradeCache[$wid] = (
-        $wwHighestLevelFound < 50
+        $wwHighestLevelFound < 49
             ? $userHasWWConstructionPlans
             : ($userHasWWConstructionPlans && $allyHasWWConstructionPlans)
     );
@@ -343,7 +346,11 @@ class Building {
         exit;
     }
 
-    header('Location: '.($fieldId >= 19 ? 'dorf2.php' : 'dorf1.php'));
+    if (isset($_GET['return']) && $_GET['return'] === 'build') {
+        header('Location: build.php?id='.(int)$fieldId);
+    } else {
+        header('Location: '.($fieldId >= 19 ? 'dorf2.php' : 'dorf1.php'));
+    }
     exit;
 }
 
@@ -468,6 +475,23 @@ class Building {
         $this->sess->sit == 0
     ) {
         $this->finishAll();
+    }
+
+    if (isset($get['finishTraining']) && $this->sess->gold >= 1 && $this->sess->sit == 0) {
+        $locked = $this->db->getTrainingLock($this->vil->wid);
+        if ($locked) {
+            $training = $this->db->getTraining($this->vil->wid);
+            if (!empty($training) && $this->db->spendGold($this->sess->uid, 1, 'Speed up troop training')) {
+                $this->db->speedUpTraining($this->vil->wid);
+                $this->db->completeTraining($this->vil->wid);
+                $this->db->addGoldFinLog($this->vil->wid, $this->sess->uid, 'Speed up troop training', -1, 'Speed up troop training with gold');
+                $this->sess->gold--;
+                $_SESSION['gold'] = $this->sess->gold;
+                unset($_SESSION['cache_user_' . (isset($_SESSION['username']) ? $_SESSION['username'] : '')]);
+            }
+            $this->db->releaseTrainingLock($this->vil->wid);
+        }
+        $this->redirect(isset($get['id']) ? (int)$get['id'] : 19);
     }
 }
 
@@ -1534,12 +1558,8 @@ class Building {
             continue;
         }
 
-        // Residence / Palace / WW nu se pot termina cu gold
-        if (
-            $jobs['type'] == 25 ||
-            $jobs['type'] == 26 ||
-            $jobs['type'] == 40
-        ) {
+        // Palace / WW cannot be finished with gold.
+        if ($jobs['type'] == 26 || $jobs['type'] == 40) {
             continue;
         }
 

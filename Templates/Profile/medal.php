@@ -26,6 +26,8 @@
     $gpack= $separator.$gpack_load;
     }
 
+$profiel = preg_replace('/\[([a-z0-9_]+)#\]/i', '[#$1]', $profiel);
+
 //de bird
 if($displayarray['protect'] > time()){
 $secondsDiff      = $displayarray['protect'] - time();

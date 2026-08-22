@@ -77,37 +77,37 @@ $options = [
 
     1 => [
         'perm' => 'opt1',
-        'label' => 'Assign to position'
+        'label' => 'تعيين منصب'
     ],
 
     100 => [
         'perm' => 'opt3',
-        'label' => 'Change name'
+        'label' => 'تغيير الاسم'
     ],
 
     2 => [
         'perm' => 'opt2',
-        'label' => 'Kick player'
+        'label' => 'طرد لاعب'
     ],
 
     3 => [
         'perm' => 'opt3',
-        'label' => 'Change alliance description'
+        'label' => 'تغيير وصف التحالف'
     ],
 
     6 => [
         'perm' => 'opt6',
-        'label' => 'Alliance diplomacy'
+        'label' => 'دبلوماسية التحالف'
     ],
 
     4 => [
         'perm' => 'opt4',
-        'label' => 'Invite a player into the alliance'
+        'label' => 'دعوة لاعب إلى التحالف'
     ],
 
     5 => [
         'perm' => 'opt5',
-        'label' => 'Link to the forum'
+        'label' => 'رابط المنتدى'
     ]
 ];
 

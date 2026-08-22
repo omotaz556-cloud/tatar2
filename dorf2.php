@@ -90,10 +90,21 @@ if (
 		window.addEvent('domready', start);
 	</script>
 	<?php echo tz_rtl_stylesheet_tag(); ?>
+	<style type="text/css">
+		html[dir="rtl"] body.pg-dorf2 #content.village2 { left: 20px !important; }
+		html[dir="rtl"] body.pg-dorf2 #content.village2,
+		html[dir="rtl"] body.pg-dorf2 #side_info,
+		html[dir="rtl"] body.pg-dorf2 #side_navi { font-family: Tahoma, Arial, sans-serif; }
+		html[dir="rtl"] body.pg-dorf2 #content.village2 p,
+		html[dir="rtl"] body.pg-dorf2 #content.village2 a,
+		html[dir="rtl"] body.pg-dorf2 #side_info p,
+		html[dir="rtl"] body.pg-dorf2 #side_info a,
+		html[dir="rtl"] body.pg-dorf2 #side_info td { font-weight: 400; }
+	</style>
 </head>
 
 
-<body class="v35 ie ie8">
+<body class="v35 ie ie8 pg-dorf2">
 <div class="wrapper">
 <img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
 <div id="dynamic_header">
@@ -114,8 +125,8 @@ if($building->NewBuilding) {
 </div>
 <br /><br /><br /><br /><div id="side_info">
 <?php
-include("Templates/multivillage.tpl");
 include("Templates/quest.tpl");
+include("Templates/multivillage.tpl");
 include("Templates/news.tpl");
 if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
 	echo "<br><br><br><br>";

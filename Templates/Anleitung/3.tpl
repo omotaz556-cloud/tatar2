@@ -59,6 +59,29 @@
 
 <p class="answer"><?php echo ANL_FAQ_LOSE_VILLAGE_A; ?></p>
 
+<p class="question">الصور المرجعية للميزات</p>
+<div class="answer" style="line-height:2.1;">
+	<?php
+	$referenceImages = [
+		'الميداليات' => 'https://prnt.sc/5KOOYncrjP_',
+		'المكافآت اليومية' => 'https://prnt.sc/bxsTd0zdsT_j',
+		'أوسمة المتصدرين' => 'https://prnt.sc/Seh1IbPTDDo',
+		'بروفايل الإغريق' => 'https://prnt.sc/ogKXGNmKVbKq',
+		'بروفايل التتار' => 'https://prnt.sc/-uFFwrCrRen7',
+		'البطل' => 'https://prnt.sc/HSCfy7BmDeYm',
+		'الأوسمة الأسطورية' => 'https://prnt.sc/Xf_0VkFSFQp',
+		'العقوبات' => 'https://prnt.sc/WTGINB5AVFI0',
+		'التحالف' => 'https://prnt.sc/Pjjals-Kcsqr',
+		'التعزيز' => 'https://prnt.sc/t5CiHa9SDE9x',
+		'مرجع إضافي' => 'https://prnt.sc/1r8c2F4er_Nh',
+		'مرجع إضافي 2' => 'https://prnt.sc/rwY6tQUqd2R9',
+	];
+	foreach ($referenceImages as $label => $url) {
+		echo '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</a><br />';
+	}
+	?>
+</div>
+
 </div>
 	<div class="clear"></div> 
 </div> 

@@ -86,6 +86,9 @@ switch ($bindicate) {
     case 8:
     case 9:
         $href = $session->access == BANNED? 'banned.php' : (($id <= 18)? "dorf1.php?a=$id&c=$session->checker" : "dorf2.php?a=$id&c=$session->checker");
+        if ((int)($village->resarray['f'.$id] ?? 0) > 0 && $session->access != BANNED) {
+            $href .= '&return=build';
+        }
         $lvl = $bindicate == 8? $village->resarray['f'.$id] + 1 : $village->resarray['f'.$id] + ($loopsame > 0? 2 : 1);
         // data-ajax-build: intercepted by new2.js to submit without a full
         // page reload when the popup is open. href stays a valid full URL

@@ -57,8 +57,11 @@ $id = $database->addA2b(
     $process['c']
 );
 
-$actionTypes = [1 => 'Scout', 2 => 'Reinforcement', 3 => 'Normal attack', 4 => 'Raid'];
-$actionType = $actionTypes[(int)$process['c']] ?? 'Normal attack';
+$actionTypes = [1 => 'استطلاع', 2 => 'تعزيز', 3 => 'هجوم عادي', 4 => 'غارة'];
+$actionType = $actionTypes[(int)$process['c']] ?? 'هجوم عادي';
+$targetName = ($process[1] === 'Unoccupied Oasis') ? 'واحة غير محتلة' : $process[1];
+$ownerTribe = ($process['2'] === 'Nature') ? 4 : (int)$database->getUserField($process['2'], 'tribe', 0);
+$ownerName = $ownerTribe === 4 ? TRIBE4 : $database->getUserField($process['2'], 'username', 0);
 
 $uid = $session->uid;
 $tribe = $session->tribe;
@@ -69,17 +72,17 @@ $hasHero = !empty($process['t11']);
 $colspan = $hasHero ? 11 : 10;
 $kata = !empty($process['t8']);
 ?>
-<h1><?php echo $actionType . " to " . $process[1]; ?></h1>
+<h1><?php echo $actionType . " إلى " . $targetName; ?></h1>
 <form method="post" action="a2b.php">
     <table id="short_info" cellpadding="1" cellspacing="1">
         <tbody>
             <tr>
                 <th><?php echo TZ_DESTINATION; ?></th>
-                <td><a href="karte.php?d=<?php echo $process[0]; ?>&c=<?php echo $generator->getMapCheck($process[0]); ?>"><?php echo $process[1]; ?> (<?php echo $coor['x']; ?>|<?php echo $coor['y']; ?>)</a></td>
+                <td><a href="karte.php?d=<?php echo $process[0]; ?>&c=<?php echo $generator->getMapCheck($process[0]); ?>"><?php echo $targetName; ?> (<?php echo $coor['x']; ?>|<?php echo $coor['y']; ?>)</a></td>
             </tr>
             <tr>
                 <th><?php echo TZ_OWNER; ?></th>
-                <td><a href="spieler.php?uid=<?php echo $process['2']; ?>"><?php echo $database->getUserField($process['2'], 'username', 0); ?></a></td>
+                <td><a href="spieler.php?uid=<?php echo $process['2']; ?>"><?php echo $ownerName; ?></a></td>
             </tr>
         </tbody>
     </table>
@@ -87,8 +90,8 @@ $kata = !empty($process['t8']);
     <table class="troop_details" cellpadding="1" cellspacing="1">
         <thead>
             <tr>
-                <td><?php echo $process[1]; ?></td>
-                <td colspan="<?php echo $colspan; ?>"><?php echo $actionType . " to " . $process['1']; ?></td>
+                <td><?php echo $targetName; ?></td>
+                <td colspan="<?php echo $colspan; ?>"><?php echo $actionType . " إلى " . $targetName; ?></td>
             </tr>
         </thead>
         <tbody class="units">
@@ -133,7 +136,7 @@ $kata = !empty($process['t8']);
                         <select name="ctar1" class="dropdown">
                             <option value="0"><?php echo RANDOM; ?></option>
                             <?php if ($building->getTypeLevel(16) >= 5): ?>
-                            <optgroup label="Resources">
+                            <optgroup label="الموارد">
                                 <option value="1"><?php echo WOODCUTTER; ?></option>
                                 <option value="2"><?php echo CLAYPIT; ?></option>
                                 <option value="3"><?php echo IRONMINE; ?></option>
@@ -146,7 +149,7 @@ $kata = !empty($process['t8']);
                             </optgroup>
                             <?php endif; ?>
                             <?php if ($building->getTypeLevel(16) >= 3): ?>
-                            <optgroup label="Infrastructure">
+                            <optgroup label="البنية التحتية">
                                 <option value="10"><?php echo WAREHOUSE; ?></option>
                                 <option value="11"><?php echo GRANARY; ?></option>
                                 <?php if ($building->getTypeLevel(16) >= 10): ?>
@@ -166,7 +169,7 @@ $kata = !empty($process['t8']);
                             </optgroup>
                             <?php endif; ?>
                             <?php if ($building->getTypeLevel(16) >= 10): ?>
-                            <optgroup label="Military">
+                            <optgroup label="عسكري">
                                 <option value="12"><?php echo BLACKSMITH; ?></option>
                                 <option value="13"><?php echo ARMOURY; ?></option>
                                 <option value="14"><?php echo TOURNAMENTSQUARE; ?></option>
@@ -192,14 +195,14 @@ $kata = !empty($process['t8']);
                             <option value="0">-</option>
                             <option value="99"><?php echo RANDOM; ?></option>
                             <?php if ($building->getTypeLevel(16) >= 5): ?>
-                            <optgroup label="Resources">
+                            <optgroup label="الموارد">
                                 <option value="1"><?php echo WOODCUTTER; ?></option><option value="2"><?php echo CLAYPIT; ?></option><option value="3"><?php echo IRONMINE; ?></option>
                                 <option value="4"><?php echo CROPLAND; ?></option><option value="5"><?php echo SAWMILL; ?></option><option value="6"><?php echo BRICKYARD; ?></option>
                                 <option value="7"><?php echo IRONFOUNDRY; ?></option><option value="8"><?php echo GRAINMILL; ?></option><option value="9"><?php echo BAKERY; ?></option>
                             </optgroup>
                             <?php endif; ?>
                             <?php if ($building->getTypeLevel(16) >= 3): ?>
-                            <optgroup label="Infrastructure">
+                            <optgroup label="البنية التحتية">
                                 <option value="10"><?php echo WAREHOUSE; ?></option><option value="11"><?php echo GRANARY; ?></option>
                                 <?php if ($building->getTypeLevel(16) >= 10): ?>
                                 <option value="15"><?php echo MAINBUILDING; ?></option><option value="17"><?php echo MARKETPLACE; ?></option><option value="18"><?php echo EMBASSY; ?></option>
@@ -210,7 +213,7 @@ $kata = !empty($process['t8']);
                             </optgroup>
                             <?php endif; ?>
                             <?php if ($building->getTypeLevel(16) >= 10): ?>
-                            <optgroup label="Military">
+                            <optgroup label="عسكري">
                                 <option value="12"><?php echo BLACKSMITH; ?></option><option value="13"><?php echo ARMOURY; ?></option><option value="14"><?php echo TOURNAMENTSQUARE; ?></option>
                                 <option value="16"><?php echo RALLYPOINT; ?></option><option value="19"><?php echo BARRACKS; ?></option><option value="20"><?php echo STABLE; ?></option>
                                 <option value="21"><?php echo WORKSHOP; ?></option><option value="22"><?php echo ACADEMY; ?></option><option value="29"><?php echo GREATBARRACKS; ?></option>
@@ -229,7 +232,7 @@ $kata = !empty($process['t8']);
             <tbody class="infos">
                 <tr>
                     <th><?php echo TZ_DESTINATION; ?></th>
-                    <td colspan="<?php echo $colspan; ?>"><?php echo TZ_WARNING_CATAPULT_WILL; ?> <b>ONLY</b> <?php echo TZ_SHOOT_WITH_A_NORMAL_ATTACK_THEY_DO; ?></td>
+                        <td colspan="<?php echo $colspan; ?>"><?php echo TZ_WARNING_CATAPULT_WILL; ?> <b>فقط</b> <?php echo TZ_SHOOT_WITH_A_NORMAL_ATTACK_THEY_DO; ?></td>
                 </tr>
             </tbody>
             <?php endif; ?>
@@ -259,10 +262,10 @@ $kata = !empty($process['t8']);
 
     <?php
     if ($database->hasBeginnerProtection($village->wid) == 1 && $database->hasBeginnerProtection($process['0']) == 0) {
-        echo '<span style="color: #DD0000"><b>Caution:</b> Attacking a player will lose the protection!</span>';
+        echo '<span style="color: #DD0000"><b>تحذير:</b> مهاجمة لاعب ستلغي الحماية!</span>';
     }
     if ($database->hasBeginnerProtection($process['0']) == 1) {
-        echo '<b>User presently has beginners protection</b>';
+        echo '<b>اللاعب يتمتع حاليًا بحماية المبتدئين</b>';
     } else {
     ?>
         <p class="btn"><input value="ok" name="s1" id="btn_ok" class="dynamic_img " src="img/x.gif" alt="OK" type="image" onclick="if (this.disabled==false) {document.getElementsByTagName('form')[0].submit();} this.disabled=true;" onLoad="this.disabled=false;"></p>

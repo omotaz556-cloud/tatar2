@@ -78,6 +78,10 @@ $alliance->procAlliForm($_POST);
 $technology->procTech($_POST);
 $market->procMarket($_POST);
 
+if (isset($_GET['finishTraining'])) {
+    $building->procBuild($_GET);
+}
+
 if ( isset( $_GET['gid'] ) ) {
     $_GET['id'] = strval( $building->getTypeField( preg_replace( "/[^a-zA-Z0-9_-]/", "", $_GET['gid'] ) ) );
 } else if ( isset( $_POST['id'] ) ) {
@@ -387,7 +391,7 @@ if ($isAjaxFragment) {
              * and fall through into the shared JSON response built further
              * down in this file.
              */
-            $building->finishAll("build.php?gid=".$_GET['id']."&ty=".$_GET['ty'], true);
+            $building->finishAll("build.php?id=".(int) $_GET['id'], true);
 
             // Re-load fresh state the same way a full page reload would
             // have (finishAll() wrote directly to the DB; $village/
@@ -534,7 +538,7 @@ if(isset($_GET['id']) || isset($_GET['gid']) || $route == 1 || isset($_POST['rou
 		
 		if((isset($_GET['buildingFinish'])) && $_GET['buildingFinish'] == 1) {
         	if($session->gold >= 2) {
-        		$building->finishAll("build.php?gid=".$_GET['id']."&ty=".$_GET['ty']);
+                $building->finishAll("build.php?id=".(int) $_GET['id']);
         		exit;
         	}
         }

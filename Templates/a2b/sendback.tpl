@@ -23,6 +23,7 @@ $fromcoor = $database->getCoor($enforce['from']);
 $tocoor = $database->getCoor($enforce['vref']);
 
 $att_tribe = (int)$database->getUserField($to['owner'], 'tribe', 0);
+$ownerName = $att_tribe === 4 ? TRIBE4 : $database->getUserField($to['owner'], 'username', 0);
 $start = ($att_tribe - 1) * 10 + 1;
 $end = $att_tribe * 10;
 
@@ -59,7 +60,7 @@ $layout = [
             </tr>
             <tr>
                 <th><?php echo TZ_OWNER; ?></th>
-                <td><a href="spieler.php?uid=<?php echo $to['owner']; ?>"><?php echo htmlspecialchars($database->getUserField($to['owner'], 'username', 0)); ?></a></td>
+                <td><a href="spieler.php?uid=<?php echo $to['owner']; ?>"><?php echo htmlspecialchars($ownerName); ?></a></td>
             </tr>
         </tbody>
     </table>

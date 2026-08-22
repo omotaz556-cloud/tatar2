@@ -367,17 +367,32 @@ if (!isset($SAJAX_INCLUDED)) {
 
 		//$data = explode("|",$data);
 		if (is_array($data)){$msg = htmlspecialchars($data[1]);}else{$msg = htmlspecialchars($data);};
-		$msg = $database->escape($msg);
-//		$msg=htmlspecialchars($msg);
-		$name = addslashes($session->username);
-
-		if ($msg != ""){
-		    $id_user = (int) $session->uid;
-			$alliance = $database->escape($session->alliance);
-			$now = time();
-				$q = "INSERT into ".TB_PREFIX."chat (id_user,name,alli,date,msg) values ($id_user,'$name','$alliance','$now','$msg')";
-				mysqli_query($database->dblink,$q);
+		$msg = trim((string) $msg);
+		if ($msg === "") {
+			return;
 		}
+		if (!isset($session->uid) || !$session->uid) {
+			return;
+		}
+
+		if (!class_exists('MultiAccount')) {
+			require_once __DIR__ . '/MultiAccount.php';
+		}
+
+		$id_user = (int) $session->uid;
+		$name = addslashes((string) $session->username);
+		$isPublicChat = !empty($_GET['public']) || basename($_SERVER['PHP_SELF'] ?? '') === 'public_chat.php';
+		$chatScope = $isPublicChat ? '__public__' : (string) ($session->alliance ?? '');
+		$alliance = $database->escape($chatScope);
+		$offense = ChatModeration::enforce($id_user, $session->username ?? '', $chatScope, $msg);
+		if ($offense !== false) {
+			return;
+		}
+
+		$safeMsg = $database->escape($msg);
+		$now = time();
+		$q = "INSERT into ".TB_PREFIX."chat (id_user,name,alli,date,msg) values ($id_user,'$name','$alliance','$now','$safeMsg')";
+		mysqli_query($database->dblink,$q);
 	}
 
 	function get_data() {
@@ -388,7 +403,9 @@ if (!isset($SAJAX_INCLUDED)) {
 		// (umple error log-ul; pe PHP 9 devine mai strict).
 		$data = '';
 
-		$alliance = $database->escape($session->alliance);
+		$isPublicChat = !empty($_GET['public']) || basename($_SERVER['PHP_SELF'] ?? '') === 'public_chat.php';
+		$chatScope = $isPublicChat ? '__public__' : (string) ($session->alliance ?? '');
+		$alliance = $database->escape($chatScope);
 		$query = mysqli_query($database->dblink,"select id_user, name, date, msg from ".TB_PREFIX."chat where alli='$alliance' order by id desc limit 0,13");
 			while ($r = mysqli_fetch_array($query)) {
 			$dates = date("g:i",$r['date']);
@@ -401,5 +418,205 @@ if (!isset($SAJAX_INCLUDED)) {
 	sajax_init();
 	sajax_export("add_data","get_data");
 	sajax_handle_client_request();
+
+class ChatModeration
+{
+    public static function ensureSchema()
+    {
+        $link = isset($GLOBALS['link']) && $GLOBALS['link'] ? $GLOBALS['link'] : null;
+        if (!$link) {
+            return;
+        }
+
+        @mysqli_query($link, "CREATE TABLE IF NOT EXISTS `" . TB_PREFIX . "chat_violation_log` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `uid` int(11) NOT NULL DEFAULT 0,
+            `username` varchar(255) NOT NULL DEFAULT '',
+            `alliance` varchar(255) NOT NULL DEFAULT '',
+            `offense` varchar(64) NOT NULL DEFAULT '',
+            `score` int(11) NOT NULL DEFAULT 0,
+            `action` varchar(32) NOT NULL DEFAULT 'blocked',
+            `message` text NOT NULL,
+            `created` int(11) NOT NULL DEFAULT 0,
+            PRIMARY KEY (`id`),
+            KEY `uid_time` (`uid`, `created`),
+            KEY `offense_time` (`offense`, `created`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    }
+
+    public static function recentViolations($limit = 50)
+    {
+        $link = isset($GLOBALS['link']) && $GLOBALS['link'] ? $GLOBALS['link'] : null;
+        if (!$link) {
+            return [];
+        }
+        self::ensureSchema();
+
+        $limit = max(1, min(200, (int) $limit));
+        $res = @mysqli_query($link,
+            "SELECT uid, username, alliance, offense, score, action, message, created
+             FROM `" . TB_PREFIX . "chat_violation_log`
+             ORDER BY id DESC
+             LIMIT " . $limit);
+
+        $rows = [];
+        if ($res) {
+            while ($row = mysqli_fetch_assoc($res)) {
+                $rows[] = $row;
+            }
+            mysqli_free_result($res);
+        }
+
+        return $rows;
+    }
+
+    private static function countViolationsInWindow($uid, $seconds)
+    {
+        $link = isset($GLOBALS['link']) && $GLOBALS['link'] ? $GLOBALS['link'] : null;
+        if (!$link) {
+            return 0;
+        }
+        $since = time() - (int) $seconds;
+        $res = @mysqli_query($link,
+            "SELECT COUNT(*) AS cnt FROM `" . TB_PREFIX . "chat_violation_log`
+             WHERE uid = " . (int) $uid . " AND created >= " . $since);
+        $row = $res ? mysqli_fetch_assoc($res) : null;
+        return $row ? (int) $row['cnt'] : 0;
+    }
+
+    private static function logViolation($uid, $username, $alliance, $offense, $score, $action, $message)
+    {
+        $link = isset($GLOBALS['link']) && $GLOBALS['link'] ? $GLOBALS['link'] : null;
+        if (!$link) {
+            return;
+        }
+
+        self::ensureSchema();
+
+        $uid = (int) $uid;
+        $username = substr((string) $username, 0, 255);
+        $alliance = substr((string) $alliance, 0, 255);
+        $offense = substr((string) $offense, 0, 64);
+        $action = substr((string) $action, 0, 32);
+        $message = substr((string) $message, 0, 2000);
+        $now = time();
+
+        $stmt = mysqli_prepare($link,
+            "INSERT INTO `" . TB_PREFIX . "chat_violation_log`
+             (uid, username, alliance, offense, score, action, message, created)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        if (!$stmt) {
+            return;
+        }
+        mysqli_stmt_bind_param($stmt, 'isssissi', $uid, $username, $alliance, $offense, $score, $action, $message, $now);
+        @mysqli_stmt_execute($stmt);
+        @mysqli_stmt_close($stmt);
+
+        if ($action === 'banned') {
+            $logText = 'Chat moderation: banned uid ' . $uid . ' for ' . $offense . ' violation';
+            $logMsg = mysqli_real_escape_string($link, $logText);
+            @mysqli_query($link,
+                "INSERT INTO `" . TB_PREFIX . "admin_log` VALUES (0, 0, '" . $logMsg . "', " . time() . ")");
+        }
+    }
+
+    public static function detectOffense($uid, $message)
+    {
+        $msg = trim((string) $message);
+        if ($msg === '') {
+            return false;
+        }
+
+        if (mb_strlen($msg, 'UTF-8') > 220) {
+            return ['code' => 'length', 'score' => 20, 'message' => 'Message exceeds 220 chars'];
+        }
+
+        $lower = mb_strtolower($msg, 'UTF-8');
+
+        $adPatterns = [
+            'myfatoorah','fatoorah','webhook','website','site','invoice','payment','paypal','pay','buy gold','buy package','gold package','plus package','package gold',
+            'شراء الذهب','شراء باقة','شراء جواهر','شراء الذهب','حزمة الذهب','باقة الذهب','فاتورة','الفاتورة','الدفع','الدفع عبر','تجديد الذهب','بيع الذهب','موقع الدفع','متجر الذهب',
+            'join now','vip offer','free bonus','offer','discord','telegram','t.me','click here','limited time','promo','حزمة الذهب','تجميع الذهب','شراء الفاتورة'
+        ];
+
+        $matchFound = false;
+        foreach ($adPatterns as $pattern) {
+            if (stripos($lower, (string) $pattern) !== false) {
+                $matchFound = true;
+                break;
+            }
+        }
+
+        $linkPattern = '/(https?:\/\/|www\.)/i';
+        if ($matchFound || (preg_match($linkPattern, $msg) && preg_match('/\b(click|free|gold|bonus|join|vip|offer|discord|telegram|t\.me)\b/i', $lower))) {
+            return ['code' => 'ad_spam', 'score' => 30, 'message' => 'Chat spam / payment or promotion pattern'];
+        }
+
+        $repeatedChar = preg_match('/(.)\1{8,}/u', $msg);
+        if ($repeatedChar) {
+            return ['code' => 'repetition', 'score' => 25, 'message' => 'Repeated characters / spam pattern'];
+        }
+
+        $wordMatches = preg_split('/\s+/u', $lower, -1, PREG_SPLIT_NO_EMPTY);
+        if (count($wordMatches) >= 12 && preg_match('/^(?:[A-Z0-9\s\p{P}\p{S}]+)$/u', $msg) && preg_match('/[A-Z]/u', $msg)) {
+            return ['code' => 'caps_spam', 'score' => 20, 'message' => 'Massive caps spam'];
+        }
+
+        $link = isset($GLOBALS['link']) && $GLOBALS['link'] ? $GLOBALS['link'] : null;
+        if ($link) {
+            $uid = (int) $uid;
+            $since = time() - 45;
+            $stmt = mysqli_prepare($link,
+                "SELECT msg FROM `" . TB_PREFIX . "chat`
+                 WHERE id_user = ? AND date >= ?
+                 ORDER BY id DESC LIMIT 5");
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, 'ii', $uid, $since);
+                mysqli_stmt_execute($stmt);
+                $res = mysqli_stmt_get_result($stmt);
+                $recent = [];
+                while ($row = mysqli_fetch_assoc($res)) {
+                    $recent[] = trim((string) $row['msg']);
+                }
+                mysqli_stmt_close($stmt);
+
+                $countSame = 0;
+                foreach ($recent as $entry) {
+                    if ($entry !== '' && mb_strtolower($entry, 'UTF-8') === $lower) {
+                        $countSame++;
+                    }
+                }
+                if ($countSame >= 2) {
+                    return ['code' => 'duplicate', 'score' => 35, 'message' => 'Duplicate message repeated quickly'];
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static function enforce($uid, $username, $alliance, $message)
+    {
+        $offense = self::detectOffense($uid, $message);
+        if (!$offense) {
+            return false;
+        }
+
+        $count = self::countViolationsInWindow((int) $uid, 1800);
+        $action = ($count >= 2) ? 'banned' : 'blocked';
+
+        if ($action === 'banned' && class_exists('MultiAccount') && method_exists('MultiAccount', 'banAccount')) {
+            $reason = 'Chat violation: ' . $offense['code'];
+            MultiAccount::banAccount((int) $uid, 0, $reason);
+        }
+
+		self::logViolation((int) $uid, (string) $username, (string) $alliance, $offense['code'], (int) $offense['score'], $action, (string) $message);
+		if (isset($GLOBALS['database']) && method_exists($GLOBALS['database'], 'sendMessage')) {
+			$GLOBALS['database']->sendMessage((int) $uid, 4, 'Chat moderation', 'Your chat message was ' . $action . '. Reason: ' . $offense['code'], 0, 0, 0, 0);
+		}
+
+        return ['offense' => $offense['code'], 'action' => $action, 'score' => $offense['score']];
+    }
+}
 
 ?>

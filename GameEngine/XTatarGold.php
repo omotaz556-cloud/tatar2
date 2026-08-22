@@ -80,11 +80,16 @@ class XTatarGold
             `total_earned`          int(11) NOT NULL DEFAULT 0,
             `total_converted_gold`  int(11) NOT NULL DEFAULT 0,
             `last_login_award_date` date DEFAULT NULL,
+            `login_streak`          int(11) NOT NULL DEFAULT 0,
+            `last_login_date`       date DEFAULT NULL,
             `points_today`          int(11) NOT NULL DEFAULT 0,
             `points_today_date`     date DEFAULT NULL,
             `updated`               int(11) NOT NULL DEFAULT 0,
             PRIMARY KEY (`uid`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        @mysqli_query($link, "ALTER TABLE `xtatar_gold_points`
+            ADD COLUMN IF NOT EXISTS `login_streak` int(11) NOT NULL DEFAULT 0,
+            ADD COLUMN IF NOT EXISTS `last_login_date` date DEFAULT NULL");
 
         @mysqli_query($link, "CREATE TABLE IF NOT EXISTS `xtatar_gold_log` (
             `id`         int(11) NOT NULL AUTO_INCREMENT,
@@ -177,7 +182,8 @@ class XTatarGold
         mysqli_stmt_close($ins);
         return [
             'uid' => $uid, 'points' => 0, 'total_earned' => 0, 'total_converted_gold' => 0,
-            'last_login_award_date' => null, 'points_today' => 0, 'points_today_date' => null,
+            'last_login_award_date' => null, 'login_streak' => 0, 'last_login_date' => null,
+            'points_today' => 0, 'points_today_date' => null,
         ];
     }
 
@@ -319,15 +325,27 @@ class XTatarGold
             return; // already awarded today
         }
 
-        // Mark the date first (separately from awardPoints' own UPDATE) so a
-        // page reload during the same request can't double-award even if
-        // awardPoints() itself is skipped by the daily cap.
-        $stmt = mysqli_prepare($link, "UPDATE xtatar_gold_points SET last_login_award_date = ? WHERE uid = ?");
-        mysqli_stmt_bind_param($stmt, 'si', $today, $uid);
+        $yesterday = date('Y-m-d', strtotime('-1 day'));
+        $streak = ((string)($row['last_login_date'] ?? '') === $yesterday)
+            ? ((int)($row['login_streak'] ?? 0) + 1)
+            : 1;
+
+        // Mark the date first and condition it on the previous date so two
+        // simultaneous logins cannot award the same day twice.
+        $stmt = mysqli_prepare($link, "UPDATE xtatar_gold_points
+            SET last_login_award_date = ?, last_login_date = ?, login_streak = ?
+            WHERE uid = ? AND (last_login_award_date IS NULL OR last_login_award_date <> ?)");
+        mysqli_stmt_bind_param($stmt, 'sssis', $today, $today, $streak, $uid, $today);
         mysqli_stmt_execute($stmt);
+        $claimed = mysqli_stmt_affected_rows($stmt) === 1;
         mysqli_stmt_close($stmt);
 
-        self::awardPoints($uid, (int) $settings['daily_login_points'], 'daily_login', 'First login of the day');
+        if (!$claimed) {
+            return;
+        }
+
+        $points = (int) $settings['daily_login_points'] * $streak;
+        self::awardPoints($uid, $points, 'daily_login', 'Consecutive login day ' . $streak);
     }
 
     /* ---- Admin: manual point adjustment ------------------------------------ */

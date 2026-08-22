@@ -1558,6 +1558,9 @@ class Message
                 "id",
                 1
             );
+            if ((int)$uid <= 0 || (int)$uid === $myid) {
+                continue;
+            }
             $added = 0;
             for ($j = 0; $j <= $i; $j++) {
 

@@ -42,6 +42,21 @@ $t = isset($_GET['t']) ? (int)$_GET['t'] : 0;
 
 <div class="clear"></div>
 
+<style type="text/css">
+#content.alliance .chartHeadline{margin:14px 0 10px;padding:9px 12px;background:#f3f7f9;border:1px solid #d7e3e8;border-radius:5px;color:#28566a;text-align:right;font-size:14px}
+#content.alliance #submenu{position:static;right:auto;top:auto;display:flex;gap:8px;justify-content:flex-start;align-items:center;margin:0 0 12px;padding:8px;background:#f8fafb;border:1px solid #dce6eb;border-radius:5px}
+#content.alliance #submenu a{display:inline-flex;width:25px;height:25px;padding:3px;align-items:center;justify-content:center;border-radius:5px;background:#fff;border:1px solid #d7e1e6}
+#content.alliance #submenu img.btn_def,#content.alliance #submenu img.btn_off{display:block;width:22px;height:22px;background-size:22px 44px}
+#content.alliance #submenu a:hover,#content.alliance #submenu img.active{background:#e7f4e9;border-color:#62a56b}
+#content.alliance #offs{width:100%;border-collapse:collapse;margin-top:8px;direction:rtl}
+#content.alliance #offs thead td{padding:9px;background:#eaf2f5;color:#31596a;font-weight:bold;text-align:right;border:1px solid #ccdbe1}
+#content.alliance #offs tbody td{padding:8px;background:#fff;border:1px solid #e1e8eb;text-align:right;vertical-align:middle}
+#content.alliance #offs tbody tr:nth-child(even) td{background:#f8fafb}
+#content.alliance #offs td.sub{width:58%}#content.alliance #offs td.al{width:22%}#content.alliance #offs td.dat{width:20%;white-space:nowrap}
+#content.alliance #offs img.iReport,#content.alliance #offs img[src*="/scouts/"]{width:18px;height:18px;object-fit:contain;vertical-align:middle;margin:0 3px}
+@media(max-width:600px){#content.alliance #offs td.sub{width:48%}#content.alliance #offs td.dat{font-size:11px}#content.alliance #submenu{justify-content:center}}
+</style>
+
 <h4 class="chartHeadline"><?php echo TZ_MILITARY_EVENTS; ?></h4>
 
 <div id="submenu">
@@ -91,7 +106,7 @@ if ($f === 31 || $f === 32) {
 
     if (!$sql || mysqli_num_rows($sql) == 0) {
 
-        $outputList .= "<tr><td colspan=\"4\" class=\"none\">There are no reports available.</td></tr>";
+        $outputList .= "<tr><td colspan=\"4\" class=\"none\">لا توجد تقارير متاحة.</td></tr>";
 
     } else {
 
@@ -158,7 +173,7 @@ if ($f === 31 || $f === 32) {
             $date = $generator->procMtime($time);
 
             // attack/scout label
-            $nn = ($ntype >= 18 && $ntype <= 21) ? " scouts " : " attacks ";
+            $nn = ($ntype >= 18 && $ntype <= 21) ? " استطلاع ضد " : " هجوم ضد ";
 
             // render row
             $outputList .= "<tr>";

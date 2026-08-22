@@ -141,9 +141,8 @@ if (!empty($_GET['id'])) {
 <?php if (defined('NEW_FUNCTIONS_MILESTONES') && NEW_FUNCTIONS_MILESTONES): ?>
  | <a href="statistiken.php?id=3"<?php if (isset($_GET['id']) && $_GET['id'] == 3) echo ' class="selected"'; ?>><?php echo MILESTONES; ?></a>
 <?php endif; ?>
- <?php if(WW == true) { echo
- '|'; } else { echo ''; } ?> <a href="statistiken.php?id=99" <?php if(isset($_GET['id']) && $_GET['id'] == 99) { echo "class=\"selected \""; } ?>><?php if(WW == true) { echo
- 'WW'; } else { echo ''; }?></a>
+ | <a href="statistiken.php?id=99" <?php if(isset($_GET['id']) && $_GET['id'] == 99) echo 'class="selected"'; ?>><?php echo WWS; ?></a>
+ | <a href="index.php"<?php if (basename($_SERVER['PHP_SELF']) === 'index.php') echo ' class="selected"'; ?>><?php echo NEWS; ?></a>
 </div>
 <?php
 if(isset($_GET['id'])) {

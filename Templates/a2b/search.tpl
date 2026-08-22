@@ -58,12 +58,12 @@ if (isset($_GET['z'])) {
                     <input class="radio" name="c" value="2" type="radio"
                         <?php if ($reinforcementChecked) echo 'checked="checked"'; ?>
                         <?php echo $disabledr; ?>>
-                    Reinforcement
+                    تعزيز
                 </label>
             </td>
             <td class="vil">
-                <span><?php echo TZ_VILLAGE; ?></span>
                 <input class="text" name="dname" value="<?php echo htmlspecialchars($form->getValue('dname'), ENT_QUOTES); ?>" maxlength="20" type="text" list="dnameSuggest" autocomplete="off">
+                <span><?php echo TZ_VILLAGE; ?></span>
                 <?php include("Templates/villageAutocomplete.tpl"); ?>
             </td>
         </tr>
@@ -71,7 +71,7 @@ if (isset($_GET['z'])) {
             <td class="sel">
                 <label>
                     <input class="radio" name="c" value="3" type="radio" <?php echo $disabled; ?>>
-                    Normal attack
+                    هجوم عادي
                 </label>
             </td>
             <td class="or"><?php echo constant('OR'); ?></td>
@@ -81,14 +81,14 @@ if (isset($_GET['z'])) {
                 <label>
                     <input class="radio" name="c" value="4" type="radio"
                         <?php if ($raidChecked) echo 'checked="checked"'; ?>>
-                    Raid
+                    غارة
                 </label>
             </td>
             <td class="target">
-                <span>x:</span>
                 <input class="text" name="x" value="<?php echo htmlspecialchars($coor['x'] ?? '', ENT_QUOTES); ?>" maxlength="4" type="text">
-                <span>y:</span>
+                <span>x:</span>
                 <input class="text" name="y" value="<?php echo htmlspecialchars($coor['y'] ?? '', ENT_QUOTES); ?>" maxlength="4" type="text">
+                <span>y:</span>
             </td>
         </tr>
     </tbody>

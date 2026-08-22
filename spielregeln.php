@@ -177,6 +177,9 @@ Displaying battle reports or messages in public without consent of both concerne
 <li><strong style="color: #2A720B">&sect;9 Correction clause</strong><br />
 <?php echo PUBLIC_RULES_SEVERABILITY; ?>
 </li>
+<li><strong style="color: #2A720B">&sect;10 Server rules and penalties</strong><br />
+Before any penalty is applied, the current server rules, prohibited conduct, and penalty levels must be published clearly on this page. Players may review the rule and submit an appeal through support.
+</li>
 </ul>
 	</div>
 

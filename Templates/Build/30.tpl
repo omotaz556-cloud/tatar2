@@ -29,6 +29,7 @@ $level = (int)$village->resarray['f'.$id];
     </a>
     <h1><?php echo GREATSTABLE;?> <span class="level"><?php echo LEVEL;?> <?php echo $level;?></span></h1>
     <p class="build_desc"><?php echo GREATSTABLE_DESC;?><br /></p>
+    <?php $trainlist = $technology->getTrainingList(6); ?>
 
     <?php if ($building->getTypeLevel(30) > 0):?>
     <form method="POST" name="snd" action="build.php">
@@ -38,14 +39,14 @@ $level = (int)$village->resarray['f'.$id];
             <thead><tr><td><?php echo NAME;?></td><td><?php echo QUANTITY;?></td><td><?php echo MAX;?></td></tr></thead>
             <tbody><?php include("30_train.tpl");?></tbody>
         </table>
-        <p><input type="image" id="btn_train" class="dynamic_img" value="ok" name="s1" src="img/x.gif" alt="<?php echo TRAIN; ?>" /></p>
+        <p><input type="image" id="btn_train" class="dynamic_img" value="ok" name="s1" src="img/x.gif" alt="<?php echo TRAIN; ?>" /><?php include("training_gold.tpl"); ?></p>
     </form>
     <?php else:?>
         <b><?php echo TRAINING_COMMENCE_GREATSTABLE;?></b><br />
     <?php endif;?>
 
-    <?php $trainlist = $technology->getTrainingList(6); if (count($trainlist) > 0): $TrainCount = 0; $NextFinished = '';?>
-    <table cellpadding="1" cellspacing="1" class="under_progress">
+    <?php $trainlist = $technology->getTrainingList(6); include("training_gold.tpl"); if (count($trainlist) > 0): $TrainCount = 0; $NextFinished = '';?>
+        <table cellpadding="1" cellspacing="1" class="under_progress">
         <thead><tr><td><?php echo TRAINING;?></td><td><?php echo DURATION;?></td><td><?php echo FINISHED;?></td></tr></thead>
         <tbody>
             <?php foreach ($trainlist as $train): $TrainCount++;?>

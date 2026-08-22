@@ -258,6 +258,45 @@ if ((int) $golds['gold'] === 0) {
 </table>
 
 <?php
+$protectionOptions = $plusRtl ? array(
+    array('name' => 'الأولى', 'duration' => '24 ساعة', 'cost' => 5000),
+    array('name' => 'الثانية', 'duration' => '24 ساعة', 'cost' => 7000),
+    array('name' => 'الثالثة', 'duration' => '12 ساعة', 'cost' => 9000),
+    array('name' => 'الرابعة', 'duration' => '8 ساعات', 'cost' => 10500),
+    array('name' => 'الخامسة', 'duration' => '8 ساعات', 'cost' => 12500)
+) : array(
+    array('name' => 'First', 'duration' => '24 hours', 'cost' => 5000),
+    array('name' => 'Second', 'duration' => '24 hours', 'cost' => 7000),
+    array('name' => 'Third', 'duration' => '12 hours', 'cost' => 9000),
+    array('name' => 'Fourth', 'duration' => '8 hours', 'cost' => 10500),
+    array('name' => 'Fifth', 'duration' => '8 hours', 'cost' => 12500)
+);
+$protectionMsg = isset($protectionMsg) ? $protectionMsg : '';
+?>
+<table class="plusFunctions" cellpadding="1" cellspacing="1">
+    <thead>
+        <tr><th colspan="5"><?php echo $plusRtl ? 'حماية اللاعب الجديد' : 'Beginner protection'; ?></th></tr>
+        <tr><td><?php echo $plusRtl ? 'الفرصة' : 'Opportunity'; ?></td><td><?php echo DESCRIPTION; ?></td><td><?php echo DURATION; ?></td><td><?php echo GOLD; ?></td><td><?php echo ACTION; ?></td></tr>
+    </thead>
+    <tbody>
+    <?php foreach ($protectionOptions as $index => $protection): ?>
+        <tr>
+            <td><?php echo htmlspecialchars($protection['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+            <td class="desc"><?php echo $plusRtl ? 'تمديد حماية اللاعب الجديد' : 'Extend beginner protection'; ?></td>
+            <td><?php echo $protection['duration']; ?></td>
+            <td class="cost"><img src="img/x.gif" class="gold" /><?php echo number_format($protection['cost']); ?></td>
+            <td class="act">
+                <form method="post" action="plus.php?id=3" style="margin:0;">
+                    <button type="submit" name="buy_protection" value="<?php echo $index + 1; ?>"><?php echo $plusRtl ? 'تفعيل' : 'Activate'; ?></button>
+                </form>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+<?php if ($protectionMsg !== ''): ?><p class="none"><?php echo htmlspecialchars($protectionMsg, ENT_QUOTES, 'UTF-8'); ?></p><?php endif; ?>
+
+<?php
 // Gold shop: promo-code redemption box (sits between Plus function and Gold Club).
 if (class_exists('GoldShop')):
     $__promoMsg = isset($promoMsg) ? $promoMsg : '';

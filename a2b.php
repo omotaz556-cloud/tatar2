@@ -89,7 +89,7 @@ $process = $units->procUnits($_POST);
 <html <?php echo tz_html_dir_attrs(); ?>>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title><?php echo SERVER_NAME.' - Send Troops'?></title>
+<title><?php echo SERVER_NAME.' - إرسال الجيوش'?></title>
 <link rel="shortcut icon" href="favicon.ico" />
 <meta http-equiv="cache-control" content="max-age=0" />
 <meta http-equiv="pragma" content="no-cache" />

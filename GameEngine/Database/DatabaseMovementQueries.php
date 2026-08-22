@@ -249,6 +249,9 @@ trait DatabaseMovementQueries {
 	}
 
 	function addMovement($type, $from, $to, $ref, $time, $endtime, $send = 1, $wood = 0, $clay = 0, $iron = 0, $crop = 0, $ref2 = 0) {
+    // A new movement makes every previously cached movement list stale.
+    self::$marketMovementCache = [];
+
     // Caz 1: apel simplu, un singur movement
     if (!is_array($type)) {
         $type = [$type];

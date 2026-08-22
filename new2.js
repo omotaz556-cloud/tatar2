@@ -192,6 +192,7 @@ Fx.Screenshots = new Class({
 
 function Popup(i, j, game_url)
 {
+	game_url = game_url || '';
 	var layer = $('iframe_layer');
 
 	$('frame_box').empty();

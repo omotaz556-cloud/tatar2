@@ -65,7 +65,7 @@ $outputList = "";
 
 if (!$sql || mysqli_num_rows($sql) == 0) {
 
-    $outputList .= "<tr><td colspan=\"4\" class=\"none\">There are no reports available.</td></tr>";
+    $outputList .= "<tr><td colspan=\"4\" class=\"none\">لا توجد تقارير متاحة.</td></tr>";
 
 } else {
 
@@ -113,7 +113,7 @@ if (!$sql || mysqli_num_rows($sql) == 0) {
         $nn = (
             (($type == 18 || $type == 19) && $filterType == 31) ||
             (($type == 20 || $type == 21) && $filterType == 32)
-        ) ? " scouts " : " attacks ";
+        ) ? " استطلاع ضد " : " هجوم ضد ";
 
         $date = $generator->procMtime($time);
 

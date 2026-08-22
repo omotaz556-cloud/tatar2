@@ -121,7 +121,18 @@ $dbPrefix = $_SESSION['install_random_prefix'];
         </optgroup>
       </select>
     </div>
-    <div><label><?=t('server_speed')?></label><input class="input" name="speed" id="speed" value="1"></div>
+    <div class="server-speed-control">
+      <label><?=t('server_duration')?></label>
+      <select class="input" name="server_duration" id="server_duration">
+        <option value="7" data-speed="45">7 <?=t('duration_days')?> — 45x</option>
+        <option value="10" data-speed="30">10 <?=t('duration_days')?> — 30x</option>
+        <option value="20.5" data-speed="15">20 - 21 <?=t('duration_day')?> — 15x</option>
+        <option value="30" data-speed="10">30 <?=t('duration_day')?> — 10x</option>
+        <option value="60" data-speed="5">60 <?=t('duration_day')?> — 5x</option>
+      </select>
+      <div class="server-speed-help"><?=t('server_speed_intro')?></div>
+    </div>
+    <div><label><?=t('server_speed')?></label><input class="input" type="number" min="1" step="1" name="speed" id="speed" value="45" readonly></div>
     <div><label><?=t('troop_speed')?></label><input class="input" name="incspeed" id="incspeed" value="1"></div>
     <div><label><?=t('evasion_speed')?></label><input class="input" name="evasionspeed" id="evasionspeed" value="1"></div>
     <div><label><?=install_is_rtl()?'سعة التاجر':'Trader capacity'?></label><input class="input" name="tradercap" id="tradercap" value="1"></div>
@@ -145,6 +156,21 @@ $dbPrefix = $_SESSION['install_random_prefix'];
       </select>
     </div>
     <div><label><?=install_is_rtl()?'التسجيل مفتوح':'Register Open'?></label><select class="input" name="reg_open"><option value="true" selected>true</option><option value="false">false</option></select></div>
+  </div>
+  <div class="server-speed-reference">
+    <table>
+      <thead><tr><th><?=t('server_duration')?></th><th><?=t('server_speed')?></th></tr></thead>
+      <tbody>
+        <tr><td>7 <?=t('duration_days')?></td><td>45x</td></tr>
+        <tr><td>10 <?=t('duration_days')?></td><td>30x</td></tr>
+        <tr><td>20 - 21 <?=t('duration_day')?></td><td>15x</td></tr>
+        <tr><td>30 <?=t('duration_day')?></td><td>10x</td></tr>
+        <tr><td>60 <?=t('duration_day')?></td><td>5x</td></tr>
+      </tbody>
+    </table>
+    <p class="server-speed-formula"><?=t('server_speed_formula')?></p>
+    <p><?=t('server_speed_timings')?></p>
+    <div class="server-speed-note"><?=t('server_speed_note')?></div>
   </div>
 </div>
 

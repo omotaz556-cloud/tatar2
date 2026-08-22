@@ -42,6 +42,9 @@ trait AutomationMedals {
         $allyweek = $this->getNextMedalWeek('allimedal');
 
         $this->awardPlayerMedals($week, $userFilter);
+        if ($week % 2 === 0) {
+            $this->awardMedalGoldRewards($userFilter);
+        }
         $this->resetWeeklyStats('users', $userFilter, "ap=0, dp=0, Rc=0, clp=0, RR=0");
         $this->awardAllianceMedals($allyweek);
         $this->resetWeeklyStats('alidata', '', "ap=0, dp=0, RR=0, clp=0");
@@ -178,6 +181,40 @@ trait AutomationMedals {
         // Robbers milestones
         $this->awardMilestoneMedals('RR', 4, 3, 9, 't16', $week, $userFilter);
         $this->awardMilestoneMedals('RR', 4, 10, 15, 't17', $week, $userFilter);
+    }
+
+    /**
+     * Give the biweekly gold prizes shown in the medal rules.
+     * Prizes are paid per ranking category, so a player who wins more than
+     * one category receives each earned prize.
+     */
+    private function awardMedalGoldRewards($userFilter) {
+        global $database;
+
+        $prizes = [1 => 3000, 2 => 2000, 3 => 1000, 4 => 500];
+        $categories = ['ap', 'dp', 'RR', 'Rc', 'clp'];
+
+        foreach ($categories as $field) {
+            $result = mysqli_query(
+                $database->dblink,
+                "SELECT id FROM " . TB_PREFIX . "users WHERE $userFilter ORDER BY $field DESC, id DESC LIMIT 4"
+            );
+            if (!$result) {
+                continue;
+            }
+
+            $place = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $place++;
+                $uid = (int) $row['id'];
+                $amount = $prizes[$place];
+                $database->modifyGold($uid, $amount, 1);
+
+                if (defined('LOG_GOLD_FIN') && LOG_GOLD_FIN) {
+                    $database->addGoldFinLog(0, $uid, 'Biweekly medal reward', $amount, 'Medal category: ' . $field . ', place: ' . $place);
+                }
+            }
+        }
     }
 
     // Alliance medals: top 10 of each category, then the attack+defense bonus.

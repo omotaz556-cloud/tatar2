@@ -146,12 +146,82 @@ trait AutomationBuildQueue {
 
         //now can't be more than one winner if ww to level 100 is build by 2 users or more on same time
         if ($indi['level'] == 100) {
+            $this->awardWorldWonderRewards((int) $indi['wid'], $wwOwner);
             mysqli_query($database->dblink,"TRUNCATE ".TB_PREFIX."bdata");
         }
 
         // Update ww last finish upgrade
         $qW = "UPDATE ".TB_PREFIX."fdata set ww_lastupdate = ".time()." where vref = ".(int) $indi['wid'];
         $database->query($qW);
+    }
+
+    /**
+     * Award the one-time World Wonder completion rewards.
+     *
+     * A member qualifies for the alliance reward after 14 days in the
+     * alliance or when they contributed an active World Wonder plan.
+     */
+    private function awardWorldWonderRewards($wid, $ownerId) {
+        global $database;
+
+        $ownerId = (int) $ownerId;
+        $wid = (int) $wid;
+        if ($ownerId <= 5 || $wid <= 0) {
+            return;
+        }
+
+        $ownerAlliance = (int) $database->getUserField($ownerId, 'alliance', 0);
+        if ($ownerAlliance <= 0) {
+            return;
+        }
+
+        $members = $database->getAllMember($ownerAlliance, 0, false);
+        if (!$members) {
+            return;
+        }
+
+        $cutoff = time() - (14 * 86400);
+        $eligibleMembers = [];
+        foreach ($members as $member) {
+            $memberId = (int) ($member['id'] ?? 0);
+            $joinedAt = (int) ($member['alliance_joined'] ?? 0);
+            $hasPlan = $database->getWWConstructionPlans($memberId);
+
+            if (($joinedAt > 0 && $joinedAt <= $cutoff) || $hasPlan) {
+                $eligibleMembers[] = $memberId;
+            }
+        }
+
+        // Do not pay a newly assembled alliance with no established member
+        // and no actual World Wonder-plan contribution.
+        if (!$eligibleMembers) {
+            return;
+        }
+
+        // milestones.milestone_key is unique, making this one-time guard
+        // race-safe when two cron workers finish level 100 together.
+        if (!$database->recordMilestoneIfFirst('world_wonder_rewards', $ownerId, $wid, (string) $ownerAlliance)) {
+            return;
+        }
+
+        $alliance = $database->getAlliance($ownerAlliance, false);
+        $leaderId = (int) ($alliance['leader'] ?? 0);
+        $this->grantWorldWonderGold($wid, $ownerId, 50000, 'World Wonder owner reward');
+        if ($leaderId > 5) {
+            $this->grantWorldWonderGold($wid, $leaderId, 30000, 'World Wonder alliance leader reward');
+        }
+        foreach ($eligibleMembers as $memberId) {
+            $this->grantWorldWonderGold($wid, $memberId, 10000, 'World Wonder alliance member reward');
+        }
+    }
+
+    private function grantWorldWonderGold($wid, $uid, $amount, $action) {
+        global $database;
+
+        if ($database->modifyGold((int) $uid, (int) $amount, 1)
+            && defined('LOG_GOLD_FIN') && LOG_GOLD_FIN) {
+            $database->addGoldFinLog((int) $wid, (int) $uid, $action, (int) $amount, 'World Wonder completed');
+        }
     }
 
     private function researchComplete() {

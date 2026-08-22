@@ -26,6 +26,8 @@ $start_timer = $generator->pageLoadTimeStart();
 use App\Utils\AccessLogger;
 
 include_once("GameEngine/Village.php");
+include_once("GameEngine/CentralGold.php");
+include_once("GameEngine/PaymentShop.php");
 AccessLogger::logRequest();
 
 if(isset($_GET['newdid'])) {
@@ -40,6 +42,74 @@ else $building->procBuild($_GET);
 // once-per-player) before granting gold.
 $promoMsg = '';
 $promoOk  = false;
+$purchaseMsg = '';
+$purchaseOk = false;
+if (isset($_POST['refund_purchase']) && isset($session->uid)) {
+	$purchaseOk = PaymentShop::requestRefund($session->uid, $_POST['refund_purchase'], $_POST['refund_reason'] ?? '');
+	$purchaseMsg = $purchaseOk ? (install_is_rtl() ? 'تم إرسال طلب الاسترداد للمراجعة.' : 'Refund request submitted for review.') : (install_is_rtl() ? 'لا يمكن طلب استرداد لهذا الطلب.' : 'This purchase cannot be refunded.');
+}
+
+// Paid beginner-protection extensions: five account-wide opportunities.
+$protectionMsg = '';
+$protectionOk = false;
+if (isset($_POST['buy_protection']) && isset($session->uid)) {
+	$protectionOptions = [
+		1 => ['seconds' => 86400, 'cost' => 5000],
+		2 => ['seconds' => 86400, 'cost' => 7000],
+		3 => ['seconds' => 43200, 'cost' => 9000],
+		4 => ['seconds' => 28800, 'cost' => 10500],
+		5 => ['seconds' => 28800, 'cost' => 12500]
+	];
+	$option = (int) $_POST['buy_protection'];
+	$uid = (int) $session->uid;
+
+	if (!isset($protectionOptions[$option])) {
+		$protectionMsg = install_is_rtl() ? 'اختيار حماية غير صالح.' : 'Invalid protection option.';
+	} else {
+		$database->query("CREATE TABLE IF NOT EXISTS " . TB_PREFIX . "protection_purchases (
+			uid int(11) NOT NULL,
+			uses tinyint(2) NOT NULL DEFAULT 0,
+			PRIMARY KEY (uid)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+		$row = $database->query_return("SELECT uses FROM " . TB_PREFIX . "protection_purchases WHERE uid = $uid LIMIT 1");
+		$uses = $row ? (int) $row[0]['uses'] : 0;
+
+		if ($uses >= 5) {
+			$protectionMsg = install_is_rtl() ? 'لقد استخدمت فرص الحماية الخمس.' : 'All five protection opportunities have been used.';
+		} else {
+			$email = trim((string) ($session->userinfo['email'] ?? ''));
+			$goldResult = CentralGold::debit(
+				$email,
+				$session->username,
+				$uid,
+				$protectionOptions[$option]['cost'],
+				'beginner_protection',
+				'Protection opportunity ' . ($uses + 1)
+			);
+			if (!$goldResult[0]) {
+				$protectionMsg = install_is_rtl() ? 'تحتاج إلى ذهب مشتَرى كافٍ لتفعيل الحماية.' : 'You need enough paid gold to activate protection.';
+			} else {
+				$seconds = $protectionOptions[$option]['seconds'];
+				mysqli_begin_transaction($database->dblink);
+				$updated = $database->query("INSERT INTO " . TB_PREFIX . "protection_purchases (uid, uses)
+					VALUES ($uid, 1)
+					ON DUPLICATE KEY UPDATE uses = uses + 1");
+				$updated = $updated && $database->query("UPDATE " . TB_PREFIX . "users
+					SET protect = GREATEST(protect, UNIX_TIMESTAMP()) + $seconds
+					WHERE id = $uid LIMIT 1");
+				if ($updated) {
+					mysqli_commit($database->dblink);
+					$protectionOk = true;
+					$protectionMsg = install_is_rtl() ? 'تم تفعيل حماية اللاعب الجديد بنجاح.' : 'Beginner protection activated successfully.';
+				} else {
+					mysqli_rollback($database->dblink);
+					CentralGold::credit($email, $session->username, $uid, $protectionOptions[$option]['cost'], 'beginner_protection_refund', 'Protection update failed');
+					$protectionMsg = install_is_rtl() ? 'تعذر تفعيل الحماية، وتمت إعادة الذهب.' : 'Protection could not be activated; the gold was refunded.';
+				}
+			}
+		}
+	}
+}
 if (isset($_POST['redeem_code']) && class_exists('GoldShop')) {
     $__uid = isset($session) && isset($session->uid) ? (int)$session->uid : 0;
     $rr = GoldShop::redeem($__uid, $_POST['redeem_code']);

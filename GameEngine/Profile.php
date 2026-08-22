@@ -387,6 +387,10 @@ class Profile {
 	private function setvactionmode($post) {
 		global $database, $session;
 
+		if (!class_exists('CentralGold')) {
+			@include_once __DIR__ . '/CentralGold.php';
+		}
+
 		if (isset($post['vac']) && $post['vac'] && isset($post['vac_days']) && $post['vac_days'] >= 2 && $post['vac_days'] <= 14) {
 
 			$uid = $session->uid;
@@ -425,10 +429,38 @@ class Profile {
 				exit;
 			}
 
+			// Vacation is a paid-gold action. Free activity rewards are kept
+			// outside CentralGold and cannot be used to activate it.
+			$userEmail = trim((string)($session->userinfo['email'] ?? ''));
+			if (!class_exists('CentralGold') || !CentralGold::isConfigured() || $userEmail === '') {
+				$_SESSION['vac_error'] = TZ_VACATION_PAID_GOLD_REQUIRED;
+				header("Location: spieler.php?s=5");
+				exit;
+			}
+
+			$paidGoldResult = CentralGold::debit(
+				$userEmail,
+				$session->username,
+				$uid,
+				1,
+				'vacation_activation',
+				'Vacation mode activation'
+			);
+			if (!$paidGoldResult[0]) {
+				$_SESSION['vac_error'] = TZ_VACATION_PAID_GOLD_COST;
+				header("Location: spieler.php?s=5");
+				exit;
+			}
+
 			// OK -> enter vacation mode
 			unset($_SESSION['wid']);
 
-			$database->setvacmode($uid, $post['vac_days']);
+			if (!$database->setvacmode($uid, $post['vac_days'])) {
+				CentralGold::credit($userEmail, $session->username, $uid, 1, 'vacation_refund', 'Vacation activation failed');
+				$_SESSION['vac_error'] = TZ_VACATION_ACTIVATION_FAILED;
+				header("Location: spieler.php?s=5");
+				exit;
+			}
 			$database->activeModify(addslashes($session->username), 1);
 			$database->UpdateOnline("logout");
 

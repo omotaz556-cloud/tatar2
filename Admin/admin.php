@@ -96,7 +96,7 @@ function admin_validated_page(string $raw): string
         'server_info', 'online', 'notregistered', 'inactive', 'report',
         'message', 'massmessage', 'sysmessage', 'map', 'map_tile', 'natars',
         'search', 'ban', 'maintenance', 'cleanban', 'gold', 'usergold',
-        'centralGold', 'xtatarGold', 'feedingSystem', 'relatedAccountProtection',
+        'centralGold', 'xtatarGold', 'feedingSystem', 'relatedAccountProtection', 'chat',
         'maintenenceResetGold', 'delmedal', 'delallymedal', 'givePlus',
         'maintenenceResetPlus', 'givePlusRes', 'maintenenceResetPlusBonus',
         'addUsers', 'users', 'admin_log', 'config', 'debug_log',
@@ -114,7 +114,7 @@ function admin_validated_page(string $raw): string
         'pushprot',
         'blockReg',
         'heatmap',
-        'goldShop',
+        'goldShop', 'grantResources',
         'featureFlags',
         'questEditor',
     ];
@@ -282,6 +282,10 @@ if ($page !== '') {
 
         case 'relatedAccountProtection':
             $subpage = ADMIN_RELATED_ACCOUNT_PROTECTION;
+            break;
+
+        case 'chat':
+            $subpage = 'Chat Moderation';
             break;
 
         case 'maintenenceResetGold':
@@ -902,6 +906,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                             <ul>
                                 <li><a href="?p=gold"><?php echo ADMIN_GIVE_ALL_FREE_GOLD; ?></a></li>
                                 <li><a href="?p=usergold"><?php echo ADMIN_GIVE_FREE_GOLD_TO_SPECIFIC_USER; ?></a></li>
+                                <li><a href="?p=grantResources">منح موارد للاعب</a></li>
                                 <li><a href="?p=goldShop"><?php echo ADMIN_GOLD_SHOP_PROMO_CODES; ?></a></li>
                                 <li><a href="?p=centralGold"><?php echo ADMIN_CENTRAL_GOLD; ?></a></li>
                                 <li><a href="?p=xtatarGold"><?php echo ADM_XG_TITLE; ?></a></li>
@@ -912,6 +917,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                             <ul>
                                 <li><a href="?p=feedingSystem"><?php echo ADMIN_FEEDING_SYSTEM; ?></a></li>
                                 <li><a href="?p=relatedAccountProtection"><?php echo ADMIN_RELATED_ACCOUNT_PROTECTION; ?></a></li>
+                                <li><a href="?p=chat"><font color="Red"><b>Chat Moderation</b></font></a></li>
                             </ul>
                         </li>
                         <li class="sub"><a href="#"><?php echo ADMIN_PLUS_RES_BONUS; ?></a>

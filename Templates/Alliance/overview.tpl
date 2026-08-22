@@ -183,17 +183,18 @@ foreach ($memberlist as $member) {
     $uid  = (int)$member['id'];
     $name = $database->getUserField($uid, "username", 0);
     $rank = $database->getAlliancePermission($uid, "rank", $aid);
+    $rankLabel = ($rank === 'Alliance founder') ? 'مؤسس التحالف' : $rank;
 
     if ($rank != '') {
         echo "<tr>";
-        echo "<th>" . htmlspecialchars(stripslashes($rank)) . "</th>";
+        echo "<th>" . htmlspecialchars(stripslashes($rankLabel)) . "</th>";
         echo "<td><a href='spieler.php?uid=" . $uid . "'>" . htmlspecialchars($name) . "</a></td>";
         echo "</tr>";
     }
 }
 
 if (!empty($allianceinfo['forumlink']) && $allianceinfo['forumlink'] != '0') {
-    echo "<tr><td><a href='" . htmlspecialchars($allianceinfo['forumlink']) . "'>» to the forum</a></td></tr>";
+    echo "<tr><td><a href='" . htmlspecialchars($allianceinfo['forumlink']) . "'>» إلى المنتدى</a></td></tr>";
 }
 ?>
 
@@ -255,15 +256,15 @@ foreach ($memberlist as $member) {
         $diff = time() - $member['timestamp'];
 
         if ($diff < 600) {
-            echo "<td class='on'><img class='online1' src='img/x.gif' title='Now online' /></td>";
+            echo "<td class='on'><img class='online1' src='img/x.gif' title='متصل الآن' /></td>";
         } elseif ($diff < 86400) {
-            echo "<td class='on'><img class='online2' src='img/x.gif' title='Offline' /></td>";
+            echo "<td class='on'><img class='online2' src='img/x.gif' title='غير متصل' /></td>";
         } elseif ($diff < 259200) {
-            echo "<td class='on'><img class='online3' src='img/x.gif' title='Last 3 days' /></td>";
+            echo "<td class='on'><img class='online3' src='img/x.gif' title='آخر 3 أيام' /></td>";
         } elseif ($diff < 604800) {
-            echo "<td class='on'><img class='online4' src='img/x.gif' title='Last 7 days' /></td>";
+            echo "<td class='on'><img class='online4' src='img/x.gif' title='آخر 7 أيام' /></td>";
         } else {
-            echo "<td class='on'><img class='online5' src='img/x.gif' title='inactive' /></td>";
+            echo "<td class='on'><img class='online5' src='img/x.gif' title='غير نشط' /></td>";
         }
     }
 

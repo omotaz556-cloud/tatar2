@@ -1747,7 +1747,7 @@ There will be a countdown in game, showing the exact time of the release, '.(5 /
 tz_def('WILL_SPAWN_IN', 'will spawn in');
 tz_def('PLAN', 'Ancient Construction Plan');
 tz_def('PLANVILLAGE', 'WW Buildingplan');
-tz_def('PLAN_DESC', 'With this ancient construction plan you will able to build World Wonder to level 50. to build further, your alliance must hold at least two plans.');
+tz_def('PLAN_DESC', 'With this ancient construction plan you can build the World Wonder up to level 49. Starting at level 50, another member of your alliance must own a second plan.');
 tz_def('PLAN_INFO', '<h1><b>World Wonder Construction Plans</b></h1>
 
 
@@ -2283,6 +2283,13 @@ tz_def('TZ_N_2_CONSTRUCT_A_BUILDING', '2. Construct a building');
 tz_def('TZ_N_2_DAYS', '2 days');
 tz_def('TZ_N_2_EXTEND_THE_RESOURCE_FIELD', '2. Extend the resource field');
 tz_def('TZ_N_3_5_BUILDINGS', '(3/5) Buildings');
+tz_def('TZ_TITLE_LARGEST_EMPIRE', 'Largest empire on the server');
+tz_def('TZ_TITLE_TOP_ATTACKER', 'Top attacker');
+tz_def('TZ_TITLE_TOP_DEFENDER', 'Top defender');
+tz_def('TZ_TITLE_TOP_RAIDER', 'Top raider');
+tz_def('TZ_VACATION_PAID_GOLD_REQUIRED', 'Vacation mode requires a verified paid-gold account.');
+tz_def('TZ_VACATION_PAID_GOLD_COST', 'Vacation mode requires one paid gold.');
+tz_def('TZ_VACATION_ACTIVATION_FAILED', 'Vacation mode could not be activated; the paid gold was refunded.');
 tz_def('TZ_N_4_5_NEIGHBOURS', '(4/5) Neighbours');
 tz_def('TZ_N_5_5_NAVIGATION', '(5/5) Navigation');
 tz_def('TZ_OFFER_A_CONFEDERATION', 'offer a confederation');

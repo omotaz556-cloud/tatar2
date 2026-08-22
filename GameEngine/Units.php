@@ -124,9 +124,9 @@ class Units {
 
         $this->resolveTarget($post, $disabled, $disabledr, $isOasis);
 
-        if(!empty($disabledr) && $post['c'] == 2) return "You can't reinforce this village/oasis";
-        if(!empty($disabled) && $post['c'] == 3) return "You can't attack this village/oasis with normal attack";
-        if($post['c'] < 2 || $post['c'] > 4) return "Invalid attack type.";
+        if(!empty($disabledr) && $post['c'] == 2) return "لا يمكنك إرسال تعزيزات إلى هذه القرية أو الواحة";
+        if(!empty($disabled) && $post['c'] == 3) return "لا يمكنك مهاجمة هذه القرية أو الواحة بهجوم عادي";
+        if($post['c'] < 2 || $post['c'] > 4) return "نوع الهجوم غير صالح.";
 
         // sitterul fara dreptul respectiv nu ajunge nici macar la confirmare
         if(($error = $this->sitterMissionError($post['c'])) !== "") return $error;
@@ -134,15 +134,15 @@ class Units {
         //check if at least one troops has been selected
         $selectedTroops = 0;
         for($i = 1; $i <= 11; $i++) $selectedTroops += empty($post['t'.$i]) ? 0 : $post['t'.$i];
-        if($selectedTroops == 0) return "You need to select min. one troop";
+        if($selectedTroops == 0) return "يجب اختيار جندي واحد على الأقل";
 
-        if(!empty($post['dname']) && $post['x'] != "" && $post['y'] != "") return "Insert name or coordinates";
+        if(!empty($post['dname']) && $post['x'] != "" && $post['y'] != "") return "أدخل اسم القرية أو الإحداثيات، وليس الاثنين معًا";
 
         if(isset($post['dname']) && !empty($post['dname'])) {
             $id = $database->resolveVillageInput(stripslashes($post['dname']),
                 (int) ($session->uid ?? 0));   // accepta si "Nume (x|y)"
 
-            if (!isset($id)) return "Village doesn't exist";
+            if (!isset($id)) return "القرية غير موجودة";
             else $coor = $database->getCoor($id);
         }
 
@@ -152,7 +152,7 @@ class Units {
             $coor = ['x' => $post['x'], 'y' => $post['y']];
             $id = $generator->getBaseID($coor['x'], $coor['y']);
 
-            if (!$database->getVillageState($id)) return "Coordinates do not exist";
+            if (!$database->getVillageState($id)) return "الإحداثيات غير موجودة";
         }
 
         if (!empty($coor)) {
@@ -180,12 +180,12 @@ class Units {
         if(isset($post['y'])) $post['y'] = trim($post['y']);
 
         if(isset($post['x']) && isset($post['y']) && $post['x'] !== "" && $post['y'] !== ""){
-            if(!preg_match('/^-?\d+$/', $post['x']) || !preg_match('/^-?\d+$/', $post['y'])) return "Invalid coordinates";
+            if(!preg_match('/^-?\d+$/', $post['x']) || !preg_match('/^-?\d+$/', $post['y'])) return "الإحداثيات غير صالحة";
 
             $post['x'] = (int) $post['x'];
             $post['y'] = (int) $post['y'];
 
-            if(abs($post['x']) > WORLD_MAX || abs($post['y']) > WORLD_MAX) return "Coordinates do not exist";
+            if(abs($post['x']) > WORLD_MAX || abs($post['y']) > WORLD_MAX) return "الإحداثيات غير موجودة";
         }
 
         return "";
@@ -256,9 +256,9 @@ class Units {
                 if($i == 10) $troophave = $village->unitarray['u'.floor(intval($Gtribe) + 1) * $i];
                 if($i == 11) $troophave = $village->unitarray['hero'];
 
-                if(intval($post['t'.$i]) > $troophave) return "You can't send more units than you have";
-                if(intval($post['t'.$i]) < 0) return "You can't send negative units.";
-                if(preg_match('/[^0-9]/',$post['t'.$i])) return "Special characters can't entered";
+                if(intval($post['t'.$i]) > $troophave) return "لا يمكنك إرسال عدد أكبر من القوات التي تملكها";
+                if(intval($post['t'.$i]) < 0) return "لا يمكنك إرسال عدد سالب من القوات.";
+                if(preg_match('/[^0-9]/',$post['t'.$i])) return "لا يمكن إدخال رموز خاصة";
             }
         }
 
@@ -324,7 +324,7 @@ class Units {
         global $database, $village;
 
         //check if the attacked village/oasis' owner is under beginners protection
-        if($database->hasBeginnerProtection($id) == 1) return "Player is under beginners protection. You can't attack him";
+        if($database->hasBeginnerProtection($id) == 1) return "اللاعب يتمتع بحماية المبتدئين، ولا يمكنك مهاجمته";
 
         //check if it's an oasis or not
         $villageInfo = (!$isOasis) ? $database->getVillage($id) : $database->getOasisV($id);
@@ -335,18 +335,18 @@ class Units {
         $userID = $database->getUserField($villageOwner, 'id', 0);
         //check if he's an Admin and if he's attackable
         if($userAccess == 0 || ($userAccess == MULTIHUNTER && $userID == 5) || (!ADMIN_ALLOW_INCOMING_RAIDS && $userAccess == ADMIN)){
-            return "Player is Banned. You can't attack him";
+            return "اللاعب محظور، ولا يمكنك مهاجمته";
         }
 
         //check if the user' is on the vacation mode:
-        if($database->getvacmodexy($id)) return "User is on vacation mode";
+        if($database->getvacmodexy($id)) return "اللاعب في وضع الإجازة";
         // jucator protejat prin PROTECTED_PLAYERS
         if($this->isProtectedTarget($villageOwner, isset($_POST['c']) ? $_POST['c'] : 0)) {
-            return "This player is protected from attacks.";
+            return "هذا اللاعب محمي من الهجمات.";
         }
 
         //check if attacking same village that units are in
-        if($id == $village->wid) return "You cant attack same village you are sending from.";
+        if($id == $village->wid) return "لا يمكنك مهاجمة القرية نفسها التي ترسل منها القوات.";
 
         return "";
     }
@@ -725,19 +725,19 @@ class Units {
         for ($i = 1; $i < 10; $i++) {
             if (isset($data['u'.$i])) {
                 if ($data['u'.$i] > $village->unitarray['u'.$Gtribe.$i]) {
-                    $form->addError("error", "You can't send more units than you have");
+                    $form->addError("error", "لا يمكنك إرسال عدد أكبر من القوات التي تملكها");
                     break;
                 }
 
                 if ($data['u'.$i] < 0) {
-                    $form->addError("error", "You can't send negative units.");
+                    $form->addError("error", "لا يمكنك إرسال عدد سالب من القوات.");
                     break;
                 }
             }
         }
 
-		if($data['u11'] > $village->unitarray['hero']) $form->addError("error", "You can't send more units than you have");
-		if($data['u11'] < 0) $form->addError("error", "You can't send negative units.");   
+        if($data['u11'] > $village->unitarray['hero']) $form->addError("error", "لا يمكنك إرسال عدد أكبر من القوات التي تملكها");
+        if($data['u11'] < 0) $form->addError("error", "لا يمكنك إرسال عدد سالب من القوات.");
 		if($data['type'] != 1) $post['spy'] = 0; else $post['spy'] = $post['spy']?? 0;
         
         if($form->returnErrors() > 0){
@@ -966,7 +966,7 @@ class Units {
 				if (!is_numeric($post['t'.$i])) {
 				$form->addError(
 				"error",
-				"Invalid troop amount."
+                "عدد القوات غير صالح."
 			);
 			break;
 		}
@@ -976,7 +976,7 @@ class Units {
 			if ($post['t'.$i] < 0) {
 				$form->addError(
 				"error",
-				"You can't send back negative units."
+                "لا يمكنك إعادة إرسال عدد سالب من القوات."
 			);
 			break;
 		}
@@ -984,18 +984,18 @@ class Units {
 			if ($post['t'.$i] > (int)$enforce['u'.$Gtribe.$i]) {
 			$form->addError(
             "error",
-            "You can't send back more units than you have"
+            "لا يمكنك إعادة إرسال عدد أكبر من القوات التي تملكها"
 			);
 			break;
 		}
 	}
                 if ( isset( $post['t11'] ) ) {
                     if ( $post['t11'] > $enforce['hero'] ) {
-                        $form->addError( "error", "You can't send back more units than you have" );
+                        $form->addError( "error", "لا يمكنك إعادة إرسال عدد أكبر من القوات التي تملكها" );
                     }
 
                     if ( $post['t11'] < 0 ) {
-                        $form->addError( "error", "You can't send back negative units." );
+                        $form->addError( "error", "لا يمكنك إعادة إرسال عدد سالب من القوات." );
                     }
                 } else {
                     $post['t11'] = '0';
@@ -1061,7 +1061,7 @@ class Units {
                     exit();
                 }
             }else{
-                $form->addError("error", "You cant change someones troops.");
+                $form->addError("error", "لا يمكنك تغيير قوات لاعب آخر.");
                 if($form->returnErrors() > 0){
                     $_SESSION['errorarray'] = $form->getErrors();
                     $_SESSION['valuearray'] = $_POST;

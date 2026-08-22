@@ -33,7 +33,7 @@ if (!isset($id)) {
  * Show multivillage only if user owns >1 village
  * ---------------------------------------------------------
  */
-if (count($session->villages) > 1) {
+if (count($session->villages) > 0) {
 
     /**
      * Load villages once
@@ -187,21 +187,7 @@ if (count($session->villages) > 1) {
                 </a>
             </td>
 
-            <td class="aligned_coords">
-
-                <div class="cox">
-                    (<?php echo $villageX; ?>
-                </div>
-
-                <div class="pi">
-                    |
-                </div>
-
-                <div class="coy">
-                    <?php echo $villageY; ?>)
-                </div>
-
-            </td>
+            <td class="aligned_coords"><span dir="ltr">(<?php echo $villageX; ?>|<?php echo $villageY; ?>)</span></td>
 
         </tr>
 

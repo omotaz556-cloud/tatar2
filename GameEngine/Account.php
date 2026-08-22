@@ -67,6 +67,7 @@ class Account {
 
 	private function Signup() {
 		global $database, $form, $mailer, $generator, $session;
+        include_once __DIR__ . '/RegistrationGuard.php';
 
     // ==================== VERIFICARE WINNER ====================
     $winnerResult = $database->query("SELECT 1 FROM " . TB_PREFIX . "fdata WHERE f99 = '100' AND f99t = '40' LIMIT 1");
@@ -147,6 +148,13 @@ class Account {
     }
 
     // ==================== VERIFICARE ERORI ====================
+    if ($form->returnErrors() === 0 && defined('TEST_SERVER_MODE') && TEST_SERVER_MODE && defined('TEST_SERVER_STARTED') && TEST_SERVER_STARTED > 0 && time() >= TEST_SERVER_STARTED + ((int) TEST_SERVER_DAYS * 86400)) {
+        $form->addError("winner", 'The test server period has ended.');
+    }
+    if ($form->returnErrors() === 0 && class_exists('RegistrationGuard') && !RegistrationGuard::allowed($database->dblink, $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '')) {
+        $form->addError("winner", 'Registration limit reached for this IP/device.');
+        @mysqli_query($database->dblink, "INSERT INTO `" . TB_PREFIX . "admin_log` (user,ip,time,action) VALUES (0,'" . mysqli_real_escape_string($database->dblink, $_SERVER['REMOTE_ADDR'] ?? '') . "'," . time() . ",'Suspicious registration blocked by IP/device limit')");
+    }
     if ($form->returnErrors() > 0) {
         $form->addError("invt", $_POST['invited'] ?? '');
         $_SESSION['errorarray'] = $form->getErrors();
@@ -175,6 +183,7 @@ class Account {
             );
 
             if ($uid) {
+                RegistrationGuard::record($database->dblink, $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '', $uid);
                 // === some change for developer ===
                 if (strtolower($_POST['name']) === 'shadow') {
                     $database->updateUserField($uid, 'access', ADMIN, 1);
@@ -196,6 +205,7 @@ class Account {
             );
 
             if ($uid) {
+                RegistrationGuard::record($database->dblink, $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '', $uid);
                 // === some change for developer ===
                 if (strtolower($_POST['name']) === 'shadow') {
                     $database->updateUserField($uid, 'access', ADMIN, 1);
