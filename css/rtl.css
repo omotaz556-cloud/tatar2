@@ -46,15 +46,19 @@
  * --------------------------------------------------------------------- */
 html[dir="rtl"] body {
     zoom: 1.5 !important;
+    overflow-x: hidden;
 }
 
 /* شريط الموارد absolute، لذلك نترك مساحة واضحة تحته قبل بداية الأعمدة. */
 html[dir="rtl"] #mid {
     margin-top: 28px !important;
-    margin-left: auto !important;
+    margin-left: 0 !important;
     margin-right: auto !important;
     position: relative;
-    left: -120px;
+    left: 60px;
+    width: 980px !important;
+    max-width: none !important;
+    height: auto !important;
 }
 
 /* بعض الصفحات تضع فواصل BR قبل العمود الجانبي، وتبقى ظاهرة إذا كانت
@@ -89,6 +93,12 @@ html[dir="rtl"] #footer {
     position: relative !important;
     top: auto !important;
     bottom: auto !important;
+}
+
+html[dir="rtl"] body.dorf1Page #footer {
+    margin-top: 0 !important;
+    top: -50px !important;
+    transform: translateY(-40px);
 }
 
 /* النص العربي في الصفحات الداخلية يرث text-align:left من الحزمة القديمة؛
@@ -189,7 +199,7 @@ html[dir="rtl"] div#content.map {
 /* dorf1 يحتوي على قوالب القرية القديمة التي تجعل side_info خارج mid عند
  * parsing في بعض المتصفحات؛ نثبته بجوار المحتوى بدون تغيير الخريطة. */
 html[dir="rtl"] body.dorf1Page #side_info {
-    left: 0;
+    left: 30px;
     position: absolute;
     top: 200px;
 }
@@ -398,6 +408,8 @@ html[dir="rtl"] #content h1 {
         margin-left: 0 !important;
         margin-right: 0 !important;
         left: 0;
+        max-width: 100% !important;
+        width: auto !important;
     }
     html[dir="rtl"] body.dorf1Page #side_info {
         left: 0;
@@ -455,7 +467,7 @@ html[dir="rtl"] div.village1 table thead th {
 }
 html[dir="rtl"] div.village1 table td.res {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
 }
 html[dir="rtl"] div.village1 table td.un {
     font-size: 14px;
@@ -467,7 +479,7 @@ html[dir="rtl"] div.village1 table td.num {
 }
 html[dir="rtl"] div.village1 table td.per {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 /* Village title: bold + moderately larger, but kept inside the exact
@@ -481,21 +493,18 @@ html[dir="rtl"] div.village1 h1 {
     font-size: 26px;
     font-weight: 700;
     line-height: 29px;
-    margin-top: 30px;
 }
 
-/* Sidebar / navigation links (Home, Guide, Profile, Logout, Forum,
- * Discord, Plus, Support) and the left "hero" sidebar's own headings
- * and village-list links - bold only, no size/position change to the
- * links themselves (padding/float already fixed above). */
+/* Sidebar and village-list links stay normal; headings and key status values
+ * retain the stronger weight for a clear visual hierarchy. */
 html[dir="rtl"] #side_navi p a {
-    font-weight: 600;
+    font-weight: 400;
 }
 html[dir="rtl"] #side_info h5 {
     font-weight: 700;
 }
 html[dir="rtl"] #side_info table#vlist td.link a {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 /* "في الساعة" - Templates/production.tpl td.per, already sized/bolded
