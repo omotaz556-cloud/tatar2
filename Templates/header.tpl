@@ -105,6 +105,8 @@ if ($hour > 1759 || $hour < 500) {
 
     <div id="mtop">
 
+        <div id="topNavIcons">
+
         <!-- Village overview -->
         <a href="<?php echo $dorf1Link; ?>"
            id="n1"
@@ -167,6 +169,8 @@ if ($hour > 1759 || $hour < 500) {
                      title="<?php echo MESSAGES; ?>"
                      alt="<?php echo MESSAGES; ?>" />
             </a>
+
+        </div>
 
         </div>
 
@@ -304,6 +308,55 @@ if ($hour > 1759 || $hour < 500) {
         <!-- ===================== DAY/NIGHT CSS ===================== -->
 
         <style type="text/css">
+
+        html[dir="rtl"] {
+            zoom: 1.5 !important;
+        }
+
+        #topNavIcons {
+            float: left;
+            width: 350px;
+            height: 72px;
+            margin: 0;
+            padding: 0;
+        }
+
+        html[dir="rtl"] #topNavIcons {
+            direction: ltr;
+            display: flex !important;
+            flex-direction: row !important;
+            float: left !important;
+            left: auto !important;
+            position: static !important;
+            top: auto !important;
+            z-index: auto !important;
+            align-items: flex-start;
+        }
+
+        html[dir="rtl"] #topNavIcons > a,
+        html[dir="rtl"] #topNavIcons > div#n5 {
+            display: block;
+            float: none !important;
+            flex: 0 0 70px;
+            width: 70px;
+            height: 72px;
+        }
+
+        html[dir="rtl"] #topNavIcons > div#n5 { order: 1; }
+        html[dir="rtl"] #topNavIcons > a#n4 { order: 2; }
+        html[dir="rtl"] #topNavIcons > a#n3 { order: 3; }
+        html[dir="rtl"] #topNavIcons > a#n2 { order: 4; }
+        html[dir="rtl"] #topNavIcons > a#n1 { order: 5; }
+
+        
+            html[dir="rtl"] #topNavIcons > div#n5 {
+                transform: scaleX(-1) !important;
+                transform-origin: center center;
+            }
+            html[dir="rtl"] #topNavIcons > a#n1 img {
+                transform: scaleX(-1) !important;
+                transform-origin: center center;
+            }
 
         .day_image {
             background-image:url("../gpack/novaterra_classic/img/l/day.gif");

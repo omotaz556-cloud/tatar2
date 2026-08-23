@@ -322,6 +322,42 @@ html[dir="rtl"] #mbig {
     unicode-bidi: isolate;
 }
 
+/* Reverse only the navigation icons. The hero, gold and Plus controls keep
+ * their original absolute/floating positions inside #mtop. */
+html[dir="rtl"] #topNavIcons {
+    direction: ltr;
+    display: flex;
+    flex-direction: row;
+    float: left;
+    height: 72px;
+    width: 350px;
+}
+
+html[dir="rtl"] #topNavIcons > a#n1,
+html[dir="rtl"] #topNavIcons > a#n2,
+html[dir="rtl"] #topNavIcons > a#n3,
+html[dir="rtl"] #topNavIcons > a#n4,
+html[dir="rtl"] #topNavIcons > div#n5 {
+    float: none !important;
+    flex: 0 0 70px;
+}
+
+html[dir="rtl"] #topNavIcons > div#n5 { order: 1; }
+html[dir="rtl"] #topNavIcons > a#n4 { order: 2; }
+html[dir="rtl"] #topNavIcons > a#n3 { order: 3; }
+html[dir="rtl"] #topNavIcons > a#n2 { order: 4; }
+html[dir="rtl"] #topNavIcons > a#n1 { order: 5; }
+
+/* Mirror only the village overview icon in the Arabic interface. */
+html[dir="rtl"] #topNavIcons > a#n1 img {
+    transform: scaleX(-1);
+}
+
+html[dir="rtl"] #topNavIcons > div#n5 {
+    transform: scaleX(-1);
+    transform-origin: center center;
+}
+
 /* ---------------------------------------------------------------------
  * Three main columns, DOM order #side_navi, #content, #side_info,
  * all siblings under #mid (980px, untouched):
