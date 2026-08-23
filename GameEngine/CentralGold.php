@@ -135,6 +135,7 @@ class CentralGold
         }
         $username = substr((string) $username, 0, 100);
         $now = time();
+        $verified = $emailVerified ? 1 : 0;
 
         // Find existing.
         $stmt = mysqli_prepare($link, "SELECT id FROM central_gold_accounts WHERE email = ? LIMIT 1");
@@ -149,7 +150,6 @@ class CentralGold
             // Keep username fresh (players may have registered the email
             // under a different name previously on another world).
             $u = mysqli_prepare($link, "UPDATE central_gold_accounts SET username = ?, email_verified = GREATEST(email_verified, ?), email_verified_at = IF(? = 1 AND email_verified_at = 0, ?, email_verified_at), updated = ? WHERE id = ?");
-            $verified = $emailVerified ? 1 : 0;
             mysqli_stmt_bind_param($u, 'siiiii', $username, $verified, $verified, $now, $now, $accountId);
             mysqli_stmt_execute($u);
             mysqli_stmt_close($u);
@@ -157,7 +157,20 @@ class CentralGold
             $ins = mysqli_prepare($link,
                 "INSERT INTO central_gold_accounts (email, username, paid_gold, email_verified, email_verified_at, created, updated) VALUES (?,?,0,?,?,?,?)");
             $verifiedAt = $verified ? $now : 0;
-            mysqli_stmt_bind_param($ins, 'ssiiiii', $email, $username, $verified, $verifiedAt, $now, $now);
+            // Bug fix: this bind_param type string previously had 7
+            // characters ('ssiiiii') for only 6 bound variables (email,
+            // username, verified, verifiedAt, created, updated — paid_gold
+            // is a literal 0 in the query, not a placeholder), which made
+            // every mysqli_stmt_bind_param() call here throw an
+            // ArgumentCountError and abort resolveAccount() for ANY brand
+            // new central-gold account (both real purchases via
+            // PaymentShop::confirm() and the admin-grant sync above).
+            // $verified was also read here while only ever being assigned
+            // inside the `if ($row)` branch above, so it was undefined on
+            // this path even before the bind_param call. Both are fixed by
+            // moving the $verified assignment above the if/else and
+            // trimming the type string to 6 characters.
+            mysqli_stmt_bind_param($ins, 'ssiiii', $email, $username, $verified, $verifiedAt, $now, $now);
             if (!mysqli_stmt_execute($ins)) {
                 mysqli_stmt_close($ins);
                 // Lost a race with another world creating the same account

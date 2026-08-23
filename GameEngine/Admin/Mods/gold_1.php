@@ -45,18 +45,52 @@ $check = mysqli_query($GLOBALS["link"], "SELECT access, username FROM ".TB_PREFI
 $acc = mysqli_fetch_assoc($check);
 if(!$acc || $acc['access'] != 9) admin_deny('You must be signed in as an administrator to view this page. Your session may have expired — please return to the admin panel and sign in again.');
 
-// 1. UPDATE GOLD
+// 1. UPDATE GOLD (local, world-specific balance — always happens regardless
+// of local_only, exactly as before).
 mysqli_query($GLOBALS["link"], "UPDATE ".TB_PREFIX."users SET gold = gold + $amount WHERE id = $id") or die(mysqli_error($GLOBALS["link"]));
 
-// Admin adjustments are local free-gold adjustments. The cross-world
-// purchased-gold ledger changes only after a confirmed payment webhook.
 $userRow = mysqli_fetch_assoc(mysqli_query($GLOBALS["link"],
     "SELECT username, email FROM ".TB_PREFIX."users WHERE id = $id"));
+
+// Bug fix (see comment at $localOnly above, which this block previously
+// never acted on): an admin grant/deduction is meant to behave like a
+// manual purchase/refund the admin is applying by hand, so — unless the
+// admin explicitly checked "local only" — it must also be reflected in the
+// cross-world PAID gold ledger (CentralGold), not just the local `gold`
+// column. Without this, admin-granted gold could never satisfy
+// paid-gold-gated features such as Vacation Mode activation
+// (GameEngine/Profile.php::setvactionmode), even though the UI/label
+// (ADM_GOLD_LOCAL_ONLY_LABEL) and the comment above both describe that as
+// the intended default behaviour. This fails soft: if CentralGold isn't
+// configured, or the player has no valid/registered email, the local grant
+// above still applies exactly as before — only the cross-world sync is
+// skipped.
+$centralGoldSynced = false;
+$centralGoldMessage = '';
+if (!$localOnly) {
+    if (!class_exists('CentralGold')) {
+        @include_once __DIR__ . '/../../CentralGold.php';
+    }
+    $userEmail = trim((string) ($userRow['email'] ?? ''));
+    if (class_exists('CentralGold') && CentralGold::isConfigured() && $userEmail !== '') {
+        $note = 'Admin gift by ' . $acc['username'];
+        if ($amount > 0) {
+            $result = CentralGold::credit($userEmail, $userRow['username'] ?? '', $id, $amount, 'admin_grant', $note, $admid);
+        } else {
+            $result = CentralGold::debit($userEmail, $userRow['username'] ?? '', $id, abs($amount), 'admin_grant', $note, $admid);
+        }
+        $centralGoldSynced = (bool) $result[0];
+        $centralGoldMessage = (string) $result[1];
+    }
+}
 
 // 2. ADMIN LOG
 $name = $userRow['username'] ?? '';
 $name = mysqli_real_escape_string($GLOBALS["link"], $name);
-mysqli_query($GLOBALS["link"], "INSERT INTO ".TB_PREFIX."admin_log VALUES (0, $admid, 'Added <b>$amount</b> gold to user <a href=\'admin.php?p=player&uid=$id\'>$name</a>', ".time().")");
+$logSuffix = $localOnly
+    ? ' (local only)'
+    : ($centralGoldSynced ? ' (synced to cross-world paid gold)' : ' (cross-world sync skipped: ' . mysqli_real_escape_string($GLOBALS["link"], $centralGoldMessage !== '' ? $centralGoldMessage : 'no verified email / CentralGold not configured') . ')');
+mysqli_query($GLOBALS["link"], "INSERT INTO ".TB_PREFIX."admin_log VALUES (0, $admid, 'Added <b>$amount</b> gold to user <a href=\'admin.php?p=player&uid=$id\'>$name</a>$logSuffix', ".time().")");
 
 // 3. GOLD_FIN_LOG (pentru a2b2.php)
 $vill = mysqli_fetch_assoc(mysqli_query($GLOBALS["link"], "SELECT wref FROM ".TB_PREFIX."vdata WHERE owner = $id LIMIT 1"));

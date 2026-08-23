@@ -265,7 +265,7 @@ define("OASIS_IRON_PRODUCTION",OASIS_IRON_MULTIPLIER*SPEED);
 define("OASIS_CROP_PRODUCTION",OASIS_CROP_MULTIPLIER*SPEED); 
 
 // ***** Medal Interval check
-define("MEDALINTERVAL",(3600*24*7));
+define("MEDALINTERVAL",604800);
 // ***** Great Workshop
 define("GREAT_WKS",false);
 // ***** Tourn threshold
@@ -523,7 +523,7 @@ define("NEW_FUNCTIONS_TRIBE_IMAGES", true);
 define("NEW_FUNCTIONS_MHS_IMAGES", true);
 define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", false);
 define("NEW_FUNCTIONS_DISPLAY_WONDER", false);
-define("NEW_FUNCTIONS_VACATION", false);
+define("NEW_FUNCTIONS_VACATION", true);
 define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", false);
 define("NEW_FUNCTIONS_MANUAL_NATURENATARS", true);
 define("NEW_FUNCTIONS_DISPLAY_LINKS", false);

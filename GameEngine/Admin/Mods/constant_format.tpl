@@ -134,11 +134,17 @@ if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 $__user_lang = isset($_SESSION['lang']) ? preg_replace('/[^a-z_]/', '', strtolower((string) $_SESSION['lang'])) : '';
 define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang . ".php")) ? $__user_lang : SERVER_LANG);
 
-// ***** Speed
-// Choose your server speed. NOTICE: Higher speed, more likely
-// to have some bugs. Lower speed, most likely no major bugs.
-// Values: 1 (normal), 3 (3x speed) etc...
-define("SPEED", "%SPEED%");
+// ***** Server duration / speed
+// Supported presets are 7, 10, 20, 21, 30 and 60 days. The game speed is
+// derived from the selected duration so every timed endgame feature uses the
+// same server scale. Keep this value in config so admins can change a preset
+// without editing gameplay code.
+$__server_duration_days = (int) getenv('SERVER_DURATION_DAYS');
+if (!in_array($__server_duration_days, [7, 10, 20, 21, 30, 60], true)) {
+    $__server_duration_days = 60;
+}
+define('SERVER_DURATION_DAYS', $__server_duration_days);
+define('SPEED', 300 / SERVER_DURATION_DAYS);
 
 // ***** World size
 // Defines world size. NOTICE: DO NOT EDIT!!
@@ -180,6 +186,17 @@ define("PW_MIN_LENGTH", %PWMIN%);
 //        by clicking on link recieved in mail.
 // false =  users can register with any mail. Not needed to be real one.
 define("AUTH_EMAIL",%ACTIVATE%);
+define('REGISTRATION_MAX_PER_IP', 2);
+define('REGISTRATION_MAX_PER_DEVICE', 3);
+define('REGISTRATION_LIMIT_WINDOW', 86400);
+define('BACKUP_DIR', __DIR__ . '/../var/backups');
+define('TEST_SERVER_MODE', false);
+define('TEST_SERVER_DAYS', 7);
+define('TEST_SERVER_STARTED', (int) getenv('TEST_SERVER_STARTED'));
+
+// MyFatoorah sends payment status updates here. Keep this secret outside the
+// repository in production and provide it as an environment variable.
+if (!defined('MYFATOORAH_WEBHOOK_SECRET')) define('MYFATOORAH_WEBHOOK_SECRET', (string) getenv('MYFATOORAH_WEBHOOK_SECRET'));
 
 // ***** Troop Speed
 // Values: 1 (normal), 3 (3x speed) etc...
