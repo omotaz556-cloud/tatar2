@@ -619,6 +619,45 @@ if (!function_exists('tz_html_dir_attrs')) {
         return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="' . $dir . '"';
     }
 }
+if (!function_exists('tz_default_village_name')) {
+    /**
+     * Default auto-generated village name for a NEWLY created village.
+     * English keeps the original "{username}'s village[ N]" pattern.
+     * Arabic uses "قرية {username}[ N]". $extraIndex is the same optional
+     * numeric suffix the original code used for a player's 2nd+ village
+     * (0 = no suffix, i.e. the first village).
+     */
+    function tz_default_village_name($username, $extraIndex = 0) {
+        $username = trim((string) $username);
+        $suffix = $extraIndex ? ' ' . (int) $extraIndex : '';
+        if (defined('LANG') && LANG === 'ar') {
+            return 'قرية ' . $username . $suffix;
+        }
+        return $username . "'s village" . $suffix;
+    }
+}
+if (!function_exists('tz_display_village_name')) {
+    /**
+     * Display-only localization for a village name already stored in the
+     * database. Never writes to the database. Only rewrites names that
+     * still match the original default pattern "{username}'s village[ N]"
+     * for the given owner - a player's custom (renamed) village name is
+     * returned unchanged. Under a non-Arabic LANG, $vname is always
+     * returned unchanged (English layout/behavior untouched).
+     */
+    function tz_display_village_name($vname, $username = null) {
+        if (!defined('LANG') || LANG !== 'ar' || $username === null || $username === '') {
+            return $vname;
+        }
+        $username = trim((string) $username);
+        $pattern = '/^' . preg_quote($username, '/') . "'s village(?: (\\d+))?$/u";
+        if (preg_match($pattern, trim((string) $vname), $m)) {
+            $suffix = isset($m[1]) ? ' ' . $m[1] : '';
+            return 'قرية ' . $username . $suffix;
+        }
+        return $vname;
+    }
+}
 if (!function_exists('tz_rtl_stylesheet_tag')) {
     // $relPath is the prefix needed to get back to the site root from the
     // calling script's own folder (e.g. '' for root-level pages like

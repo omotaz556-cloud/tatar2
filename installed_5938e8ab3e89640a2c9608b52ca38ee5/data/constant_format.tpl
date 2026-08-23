@@ -618,6 +618,30 @@ if (!function_exists('tz_html_dir_attrs')) {
         return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="ltr"';
     }
 }
+if (!function_exists('tz_default_village_name')) {
+    function tz_default_village_name($username, $extraIndex = 0) {
+        $username = trim((string) $username);
+        $suffix = $extraIndex ? ' ' . (int) $extraIndex : '';
+        if (defined('LANG') && LANG === 'ar') {
+            return 'قرية ' . $username . $suffix;
+        }
+        return $username . "'s village" . $suffix;
+    }
+}
+if (!function_exists('tz_display_village_name')) {
+    function tz_display_village_name($vname, $username = null) {
+        if (!defined('LANG') || LANG !== 'ar' || $username === null || $username === '') {
+            return $vname;
+        }
+        $username = trim((string) $username);
+        $pattern = '/^' . preg_quote($username, '/') . "'s village(?: (\\d+))?$/u";
+        if (preg_match($pattern, trim((string) $vname), $m)) {
+            $suffix = isset($m[1]) ? ' ' . $m[1] : '';
+            return 'قرية ' . $username . $suffix;
+        }
+        return $vname;
+    }
+}
 if (!function_exists('tz_rtl_stylesheet_tag')) {
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = 'css/') {
         return '';
