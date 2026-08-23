@@ -176,12 +176,16 @@ while ($data = mysqli_fetch_assoc($query)) {
 // =========================
 // USER SETTINGS SAVE
 // =========================
-if (isset($_POST['v1']) || isset($_POST['v2']) || isset($_POST['timezone']) || isset($_POST['lang'])) {
+if (isset($_POST['v1']) || isset($_POST['v2']) || isset($_POST['timezone']) || isset($_POST['lang']) || isset($_POST['upgrade_redirect'])) {
 
     $v1 = isset($_POST['v1']) ? 1 : 0;
     $v2 = isset($_POST['v2']) ? 1 : 0;
     $v3 = isset($_POST['v3']) ? 1 : 0;
     $map = isset($_POST['map']) ? 1 : 0;
+    $upgradeRedirect = isset($_POST['upgrade_redirect']) ? (int)$_POST['upgrade_redirect'] : 0;
+    if (!in_array($upgradeRedirect, [0, 1, 2], true)) {
+        $upgradeRedirect = 0;
+    }
     $v4 = isset($_POST['v4']) ? 1 : 0;
     $v5 = isset($_POST['v5']) ? 1 : 0;
     $v6 = isset($_POST['v6']) ? 1 : 0;
@@ -211,6 +215,7 @@ if(isset($_POST['lang']))
         v2=$v2,
         v3=$v3,
         map=$map,
+        upgrade_redirect=$upgradeRedirect,
         v4=$v4,
         v5=$v5,
         v6=$v6,
@@ -240,6 +245,29 @@ if(isset($_POST['lang']))
 ========================= -->
 <form action="spieler.php?s=2" method="POST">
 <input type="hidden" name="ft" value="p2">
+
+<!-- =========================
+         UPGRADE NAVIGATION
+========================= -->
+<table cellpadding="1" cellspacing="1" id="upgrade_navigation" class="set">
+<thead>
+<tr>
+    <th colspan="2"><?php echo TZ_UPGRADE_NAVIGATION; ?></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="sel">
+<select name="upgrade_redirect" class="dropdown">
+        <option value="0" <?php if((int)($session->userinfo['upgrade_redirect'] ?? 0) === 0) echo 'selected'; ?>><?php echo TZ_UPGRADE_NAVIGATION_DEFAULT; ?></option>
+        <option value="1" <?php if((int)($session->userinfo['upgrade_redirect'] ?? 0) === 1) echo 'selected'; ?>><?php echo TZ_UPGRADE_NAVIGATION_MAP; ?></option>
+        <option value="2" <?php if((int)($session->userinfo['upgrade_redirect'] ?? 0) === 2) echo 'selected'; ?>><?php echo TZ_UPGRADE_NAVIGATION_BUILDING; ?></option>
+</select>
+</td>
+<td><?php echo TZ_UPGRADE_NAVIGATION; ?></td>
+</tr>
+</tbody>
+</table>
 
 <table cellpadding="1" cellspacing="1" id="links">
     <thead>

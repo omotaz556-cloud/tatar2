@@ -104,6 +104,10 @@ class Profile {
 		$v4  = empty($post['v4'])  ? 0 : 1;
 		$v5  = empty($post['v5'])  ? 0 : 1;
 		$v6  = empty($post['v6'])  ? 0 : 1;
+		$upgradeRedirect = isset($post['upgrade_redirect']) ? (int)$post['upgrade_redirect'] : 0;
+		if (!in_array($upgradeRedirect, [0, 1, 2], true)) {
+			$upgradeRedirect = 0;
+		}
 
 		// Time preference: timezone index + date format (0..3).
 		$timezone = isset($post['timezone']) ? (int)$post['timezone'] : 1;
@@ -112,9 +116,20 @@ class Profile {
 			$tformat = 0;
 		}
 
+		$columnCheck = mysqli_query(
+			$database->dblink,
+			"SHOW COLUMNS FROM `" . TB_PREFIX . "users` LIKE 'upgrade_redirect'"
+		);
+		if ($columnCheck && mysqli_num_rows($columnCheck) === 0) {
+			mysqli_query(
+				$database->dblink,
+				"ALTER TABLE `" . TB_PREFIX . "users` ADD COLUMN `upgrade_redirect` TINYINT(1) NOT NULL DEFAULT '0'"
+			);
+		}
+
 		$database->query(
 			"UPDATE " . TB_PREFIX . "users SET " .
-			"v1=$v1, v2=$v2, v3=$v3, map=$map, v4=$v4, v5=$v5, v6=$v6, " .
+			"v1=$v1, v2=$v2, v3=$v3, map=$map, upgrade_redirect=$upgradeRedirect, v4=$v4, v5=$v5, v6=$v6, " .
 			"timezone=$timezone, tformat=$tformat " .
 			"WHERE id=" . (int)$session->uid
 		);

@@ -86,10 +86,15 @@ switch ($bindicate) {
     case 8:
     case 9:
         $href = $session->access == BANNED? 'banned.php' : (($id <= 18)? "dorf1.php?a=$id&c=$session->checker" : "dorf2.php?a=$id&c=$session->checker");
-        if ((int)($village->resarray['f'.$id] ?? 0) > 0 && $session->access != BANNED) {
+        $lvl = $bindicate == 8? $village->resarray['f'.$id] + 1 : $village->resarray['f'.$id] + ($loopsame > 0? 2 : 1);
+        $upgradeRedirect = isset($session->userinfo['upgrade_redirect'])
+            ? (int)$session->userinfo['upgrade_redirect']
+            : 0;
+        $stayInBuilding = $upgradeRedirect === 2
+            || ($upgradeRedirect === 0 && $lvl > 1);
+        if ($stayInBuilding && $session->access != BANNED) {
             $href .= '&return=build';
         }
-        $lvl = $bindicate == 8? $village->resarray['f'.$id] + 1 : $village->resarray['f'.$id] + ($loopsame > 0? 2 : 1);
         // data-ajax-build: intercepted by new2.js to submit without a full
         // page reload when the popup is open. href stays a valid full URL
         // so the link still works normally if JS fails or the page is
@@ -106,6 +111,13 @@ switch ($bindicate) {
 if (in_array($bindicate, [2,3,7]) && $session->goldclub == 1) {
     echo '<br/>';
     $masterHref = ($id <= 18? 'dorf1.php' : 'dorf2.php'). "?master=$bid&id=$id&c=$session->checker";
+    $upgradeRedirect = isset($session->userinfo['upgrade_redirect'])
+        ? (int)$session->userinfo['upgrade_redirect']
+        : 0;
+    $currentLevel = (int)($village->resarray['f'.$id] ?? 0);
+    if ($upgradeRedirect === 2 || ($upgradeRedirect === 0 && $currentLevel > 0)) {
+        $masterHref .= '&return=build';
+    }
     if ($session->gold >= 1 && $village->master == 0) {
         echo '<a class="build" href="'.$masterHref.'">'.CONSTRUCTING_MASTER_BUILDER.'</a>';
     } else {
