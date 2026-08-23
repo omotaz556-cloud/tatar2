@@ -42,6 +42,13 @@ if(isset($id)) { include("search2.tpl"); ?>
 .map-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:900px){.map-wrap{grid-template-columns:1fr}}
 .map-box{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:8px;text-align:center;color:#1f2937}
+/* RTL override for the "Modify Buildings" section */
+.vcard-rtl{direction:rtl;text-align:right}
+.vcard-rtl .vhead{flex-direction:row-reverse}
+.vcard-rtl .instr-link{margin-left:0;margin-right:auto}
+.vcard-rtl .vtable th{text-align:right}
+.vcard-rtl .vtable td{text-align:right}
+.vcard-rtl .vtable th:first-child,.vcard-rtl .vtable td:first-child{text-align:center}
 </style>
 <div class="village-page">
 <form action="../GameEngine/Admin/Mods/editBuildings.php" method="POST">
@@ -86,7 +93,7 @@ if(isset($id)) { include("search2.tpl"); ?>
   </div>
 </div>
 
-<div class="vcard">
+<div class="vcard vcard-rtl" dir="rtl">
   <div class="vhead"><?php echo ADM_MODIFY_BUILDINGS; ?></div>
   <div style="overflow-x:auto">
     <table class="vtable">

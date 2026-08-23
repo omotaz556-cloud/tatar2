@@ -943,6 +943,58 @@ html[dir="rtl"] body.pg-spieler #villages {
     margin-bottom: 32px;
 }
 
+/* ---------------------------------------------------------------------
+ * Preferences page (spieler.php?s=2) - the "After-upgrade view" row.
+ *
+ * preference.tpl writes that row like every other table.set row in the
+ * page: the control cell (td.sel) FIRST, the caption cell second. In an
+ * RTL document the first cell is the rightmost one, so the dropdown ends
+ * up on the right with its caption squeezed to its left - the opposite of
+ * what is wanted here: caption pinned to the right edge, dropdown pinned
+ * to the left edge.
+ *
+ * Fixed without touching the DOM order (so the English/LTR page keeps
+ * rendering byte-for-byte the same markup and layout it does today):
+ * give the table itself direction:ltr, which is what decides the visual
+ * order of the cells - so td.sel is laid out on the left and the caption
+ * on the right - then put direction:rtl back on the cells and on the
+ * <select>, so the Arabic text inside them is still shaped and ordered
+ * RTL. The alignments are set explicitly because direction:ltr also
+ * flips what "start"/"end" mean for the inherited text-align:right that
+ * this file applies to every #content td above.
+ *
+ * width:1% + nowrap on the control cell makes it shrink to the
+ * dropdown's own width, so the caption cell takes all the remaining
+ * width and its right-aligned text really lands on the table's right
+ * edge. Scoped to #upgrade_navigation: no other table.set row (auto
+ * completion, large map, report filter) is affected.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] #content table#upgrade_navigation {
+    direction: ltr;
+}
+
+html[dir="rtl"] #content table#upgrade_navigation thead th {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] #content table#upgrade_navigation tbody td.sel {
+    direction: rtl;
+    text-align: left;
+    white-space: nowrap;
+    width: 1%;
+}
+
+html[dir="rtl"] #content table#upgrade_navigation tbody td.sel select {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] #content table#upgrade_navigation tbody td:not(.sel) {
+    direction: rtl;
+    text-align: right;
+}
+
 html[dir="rtl"] body.pg-dorf2 #content.village2,
 html[dir="rtl"] body.pg-dorf2 #side_info,
 html[dir="rtl"] body.pg-dorf2 #side_navi {
