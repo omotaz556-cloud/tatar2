@@ -19,8 +19,8 @@
 //////////////////////////////////
 // (E_ALL ^ E_NOTICE) = enabled
 // (0) = disabled
-define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);");
-error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE);");
+error_reporting (E_ALL ^ E_NOTICE);
 define('AUTOMATION_LOCK_FILE_NAME', 'automation.lck');
 
 //////////////////////////////////
@@ -46,7 +46,7 @@ define('CRON_TICK_SECONDS', 60);
 // Key used to access cron.php via HTTP (wget/curl or an external cron service).
 // Command-line execution (e.g. a cPanel cron job) does NOT require it.
 // Automatically generated during installation and preserved when saving configuration settings from the ACP.
-define('CRON_KEY', 'ccb7d2cf59b58c93499784aeb48007422e93e18c98e4a873');
+define('CRON_KEY', '75e57250309029c71b2774b352769dad94f6fac96c410100');
 
 //////////////////////////////////
 // *****  DATABASE CLEANUP  *****//
@@ -110,11 +110,11 @@ date_default_timezone_set(TIMEZONE);
 
 // ***** Started
 // Defines when has server started.
-define("COMMENCE","1787075713");
+define("COMMENCE","1787176066");
 
 // ***** Server Start Date / Time
-define("START_DATE", "18.08.2026");
-define("START_TIME", "20:23");
+define("START_DATE", "20.08.2026");
+define("START_TIME", "00:47");
 
 // ***** Language
 // SERVER_LANG is the DEFAULT language of the server (chosen at install / in
@@ -129,7 +129,7 @@ define("START_TIME", "20:23");
 // strictly sanitized to [a-z_] (no path traversal) and the target file MUST
 // exist, otherwise we fall back to the server default. This prevents Local
 // File Inclusion via a crafted session value.
-define("SERVER_LANG", "ar");
+define("SERVER_LANG", "en");
 if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 $__user_lang = isset($_SESSION['lang']) ? preg_replace('/[^a-z_]/', '', strtolower((string) $_SESSION['lang'])) : '';
 define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang . ".php")) ? $__user_lang : SERVER_LANG);
@@ -138,7 +138,7 @@ define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang
 // Choose your server speed. NOTICE: Higher speed, more likely
 // to have some bugs. Lower speed, most likely no major bugs.
 // Values: 1 (normal), 3 (3x speed) etc...
-define("SPEED", "100");
+define("SPEED", "5");
 
 // ***** World size
 // Defines world size. NOTICE: DO NOT EDIT!!
@@ -179,11 +179,11 @@ define("PW_MIN_LENGTH", 4);
 // true = activation mail will be sent, users will have to finish registration
 //        by clicking on link recieved in mail.
 // false =  users can register with any mail. Not needed to be real one.
-define("AUTH_EMAIL",false);
+define("AUTH_EMAIL",true);
 
 // ***** Troop Speed
 // Values: 1 (normal), 3 (3x speed) etc...
-define("INCREASE_SPEED","10");
+define("INCREASE_SPEED","2");
 
 // ***** Evasion Speed
 define("EVASION_SPEED","1");
@@ -232,7 +232,7 @@ define("PROTECTION","43200");
 define("WW",false);
 
 // ***** Show Natars in Statistics
-define("SHOW_NATARS",false); 
+define("SHOW_NATARS",true); 
 
 // ***** Natars Units Multiplier
 define("NATARS_UNITS",100); 
@@ -265,7 +265,7 @@ define("OASIS_IRON_PRODUCTION",OASIS_IRON_MULTIPLIER*SPEED);
 define("OASIS_CROP_PRODUCTION",OASIS_CROP_MULTIPLIER*SPEED); 
 
 // ***** Medal Interval check
-define("MEDALINTERVAL",604800);
+define("MEDALINTERVAL",(3600*24*7));
 // ***** Great Workshop
 define("GREAT_WKS",false);
 // ***** Tourn threshold
@@ -400,11 +400,11 @@ define("LOG_TECH",false);
 // LOG USER LOGIN (IP's)
 define("LOG_LOGIN",false);
 // LOG GOLD
-define("LOG_GOLD_FIN",false);
+define("LOG_GOLD_FIN",true);
 // LOG ADMIN
-define("LOG_ADMIN",false);
+define("LOG_ADMIN",true);
 // LOG ATTACK REPORTS
-define("LOG_WAR",true);
+define("LOG_WAR",false);
 // LOG MARKET REPORTS
 define("LOG_MARKET",false);
 // LOG ILLEGAL ACTIONS
@@ -415,9 +415,9 @@ define("LOG_ILLEGAL",true);
 //////////////////////////////////
 //true = enabled
 //false = disabled
-define("NEWSBOX1",true);
-define("NEWSBOX2",true);
-define("NEWSBOX3",true);
+define("NEWSBOX1",false);
+define("NEWSBOX2",false);
+define("NEWSBOX3",false);
 
 //////////////////////////////////
 //   ****  SQL SETTINGS  ****   //
@@ -443,7 +443,7 @@ define("SQL_PASS", "novaterrapass");
 define("SQL_DB", "novaterra");
 
 // ***** Database - Table Prefix
-define("TB_PREFIX", "s9c1e_");
+define("TB_PREFIX", "sa3e3_");
 
 // ***** Database type
 // 0 = MYSQL
@@ -493,14 +493,14 @@ define("LIMIT_MAILBOX",false);
 define("MAX_MAIL","30");
 
 // ***** Include administrator in statistics/rank
-define("INCLUDE_ADMIN", true);
+define("INCLUDE_ADMIN", false);
 
 ////////////////////////////////////
 //   ****  ADMIN SETTINGS  ****   //
 ////////////////////////////////////
 
 // ***** Admin Email
-define("ADMIN_EMAIL", "admin@admin.com");
+define("ADMIN_EMAIL", "omotaz323@gmail.com");
 
 // ***** Admin Name
 define("ADMIN_NAME", "admin");
@@ -509,7 +509,7 @@ define("ADMIN_NAME", "admin");
 define("ADMIN_RECEIVE_SUPPORT_MESSAGES", true);
 
 // ***** Allow Admin accounts to be raided and attacked
-define("ADMIN_ALLOW_INCOMING_RAIDS", false);
+define("ADMIN_ALLOW_INCOMING_RAIDS", true);
 
 /////////////////////////////////////////////////
 //   ****  NEW MECHANICS AND FUNCTIONS  ****   //
@@ -519,27 +519,27 @@ define("NEW_FUNCTIONS_OASIS", false);
 define("NEW_FUNCTIONS_ALLIANCE_INVITATION", false);
 define("NEW_FUNCTIONS_EMBASSY_MECHANICS", false);
 define("NEW_FUNCTIONS_FORUM_POST_MESSAGE", false);
-define("NEW_FUNCTIONS_TRIBE_IMAGES", false);
-define("NEW_FUNCTIONS_MHS_IMAGES", false);
+define("NEW_FUNCTIONS_TRIBE_IMAGES", true);
+define("NEW_FUNCTIONS_MHS_IMAGES", true);
 define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", false);
 define("NEW_FUNCTIONS_DISPLAY_WONDER", false);
-define("NEW_FUNCTIONS_VACATION", true);
-define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", true);
+define("NEW_FUNCTIONS_VACATION", false);
+define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", false);
 define("NEW_FUNCTIONS_MANUAL_NATURENATARS", true);
-define("NEW_FUNCTIONS_DISPLAY_LINKS", true);
-define("NEW_FUNCTIONS_MEDAL_3YEAR", true);
-define("NEW_FUNCTIONS_MEDAL_5YEAR", true);
-define("NEW_FUNCTIONS_MEDAL_10YEAR", true);
-define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", true);
-define("NEW_FUNCTIONS_MILESTONES", false);
-define("NEW_FUNCTIONS_MEDAL_RESET", true);
-define("NEW_FUNCTIONS_HERO_T4", true);
+define("NEW_FUNCTIONS_DISPLAY_LINKS", false);
+define("NEW_FUNCTIONS_MEDAL_3YEAR", false);
+define("NEW_FUNCTIONS_MEDAL_5YEAR", false);
+define("NEW_FUNCTIONS_MEDAL_10YEAR", false);
+define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", false);
+define("NEW_FUNCTIONS_MILESTONES", true);
+define("NEW_FUNCTIONS_MEDAL_RESET", false);
+define("NEW_FUNCTIONS_HERO_T4", false);
 define("NEW_FUNCTION_TRIBE_HUNS", false);
 define("NEW_FUNCTION_TRIBE_EGIPTEANS", false);
 define("NEW_FUNCTION_TRIBE_SPARTANS", false);
 define("NEW_FUNCTION_TRIBE_VIKINGS", false);
-define("NEW_FUNCTION_REGISTRATION_GOLD", true);
-define("NEW_FUNCTION_REGISTRATION_GOLD_VALUE", 5000);
+define("NEW_FUNCTION_REGISTRATION_GOLD", false);
+define("NEW_FUNCTION_REGISTRATION_GOLD_VALUE", 200);
 
 //////////////////////////////////////////
 //   ****  DO NOT EDIT SETTINGS  ****   //
@@ -584,9 +584,9 @@ define("PAGE_ACCESS_LOG_FILENAME", 'access.log'); // filename ONLY, no path!
 ////////////////////////////////////////////
 //   ****  DOMAIN/SERVER SETTINGS  ****   //
 ////////////////////////////////////////////
-define("DOMAIN", "http://eye-clause-austin-balance.trycloudflare.com/");
-define("HOMEPAGE", "http://eye-clause-austin-balance.trycloudflare.com/");
-define("SERVER", "http://eye-clause-austin-balance.trycloudflare.com/");
+define("DOMAIN", "http://localhost:8080/");
+define("HOMEPAGE", "http://localhost:8080/");
+define("SERVER", "http://localhost:8080/");
 
 $requse = 0;
 
@@ -615,17 +615,101 @@ if (!function_exists('tz_is_rtl_lang')) {
 if (!function_exists('tz_html_dir_attrs')) {
     function tz_html_dir_attrs($langCode = null) {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
-        // The village layout (map, resource bar, sidebar) is built with
-        // absolute-positioned elements for LTR only. Setting dir="rtl"
-        // without matching RTL CSS makes those elements overlap/disappear.
-        // We keep dir="ltr" for every language until a real RTL stylesheet
-        // is written and tested - lang="" still reports correctly so
-        // translations, screen readers, etc. are unaffected.
-        // Once RTL CSS is ready, define('TZ_ENABLE_RTL_LAYOUT', true) to
-        // switch this back on.
-        $enableRtlLayout = defined('TZ_ENABLE_RTL_LAYOUT') ? TZ_ENABLE_RTL_LAYOUT : false;
-        $dir = ($enableRtlLayout && tz_is_rtl_lang($langCode)) ? 'rtl' : 'ltr';
+        $dir = tz_is_rtl_lang($langCode) ? 'rtl' : 'ltr';
         return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="' . $dir . '"';
+    }
+}
+if (!function_exists('tz_default_village_name')) {
+    /**
+     * Default auto-generated village name for a NEWLY created village.
+     * English keeps the original "{username}'s village[ N]" pattern.
+     * Arabic uses "قرية {username}[ N]". $extraIndex is the same optional
+     * numeric suffix the original code used for a player's 2nd+ village
+     * (0 = no suffix, i.e. the first village).
+     */
+    function tz_default_village_name($username, $extraIndex = 0) {
+        $username = trim((string) $username);
+        $suffix = $extraIndex ? ' ' . (int) $extraIndex : '';
+        if (defined('LANG') && LANG === 'ar') {
+            return 'قرية ' . $username . $suffix;
+        }
+        return $username . "'s village" . $suffix;
+    }
+}
+if (!function_exists('tz_display_village_name')) {
+    /**
+     * Display-only localization for a village name already stored in the
+     * database. Never writes to the database. Only rewrites names that
+     * still match the original default pattern "{username}'s village[ N]"
+     * for the given owner - a player's custom (renamed) village name is
+     * returned unchanged. Under a non-Arabic LANG, $vname is always
+     * returned unchanged (English layout/behavior untouched).
+     */
+    function tz_display_village_name($vname, $username = null) {
+        if (!defined('LANG') || LANG !== 'ar' || $username === null || $username === '') {
+            return $vname;
+        }
+        $username = trim((string) $username);
+        $pattern = '/^' . preg_quote($username, '/') . "'s village(?: (\\d+))?$/u";
+        if (preg_match($pattern, trim((string) $vname), $m)) {
+            $suffix = isset($m[1]) ? ' ' . $m[1] : '';
+            return 'قرية ' . $username . $suffix;
+        }
+        return $vname;
+    }
+}
+if (!function_exists('tz_rtl_stylesheet_tag')) {
+    // SINGLE SHARED ENTRY POINT for Arabic/RTL CSS on every game page.
+    //
+    // This is called from the <head> of every top-level page (dorf1.php,
+    // dorf2.php, dorf3.php, karte.php, karte2.php, build.php, berichte.php,
+    // nachrichten.php, allianz.php, spieler.php, Admin/admin.php,
+    // notification/index.php, etc.) right after the base/English gpack
+    // stylesheets. It is the ONLY place that decides which RTL stylesheets
+    // get linked, so fixing/extending RTL here fixes it everywhere at once -
+    // no page should ever link an RTL stylesheet on its own (that is what
+    // previously made the RTL layout work on dorf1.php only and disappear
+    // on every other page/navigation).
+    //
+    // $relPath is the prefix needed to get back to the site root from the
+    // calling script's own folder (e.g. '' for root-level pages like
+    // dorf1.php, '../' for one-level-deep pages like Admin/admin.php or
+    // notification/index.php), since both GP_LOCATE and css/rtl.css below
+    // are root-relative paths.
+    function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
+        $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
+        if (!tz_is_rtl_lang($langCode)) {
+            return '';
+        }
+
+        $tag = '';
+
+        // (1) Optional per-gpack override (legacy hook). Some gpacks may
+        // ship their own lang/{code}/lang.css tweaks; only emitted if that
+        // file actually exists on disk for the active gpack.
+        $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra_classic/');
+        // project root is one level above GameEngine/, regardless of which
+        // folder the calling script itself lives in.
+        $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
+        if (is_file($gpDiskPath)) {
+            $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
+        }
+
+        // (2) The canonical, shared Arabic RTL layout stylesheet. This is
+        // the single source of truth for RTL layout (sidebar/hero position,
+        // main content positioning, text alignment, production layout,
+        // Arabic typography) across the whole game, scoped internally under
+        // html[dir="rtl"] so it never affects English/LTR pages. Loaded
+        // LAST so it wins the cascade over the base gpack CSS and (1) above
+        // on equal-specificity selectors.
+        $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
+        if (is_file($rtlDiskPath)) {
+            $rtlHref = $relPath . 'css/rtl.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl-left105-size980-natural-scroll-server-label-number-black-heading-left20" rel="stylesheet" type="text/css" />';
+        }
+
+        return $tag;
     }
 }
 ?>

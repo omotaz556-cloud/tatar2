@@ -323,6 +323,78 @@ if (!function_exists('admin_config_template_path')) {
     }
 }
 
+if (!function_exists('tz_config_assert_rtl_integrity')) {
+
+    /**
+     * Root-cause guard for the regression where ANY admin save silently
+     * downgraded the shared RTL/frontend functions at the bottom of
+     * config.php.
+     *
+     * WHY THIS EXISTS: every edit*.php module regenerates the ENTIRE
+     * config.php from constant_format.tpl, including the hand-written
+     * tz_*() function block (tz_is_rtl_lang, tz_html_dir_attrs,
+     * tz_default_village_name, tz_display_village_name,
+     * tz_rtl_stylesheet_tag). Those functions are the SINGLE shared entry
+     * point the whole game frontend uses to decide dir="rtl"/"ltr" and to
+     * link css/rtl.css (the canonical RTL layout stylesheet). They are
+     * plain code, not %PLACEHOLDER%s, so tz_config_set()/tz_config_finalize()
+     * never touch them - if the .tpl file on disk ever drifts to an older
+     * copy of that block (exactly what happened: GameEngine/Admin/Mods/
+     * constant_format.tpl had a copy of tz_rtl_stylesheet_tag() that was
+     * missing the css/rtl.css block entirely, and tz_html_dir_attrs() that
+     * always returned dir="ltr"), the very next Admin save silently writes
+     * that broken block into config.php - not the game's CSS files
+     * themselves, but the PHP function that decides whether they get
+     * linked at all. That is why the breakage looked like "the whole game
+     * layout resets after any admin action" with no CSS file ever touched.
+     *
+     * This is called right before ANY module fwrite()s the regenerated
+     * text to config.php. It refuses to let a save proceed if the template
+     * currently on disk would strip RTL support, so a stale/mismatched
+     * .tpl can no longer take down the frontend silently - the admin gets
+     * a clear error instead of a broken game.
+     */
+    function tz_config_assert_rtl_integrity($text) {
+        $problems = array();
+
+        if (strpos($text, "function tz_is_rtl_lang(") === false) {
+            $problems[] = 'tz_is_rtl_lang() is missing';
+        }
+
+        if (strpos($text, "function tz_html_dir_attrs(") === false) {
+            $problems[] = 'tz_html_dir_attrs() is missing';
+        } elseif (!preg_match('/function tz_html_dir_attrs[^}]*tz_is_rtl_lang/s', $text)) {
+            // The known-bad version hardcodes dir="ltr" instead of asking
+            // tz_is_rtl_lang() - it still parses fine, so only a content
+            // check catches it.
+            $problems[] = 'tz_html_dir_attrs() no longer checks tz_is_rtl_lang() (would force LTR for everyone)';
+        }
+
+        if (strpos($text, "function tz_rtl_stylesheet_tag(") === false) {
+            $problems[] = 'tz_rtl_stylesheet_tag() is missing';
+        } elseif (strpos($text, 'css/rtl.css') === false) {
+            // The known-bad version returns '' unconditionally / never
+            // references css/rtl.css - the canonical shared RTL stylesheet
+            // (sidebar, hero, map, header/tabs, resource bar layout) would
+            // stop being linked on every page while the file itself stays
+            // untouched on disk.
+            $problems[] = "tz_rtl_stylesheet_tag() no longer links css/rtl.css (RTL layout would break on every page)";
+        }
+
+        if ($problems) {
+            die(
+                '<h2>Config save blocked - constant_format.tpl looks stale</h2>' .
+                '<p>Saving this Admin setting would regenerate <code>GameEngine/config.php</code> from ' .
+                '<code>constant_format.tpl</code>, but that template would remove Arabic/RTL frontend support:</p>' .
+                '<ul><li>' . implode('</li><li>', array_map('htmlspecialchars', $problems)) . '</li></ul>' .
+                '<p>No file was changed. Restore <code>GameEngine/Admin/Mods/constant_format.tpl</code> ' .
+                '(and <code>install/data/constant_format.tpl</code> if present) to match the tz_*() function ' .
+                'block currently at the bottom of <code>GameEngine/config.php</code>, then try saving again.</p>'
+            );
+        }
+    }
+}
+
 if (!function_exists('tz_config_finalize')) {
 
     /**

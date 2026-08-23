@@ -19,8 +19,8 @@
 //////////////////////////////////
 // (E_ALL ^ E_NOTICE) = enabled
 // (0) = disabled
-define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);");
-error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE);");
+error_reporting (E_ALL ^ E_NOTICE);
 define('AUTOMATION_LOCK_FILE_NAME', 'automation.lck');
 
 //////////////////////////////////
@@ -129,22 +129,16 @@ define("START_TIME", "00:47");
 // strictly sanitized to [a-z_] (no path traversal) and the target file MUST
 // exist, otherwise we fall back to the server default. This prevents Local
 // File Inclusion via a crafted session value.
-define("SERVER_LANG", "ar");
+define("SERVER_LANG", "en");
 if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 $__user_lang = isset($_SESSION['lang']) ? preg_replace('/[^a-z_]/', '', strtolower((string) $_SESSION['lang'])) : '';
 define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang . ".php")) ? $__user_lang : SERVER_LANG);
 
-// ***** Server duration / speed
-// Supported presets are 7, 10, 20, 21, 30 and 60 days. The game speed is
-// derived from the selected duration so every timed endgame feature uses the
-// same server scale. Keep this value in config so admins can change a preset
-// without editing gameplay code.
-$__server_duration_days = (int) getenv('SERVER_DURATION_DAYS');
-if (!in_array($__server_duration_days, [7, 10, 20, 21, 30, 60], true)) {
-    $__server_duration_days = 60;
-}
-define('SERVER_DURATION_DAYS', $__server_duration_days);
-define('SPEED', 300 / SERVER_DURATION_DAYS);
+// ***** Speed
+// Choose your server speed. NOTICE: Higher speed, more likely
+// to have some bugs. Lower speed, most likely no major bugs.
+// Values: 1 (normal), 3 (3x speed) etc...
+define("SPEED", "5");
 
 // ***** World size
 // Defines world size. NOTICE: DO NOT EDIT!!
@@ -186,20 +180,9 @@ define("PW_MIN_LENGTH", 4);
 //        by clicking on link recieved in mail.
 // false =  users can register with any mail. Not needed to be real one.
 define("AUTH_EMAIL",true);
-define('REGISTRATION_MAX_PER_IP', 2);
-define('REGISTRATION_MAX_PER_DEVICE', 3);
-define('REGISTRATION_LIMIT_WINDOW', 86400);
-define('BACKUP_DIR', __DIR__ . '/../var/backups');
-define('TEST_SERVER_MODE', false);
-define('TEST_SERVER_DAYS', 7);
-define('TEST_SERVER_STARTED', (int) getenv('TEST_SERVER_STARTED'));
-
-// MyFatoorah sends payment status updates here. Keep this secret outside the
-// repository in production and provide it as an environment variable.
-if (!defined('MYFATOORAH_WEBHOOK_SECRET')) define('MYFATOORAH_WEBHOOK_SECRET', (string) getenv('MYFATOORAH_WEBHOOK_SECRET'));
 
 // ***** Troop Speed
-// Army movement remains fixed at 2x regardless of server duration.
+// Values: 1 (normal), 3 (3x speed) etc...
 define("INCREASE_SPEED","2");
 
 // ***** Evasion Speed
@@ -249,7 +232,7 @@ define("PROTECTION","43200");
 define("WW",false);
 
 // ***** Show Natars in Statistics
-define("SHOW_NATARS",false); 
+define("SHOW_NATARS",true); 
 
 // ***** Natars Units Multiplier
 define("NATARS_UNITS",100); 
@@ -282,7 +265,7 @@ define("OASIS_IRON_PRODUCTION",OASIS_IRON_MULTIPLIER*SPEED);
 define("OASIS_CROP_PRODUCTION",OASIS_CROP_MULTIPLIER*SPEED); 
 
 // ***** Medal Interval check
-define("MEDALINTERVAL",(3600*24*7));
+define("MEDALINTERVAL",604800);
 // ***** Great Workshop
 define("GREAT_WKS",false);
 // ***** Tourn threshold
@@ -402,9 +385,9 @@ define("PLUS_PACKAGE_E_PRICE","49,99");
 //Plus Package E Gold
 define("PLUS_PACKAGE_E_GOLD","2000");
 //Plus account lenght
-define("PLUS_TIME",(3600*24*7));
+define("PLUS_TIME",604800);
 //+25% production lenght
-define("PLUS_PRODUCTION",(3600*24*7));
+define("PLUS_PRODUCTION",604800);
 
 //////////////////////////////////
 //    **** LOG SETTINGS  ****   //
@@ -540,7 +523,7 @@ define("NEW_FUNCTIONS_TRIBE_IMAGES", true);
 define("NEW_FUNCTIONS_MHS_IMAGES", true);
 define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", false);
 define("NEW_FUNCTIONS_DISPLAY_WONDER", false);
-define("NEW_FUNCTIONS_VACATION", false);
+define("NEW_FUNCTIONS_VACATION", true);
 define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", false);
 define("NEW_FUNCTIONS_MANUAL_NATURENATARS", true);
 define("NEW_FUNCTIONS_DISPLAY_LINKS", false);

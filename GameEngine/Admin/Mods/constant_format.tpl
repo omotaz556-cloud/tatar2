@@ -659,26 +659,57 @@ if (!function_exists('tz_display_village_name')) {
     }
 }
 if (!function_exists('tz_rtl_stylesheet_tag')) {
+    // SINGLE SHARED ENTRY POINT for Arabic/RTL CSS on every game page.
+    //
+    // This is called from the <head> of every top-level page (dorf1.php,
+    // dorf2.php, dorf3.php, karte.php, karte2.php, build.php, berichte.php,
+    // nachrichten.php, allianz.php, spieler.php, Admin/admin.php,
+    // notification/index.php, etc.) right after the base/English gpack
+    // stylesheets. It is the ONLY place that decides which RTL stylesheets
+    // get linked, so fixing/extending RTL here fixes it everywhere at once -
+    // no page should ever link an RTL stylesheet on its own (that is what
+    // previously made the RTL layout work on dorf1.php only and disappear
+    // on every other page/navigation).
+    //
     // $relPath is the prefix needed to get back to the site root from the
     // calling script's own folder (e.g. '' for root-level pages like
     // dorf1.php, '../' for one-level-deep pages like Admin/admin.php or
-    // notification/index.php), since GP_LOCATE itself is root-relative.
+    // notification/index.php), since both GP_LOCATE and css/rtl.css below
+    // are root-relative paths.
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
         if (!tz_is_rtl_lang($langCode)) {
             return '';
         }
+
+        $tag = '';
+
+        // (1) Optional per-gpack override (legacy hook). Some gpacks may
+        // ship their own lang/{code}/lang.css tweaks; only emitted if that
+        // file actually exists on disk for the active gpack.
         $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra_classic/');
         // project root is one level above GameEngine/, regardless of which
         // folder the calling script itself lives in.
-        $diskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
-        // Only emit the tag if the override file actually exists on disk for
-        // the active gpack; some gpacks don't ship an RTL override yet.
-        if (!is_file($diskPath)) {
-            return '';
+        $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
+        if (is_file($gpDiskPath)) {
+            $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
         }
-        $href = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
-        return "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
+
+        // (2) The canonical, shared Arabic RTL layout stylesheet. This is
+        // the single source of truth for RTL layout (sidebar/hero position,
+        // main content positioning, text alignment, production layout,
+        // Arabic typography) across the whole game, scoped internally under
+        // html[dir="rtl"] so it never affects English/LTR pages. Loaded
+        // LAST so it wins the cascade over the base gpack CSS and (1) above
+        // on equal-specificity selectors.
+        $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
+        if (is_file($rtlDiskPath)) {
+            $rtlHref = $relPath . 'css/rtl.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl-left105-size980-natural-scroll-server-label-number-black-heading-left20" rel="stylesheet" type="text/css" />';
+        }
+
+        return $tag;
     }
 }
 ?>

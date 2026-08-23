@@ -193,6 +193,7 @@ $myFile = "../../config.php";
 		// nu il trateaza. TREBUIE apelata dupa toate tz_config_set() si
 		// inainte de scriere - altfel setarile modulului ar fi ignorate.
 		$text = tz_config_finalize($text);
+		tz_config_assert_rtl_integrity($text);
 
 		// SCRIERE IN SIGURANTA.
 		//
