@@ -2194,7 +2194,7 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%users` (
   `timer_refresh` TINYINT(1) NOT NULL DEFAULT '0',
   `invert_colors` TINYINT(1) NOT NULL DEFAULT '0',
   `stats_format` TINYINT(1) NOT NULL DEFAULT '0',
-  `night_mode` TINYINT(1) NOT NULL DEFAULT '0',
+  `night_mode` TINYINT(1) NOT NULL DEFAULT '1',
   `timezone` INT DEFAULT '1',
   `tformat` INT DEFAULT '0',
   PRIMARY KEY (`id`),

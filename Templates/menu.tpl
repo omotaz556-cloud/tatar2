@@ -77,7 +77,7 @@ html.tz-stats-classic body #content.statistics th,html.tz-stats-classic body #co
     if (invertColors) {
         root.className += ' tz-invert-colors';
     }
-    if (nightMode === 2 || (nightMode === 0 && (new Date()).getHours() >= 18 || nightMode === 0 && (new Date()).getHours() < 5)) {
+    if (nightMode === 2) {
         root.className += ' tz-dark-mode';
     }
     if (statsFormat === 2 && /(?:^|\/)statistiken\.php(?:$|\?)/.test(window.location.pathname + window.location.search)) {

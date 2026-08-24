@@ -46,7 +46,7 @@ define('CRON_TICK_SECONDS', 60);
 // Key used to access cron.php via HTTP (wget/curl or an external cron service).
 // Command-line execution (e.g. a cPanel cron job) does NOT require it.
 // Automatically generated during installation and preserved when saving configuration settings from the ACP.
-define('CRON_KEY', 'c02ae54d3d80d36ef3ff4ddfd0b34e29c9f29914704d0aa9');
+define('CRON_KEY', '77c589c1216001ca7f89d64f745f7ac06b827c7f67da799a');
 
 //////////////////////////////////
 // *****  DATABASE CLEANUP  *****//
@@ -110,11 +110,11 @@ date_default_timezone_set(TIMEZONE);
 
 // ***** Started
 // Defines when has server started.
-define("COMMENCE","1787602893");
+define("COMMENCE","1787604600");
 
 // ***** Server Start Date / Time
 define("START_DATE", "24.08.2026");
-define("START_TIME", "23:21");
+define("START_TIME", "23:49");
 
 // ***** Language
 // SERVER_LANG is the DEFAULT language of the server (chosen at install / in
@@ -443,7 +443,7 @@ define("SQL_PASS", "novaterrapass");
 define("SQL_DB", "novaterra");
 
 // ***** Database - Table Prefix
-define("TB_PREFIX", "s889f_");
+define("TB_PREFIX", "s344c_");
 
 // ***** Database type
 // 0 = MYSQL
@@ -500,7 +500,7 @@ define("INCLUDE_ADMIN", false);
 ////////////////////////////////////
 
 // ***** Admin Email
-define("ADMIN_EMAIL", "omotaz323@gmail.com");
+define("ADMIN_EMAIL", "omotaz32311@gmail.com");
 
 // ***** Admin Name
 define("ADMIN_NAME", "admin");

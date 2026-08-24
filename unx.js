@@ -639,7 +639,7 @@ function ne(e){
 }
 function qe(){_d=true;hf(this.details);$e(this.details);fh(this);ge=this;}
 function fh(area){if(!area.details.fresh.href){if(area.details.classic_oasis){area.removeAttribute('href');area.style.cursor='default';}
-else{area.href='karte.php?'+area.details.querystring;area.style.cursor='pointer';}
+else{area.href=(window.location.pathname.indexOf('karte2.php')!==-1?'karte2.php?':'karte.php?')+area.details.querystring;area.style.cursor='pointer';}
 area.details.fresh.href=true;}
 if(!area.details.fresh.title){area.details.fresh.title=gh(area);}
 }
