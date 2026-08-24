@@ -12,7 +12,12 @@ class ActivityRewards
         $link = self::link();
         if (!$link) return;
         @mysqli_query($link, "CREATE TABLE IF NOT EXISTS `" . TB_PREFIX . "activity_rewards` (uid int(11) NOT NULL, last_claim int(11) NOT NULL DEFAULT 0, total_claims int(11) NOT NULL DEFAULT 0, streak int(11) NOT NULL DEFAULT 0, PRIMARY KEY(uid)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-        @mysqli_query($link, "ALTER TABLE `" . TB_PREFIX . "activity_rewards` ADD COLUMN streak int(11) NOT NULL DEFAULT 0");
+        try {
+            @mysqli_query($link, "ALTER TABLE `" . TB_PREFIX . "activity_rewards` ADD COLUMN streak int(11) NOT NULL DEFAULT 0");
+        } catch (Throwable $e) {
+            // The column already exists on current installations. PHP 8 mysqli
+            // may throw for this harmless idempotency check.
+        }
     }
 
     public static function interval()
@@ -37,9 +42,22 @@ class ActivityRewards
         $now = time();
         mysqli_begin_transaction($link);
         $seed = mysqli_prepare($link, "INSERT IGNORE INTO `" . TB_PREFIX . "activity_rewards` (uid,last_claim,total_claims,streak) VALUES (?,0,0,0)");
-        mysqli_stmt_bind_param($seed, 'i', $uid); mysqli_stmt_execute($seed); mysqli_stmt_close($seed);
+        if (!$seed) { mysqli_rollback($link); return [false, 'Reward unavailable.']; }
+        mysqli_stmt_bind_param($seed, 'i', $uid);
+        if (!mysqli_stmt_execute($seed)) { mysqli_stmt_close($seed); mysqli_rollback($link); return [false, 'Reward unavailable.']; }
+        mysqli_stmt_close($seed);
         $stmt = mysqli_prepare($link, "SELECT last_claim,total_claims,streak FROM `" . TB_PREFIX . "activity_rewards` WHERE uid=? FOR UPDATE");
-        mysqli_stmt_bind_param($stmt, 'i', $uid); mysqli_stmt_execute($stmt); $res = mysqli_stmt_get_result($stmt); $row = $res ? mysqli_fetch_assoc($res) : null; mysqli_stmt_close($stmt);
+        if (!$stmt) { mysqli_rollback($link); return [false, 'Reward unavailable.']; }
+        mysqli_stmt_bind_param($stmt, 'i', $uid);
+        $row = null;
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_bind_result($stmt, $lastClaimValue, $totalClaimsValue, $streakValue);
+            if (mysqli_stmt_fetch($stmt)) {
+                $row = ['last_claim' => $lastClaimValue, 'total_claims' => $totalClaimsValue, 'streak' => $streakValue];
+            }
+        }
+        mysqli_stmt_close($stmt);
+        if (!$row) { mysqli_rollback($link); return [false, 'Reward unavailable.']; }
         $lastClaim = $row ? (int) $row['last_claim'] : 0;
         $oldStreak = $row ? (int) $row['streak'] : 0;
         if ($lastClaim > 0 && $now < $lastClaim + self::interval()) { mysqli_rollback($link); return [false, 'The next activity reward is not ready yet.']; }

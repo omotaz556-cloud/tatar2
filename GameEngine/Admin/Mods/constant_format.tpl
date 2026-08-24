@@ -134,17 +134,11 @@ if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 $__user_lang = isset($_SESSION['lang']) ? preg_replace('/[^a-z_]/', '', strtolower((string) $_SESSION['lang'])) : '';
 define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang . ".php")) ? $__user_lang : SERVER_LANG);
 
-// ***** Server duration / speed
-// Supported presets are 7, 10, 20, 21, 30 and 60 days. The game speed is
-// derived from the selected duration so every timed endgame feature uses the
-// same server scale. Keep this value in config so admins can change a preset
-// without editing gameplay code.
-$__server_duration_days = (int) getenv('SERVER_DURATION_DAYS');
-if (!in_array($__server_duration_days, [7, 10, 20, 21, 30, 60], true)) {
-    $__server_duration_days = 60;
-}
-define('SERVER_DURATION_DAYS', $__server_duration_days);
-define('SPEED', 300 / SERVER_DURATION_DAYS);
+// ***** Speed
+// Choose your server speed. NOTICE: Higher speed, more likely
+// to have some bugs. Lower speed, most likely no major bugs.
+// Values: 1 (normal), 3 (3x speed) etc...
+define("SPEED", "%SPEED%");
 
 // ***** World size
 // Defines world size. NOTICE: DO NOT EDIT!!
@@ -186,17 +180,6 @@ define("PW_MIN_LENGTH", %PWMIN%);
 //        by clicking on link recieved in mail.
 // false =  users can register with any mail. Not needed to be real one.
 define("AUTH_EMAIL",%ACTIVATE%);
-define('REGISTRATION_MAX_PER_IP', 2);
-define('REGISTRATION_MAX_PER_DEVICE', 3);
-define('REGISTRATION_LIMIT_WINDOW', 86400);
-define('BACKUP_DIR', __DIR__ . '/../var/backups');
-define('TEST_SERVER_MODE', false);
-define('TEST_SERVER_DAYS', 7);
-define('TEST_SERVER_STARTED', (int) getenv('TEST_SERVER_STARTED'));
-
-// MyFatoorah sends payment status updates here. Keep this secret outside the
-// repository in production and provide it as an environment variable.
-if (!defined('MYFATOORAH_WEBHOOK_SECRET')) define('MYFATOORAH_WEBHOOK_SECRET', (string) getenv('MYFATOORAH_WEBHOOK_SECRET'));
 
 // ***** Troop Speed
 // Values: 1 (normal), 3 (3x speed) etc...
@@ -485,11 +468,11 @@ define("WORLD_KEY", "");
 // Leave CENTRAL_GOLD_HOST empty to disable the feature entirely: gold then
 // behaves exactly as before (purely local to this world), and none of the
 // central-gold code paths are used.
-define("CENTRAL_GOLD_HOST", %CENTRALGOLDHOST%);
-define("CENTRAL_GOLD_PORT", %CENTRALGOLDPORT%);
-define("CENTRAL_GOLD_USER", %CENTRALGOLDUSER%);
-define("CENTRAL_GOLD_PASS", %CENTRALGOLDPASS%);
-define("CENTRAL_GOLD_DB",   %CENTRALGOLDDB%);
+define("CENTRAL_GOLD_HOST", "");
+define("CENTRAL_GOLD_PORT", 3306);
+define("CENTRAL_GOLD_USER", "");
+define("CENTRAL_GOLD_PASS", "");
+define("CENTRAL_GOLD_DB",   "");
 
 ////////////////////////////////////
 //   ****  EXTRA SETTINGS  ****   //
@@ -541,15 +524,6 @@ define("NEW_FUNCTIONS_MHS_IMAGES", %NEW_FUNCTIONS_MHS_IMAGES%);
 define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", %NEW_FUNCTIONS_DISPLAY_ARTIFACT%);
 define("NEW_FUNCTIONS_DISPLAY_WONDER", %NEW_FUNCTIONS_DISPLAY_WONDER%);
 define("NEW_FUNCTIONS_VACATION", %NEW_FUNCTIONS_VACATION%);
-
-// Vacation Test Mode - TESTING / DEVELOPMENT ONLY. Do not enable on a live
-// production server. Admin Panel: New Functions page. Owned/written by
-// GameEngine/Admin/Mods/editNewFunctions.php; any OTHER admin mod that
-// regenerates config.php from this template leaves this placeholder alone,
-// so tz_config_finalize() (see config_template.php) fills it back in from
-// the value already defined in the config.php being replaced - the setting
-// survives saves made from any other Admin Panel page.
-define("VACATION_TEST_MODE_ADMIN_GOLD", %VACATION_TEST_MODE_ADMIN_GOLD%);
 define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", %NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET%);
 define("NEW_FUNCTIONS_MANUAL_NATURENATARS", %NEW_FUNCTIONS_MANUAL_NATURENATARS%);
 define("NEW_FUNCTIONS_DISPLAY_LINKS", %NEW_FUNCTIONS_DISPLAY_LINKS%);
@@ -646,13 +620,6 @@ if (!function_exists('tz_html_dir_attrs')) {
     }
 }
 if (!function_exists('tz_default_village_name')) {
-    /**
-     * Default auto-generated village name for a NEWLY created village.
-     * English keeps the original "{username}'s village[ N]" pattern.
-     * Arabic uses "قرية {username}[ N]". $extraIndex is the same optional
-     * numeric suffix the original code used for a player's 2nd+ village
-     * (0 = no suffix, i.e. the first village).
-     */
     function tz_default_village_name($username, $extraIndex = 0) {
         $username = trim((string) $username);
         $suffix = $extraIndex ? ' ' . (int) $extraIndex : '';
@@ -663,14 +630,6 @@ if (!function_exists('tz_default_village_name')) {
     }
 }
 if (!function_exists('tz_display_village_name')) {
-    /**
-     * Display-only localization for a village name already stored in the
-     * database. Never writes to the database. Only rewrites names that
-     * still match the original default pattern "{username}'s village[ N]"
-     * for the given owner - a player's custom (renamed) village name is
-     * returned unchanged. Under a non-Arabic LANG, $vname is always
-     * returned unchanged (English layout/behavior untouched).
-     */
     function tz_display_village_name($vname, $username = null) {
         if (!defined('LANG') || LANG !== 'ar' || $username === null || $username === '') {
             return $vname;
@@ -685,23 +644,6 @@ if (!function_exists('tz_display_village_name')) {
     }
 }
 if (!function_exists('tz_rtl_stylesheet_tag')) {
-    // SINGLE SHARED ENTRY POINT for Arabic/RTL CSS on every game page.
-    //
-    // This is called from the <head> of every top-level page (dorf1.php,
-    // dorf2.php, dorf3.php, karte.php, karte2.php, build.php, berichte.php,
-    // nachrichten.php, allianz.php, spieler.php, Admin/admin.php,
-    // notification/index.php, etc.) right after the base/English gpack
-    // stylesheets. It is the ONLY place that decides which RTL stylesheets
-    // get linked, so fixing/extending RTL here fixes it everywhere at once -
-    // no page should ever link an RTL stylesheet on its own (that is what
-    // previously made the RTL layout work on dorf1.php only and disappear
-    // on every other page/navigation).
-    //
-    // $relPath is the prefix needed to get back to the site root from the
-    // calling script's own folder (e.g. '' for root-level pages like
-    // dorf1.php, '../' for one-level-deep pages like Admin/admin.php or
-    // notification/index.php), since both GP_LOCATE and css/rtl.css below
-    // are root-relative paths.
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
         if (!tz_is_rtl_lang($langCode)) {
@@ -709,30 +651,17 @@ if (!function_exists('tz_rtl_stylesheet_tag')) {
         }
 
         $tag = '';
-
-        // (1) Optional per-gpack override (legacy hook). Some gpacks may
-        // ship their own lang/{code}/lang.css tweaks; only emitted if that
-        // file actually exists on disk for the active gpack.
-        $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra_classic/');
-        // project root is one level above GameEngine/, regardless of which
-        // folder the calling script itself lives in.
+        $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra/');
         $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
         if (is_file($gpDiskPath)) {
             $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
             $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
         }
 
-        // (2) The canonical, shared Arabic RTL layout stylesheet. This is
-        // the single source of truth for RTL layout (sidebar/hero position,
-        // main content positioning, text alignment, production layout,
-        // Arabic typography) across the whole game, scoped internally under
-        // html[dir="rtl"] so it never affects English/LTR pages. Loaded
-        // LAST so it wins the cascade over the base gpack CSS and (1) above
-        // on equal-specificity selectors.
         $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
         if (is_file($rtlDiskPath)) {
             $rtlHref = $relPath . 'css/rtl.css';
-            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl-left105-size980-natural-scroll-server-label-number-black-heading-left20" rel="stylesheet" type="text/css" />';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl" rel="stylesheet" type="text/css" />';
         }
 
         return $tag;

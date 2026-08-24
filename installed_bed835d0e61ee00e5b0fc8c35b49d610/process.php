@@ -293,8 +293,9 @@ class Process {
 		$findReplace["%NEW_FUNCTION_TRIBE_EGIPTEANS%"] = $_POST['new_function_tribe_egipteans'];
 		$findReplace["%NEW_FUNCTION_TRIBE_SPARTANS%"] = $_POST['new_function_tribe_spartans'];
 		$findReplace["%NEW_FUNCTION_TRIBE_VIKINGS%"] = $_POST['new_function_tribe_vikings'];
-		$findReplace["%NEW_FUNCTION_REGISTRATION_GOLD%"] = $_POST['new_function_registration_gold'];
-		$findReplace["%NEW_FUNCTION_REGISTRATION_GOLD_VALUE%"] = $_POST['new_function_registration_gold_value'];
+		$findReplace["%NEW_FUNCTION_REGISTRATION_GOLD%"] = (isset($_POST['new_function_registration_gold']) && strtolower((string) $_POST['new_function_registration_gold']) === 'true') ? 'true' : 'false';
+		$registrationGoldValue = isset($_POST['new_function_registration_gold_value']) ? (int) $_POST['new_function_registration_gold_value'] : 200;
+		$findReplace["%NEW_FUNCTION_REGISTRATION_GOLD_VALUE%"] = (string) max(0, $registrationGoldValue);
 
 		fwrite($gameConfig, str_replace(array_keys($findReplace), array_values($findReplace), $text));
 

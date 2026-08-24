@@ -619,7 +619,7 @@ div#map a#map_makelarge {
     left: 26px;
     position: absolute;
     top: 39px;
-    z-index: 50;
+    z-index: 51;
 }
 div#map img#map_links {
     position: absolute;

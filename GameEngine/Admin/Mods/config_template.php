@@ -285,6 +285,7 @@ if (!function_exists('admin_config_template_path')) {
         $boolFallbacks = array(
             '%ALLIANCEBONUSES%' => 'NEW_FUNCTIONS_ALLIANCE_BONUSES',
             '%PLUSSTATS%'       => 'NEW_FUNCTIONS_PLUS_STATISTICS',
+            '%NEW_FUNCTION_REGISTRATION_GOLD%' => 'NEW_FUNCTION_REGISTRATION_GOLD',
         );
 
         foreach ($boolFallbacks as $ovPlaceholder => $constant) {
@@ -300,6 +301,7 @@ if (!function_exists('admin_config_template_path')) {
         $numFallbacks = array(
             '%PLUSSTATSHOURS%' => array('PLUS_STATS_INTERVAL_HOURS', 6),
             '%PLUSSTATSKEEP%'  => array('PLUS_STATS_KEEP_DAYS', 0),
+            '%NEW_FUNCTION_REGISTRATION_GOLD_VALUE%' => array('NEW_FUNCTION_REGISTRATION_GOLD_VALUE', 200),
         );
 
         foreach ($numFallbacks as $ovPlaceholder => $info) {

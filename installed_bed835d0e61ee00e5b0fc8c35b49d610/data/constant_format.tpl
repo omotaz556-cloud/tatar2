@@ -615,7 +615,8 @@ if (!function_exists('tz_is_rtl_lang')) {
 if (!function_exists('tz_html_dir_attrs')) {
     function tz_html_dir_attrs($langCode = null) {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
-        return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="ltr"';
+        $dir = tz_is_rtl_lang($langCode) ? 'rtl' : 'ltr';
+        return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="' . $dir . '"';
     }
 }
 if (!function_exists('tz_default_village_name')) {
@@ -643,8 +644,27 @@ if (!function_exists('tz_display_village_name')) {
     }
 }
 if (!function_exists('tz_rtl_stylesheet_tag')) {
-    function tz_rtl_stylesheet_tag($langCode = null, $relPath = 'css/') {
-        return '';
+    function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
+        $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
+        if (!tz_is_rtl_lang($langCode)) {
+            return '';
+        }
+
+        $tag = '';
+        $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra/');
+        $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
+        if (is_file($gpDiskPath)) {
+            $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
+        }
+
+        $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
+        if (is_file($rtlDiskPath)) {
+            $rtlHref = $relPath . 'css/rtl.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl" rel="stylesheet" type="text/css" />';
+        }
+
+        return $tag;
     }
 }
 ?>
