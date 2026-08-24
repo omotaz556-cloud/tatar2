@@ -174,6 +174,34 @@ $ledger = $configured ? CentralGold::recentLedger(40) : [];
         <?php endif; ?>
     </div>
 
+    <!-- Grant gold directly (no source account needed) -->
+    <div class="cg-card">
+        <h3><?php echo ADM_CG_GRANT_TITLE; ?></h3>
+        <p class="cg-desc"><?php echo ADM_CG_GRANT_DESC; ?></p>
+        <form method="post" action="../GameEngine/Admin/Mods/centralGoldAdmin.php" class="cg-add">
+            <?php echo csrf_field(); ?>
+            <input type="hidden" name="do" value="grant">
+            <div class="cg-uac">
+                <label><?php echo ADM_CG_SEARCH_LABEL; ?></label>
+                <input class="email uac-input" type="text" autocomplete="off" data-cg-uac-target="grant_email" placeholder="<?php echo ADM_CG_SEARCH_PLACEHOLDER; ?>" <?php echo $configured ? '' : 'disabled'; ?>>
+                <div class="cg-uac-list" data-cg-uac-list="grant_email"></div>
+            </div>
+            <div>
+                <label><?php echo ADM_CG_EMAIL; ?></label>
+                <input class="email" type="email" name="email" id="grant_email" placeholder="player@example.com" required <?php echo $configured ? '' : 'disabled'; ?>>
+            </div>
+            <div>
+                <label><?php echo ADM_CG_AMOUNT; ?></label>
+                <input class="num" type="number" name="amount" min="1" value="100" required <?php echo $configured ? '' : 'disabled'; ?>>
+            </div>
+            <div>
+                <label><?php echo ADM_CG_NOTE_OPTIONAL; ?></label>
+                <input class="note" type="text" name="note" maxlength="255" <?php echo $configured ? '' : 'disabled'; ?>>
+            </div>
+            <button type="submit" <?php echo $configured ? '' : 'disabled'; ?>><?php echo ADM_CG_GRANT_BTN; ?></button>
+        </form>
+    </div>
+
     <!-- Transfer -->
     <div class="cg-card">
         <h3><?php echo ADM_CG_TRANSFER_TITLE; ?></h3>

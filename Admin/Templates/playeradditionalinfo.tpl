@@ -56,7 +56,16 @@
 		</tr>
 		<tr>
 			<td><?php echo ADM_VACATION_MODE; ?></td>
-			<td><?php echo $user['vac_mode'] ? '<span class="badge badge-on">Enabled</span>' : '<span class="badge badge-off">Disabled</span>'; ?></td>
+			<td>
+				<?php echo $user['vac_mode'] ? '<span class="badge badge-on">Enabled</span>' : '<span class="badge badge-off">Disabled</span>'; ?>
+				<?php if ($user['vac_mode'] && $_SESSION['access'] == ADMIN): ?>
+					<form method="post" action="../GameEngine/Admin/Mods/cancelVacation.php" style="display:inline;margin-left:8px;" onsubmit="return confirm('<?php echo ADM_CANCEL_VACATION_CONFIRM; ?>');">
+						<?php echo csrf_field(); ?>
+						<input type="hidden" name="uid" value="<?php echo (int) $user['id']; ?>">
+						<button type="submit" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;border-radius:5px;padding:2px 8px;font-size:10.5px;font-weight:600;cursor:pointer;"><?php echo ADM_CANCEL_VACATION; ?></button>
+					</form>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<td><?php echo ADMIN_GOLD; ?></td>

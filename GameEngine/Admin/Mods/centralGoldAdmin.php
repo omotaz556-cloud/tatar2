@@ -84,6 +84,45 @@ if ($do === 'toggle_free_gold') {
     // keeps the URL bookmarkable/shareable and avoids POST-resubmit prompts.
     header("Location: ../../../Admin/admin.php?p=centralGold&lookup=" . urlencode($lookupEmail));
     exit;
+} elseif ($do === 'grant') {
+    // Admin grants paid gold directly to one player (no source account
+    // needed, unlike 'transfer'). Uses reason 'admin_grant' so this plugs
+    // straight into CentralGold::adminGrantedNet()/nonAdminGrantedBalance(),
+    // which already special-case that reason for the Vacation Test Mode gate.
+    $email  = trim((string) ($_POST['email'] ?? ''));
+    $amount = (int) ($_POST['amount'] ?? 0);
+    $note   = trim((string) ($_POST['note'] ?? ''));
+
+    if (!CentralGold::isConfigured()) {
+        $msg = 'Central Gold is not configured on this server.';
+    } elseif ($email === '' || $amount <= 0) {
+        $msg = 'Email and a positive amount are required.';
+    } else {
+        // Best-effort: if this email already belongs to a local account on
+        // THIS world, reuse its username/id so the central account carries
+        // an accurate label and world link. Falls back to '' / 0 (as the
+        // manual transfer form already does) for an email never seen here —
+        // CentralGold::resolveAccount() still works fine with those.
+        $emailEsc = mysqli_real_escape_string($GLOBALS['link'], $email);
+        $localRes = mysqli_query($GLOBALS['link'],
+            "SELECT id, username FROM " . TB_PREFIX . "users WHERE email = '" . $emailEsc . "' LIMIT 1");
+        $local = $localRes ? mysqli_fetch_assoc($localRes) : null;
+        $localUsername = $local ? (string) $local['username'] : '';
+        $localId       = $local ? (int) $local['id'] : 0;
+
+        list($ok, $resultMsg, $newBalance) = CentralGold::credit(
+            $email, $localUsername, $localId, $amount,
+            'admin_grant', $note !== '' ? $note : 'admin grant', $admid
+        );
+        $msg = $ok ? ('Granted ' . $amount . ' gold. New balance: ' . number_format($newBalance) . '.') : $resultMsg;
+        if ($ok) {
+            $logMsg = mysqli_real_escape_string($GLOBALS['link'],
+                'Central Gold: admin granted ' . $amount . ' gold to ' . $email);
+            mysqli_query($GLOBALS['link'],
+                "INSERT INTO " . TB_PREFIX . "admin_log VALUES (0, " . $admid . ", '" . $logMsg . "', " . time() . ")");
+            $lookupEmail = $email;
+        }
+    }
 } elseif ($do === 'transfer') {
     $fromEmail = trim((string) ($_POST['from_email'] ?? ''));
     $toEmail   = trim((string) ($_POST['to_email'] ?? ''));

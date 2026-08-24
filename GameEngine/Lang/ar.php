@@ -3081,6 +3081,9 @@ tz_def('ADM_CG_USERNAME', 'اسم المستخدم');
 tz_def('ADM_CG_WORLDS_SEEN', 'العوالم التي شُوهد فيها');
 tz_def('ADM_CG_NO_WORLDS', 'غير مرتبط بأي عالم بعد.');
 tz_def('ADM_CG_LAST_SEEN', 'آخر ظهور');
+tz_def('ADM_CG_GRANT_TITLE', 'منح ذهب مدفوع');
+tz_def('ADM_CG_GRANT_DESC', 'إضافة ذهب مدفوع مباشرة للاعب عن طريق إيميله — بدون الحاجة لحساب مصدر. استخدم هذا بدل تعديل paid_gold مباشرة من phpMyAdmin، عشان يفضل السجل (ledger) متسق ويظهر كحركة "admin_grant" في الجدول تحت.');
+tz_def('ADM_CG_GRANT_BTN', 'منح الذهب');
 tz_def('ADM_CG_TRANSFER_TITLE', 'تحويل الذهب المدفوع');
 tz_def('ADM_CG_TRANSFER_DESC', 'انقل الذهب المدفوع من لاعب إلى آخر، بواسطة البريد الإلكتروني، عبر أي عالم. الذهب المدفوع فقط قابل للتحويل &mdash; الذهب المجاني يبقى دائمًا محليًا في العالم الذي كُسب فيه.');
 tz_def('ADM_CG_FROM_EMAIL', 'من (البريد الإلكتروني)');
@@ -3707,6 +3710,8 @@ tz_def('ADM_DISPLAY_WOW_IN_PROFILE', 'عرض عجيبة الدنيا في الم
 tz_def('ADM_ENABLE_DISABLE_THE_DISPLAY_OF_THE_WONDER', 'تفعيل (تعطيل) عرض عجيبة الدنيا');
 tz_def('ADM_ENABLE_DISABLE_THE_DISPLAY_OF_THE_WONDER_IN', 'تفعيل (تعطيل) عرض عجيبة الدنيا في الملف الشخصي للاعب، مقابل القرية المطابقة التي توجد بها');
 tz_def('ADM_VACATION_MODE', 'وضع الإجازة');
+tz_def('ADM_CANCEL_VACATION', 'إلغاء الإجازة');
+tz_def('ADM_CANCEL_VACATION_CONFIRM', 'إلغاء وضع الإجازة لهذا اللاعب؟');
 tz_def('ADM_ENABLE_DISABLE_VACATION_MODE', 'تفعيل (تعطيل) وضع الإجازة');
 tz_def('ADM_ENABLE_DISABLE_VACATION_MODE_WILL_BE_DISPLAY', 'تفعيل (تعطيل) وضع الإجازة، سيُعرض أو يُخفى في قائمة الملف الشخصي للاعب');
 tz_def('ADM_CATAPULT_TARGETS', 'أهداف المنجنيق');
