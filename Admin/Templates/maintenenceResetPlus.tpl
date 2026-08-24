@@ -19,7 +19,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < ADMIN) die("Access Denied: You are not Admin!");
+if($_SESSION['access'] < ADMIN) die(ACCESS_DENIED_ADMIN);
 ?>
 <style>
 .resetplus-wrap{max-width:600px;margin:30px auto;font-family:Verdana}

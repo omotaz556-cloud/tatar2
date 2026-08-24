@@ -19,7 +19,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < MULTIHUNTER) die("Access Denied!");
+if($_SESSION['access'] < MULTIHUNTER) die(ADM_ACCESS_DENIED_BANG);
 
 function formatNum($n) {
     $n = (int)$n;
@@ -89,7 +89,7 @@ $ue = q1("SELECT ".implode(',',$cells)." FROM ".TB_PREFIX."enforcement");
 
   <div class="scard">
     <h3><?php echo ADM_PLAYER_DISTRIBUTION; ?></h3>
-    <?php $names=[1=>'Romans',2=>'Teutons',3=>'Gauls',6=>'Huns',7=>'Egyptians',8=>'Spartans',9=>'Vikings']; $colors=[1=>'romans',2=>'teutons',3=>'gauls',6=>'huns',7=>'egyptians',8=>'spartans',9=>'vikings'];
+    <?php $names=[1=>TRIBE1,2=>TRIBE2,3=>TRIBE3,6=>TRIBE6,7=>TRIBE7,8=>TRIBE8,9=>TRIBE9]; $colors=[1=>'romans',2=>'teutons',3=>'gauls',6=>'huns',7=>'egyptians',8=>'spartans',9=>'vikings'];
     foreach($names as $id=>$name){
         $pct = $users ? round($tribes[$id]/$users*100,1) : 0;
         echo "<div class='row'><span>$name</span><span class='val'>{$tribes[$id]} ($pct%)</span></div>";
@@ -102,7 +102,7 @@ $ue = q1("SELECT ".implode(',',$cells)." FROM ".TB_PREFIX."enforcement");
     <div class="row"><span><img src="../<?php echo GP_LOCATE; ?>img/a/gold.gif"><?php echo ADM_TOTAL_GOLD; ?></span><span class="val"><?php echo number_format($gold); ?></span></div>
     <div class="row"><span><?php echo ADM_AVG_GOLD; ?></span><span class="val"><?php echo $users ? number_format($gold/$users,0) : 0; ?></span></div>
     <div class="row"><span><?php echo ADM_SERVER_STARTED; ?></span><span class="val"><?php echo defined('START_DATE') ? date('d.m.Y', strtotime(START_DATE)) : '-'; ?></span></div>
-    <div class="row"><span><?php echo ADM_UPTIME; ?></span><span class="val"><?php echo defined('START_DATE') ? floor((time()-strtotime(START_DATE))/86400).' days' : '-'; ?></span></div>
+    <div class="row"><span><?php echo ADM_UPTIME; ?></span><span class="val"><?php echo defined('START_DATE') ? sprintf(ADM_UPTIME_DAYS, floor((time()-strtotime(START_DATE))/86400)) : '-'; ?></span></div>
   </div>
 </div>
 
@@ -111,15 +111,15 @@ $ue = q1("SELECT ".implode(',',$cells)." FROM ".TB_PREFIX."enforcement");
   <div class="troops-grid">
     <?php
     $tribesUnits = [
-        'Romans' => range(1,10),
-        'Teutons' => range(11,20),
-        'Gauls' => range(21,30),
-        'Nature' => range(31,40),
-        'Natars' => range(41,50),
-        'Huns' => range(51,60),
-        'Egyptians' => range(61,70),
-        'Spartans' => range(71,80),
-        'Vikings' => range(81,90)
+        TRIBE1 => range(1,10),
+        TRIBE2 => range(11,20),
+        TRIBE3 => range(21,30),
+        TRIBE4 => range(31,40),
+        TRIBE5 => range(41,50),
+        TRIBE6 => range(51,60),
+        TRIBE7 => range(61,70),
+        TRIBE8 => range(71,80),
+        TRIBE9 => range(81,90)
     ];
     foreach($tribesUnits as $tribe=>$ids){
         echo "<div class='tribe-box'><h4>$tribe</h4>";
@@ -130,11 +130,11 @@ $ue = q1("SELECT ".implode(',',$cells)." FROM ".TB_PREFIX."enforcement");
                 echo "<div class='unit'><span><img src='../".GP_LOCATE."img/u/$u.gif'> u$u</span><span class='cnt' title='$total'>".formatNum($total)."</span></div>";
             }
         }
-        if(!$has) echo "<div class='unit'><span style='color:#999'>No troops</span></div>";
+        if(!$has) echo "<div class='unit'><span style='color:#999'>".ADM_NO_TROOPS."</span></div>";
         echo "</div>";
     }
 	$heroTotal = (int)($uv['hero'] ?? 0) + (int)($ue['hero'] ?? 0);
-	echo "<div class='tribe-box'><h4>Heroes</h4><div class='unit'><span><svg viewBox='0 0 24 24' fill='#f1c40f' xmlns='http://www.w3.org/2000/svg'><path d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg> Hero</span><span class='cnt'>".formatNum($heroTotal)."</span></div></div>";
+	echo "<div class='tribe-box'><h4>".ADM_HEROES."</h4><div class='unit'><span><svg viewBox='0 0 24 24' fill='#f1c40f' xmlns='http://www.w3.org/2000/svg'><path d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg> ".ADM_HERO_UNIT_LABEL."</span><span class='cnt'>".formatNum($heroTotal)."</span></div></div>";
     ?>
   </div>
 </div>

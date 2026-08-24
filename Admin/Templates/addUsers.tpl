@@ -19,7 +19,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < ADMIN) die("Access Denied!");
+if($_SESSION['access'] < ADMIN) die(ADM_ACCESS_DENIED_BANG);
 $id = $_SESSION['id'];
 
 $baseName = "Farm"; $amount = 20; $villages = 5; $mode = "many_accounts";

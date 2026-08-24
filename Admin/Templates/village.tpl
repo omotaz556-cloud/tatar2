@@ -148,7 +148,7 @@ if(isset($id)){
     </div>
 <!-- 2. RESOURCES - FULL WIDTH -->
 <div class="vcard">
-  <div class="vhead">Resources<?php if($_SESSION['access'] == ADMIN) { ?><a href="admin.php?p=editResources&did=<?php echo (int)($_GET['did'] ?? 0); ?>"><?php echo $svgEdit; ?></a><?php } ?>
+  <div class="vhead"><?php echo ADM_RESOURCES_HEADER; ?><?php if($_SESSION['access'] == ADMIN) { ?><a href="admin.php?p=editResources&did=<?php echo (int)($_GET['did'] ?? 0); ?>"><?php echo $svgEdit; ?></a><?php } ?>
 	</div>
   <table class="vtable" style="text-align:center">
     <tr style="background:#f8fafc;font-size:11px;color:#64748b"><td style="text-align:left"><?php echo ADM_RES; ?></td><td><?php echo ADM_AMT; ?></td><td><?php echo ADM_CAP; ?></td><td><?php echo ADM_PROD; ?></td></tr>
@@ -172,7 +172,7 @@ if(isset($id)){
       <div class="vhead"><?php echo ADM_OASIS; ?></div>
       <table class="vtable" style="text-align:center">
         <tr style="background:#f8fafc;font-size:11px;color:#64748b"><td style="width:28px"></td><td><?php echo ADM_NAME; ?></td><td><?php echo ADM_COORDS; ?></td><td><?php echo ADM_LOY; ?></td><td><?php echo ADM_BONUS; ?></td></tr>
-        <?php if(!empty($newResult)){ foreach($newResult as $row){ echo '<tr><td><a href="?action=delOas&oid='.$row['wref'].'&did='.$_GET['did'].'" onclick="return del(\'oas\','.$row['wref'].')" class="btn-icon danger">'.$svgDel.'</a></td><td>'.$row['name'].'</td><td><a href="../karte.php?d='.$row['wref'].'&c='.$generator->getMapCheck($row['wref']).'" target="_blank" style="color:#2563eb">('.$row['x'].'|'.$row['y'].')</a></td><td>'.round($row['loyalty']).'%</td><td>'.$row['type'].'</td></tr>'; } } else { echo '<tr><td colspan="5" style="color:#94a3b8;padding:10px">No oases</td></tr>'; } ?>
+        <?php if(!empty($newResult)){ foreach($newResult as $row){ echo '<tr><td><a href="?action=delOas&oid='.$row['wref'].'&did='.$_GET['did'].'" onclick="return del(\'oas\','.$row['wref'].')" class="btn-icon danger">'.$svgDel.'</a></td><td>'.$row['name'].'</td><td><a href="../karte.php?d='.$row['wref'].'&c='.$generator->getMapCheck($row['wref']).'" target="_blank" style="color:#2563eb">('.$row['x'].'|'.$row['y'].')</a></td><td>'.round($row['loyalty']).'%</td><td>'.$row['type'].'</td></tr>'; } } else { echo '<tr><td colspan="5" style="color:#94a3b8;padding:10px">'.ADM_NO_OASES.'</td></tr>'; } ?>
       </table>
     </div>
   </div>
@@ -195,7 +195,7 @@ if(isset($id)){
   </div>
   </br>
   <div class="map-card">
-    <h3>Village Center - <?php echo htmlspecialchars($village['name']); ?></h3>
+    <h3><?php echo ADM_VILLAGE_CENTER; ?> - <?php echo htmlspecialchars($village['name']); ?></h3>
     <?php $WWLevel = $fdata['f99t']; $wallLevel = $fdata['f40t']; if($wallLevel == 0) $wallType = "d2_0"; else { switch($user['tribe']){ case 1: case 5: default: $wallType = "d2_11"; break; case 2: $wallType = "d2_12"; break; case 3: $wallType = "d2_1"; break; case 6: $wallType = "d2_16"; break; case 7: $wallType = "d2_17"; break; case 8: $wallType = "d2_18"; break; case 9: $wallType = "d2_19"; break; } } /* 6-9: bg16-bg19.jpg */ ?>
     <div id="content" class="village2">
       <div id="village_map" class="<?php echo $wallType; ?>">

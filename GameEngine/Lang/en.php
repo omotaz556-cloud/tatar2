@@ -4852,3 +4852,332 @@ tz_def('TZ_CB_LOG_UPSERT_FAILED', 'Upsert failed: %s');
 tz_def('TZ_CB_LOG_PROCESSED', 'Processed %d / %d');
 tz_def('TZ_CB_LOG_ANALYZE_COMPLETE', 'Analyze complete.');
 tz_def('TZ_CB_LOG_DONE', 'Done.');
+
+// Admin: T4 Hero panel (added by AR localization pass)
+tz_def('ADM_T4_NO_ITEMS', 'No items.');
+tz_def('ADM_T4_CONFIRM_DELETE_ITEM', 'Delete this item row permanently?');
+tz_def('ADM_T4_ROLE_SELLER', 'seller');
+tz_def('ADM_T4_ROLE_TOP_BIDDER', 'top bidder');
+tz_def('ADM_T4_CONFIRM_CANCEL_AUCTION', 'Cancel this auction? Bidder is refunded, item returns to the seller.');
+tz_def('ADM_T4_NO_AUCTION_INVOLVEMENT', 'No open auction involvement.');
+tz_def('ADM_T4_DIFFICULTY_HARD', 'hard');
+tz_def('ADM_T4_DIFFICULTY_NORMAL', 'normal');
+tz_def('ADM_T4_ARRIVES', 'arrives');
+tz_def('ADM_T4_NO_OFFERS_AVAILABLE', 'No available offers.');
+tz_def('ADM_T4_ORPHAN_ITEMID', 'orphan itemid');
+
+// Admin: config.tpl hardcoded values (added by AR localization pass)
+tz_def('ADM_LANG_ENGLISH', 'English');
+tz_def('ADM_LANG_FRENCH', 'French');
+tz_def('ADM_LANG_ITALIAN', 'Italian');
+tz_def('ADM_LANG_ROMANIAN', 'Romanian');
+tz_def('ADM_LANG_CHINESE', 'Chinese');
+tz_def('ADM_LANG_ARABIC', 'Arabic');
+tz_def('ADM_DATE_LABEL', 'Date: ');
+tz_def('ADM_TIME_LABEL', 'Time: ');
+tz_def('ADM_SPEED_FAST', 'Fast');
+tz_def('ADM_SPEED_SLOW', 'Slow');
+tz_def('ADM_PEACE_NONE', 'None');
+tz_def('ADM_PEACE_NORMAL', 'Normal');
+tz_def('ADM_PEACE_CHRISTMAS', 'Christmas');
+tz_def('ADM_PEACE_NEW_YEAR', 'New Year');
+tz_def('ADM_PEACE_EASTER', 'Easter');
+tz_def('ADM_REPORT_FROM_VILLAGE', 'from the village');
+tz_def('ADM_REPORT_ON', 'on');
+tz_def('ADM_REPORT_RAM', 'Ram');
+tz_def('ADM_REPORT_CATAPULT', 'Catapult');
+tz_def('ADM_REPORT_CHIEF', 'Chief');
+tz_def('ADM_NEW_MAP_TILE_TYPE', 'New Map Tile Type');
+tz_def('ADM_VALLEY', 'Valley');
+tz_def('ADM_ABANDONED_VALLEY', 'Abandoned Valley');
+tz_def('ADM_UNOCCUPIED_OASIS', 'Unoccupied Oasis');
+tz_def('ADM_OCCUPIED_OASIS', 'Occupied Oasis');
+tz_def('ADM_MT_CANNOT_CHANGE_EXISTING_VILLAGE', 'Can not change map tile type for village that exists!');
+tz_def('ADM_MT_CANNOT_CHANGE_SAME_TYPE', 'Can not change to the same field type!');
+tz_def('ADM_SAVED_EXCLAIM', 'Saved!');
+tz_def('ADM_MT_TYPE_LABEL', 'type');
+tz_def('ADM_MT_OWNER_LABEL', 'owner');
+tz_def('ADM_MT_BONUS_LABEL', 'bonus');
+tz_def('ADM_TICKS_PER_INVOCATION', 'ticks per invocation');
+tz_def('ADM_D_SUFFIX', 'd');
+tz_def('ADM_CRON_JOB_RUNNING', 'Cron job');
+tz_def('ADM_CRON_FALLBACK_PAGELOADS', 'Page loads (fallback)');
+tz_def('ADM_CRON_SINGLE_TICK', 'Single tick');
+tz_def('ADM_CLEANUP_REPORTS', 'reports');
+tz_def('ADM_CLEANUP_CHAT', 'chat');
+tz_def('ADM_CLEANUP_DELETED_MESSAGES', 'deleted messages');
+tz_def('ADM_CLEANUP_OFF', 'off');
+tz_def('ADM_CLEANUP_NOT_RUN_YET', 'Not run yet');
+tz_def('ADM_LIMIT_MAILBOX_DISABLED', 'Limit mailbox disabled');
+tz_def('ADM_NO_ADMIN_NAME_DEFINED', 'No admin name defined!');
+tz_def('ADM_NO_ADMIN_EMAIL_DEFINED', 'No admin email defined!');
+tz_def('ADM_NONE', 'None');
+
+// Admin: editServerSet.tpl (added by AR localization pass)
+tz_def('ADM_SERVER_GRAPHIC_PACK_SELECT', 'Server graphic pack');
+tz_def('ADM_SERVER_GRAPHIC_PACK_SELECT_TIP', "The graphic pack every player sees by default. Packs are read from the gpack/ folder &mdash; a folder counts as a pack when it contains novaterra.css. Changing this switches the whole server's look.");
+
+// Admin: map.tpl marker tooltip (added by AR localization pass)
+tz_def('ADM_MAP_TIP_PLAYER', 'Player');
+tz_def('ADM_MAP_TIP_VILLAGE', 'Village');
+tz_def('ADM_MAP_TIP_COORD', 'Coord');
+tz_def('ADM_MAP_TIP_POP', 'Pop');
+tz_def('ADM_MAP_TIP_TRIBE', 'Tribe');
+tz_def('ADM_MAP_TIP_ARTIFACT', 'Artifact');
+tz_def('ADM_MAP_TIP_PROFILE', 'Profile');
+
+// Admin: chat.tpl moderation dashboard (added by AR localization pass)
+tz_def('ADM_CHATMOD_NOTE', 'This panel lists the recent alliance chat violations detected by the automatic moderation layer. Repeated matches trigger a ban using the existing ban enforcement system.');
+tz_def('ADM_CHATMOD_NO_VIOLATIONS', 'No chat violations have been recorded yet.');
+tz_def('ADM_CHATMOD_TIME', 'Time');
+tz_def('ADM_CHATMOD_USER', 'User');
+tz_def('ADM_CHATMOD_ALLIANCE', 'Alliance');
+tz_def('ADM_CHATMOD_SCORE', 'Score');
+tz_def('ADM_CHATMOD_ACTION', 'Action');
+tz_def('ADM_CHATMOD_MESSAGE', 'Message');
+tz_def('ADM_CHATMOD_UNKNOWN', 'unknown');
+tz_def('ADM_CHATMOD_BLOCKED', 'blocked');
+
+// Admin: missing language key used by several Admin/GameEngine/Admin/Mods/*.php
+// guard clauses (die(ACCESS_DENIED_ADMIN)); was referenced but never defined,
+// which is a fatal "Undefined constant" error on PHP 8. Added by AR localization pass.
+tz_def('ACCESS_DENIED_ADMIN', 'Access Denied: You are not Admin!');
+
+// Admin: home.tpl dashboard (added by AR localization pass)
+tz_def('ADM_ACCESS_DENIED_BANG', 'Access Denied!');
+tz_def('ADM_HOME_UNKNOWN', 'Unknown');
+tz_def('ADM_HOME_LAUNCHED', 'Launched');
+tz_def('ADM_HOME_NOT_LAUNCHED', 'Not launched');
+tz_def('ADM_HOME_VILLAGES_WORD', 'villages');
+tz_def('ADM_HOME_ROLE_ADMINISTRATOR', 'Administrator');
+tz_def('ADM_HOME_ROLE_MULTIHUNTER', 'MultiHunter');
+tz_def('ADM_HOME_WELCOME_TO', 'Welcome to the');
+tz_def('ADM_HOME_DASHBOARD', 'control panel');
+tz_def('ADM_HOME_SERVER_TIME', 'Server Time');
+tz_def('ADM_HOME_ACTIVE_24H', 'active 24h');
+tz_def('ADM_HOME_WITH_PLUS_ACTIVE', 'with Plus active');
+tz_def('ADM_HOME_PHP_MYSQL', 'PHP / MySQL');
+tz_def('ADM_HOME_UPTIME', 'Uptime');
+tz_def('ADM_HOME_NA', 'n/a');
+tz_def('ADM_HOME_DAYS_WORD', 'days');
+
+// ============================================================================
+// ADMIN PANEL - SECOND PASS (pushprot / inbox / map_tile / inactive / debug_log)
+// ============================================================================
+tz_def('ADM_PP_WINDOW_LABEL', 'Window: last');
+tz_def('ADM_PP_DAYS_WORD', 'days');
+tz_def('ADM_PP_LIMIT_EQ', 'limit =');
+tz_def('ADM_PP_HOURLY_PROD', 'hourly production');
+tz_def('ADM_PP_PLAYER_SHOWN', 'player(s) shown');
+tz_def('ADM_PP_FROM', 'from');
+tz_def('ADM_UNLIMITED', 'unlimited');
+tz_def('ADM_PP_STATUS_OVER', 'Over');
+tz_def('ADM_PP_STATUS_NEAR', 'Near');
+tz_def('ADM_PP_STATUS_OK', 'OK');
+tz_def('ADM_EXEMPT', 'Exempt');
+tz_def('ADM_SENDER', 'Sender');
+tz_def('ADM_NO_MESSAGES_AVAILABLE', 'There are no messages available.');
+tz_def('ADM_MT_NEW_TILE_TYPE', 'New Map Tile Type');
+tz_def('ADM_MT_OASIS_WORD', 'Oasis');
+tz_def('ADM_MT_VALLEY_WORD', 'Valley');
+tz_def('ADM_MT_ERR_VILLAGE_EXISTS', 'Can not change map tile type for village that exists!');
+tz_def('ADM_MT_ERR_SAME_TYPE', 'Can not change to the same field type!');
+tz_def('ADM_MT_SAVED', 'Saved!');
+tz_def('ADM_MT_ABANDONED_VALLEY', 'Abandoned Valley');
+tz_def('ADM_MT_UNOCCUPIED_OASIS', 'Unoccupied Oasis');
+tz_def('ADM_MT_OCCUPIED_OASIS', 'Occupied Oasis');
+tz_def('ADM_DETAIL', 'Detail');
+tz_def('ADM_ACCESS_DENIED_NOT_ADMIN', 'Access Denied: You are not Admin!');
+tz_def('ADM_INACTIVE_1_3_DAYS', '1-3 days');
+tz_def('ADM_INACTIVE_3_7_DAYS', '3-7 days');
+tz_def('ADM_INACTIVE_7_PLUS_DAYS', '7+ days');
+tz_def('ADM_INACTIVE_NO_USERS_RANGE', 'No users in this range');
+tz_def('ADM_DAY_ABBR', 'd');
+tz_def('ADM_HOUR_ABBR', 'h');
+tz_def('ADM_AGO', 'ago');
+tz_def('ADM_VILLAGE_ABBR', 'vil');
+tz_def('ADM_DELETE_QUESTION', 'Delete?');
+tz_def('ADM_CAPTURE_ON', 'CAPTURE ON');
+tz_def('ADM_CAPTURE_OFF', 'CAPTURE OFF');
+tz_def('ADM_OFF', 'OFF');
+tz_def('ADM_SINCE', 'since');
+tz_def('ADM_NEVER', 'never');
+tz_def('ADM_TURN_CAPTURE_ON', 'Turn capture ON');
+tz_def('ADM_TURN_CAPTURE_OFF', 'Turn capture OFF');
+tz_def('ADM_LAST', 'Last');
+tz_def('ADM_LINES', 'lines');
+tz_def('ADM_CLEAR_LOG_CONFIRM', 'Clear the debug log file?');
+tz_def('ADM_LOG_IS_EMPTY', 'log is empty');
+
+// Admin: editHero.tpl (added by AR localization pass)
+tz_def('ADM_POINTS_USED', 'Points used:');
+tz_def('ADM_HERO_MAX_LEVEL_WARN', '⚠ Hero is at the maximum level (%s) — no more points can be added.');
+tz_def('ADM_PLEASE_FILL_HERO_NAME', 'Please fill hero name');
+
+// Admin: alliance.tpl (added by AR localization pass)
+tz_def('ADM_PERM_ASSIGN', 'Assign');
+tz_def('ADM_PERM_KICK', 'Kick');
+tz_def('ADM_PERM_EDIT_DESC', 'Edit Desc');
+tz_def('ADM_PERM_INVITE', 'Invite');
+tz_def('ADM_PERM_FORUM', 'Forum');
+tz_def('ADM_PERM_DIPLOMACY', 'Diplomacy');
+tz_def('ADM_PERM_MM', 'Market Management');
+tz_def('ADM_CONFIRM_DELETE_ALLIANCE', 'Delete alliance?');
+tz_def('ADM_ONLINE_LT1DAY', '<1 day');
+tz_def('ADM_ONLINE_LT3DAYS', '<3 days');
+tz_def('ADM_ONLINE_LT7DAYS', '<7 days');
+tz_def('ADM_OFFLINE', 'Offline');
+tz_def('ADM_DIPLOMACY_CONFEDERATION', 'Confederation');
+tz_def('ADM_DIPLOMACY_NAP', 'NAP');
+tz_def('ADM_DIPLOMACY_WAR', 'War');
+tz_def('ADM_ALLIANCE_NOT_FOUND', 'Alliance not found...');
+
+// Admin: online.tpl (added by AR localization pass)
+tz_def('ADM_ROLE_LEVEL', 'Level %s');
+tz_def('ADM_LAST_ACTION', 'Last action:');
+tz_def('ADM_JUST_NOW', 'just now');
+tz_def('ADM_MIN_AGO', 'min ago');
+tz_def('ADM_NOW_SUFFIX', 'now');
+
+// Admin: addUsers.tpl (added by AR localization pass)
+tz_def('ADM_ERR_BASENAME_SHORT', 'Base Name too short (minimum 4 characters)');
+tz_def('ADM_ERR_BASENAME_LONG', 'Base Name too long (maximum 20 characters)');
+tz_def('ADM_ERR_MIN_1_ACCOUNT', 'Minimum 1 account');
+tz_def('ADM_ERR_MAX_200_ACCOUNTS', 'Maximum 200 accounts');
+tz_def('ADM_ERR_MIN_1_VILLAGE', 'Minimum 1 village');
+tz_def('ADM_ERR_MAX_200_VILLAGES', 'Maximum 200 villages');
+tz_def('ADM_ERR_UNKNOWN', 'Unknown error');
+tz_def('ADM_SUCCESS_CREATED_ACCOUNTS', 'Created <b>%s</b> accounts with base <b>%s</b>');
+tz_def('ADM_SUCCESS_CREATED_ACCOUNT_VILLAGES', 'Created account <b>%s</b> with <b>%s</b> villages');
+tz_def('ADM_TRIBE_LABEL_COLON', 'Tribe:');
+tz_def('ADM_SKIPPED_EXISTING_NAMES', '%s existing names - skipped');
+
+// Admin: users.tpl (added by AR localization pass)
+tz_def('ADM_BADGE_MH', 'MH');
+tz_def('ADM_FOUND_SUFFIX', 'found');
+
+// Admin: report.tpl (added by AR localization pass)
+tz_def('ADM_REPORT_ID_NOT_EXIST', 'Report ID %s doesn\'t exist!');
+tz_def('ADM_PLAYERS_REPORTS_H', '📜 Players Reports (%s)');
+tz_def('ADM_DEFENCES', 'Defences');
+tz_def('ADM_SCOUTS', 'Scouts');
+tz_def('ADM_TRADES', 'Trades');
+tz_def('ADM_REPORT_TYPE_TRADE', 'trade');
+tz_def('ADM_REPORT_TYPE_SETTLEMENT', 'settlement');
+tz_def('ADM_REPORT_TYPE_ARTEFACT', 'artefact');
+tz_def('ADM_REPORT_TYPE_ADVENTURE', 'adventure');
+tz_def('ADM_REPORT_TYPE_SPY', 'spy');
+
+// Admin: server_info.tpl (added by AR localization pass)
+tz_def('ADM_NO_TROOPS', 'No troops');
+tz_def('ADM_HEROES', 'Heroes');
+tz_def('ADM_HERO_UNIT_LABEL', 'Hero');
+tz_def('ADM_UPTIME_DAYS', '%s days');
+
+// Admin: village.tpl (added by AR localization pass)
+tz_def('ADM_RESOURCES_HEADER', 'Resources');
+tz_def('ADM_NO_OASES', 'No oases');
+
+// Admin: login.tpl / home.tpl (added by AR localization pass)
+tz_def('ADM_COPYRIGHT_FOOTER', '© 2010-2026 Novaterra Project • v5.0');
+tz_def('ADM_REBUILT_BY_SHADOW', '⚡ ADMIN PANEL 100% REBUILT BY Shadow');
+tz_def('ADM_DASHBOARD_CREDITS', 'Dashboard v5.0 • Novaterra 2025 • Full code, design & optimization');
+tz_def('ADM_BASED_ON_CREDITS', 'Based on: Akakori & Elmar | Fixed by: Dzoki | Reworked by: aggenkeech');
+tz_def('ADM_LOGIN_FAILED', 'Login failed');
+tz_def('ADM_INVALID_CREDENTIALS', 'Invalid username or password');
+
+// Admin: home.tpl (added by AR localization pass)
+tz_def('ADM_UNKNOWN', 'Unknown');
+tz_def('ADM_LAUNCHED_VILLAGES', 'Launched (%s villages)');
+tz_def('ADM_LAUNCHED_COUNT_DATE', 'Launched (%s) - %s');
+tz_def('ADM_NOT_LAUNCHED', 'Not launched');
+tz_def('ADM_ADMINISTRATOR_ROLE', 'Administrator');
+tz_def('ADM_MULTIHUNTER_ROLE', 'MultiHunter');
+tz_def('ADM_WELCOME_TO', 'Welcome to');
+tz_def('ADM_CONTROL_PANEL', 'Control Panel');
+tz_def('ADM_SERVER_TIME', 'Server Time');
+tz_def('ADM_ACTIVE_24H_SUFFIX', '+ %s active 24h');
+tz_def('ADM_AVG_PER_PLAYER_SUFFIX', 'avg %s / player');
+tz_def('ADM_WITH_PLUS_ACTIVE_SUFFIX', '%s with Plus active');
+tz_def('ADM_ID_HASH', 'ID #%s');
+tz_def('ADM_UPTIME_LABEL', 'Uptime: %s');
+
+// Admin: chat.tpl (added by AR localization pass)
+tz_def('ADM_ACCESS_DENIED_DOT', 'Access denied.');
+tz_def('ADM_CHAT_MODERATION', 'Chat Moderation');
+tz_def('ADM_CHAT_MODERATION_NOTE', 'This panel lists the recent alliance chat violations detected by the automatic moderation layer. Repeated matches trigger a ban using the existing ban enforcement system.');
+tz_def('ADM_NO_CHAT_VIOLATIONS', 'No chat violations have been recorded yet.');
+tz_def('ADM_USER', 'User');
+tz_def('ADM_ALLIANCE', 'Alliance');
+tz_def('ADM_SCORE', 'Score');
+tz_def('ADM_ACTION', 'Action');
+tz_def('ADM_UNKNOWN_LC', 'unknown');
+tz_def('ADM_BLOCKED', 'blocked');
+
+// Admin: admin_log.tpl (added by AR localization pass)
+tz_def('ADM_ADMIN_CONTROL_PANEL_TITLE', 'Admin Control Panel');
+tz_def('ADM_MULTIHUNTER_CONTROL_PANEL_TITLE', 'Multihunter Control Panel');
+tz_def('ADM_SYSTEM', 'SYSTEM');
+tz_def('ADM_LOG_BANNED_USER', 'Banned user <a href=\'admin.php?p=player&uid=%d\'>%s</a> (Reason: %s)');
+tz_def('ADM_LOG_UNBANNED_USER', 'Unbanned user <a href=\'admin.php?p=player&uid=%d\'>%s</a>');
+tz_def('ADM_CAT_ALL', 'All');
+tz_def('ADM_CAT_BAN', '🔨 Ban');
+tz_def('ADM_CAT_UNBAN', '🔓 Unban');
+tz_def('ADM_CAT_GOLD', '💰 Gold');
+tz_def('ADM_CAT_PLUS', '⭐ Plus');
+tz_def('ADM_CAT_BONUS', '📈 Bonus');
+tz_def('ADM_CAT_VILLAGE', '🏘 Village');
+tz_def('ADM_CAT_MESSAGE', '✉ Message');
+tz_def('ADM_CAT_RESET', '⚙ Reset');
+tz_def('ADM_CAT_OTHER', '📝 Other');
+
+// playerinfo.tpl
+tz_def('ADM_NOT_AVAILABLE', 'Not Available');
+tz_def('ADM_EDIT_USER_LINK', '» Edit User');
+tz_def('ADM_DELETE_USER_LINK', '» Delete User');
+
+// playerinfo.tpl - tribes
+tz_def('ADM_NATURE', 'Nature');
+tz_def('ADM_NATARS_TRIBE', 'Natars');
+tz_def('ADM_HUNS', 'Huns');
+tz_def('ADM_EGYPTIANS', 'Egyptians');
+tz_def('ADM_SPARTANS', 'Spartans');
+tz_def('ADM_VIKINGS', 'Vikings');
+tz_def('ADM_UNKNOWN_2', 'Unknown');
+
+// playerinfo.tpl - quest short names
+tz_def('ADM_QNAME_1', 'Woodcutter');
+tz_def('ADM_QNAME_2', 'Crop');
+tz_def('ADM_QNAME_3', 'Your Villages Name');
+tz_def('ADM_QNAME_4', 'Other Players');
+tz_def('ADM_QNAME_5', 'Two Building Order');
+tz_def('ADM_QNAME_6', 'Messages');
+tz_def('ADM_QNAME_7', 'Huge Army!');
+tz_def('ADM_QNAME_8', 'Everything to 1!');
+tz_def('ADM_QNAME_9', 'Dove of Peace');
+tz_def('ADM_QNAME_10', 'Cranny');
+tz_def('ADM_QNAME_11', 'To Two!');
+tz_def('ADM_QNAME_12', 'Instruction');
+tz_def('ADM_QNAME_13', 'Main Building');
+tz_def('ADM_QNAME_14', 'Advanced!');
+tz_def('ADM_QNAME_15', 'Weapons or Dough');
+tz_def('ADM_QNAME_16', 'Military: Rally Point');
+tz_def('ADM_QNAME_17', 'Military: Barracks');
+tz_def('ADM_QNAME_18', 'Military: Train 2 Troops');
+tz_def('ADM_QNAME_19', 'Economy: Granary');
+tz_def('ADM_QNAME_20', 'Economy: Warehouse');
+tz_def('ADM_QNAME_21', 'Economy: Marketplace');
+tz_def('ADM_QNAME_22', 'Everything to 2!');
+tz_def('ADM_QNAME_28', 'Alliance : Join to one');
+tz_def('ADM_QNAME_29', 'Main Building to 5');
+tz_def('ADM_QNAME_30', 'Granary to Level 3');
+tz_def('ADM_QNAME_31', 'Warehouse to Level 7');
+tz_def('ADM_QNAME_32', 'Everything to 5!');
+tz_def('ADM_QNAME_33', 'Palace or Residence');
+tz_def('ADM_QNAME_34', '3 settlers');
+tz_def('ADM_QNAME_35', 'New Village');
+tz_def('ADM_QNAME_36', 'Build a Wall/Palisade');
+tz_def('ADM_QNAME_FINISH', 'Finish');
+
+// results_*.tpl
+tz_def('ADM_NO_RESULTS_GENERIC', 'No results');

@@ -70,15 +70,15 @@
                         <th><?php echo ADM_TRIBE; ?></th>
                         <td>
                             <?php
-                                if($user['tribe'] == 1) { echo '<span class="badge-tribe">Roman</span>'; }
-                                else if($user['tribe'] == 2) { echo '<span class="badge-tribe">Teutons</span>'; }
-                                else if($user['tribe'] == 3) { echo '<span class="badge-tribe">Gauls</span>'; }
-                                else if($user['tribe'] == 4) { echo '<span class="badge-tribe">Nature</span>'; }
-                                else if($user['tribe'] == 5) { echo '<span class="badge-tribe">Natars</span>'; }
-                                else if($user['tribe'] == 6) { echo '<span class="badge-tribe">Huns</span>'; }
-                                else if($user['tribe'] == 7) { echo '<span class="badge-tribe">Egyptians</span>'; }
-                                else if($user['tribe'] == 8) { echo '<span class="badge-tribe">Spartans</span>'; }
-                                else if($user['tribe'] == 9) { echo '<span class="badge-tribe">Vikings</span>'; }
+                                if($user['tribe'] == 1) { echo '<span class="badge-tribe">'.ADM_ROMANS.'</span>'; }
+                                else if($user['tribe'] == 2) { echo '<span class="badge-tribe">'.ADM_TEUTONS.'</span>'; }
+                                else if($user['tribe'] == 3) { echo '<span class="badge-tribe">'.ADM_GAULS.'</span>'; }
+                                else if($user['tribe'] == 4) { echo '<span class="badge-tribe">'.ADM_NATURE.'</span>'; }
+                                else if($user['tribe'] == 5) { echo '<span class="badge-tribe">'.ADM_NATARS_TRIBE.'</span>'; }
+                                else if($user['tribe'] == 6) { echo '<span class="badge-tribe">'.ADM_HUNS.'</span>'; }
+                                else if($user['tribe'] == 7) { echo '<span class="badge-tribe">'.ADM_EGYPTIANS.'</span>'; }
+                                else if($user['tribe'] == 8) { echo '<span class="badge-tribe">'.ADM_SPARTANS.'</span>'; }
+                                else if($user['tribe'] == 9) { echo '<span class="badge-tribe">'.ADM_VIKINGS.'</span>'; }
                           ?>
                         </td>
                     </tr>
@@ -114,7 +114,7 @@
                                     $age = date("Y")-substr($user['birthday'],0,4);
                                     echo $age;
                                 } else {
-                                    echo "<span style='color:#dc2626'>Not Available</span>";
+                                    echo "<span style='color:#dc2626'>".ADM_NOT_AVAILABLE."</span>";
                                 }
                           ?>
                         </td>
@@ -124,10 +124,10 @@
                         <td>
                             <?php
                                 if(isset($user['gender']) && $user['gender']!= 0) {
-                                    $gender = ($user['gender']== 1)? "Male" : "Female";
+                                    $gender = ($user['gender']== 1)? MALE : FEMALE;
                                     echo $gender;
                                 } else {
-                                    echo "<span style='color:#dc2626'>Not Available</span>";
+                                    echo "<span style='color:#dc2626'>".ADM_NOT_AVAILABLE."</span>";
                                 }
                           ?>
                         </td>
@@ -158,7 +158,7 @@
 						$lastIp = htmlspecialchars($ipRow['ip']);
 					echo '<a href="https://ipinfo.io/'.$lastIp.'" target="_blank" style="font-family:monospace;color:#2563eb;font-weight:600;">'.$lastIp.'</a>';
 						} else {
-					echo '<span style="color:#dc2626">Not Available</span>';
+					echo '<span style="color:#dc2626">'.ADM_NOT_AVAILABLE.'</span>';
 						}
 						?>
 					</td>
@@ -169,12 +169,12 @@
 					<?php
 					// map language
 					$langMap = [
-					'en' => 'English',
-					'ro' => 'Romanian',
-					'zh' => 'Chinese',
-					'fr' => 'French',
-					'it' => 'Italian',
-					'ar' => 'Arabic',
+					'en' => ADM_LANG_ENGLISH,
+					'ro' => ADM_LANG_ROMANIAN,
+					'zh' => ADM_LANG_CHINESE,
+					'fr' => ADM_LANG_FRENCH,
+					'it' => ADM_LANG_ITALIAN,
+					'ar' => ADM_LANG_ARABIC,
 					];
 					$userLang = $user['lang'] ?? 'en';
 						echo htmlspecialchars($langMap[$userLang] ?? strtoupper($userLang));
@@ -194,39 +194,39 @@
                         <td>
                             <?php
                                 $quest = $user['quest'];
-                                if($quest == 1) { $questname = "Woodcutter"; }
-                                elseif($quest ==2) {$questname = "Crop"; }
-                                elseif($quest ==3) {$questname = "Your Villages Name"; }
-                                elseif($quest ==4) {$questname = "Other Players"; }
-                                elseif($quest ==5) {$questname = "Two Building Order"; }
-                                elseif($quest ==6) {$questname = "Messages"; }
-                                elseif($quest ==7) {$questname = "Huge Army!"; }
-                                elseif($quest ==8) {$questname = "Everything to 1!"; }
-                                elseif($quest ==9) {$questname = "Dove of Peace"; }
-                                elseif($quest ==10) {$questname = "Cranny"; }
-                                elseif($quest ==11) {$questname = "To Two!"; }
-                                elseif($quest ==12) {$questname = "Instruction"; }
-                                elseif($quest ==13) {$questname = "Main Building"; }
-                                elseif($quest ==14) {$questname = "Advanced!" ;}
-                                elseif($quest ==15) {$questname = "Weapons or Dough"; }
-                                elseif($quest ==16) {$questname = "Military: Rally Point"; }
-                                elseif($quest ==17) {$questname = "Military: Barracks"; }
-                                elseif($quest ==18) {$questname = "Military: Train 2 Troops"; }
-                                elseif($quest ==19) {$questname = "Economy: Granary"; }
-                                elseif($quest ==20) {$questname = "Economy: Warehouse"; }
-                                elseif($quest ==21) {$questname = "Economy: Marketplace"; }
-                                elseif($quest ==22) {$questname = "Everything to 2!"; }
-                                elseif($quest ==28) {$questname = "Alliance : Join to one"; }
-                                elseif($quest ==29) {$questname = "Main Building to 5"; }
-                                elseif($quest ==30) {$questname = "Granary to Level 3"; }
-                                elseif($quest ==31) {$questname = "Warehouse to Level 7"; }
-                                elseif($quest ==32) {$questname = "Everything to 5!"; }
-                                elseif($quest ==33) {$questname = "Palace or Residence"; }
-                                elseif($quest ==34) {$questname = "3 settlers"; }
-                                elseif($quest ==35) {$questname = "New Village"; }
-                                elseif($quest ==36) {$questname = "Build a Wall/Palisade"; }
-                                elseif($quest >=37) {$questname = "Finish"; }
-                                else { $questname = "Unknown"; }
+                                if($quest == 1) { $questname = ADM_QNAME_1; }
+                                elseif($quest ==2) {$questname = ADM_QNAME_2; }
+                                elseif($quest ==3) {$questname = ADM_QNAME_3; }
+                                elseif($quest ==4) {$questname = ADM_QNAME_4; }
+                                elseif($quest ==5) {$questname = ADM_QNAME_5; }
+                                elseif($quest ==6) {$questname = ADM_QNAME_6; }
+                                elseif($quest ==7) {$questname = ADM_QNAME_7; }
+                                elseif($quest ==8) {$questname = ADM_QNAME_8; }
+                                elseif($quest ==9) {$questname = ADM_QNAME_9; }
+                                elseif($quest ==10) {$questname = ADM_QNAME_10; }
+                                elseif($quest ==11) {$questname = ADM_QNAME_11; }
+                                elseif($quest ==12) {$questname = ADM_QNAME_12; }
+                                elseif($quest ==13) {$questname = ADM_QNAME_13; }
+                                elseif($quest ==14) {$questname = ADM_QNAME_14 ;}
+                                elseif($quest ==15) {$questname = ADM_QNAME_15; }
+                                elseif($quest ==16) {$questname = ADM_QNAME_16; }
+                                elseif($quest ==17) {$questname = ADM_QNAME_17; }
+                                elseif($quest ==18) {$questname = ADM_QNAME_18; }
+                                elseif($quest ==19) {$questname = ADM_QNAME_19; }
+                                elseif($quest ==20) {$questname = ADM_QNAME_20; }
+                                elseif($quest ==21) {$questname = ADM_QNAME_21; }
+                                elseif($quest ==22) {$questname = ADM_QNAME_22; }
+                                elseif($quest ==28) {$questname = ADM_QNAME_28; }
+                                elseif($quest ==29) {$questname = ADM_QNAME_29; }
+                                elseif($quest ==30) {$questname = ADM_QNAME_30; }
+                                elseif($quest ==31) {$questname = ADM_QNAME_31; }
+                                elseif($quest ==32) {$questname = ADM_QNAME_32; }
+                                elseif($quest ==33) {$questname = ADM_QNAME_33; }
+                                elseif($quest ==34) {$questname = ADM_QNAME_34; }
+                                elseif($quest ==35) {$questname = ADM_QNAME_35; }
+                                elseif($quest ==36) {$questname = ADM_QNAME_36; }
+                                elseif($quest >=37) {$questname = ADM_QNAME_FINISH; }
+                                else { $questname = ADM_UNKNOWN_2; }
                                 echo $quest." - ".$questname;
                           ?>
                         </td>
@@ -237,10 +237,10 @@
 
                     <?php
                         if($_SESSION['access'] == ADMIN) {
-                            echo '<tr><td colspan="2"><a href="?p=editUser&uid='.$user['id'].'">&raquo; Edit User</a></td></tr>';
+                            echo '<tr><td colspan="2"><a href="?p=editUser&uid='.$user['id'].'">'.ADM_EDIT_USER_LINK.'</a></td></tr>';
                         }
                         if($_SESSION['access'] == ADMIN) {
-                            echo '<tr><td colspan="2"><a class="rn3" href="?p=deletion&uid='.$user['id'].'">&raquo; Delete User</a></td></tr>';
+                            echo '<tr><td colspan="2"><a class="rn3" href="?p=deletion&uid='.$user['id'].'">'.ADM_DELETE_USER_LINK.'</a></td></tr>';
                         }
                   ?>
 

@@ -45,7 +45,7 @@ function upd_village_to_village($village_id, $new_village_type){
 }
 function upd_village_to_oasis($village_id, $new_oasis_type){
   mysqli_begin_transaction($GLOBALS['link']);
-  mysqli_query($GLOBALS['link'], 'INSERT INTO `'.TB_PREFIX.'odata` (`wref`, `type`, `conqured`, `wood`, `iron`, `clay`, `maxstore`, `crop`, `maxcrop`, `loyalty`, `owner`, `name`, `high`) VALUES ('.$village_id.', '.$new_oasis_type.', 0, 800, 800, 800, 800, 800, 800, 100, 2, "Unoccupied Oasis", '.rand(0, 2).')');
+  mysqli_query($GLOBALS['link'], 'INSERT INTO `'.TB_PREFIX.'odata` (`wref`, `type`, `conqured`, `wood`, `iron`, `clay`, `maxstore`, `crop`, `maxcrop`, `loyalty`, `owner`, `name`, `high`) VALUES ('.$village_id.', '.$new_oasis_type.', 0, 800, 800, 800, 800, 800, 800, 100, 2, ADM_UNOCCUPIED_OASIS, '.rand(0, 2).')');
   mysqli_query($GLOBALS['link'], 'UPDATE `'.TB_PREFIX.'wdata` SET `fieldtype` = 0, `oasistype` = '.$new_oasis_type.', `image` = "o'.$new_oasis_type.'" WHERE `id` = '.$village_id);
   mysqli_commit($GLOBALS['link']);
 }
@@ -59,7 +59,7 @@ function upd_oasis_to_village($village_id, $new_village_type){
 $msg = ''; $coord_x = 0; $coord_y = 0; $search_result = ''; $edit_form = '';
 
 function oasis_type_by_id($id){
-  $map=[1=>'+25% Lumber',2=>'+25% Lumber',3=>'+25% Lumber +25% Crop',4=>'+25% Clay',5=>'+25% Clay',6=>'+25% Clay +25% Crop',7=>'+25% Iron',8=>'+25% Iron',9=>'+25% Iron +25% Crop',10=>'+25% Crop',11=>'+25% Crop',12=>'+50% Crop'];
+  $map=[1=>'+25% '.LUMBER,2=>'+25% '.LUMBER,3=>'+25% '.LUMBER.' +25% '.CROP,4=>'+25% '.CLAY,5=>'+25% '.CLAY,6=>'+25% '.CLAY.' +25% '.CROP,7=>'+25% '.IRON,8=>'+25% '.IRON,9=>'+25% '.IRON.' +25% '.CROP,10=>'+25% '.CROP,11=>'+25% '.CROP,12=>'+50% '.CROP];
   return $map[$id]??'undefined';
 }
 function village_type_by_fieldtype_id($id){
@@ -69,15 +69,15 @@ function village_type_by_fieldtype_id($id){
 
 function gen_map_tiles_select_list_form($is_ocuppied,$is_oasis,$oasis_type,$fieldtype,$x,$y){
   $not_ocuppied =!$is_ocuppied;
-  $html = '<div class="tile-edit"><b>New Map Tile Type</b><form method="post" action="?p=map_tile&do_save">' . csrf_field() . '<select name="new_field_type" class="tile-select">';
+  $html = '<div class="tile-edit"><b>'.ADM_NEW_MAP_TILE_TYPE.'</b><form method="post" action="?p=map_tile&do_save">' . csrf_field() . '<select name="new_field_type" class="tile-select">';
   if($is_oasis){
-    for($i=1;$i<13;$i++){ $sel=($i==$oasis_type)?' selected':''; $html.='<option value="'.$i.'_0"'.$sel.'>['.$i.'] Oasis '.oasis_type_by_id($i).'</option>'; }
-    if($not_ocuppied){ for($i=1;$i<13;$i++){ $html.='<option value="'.$i.'_1">['.$i.'] Valley '.village_type_by_fieldtype_id($i).'</option>'; } }
+    for($i=1;$i<13;$i++){ $sel=($i==$oasis_type)?' selected':''; $html.='<option value="'.$i.'_0"'.$sel.'>['.$i.'] '.OASIS.' '.oasis_type_by_id($i).'</option>'; }
+    if($not_ocuppied){ for($i=1;$i<13;$i++){ $html.='<option value="'.$i.'_1">['.$i.'] '.ADM_VALLEY.' '.village_type_by_fieldtype_id($i).'</option>'; } }
   }else{
-    if($not_ocuppied){ for($i=1;$i<13;$i++){ $html.='<option value="'.$i.'_0">['.$i.'] Oasis '.oasis_type_by_id($i).'</option>'; } }
-    for($i=1;$i<13;$i++){ $sel=($i==$fieldtype)?' selected':''; $html.='<option value="'.$i.'_1"'.$sel.'>['.$i.'] Valley '.village_type_by_fieldtype_id($i).'</option>'; }
+    if($not_ocuppied){ for($i=1;$i<13;$i++){ $html.='<option value="'.$i.'_0">['.$i.'] '.OASIS.' '.oasis_type_by_id($i).'</option>'; } }
+    for($i=1;$i<13;$i++){ $sel=($i==$fieldtype)?' selected':''; $html.='<option value="'.$i.'_1"'.$sel.'>['.$i.'] '.ADM_VALLEY.' '.village_type_by_fieldtype_id($i).'</option>'; }
   }
-  $html.='</select><input type="hidden" name="x" value="'.$x.'"><input type="hidden" name="y" value="'.$y.'"><button type="submit" name="save" class="btn-save">Save</button></form></div>';
+  $html.='</select><input type="hidden" name="x" value="'.$x.'"><input type="hidden" name="y" value="'.$y.'"><button type="submit" name="save" class="btn-save"><?php echo SAVE; ?></button></form></div>';
   return $html;
 }
 
@@ -86,29 +86,29 @@ if(isset($_GET['do_save'])){
   $new_type=(int)$new[0]; $new_is=(int)$new[1];
   $coord_x=max(-WORLD_MAX,min(WORLD_MAX,(int)$_POST['x'])); $coord_y=max(-WORLD_MAX,min(WORLD_MAX,(int)$_POST['y']));
   $row=get_map_tile_info($coord_x,$coord_y); $is_village=($row['oasistype']==0);
-  if($is_village && $row['owner_id'] && $row['owner_id']!=2){ $msg='Can not change map tile type for village that exists!'; }
-  elseif(($is_village && $new_is==1 && $row['fieldtype']==$new_type) || (!$is_village && $new_is==0 && $row['oasistype']==$new_type)){ $msg='Can not change to the same field type!'; }
+  if($is_village && $row['owner_id'] && $row['owner_id']!=2){ $msg=ADM_MT_CANNOT_CHANGE_EXISTING_VILLAGE; }
+  elseif(($is_village && $new_is==1 && $row['fieldtype']==$new_type) || (!$is_village && $new_is==0 && $row['oasistype']==$new_type)){ $msg=ADM_MT_CANNOT_CHANGE_SAME_TYPE; }
   else{
     if($is_village && $new_is==0) upd_village_to_oasis($row['village_id'],$new_type);
     elseif(!$is_village && $new_is==1) upd_oasis_to_village($row['village_id'],$new_type);
     elseif(!$is_village && $new_is==0) upd_oasis_to_oasis($row['village_id'],$new_type);
     else upd_village_to_village($row['village_id'],$new_type);
   }
-  if($msg=='') $msg='Saved!';
+  if($msg=='') $msg=ADM_SAVED_EXCLAIM;
 }
 elseif(isset($_GET['do_get']) && isset($_POST['x'])){
   $coord_x=max(-WORLD_MAX,min(WORLD_MAX,(int)$_POST['x'])); $coord_y=max(-WORLD_MAX,min(WORLD_MAX,(int)$_POST['y']));
   $row=get_map_tile_info($coord_x,$coord_y); $is_village=($row['oasistype']==0);
   if($is_village){
-    $bonus='<b>type:</b> ['.$row['fieldtype'].'] '.village_type_by_fieldtype_id($row['fieldtype']);
-    if(!$row['owner_id'] || $row['owner_id']==2){ $place='Abandoned Valley'; $owner=''; $edit_form=gen_map_tiles_select_list_form(false,false,false,$row['fieldtype'],$coord_x,$coord_y); }
-    else{ $place='Village'; $owner='<b>owner:</b> <a href="?p=player&uid='.$row['owner_id'].'">'.$row['username'].' [id: '.$row['owner_id'].']</a>'; $edit_form=gen_map_tiles_select_list_form(true,false,false,$row['fieldtype'],$coord_x,$coord_y); }
+    $bonus='<b>'.ADM_MT_TYPE_LABEL.':</b> ['.$row['fieldtype'].'] '.village_type_by_fieldtype_id($row['fieldtype']);
+    if(!$row['owner_id'] || $row['owner_id']==2){ $place=ADM_ABANDONED_VALLEY; $owner=''; $edit_form=gen_map_tiles_select_list_form(false,false,false,$row['fieldtype'],$coord_x,$coord_y); }
+    else{ $place=VILLAGE; $owner='<b>'.ADM_MT_OWNER_LABEL.':</b> <a href="?p=player&uid='.$row['owner_id'].'">'.$row['username'].' [id: '.$row['owner_id'].']</a>'; $edit_form=gen_map_tiles_select_list_form(true,false,false,$row['fieldtype'],$coord_x,$coord_y); }
   }else{
-    $bonus='<b>bonus:</b> ['.$row['oasistype'].'] '.oasis_type_by_id($row['oasistype']);
-    if(!$row['owner_id'] || $row['owner_id']==2){ $place='Unoccupied Oasis'; $owner=''; $edit_form=gen_map_tiles_select_list_form(false,true,$row['oasistype'],false,$coord_x,$coord_y); }
-    else{ $place='Occupied Oasis'; $owner='<b>owner:</b> <a href="?p=player&uid='.$row['owner_id'].'">'.$row['username'].' [id: '.$row['owner_id'].']</a>'; $edit_form=gen_map_tiles_select_list_form(true,true,$row['oasistype'],false,$coord_x,$coord_y); }
+    $bonus='<b>'.ADM_MT_BONUS_LABEL.':</b> ['.$row['oasistype'].'] '.oasis_type_by_id($row['oasistype']);
+    if(!$row['owner_id'] || $row['owner_id']==2){ $place=ADM_UNOCCUPIED_OASIS; $owner=''; $edit_form=gen_map_tiles_select_list_form(false,true,$row['oasistype'],false,$coord_x,$coord_y); }
+    else{ $place=ADM_OCCUPIED_OASIS; $owner='<b>'.ADM_MT_OWNER_LABEL.':</b> <a href="?p=player&uid='.$row['owner_id'].'">'.$row['username'].' [id: '.$row['owner_id'].']</a>'; $edit_form=gen_map_tiles_select_list_form(true,true,$row['oasistype'],false,$coord_x,$coord_y); }
   }
-  $search_result='<div class="tile-card"><div class="tile-preview"><div class="map"><div id="map"><div id="map_content"><div class="'.$row['image'].'"></div></div></div></div></div><div class="tile-info"><div class="info-row"><span>X</span><b>'.$coord_x.'</b></div><div class="info-row"><span>Y</span><b>'.$coord_y.'</b></div><div class="info-row"><span>Type</span><b>'.$place.'</b></div><div class="info-row"><span>Detail</span><b>'.$bonus.'</b></div>'.($owner?'<div class="info-row"><span>Owner</span><b>'.$owner.'</b></div>':'').'</div></div>';
+  $search_result='<div class="tile-card"><div class="tile-preview"><div class="map"><div id="map"><div id="map_content"><div class="'.$row['image'].'"></div></div></div></div></div><div class="tile-info"><div class="info-row"><span>X</span><b>'.$coord_x.'</b></div><div class="info-row"><span>Y</span><b>'.$coord_y.'</b></div><div class="info-row"><span><?php echo ADM_TYPE; ?></span><b>'.$place.'</b></div><div class="info-row"><span><?php echo DETAIL; ?></span><b>'.$bonus.'</b></div>'.($owner?'<div class="info-row"><span><?php echo OWNER; ?></span><b>'.$owner.'</b></div>':'').'</div></div>';
 }
 ?>
 
@@ -172,7 +172,7 @@ elseif(isset($_GET['do_get']) && isset($_POST['x'])){
     </div>
   </form>
 
-  <?php if($msg){ $cls = ($msg=='Saved!')?'msg-ok':'msg-err'; echo '<div class="msg-box '.$cls.'">'.$msg.'</div>'; }?>
+  <?php if($msg){ $cls = ($msg==ADM_SAVED_EXCLAIM)?'msg-ok':'msg-err'; echo '<div class="msg-box '.$cls.'">'.$msg.'</div>'; }?>
 
   <?=$search_result?>
   <?=$edit_form?>

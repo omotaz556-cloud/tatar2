@@ -19,7 +19,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < ADMIN) die("Access Denied: You are not Admin!");
+if($_SESSION['access'] < ADMIN) die(ACCESS_DENIED_ADMIN);
 $id = $_SESSION['id'];
 $_SESSION['mass_subject'] = $_SESSION['mass_subject'] ?? '';
 $_SESSION['mass_color']   = $_SESSION['mass_color'] ?? 'black';

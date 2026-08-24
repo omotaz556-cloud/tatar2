@@ -18,7 +18,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < MULTIHUNTER) die("Access Denied!");
+if($_SESSION['access'] < MULTIHUNTER) die(ADM_ACCESS_DENIED_BANG);
 
 // ---- STATS ----
 $totalUsers = $database->query("SELECT COUNT(*) as c FROM ".TB_PREFIX."users WHERE id > 5")->fetch_assoc()['c'];
@@ -32,32 +32,32 @@ $lastReg = $database->query("SELECT username, id FROM ".TB_PREFIX."users WHERE i
 
 // ---- TIMELINE ----
 $startTime = $database->query("SELECT MIN(timestamp) as t FROM ".TB_PREFIX."users WHERE id>5")->fetch_assoc()['t'];
-$serverStart = $startTime ? date('d.m.Y H:i', $startTime) : 'Unknown';
+$serverStart = $startTime ? date('d.m.Y H:i', $startTime) : ADM_UNKNOWN;
 
 $natarsVillages = $database->query("SELECT COUNT(*) as c FROM ".TB_PREFIX."vdata WHERE owner=3")->fetch_assoc()['c'];
-$natarsStatus = $natarsVillages > 0 ? "Launched ($natarsVillages villages)" : "Not launched";
+$natarsStatus = $natarsVillages > 0 ? sprintf(ADM_LAUNCHED_VILLAGES, $natarsVillages) : ADM_NOT_LAUNCHED;
 
 $arteCount = 0; $arteDate = null;
 if($database->dblink->query("SHOW TABLES LIKE '".TB_PREFIX."artefacts'")->num_rows){
     $a = $database->query("SELECT COUNT(*) as c, MIN(conquered) as d FROM ".TB_PREFIX."artefacts")->fetch_assoc();
     $arteCount = $a['c']; $arteDate = $a['d'];
 }
-$arteStatus = $arteCount > 0 ? "Launched ($arteCount) - ".date('d.m.Y',$arteDate) : "Not launched";
+$arteStatus = $arteCount > 0 ? sprintf(ADM_LAUNCHED_COUNT_DATE, $arteCount, date('d.m.Y',$arteDate)) : ADM_NOT_LAUNCHED;
 
 $plans = 0; $plansDate = null;
 if($database->dblink->query("SHOW TABLES LIKE '".TB_PREFIX."artefacts'")->num_rows){
     $p = $database->query("SELECT COUNT(*) as c, MIN(conquered) as d FROM ".TB_PREFIX."artefacts WHERE type=11")->fetch_assoc();
     $plans = $p['c']; $plansDate = $p['d'];
 }
-$plansStatus = $plans > 0 ? "Launched ($plans) - ".($plansDate ? date('d.m.Y',$plansDate) : '') : "Not launched";
+$plansStatus = $plans > 0 ? sprintf(ADM_LAUNCHED_COUNT_DATE, $plans, ($plansDate ? date('d.m.Y',$plansDate) : '')) : ADM_NOT_LAUNCHED;
 
-$role = $_SESSION['access'] == ADMIN ? 'Administrator' : 'MultiHunter';
+$role = $_SESSION['access'] == ADMIN ? ADM_ADMINISTRATOR_ROLE : ADM_MULTIHUNTER_ROLE;
 ?>
 <style>
 /* === HOME.TPL — dark dashboard === */
 .dashboard { max-width:1150px; margin:0 auto; font-family:system-ui, Verdana, Arial, sans-serif; color:#e2e8f0; }
 .dash-head { text-align:center; margin-bottom:22px; }
-.dash-head h1 { font-size:24px !important; margin:0 !important; color:#f1f5f9 !important; font-weight:800 !important; letter-spacing:-0.3px; }
+.dash-head h1 { font-size:24px !important; margin:0 !important; color:#f1f5f9 !important; font-weight:800 !important; letter-spacing:-0.3px; text-transform:uppercase; }
 .dash-head .sub { color:#94a3b8 !important; font-size:13px !important; margin-top:6px !important; }
 .dash-head .sub b{color:#f59e0b !important;}
 
@@ -114,19 +114,19 @@ $role = $_SESSION['access'] == ADMIN ? 'Administrator' : 'MultiHunter';
 
 <div class="dashboard">
   <div class="dash-head">
-    <h1>WELCOME TO <?php echo strtoupper($role); ?> CONTROL PANEL</h1>
-    <div class="sub"><?php echo ADM_HELLO; ?><b><?php echo $_SESSION['admin_username']; ?></b> — <?php echo date('d.m.Y H:i'); ?> Server Time</div>
+    <h1><?php echo ADM_WELCOME_TO; ?> <?php echo $role; ?> <?php echo ADM_CONTROL_PANEL; ?></h1>
+    <div class="sub"><?php echo ADM_HELLO; ?><b><?php echo $_SESSION['admin_username']; ?></b> — <?php echo date('d.m.Y H:i'); ?> <?php echo ADM_SERVER_TIME; ?></div>
   </div>
   <!-- TOATE CARDURILE ORIGINALE -->
   <div class="cards">
-    <div class="card blue"><h3><?php echo ADM_TOTAL_PLAYERS; ?></h3><div class="val"><?php echo number_format($totalUsers); ?></div><div class="subv">+ <?php echo $active24h; ?> active 24h</div></div>
+    <div class="card blue"><h3><?php echo ADM_TOTAL_PLAYERS; ?></h3><div class="val"><?php echo number_format($totalUsers); ?></div><div class="subv"><?php echo sprintf(ADM_ACTIVE_24H_SUFFIX, $active24h); ?></div></div>
     <div class="card green"><h3><?php echo ADM_ONLINE_NOW; ?></h3><div class="val"><?php echo $onlineNow; ?></div><div class="subv"><?php echo ADM_LAST_5_MIN; ?></div></div>
-    <div class="card"><h3><?php echo ADM_VILLAGES; ?></h3><div class="val"><?php echo number_format($totalVillages); ?></div><div class="subv">avg <?php echo $totalUsers ? round($totalVillages/$totalUsers,1) : 0; ?> / player</div></div>
-    <div class="card orange"><h3><?php echo ADM_GOLD_IN_GAME; ?></h3><div class="val"><?php echo number_format($totalGold); ?></div><div class="subv"><?php echo $activePlus; ?> with Plus active</div></div>
+    <div class="card"><h3><?php echo ADM_VILLAGES; ?></h3><div class="val"><?php echo number_format($totalVillages); ?></div><div class="subv"><?php echo sprintf(ADM_AVG_PER_PLAYER_SUFFIX, $totalUsers ? round($totalVillages/$totalUsers,1) : 0); ?></div></div>
+    <div class="card orange"><h3><?php echo ADM_GOLD_IN_GAME; ?></h3><div class="val"><?php echo number_format($totalGold); ?></div><div class="subv"><?php echo sprintf(ADM_WITH_PLUS_ACTIVE_SUFFIX, $activePlus); ?></div></div>
     <div class="card red"><h3><?php echo ADM_ACTIVE_BANS; ?></h3><div class="val"><?php echo $activeBans; ?></div><div class="subv"><a href="admin.php?p=ban"><?php echo ADM_MANAGE; ?></a></div></div>
-    <div class="card"><h3><?php echo ADM_LAST_REGISTRATION; ?></h3><div class="val" style="font-size:15px !important"><a href="admin.php?p=player&uid=<?php echo $lastReg['id']; ?>" style="color:#2563eb !important"><?php echo htmlspecialchars($lastReg['username']); ?></a></div><div class="subv">ID #<?php echo $lastReg['id']; ?></div></div>
+    <div class="card"><h3><?php echo ADM_LAST_REGISTRATION; ?></h3><div class="val" style="font-size:15px !important"><a href="admin.php?p=player&uid=<?php echo $lastReg['id']; ?>" style="color:#2563eb !important"><?php echo htmlspecialchars($lastReg['username']); ?></a></div><div class="subv"><?php echo sprintf(ADM_ID_HASH, $lastReg['id']); ?></div></div>
     <div class="card"><h3>PHP / MySQL</h3><div class="val" style="font-size:15px !important"><?php echo PHP_VERSION; ?></div><div class="subv"><?php echo $database->dblink->server_info; ?></div></div>
-    <div class="card"><h3><?php echo ADM_SERVER_CLOCK; ?></h3><div class="val" style="font-size:15px !important"><?php echo date('H:i:s'); ?></div><div class="subv">Uptime: <?php echo @exec('uptime -p') ?: 'n/a'; ?></div></div>
+    <div class="card"><h3><?php echo ADM_SERVER_CLOCK; ?></h3><div class="val" style="font-size:15px !important"><?php echo date('H:i:s'); ?></div><div class="subv"><?php echo sprintf(ADM_UPTIME_LABEL, @exec('uptime -p') ?: ADM_HOME_NA); ?></div></div>
   </div>
   <!-- TIMELINE NOU - IN PLUS -->
   <div class="panel">
@@ -136,7 +136,7 @@ $role = $_SESSION['access'] == ADMIN ? 'Administrator' : 'MultiHunter';
       <div><b><?php echo ADM_NATARS_C; ?></b><br><?php echo $natarsStatus; ?></div>
       <div><b><?php echo ADM_ARTEFACTS_C; ?></b><br><?php echo $arteStatus; ?></div>
       <div><b><?php echo ADM_WW_PLANS_C; ?></b><br><?php echo $plansStatus; ?></div>
-      <div><b><?php echo ADM_SERVER_AGE; ?></b><br><?php echo $startTime ? floor((time()-$startTime)/86400).' days' : '-'; ?></div>
+      <div><b><?php echo ADM_SERVER_AGE; ?></b><br><?php echo $startTime ? sprintf(ADM_UPTIME_DAYS, floor((time()-$startTime)/86400)) : '-'; ?></div>
       <div><b><?php echo ADM_NEXT_EVENT; ?></b><br>—</div>
     </div>
   </div>
@@ -168,8 +168,8 @@ $role = $_SESSION['access'] == ADMIN ? 'Administrator' : 'MultiHunter';
   </div>
 
 	<div class="credits">
-		<div class="shadow-main">⚡ ADMIN PANEL 100% REBUILT BY Shadow</div>
-		<div class="shadow-sub">Dashboard v5.0 • Novaterra 2025 • Full code, design & optimization</div>
-		<div class="shadow-old">Based on: Akakori & Elmar | Fixed by: Dzoki | Reworked by: aggenkeech</div>
+		<div class="shadow-main"><?php echo ADM_REBUILT_BY_SHADOW; ?></div>
+		<div class="shadow-sub"><?php echo ADM_DASHBOARD_CREDITS; ?></div>
+		<div class="shadow-old"><?php echo ADM_BASED_ON_CREDITS; ?></div>
 	</div>
 </div>

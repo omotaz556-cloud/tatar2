@@ -4935,3 +4935,332 @@ tz_def('TZ_CB_LOG_UPSERT_FAILED', 'فشل التحديث: %s');
 tz_def('TZ_CB_LOG_PROCESSED', 'تمت معالجة %d / %d');
 tz_def('TZ_CB_LOG_ANALYZE_COMPLETE', 'اكتمل التحليل.');
 tz_def('TZ_CB_LOG_DONE', 'تم.');
+
+// Admin: T4 Hero panel (added by AR localization pass)
+tz_def('ADM_T4_NO_ITEMS', 'لا توجد عناصر.');
+tz_def('ADM_T4_CONFIRM_DELETE_ITEM', 'هل تريد حذف هذا العنصر نهائيًا؟');
+tz_def('ADM_T4_ROLE_SELLER', 'بائع');
+tz_def('ADM_T4_ROLE_TOP_BIDDER', 'أعلى مزايد');
+tz_def('ADM_T4_CONFIRM_CANCEL_AUCTION', 'هل تريد إلغاء هذا المزاد؟ سيُسترد المزايد ماله وتعود السلعة إلى البائع.');
+tz_def('ADM_T4_NO_AUCTION_INVOLVEMENT', 'لا توجد مزادات مفتوحة لهذا اللاعب.');
+tz_def('ADM_T4_DIFFICULTY_HARD', 'صعب');
+tz_def('ADM_T4_DIFFICULTY_NORMAL', 'عادي');
+tz_def('ADM_T4_ARRIVES', 'يصل في');
+tz_def('ADM_T4_NO_OFFERS_AVAILABLE', 'لا توجد عروض متاحة.');
+tz_def('ADM_T4_ORPHAN_ITEMID', 'عنصر يتيم رقم');
+
+// Admin: config.tpl hardcoded values (added by AR localization pass)
+tz_def('ADM_LANG_ENGLISH', 'الإنجليزية');
+tz_def('ADM_LANG_FRENCH', 'الفرنسية');
+tz_def('ADM_LANG_ITALIAN', 'الإيطالية');
+tz_def('ADM_LANG_ROMANIAN', 'الرومانية');
+tz_def('ADM_LANG_CHINESE', 'الصينية');
+tz_def('ADM_LANG_ARABIC', 'العربية');
+tz_def('ADM_DATE_LABEL', 'التاريخ: ');
+tz_def('ADM_TIME_LABEL', 'الوقت: ');
+tz_def('ADM_SPEED_FAST', 'سريع');
+tz_def('ADM_SPEED_SLOW', 'بطيء');
+tz_def('ADM_PEACE_NONE', 'بدون');
+tz_def('ADM_PEACE_NORMAL', 'عادي');
+tz_def('ADM_PEACE_CHRISTMAS', 'الكريسماس');
+tz_def('ADM_PEACE_NEW_YEAR', 'رأس السنة');
+tz_def('ADM_PEACE_EASTER', 'عيد الفصح');
+tz_def('ADM_REPORT_FROM_VILLAGE', 'من القرية');
+tz_def('ADM_REPORT_ON', 'في');
+tz_def('ADM_REPORT_RAM', 'كبش الهدم');
+tz_def('ADM_REPORT_CATAPULT', 'المنجنيق');
+tz_def('ADM_REPORT_CHIEF', 'الزعيم');
+tz_def('ADM_NEW_MAP_TILE_TYPE', 'نوع بلاطة خريطة جديد');
+tz_def('ADM_VALLEY', 'وادي');
+tz_def('ADM_ABANDONED_VALLEY', 'وادي مهجور');
+tz_def('ADM_UNOCCUPIED_OASIS', 'واحة غير مأهولة');
+tz_def('ADM_OCCUPIED_OASIS', 'واحة مأهولة');
+tz_def('ADM_MT_CANNOT_CHANGE_EXISTING_VILLAGE', 'لا يمكن تغيير نوع البلاطة لقرية موجودة بالفعل!');
+tz_def('ADM_MT_CANNOT_CHANGE_SAME_TYPE', 'لا يمكن التغيير لنفس نوع الحقل!');
+tz_def('ADM_SAVED_EXCLAIM', 'تم الحفظ!');
+tz_def('ADM_MT_TYPE_LABEL', 'النوع');
+tz_def('ADM_MT_OWNER_LABEL', 'المالك');
+tz_def('ADM_MT_BONUS_LABEL', 'المكافأة');
+tz_def('ADM_TICKS_PER_INVOCATION', 'تكة لكل استدعاء');
+tz_def('ADM_D_SUFFIX', 'ي');
+tz_def('ADM_CRON_JOB_RUNNING', 'مهمة Cron');
+tz_def('ADM_CRON_FALLBACK_PAGELOADS', 'تحميل الصفحات (بديل احتياطي)');
+tz_def('ADM_CRON_SINGLE_TICK', 'تكة واحدة');
+tz_def('ADM_CLEANUP_REPORTS', 'التقارير');
+tz_def('ADM_CLEANUP_CHAT', 'الدردشة');
+tz_def('ADM_CLEANUP_DELETED_MESSAGES', 'الرسائل المحذوفة');
+tz_def('ADM_CLEANUP_OFF', 'متوقف');
+tz_def('ADM_CLEANUP_NOT_RUN_YET', 'لم يتم تشغيلها بعد');
+tz_def('ADM_LIMIT_MAILBOX_DISABLED', 'تحديد صندوق الرسائل معطّل');
+tz_def('ADM_NO_ADMIN_NAME_DEFINED', 'لم يتم تحديد اسم الأدمن!');
+tz_def('ADM_NO_ADMIN_EMAIL_DEFINED', 'لم يتم تحديد بريد الأدمن!');
+tz_def('ADM_NONE', 'بدون');
+
+// Admin: editServerSet.tpl (added by AR localization pass)
+tz_def('ADM_SERVER_GRAPHIC_PACK_SELECT', 'باقة رسوميات السيرفر');
+tz_def('ADM_SERVER_GRAPHIC_PACK_SELECT_TIP', 'باقة الرسوميات التي يراها كل لاعب افتراضيًا. تُقرأ الباقات من مجلد gpack/ — يُعتبر المجلد باقة صالحة إذا احتوى على novaterra.css. تغيير هذا الخيار يغيّر شكل السيرفر بالكامل.');
+
+// Admin: map.tpl marker tooltip (added by AR localization pass)
+tz_def('ADM_MAP_TIP_PLAYER', 'اللاعب');
+tz_def('ADM_MAP_TIP_VILLAGE', 'القرية');
+tz_def('ADM_MAP_TIP_COORD', 'الإحداثيات');
+tz_def('ADM_MAP_TIP_POP', 'السكان');
+tz_def('ADM_MAP_TIP_TRIBE', 'القبيلة');
+tz_def('ADM_MAP_TIP_ARTIFACT', 'القطعة الأثرية');
+tz_def('ADM_MAP_TIP_PROFILE', 'الملف الشخصي');
+
+// Admin: chat.tpl moderation dashboard (added by AR localization pass)
+tz_def('ADM_CHATMOD_NOTE', 'تعرض هذه الصفحة أحدث مخالفات دردشة التحالفات التي رصدها نظام الإشراف التلقائي. المخالفات المتكررة تؤدي إلى حظر تلقائي باستخدام نظام الحظر الحالي.');
+tz_def('ADM_CHATMOD_NO_VIOLATIONS', 'لا توجد مخالفات دردشة مسجّلة حتى الآن.');
+tz_def('ADM_CHATMOD_TIME', 'الوقت');
+tz_def('ADM_CHATMOD_USER', 'المستخدم');
+tz_def('ADM_CHATMOD_ALLIANCE', 'التحالف');
+tz_def('ADM_CHATMOD_SCORE', 'النقاط');
+tz_def('ADM_CHATMOD_ACTION', 'الإجراء');
+tz_def('ADM_CHATMOD_MESSAGE', 'الرسالة');
+tz_def('ADM_CHATMOD_UNKNOWN', 'غير معروف');
+tz_def('ADM_CHATMOD_BLOCKED', 'محظور');
+
+// Admin: missing language key used by several Admin/GameEngine/Admin/Mods/*.php
+// guard clauses (die(ACCESS_DENIED_ADMIN)); was referenced but never defined,
+// which is a fatal "Undefined constant" error on PHP 8. Added by AR localization pass.
+tz_def('ACCESS_DENIED_ADMIN', 'الوصول مرفوض: أنت لست أدمن!');
+
+// Admin: home.tpl dashboard (added by AR localization pass)
+tz_def('ADM_ACCESS_DENIED_BANG', 'الوصول مرفوض!');
+tz_def('ADM_HOME_UNKNOWN', 'غير معروف');
+tz_def('ADM_HOME_LAUNCHED', 'تم الإطلاق');
+tz_def('ADM_HOME_NOT_LAUNCHED', 'لم يتم الإطلاق');
+tz_def('ADM_HOME_VILLAGES_WORD', 'قرية');
+tz_def('ADM_HOME_ROLE_ADMINISTRATOR', 'مدير عام');
+tz_def('ADM_HOME_ROLE_MULTIHUNTER', 'صياد الحسابات المتعددة');
+tz_def('ADM_HOME_WELCOME_TO', 'مرحبًا بك في');
+tz_def('ADM_HOME_DASHBOARD', 'لوحة التحكم');
+tz_def('ADM_HOME_SERVER_TIME', 'وقت السيرفر');
+tz_def('ADM_HOME_ACTIVE_24H', 'نشط خلال 24 ساعة');
+tz_def('ADM_HOME_WITH_PLUS_ACTIVE', 'لديهم Plus مفعّل');
+tz_def('ADM_HOME_PHP_MYSQL', 'PHP / MySQL');
+tz_def('ADM_HOME_UPTIME', 'مدة التشغيل');
+tz_def('ADM_HOME_NA', 'غير متاح');
+tz_def('ADM_HOME_DAYS_WORD', 'يوم');
+
+// ============================================================================
+// ADMIN PANEL - SECOND PASS (pushprot / inbox / map_tile / inactive / debug_log)
+// ============================================================================
+tz_def('ADM_PP_WINDOW_LABEL', 'النافذة: آخر');
+tz_def('ADM_PP_DAYS_WORD', 'يوم');
+tz_def('ADM_PP_LIMIT_EQ', 'الحد =');
+tz_def('ADM_PP_HOURLY_PROD', 'الإنتاج الساعي');
+tz_def('ADM_PP_PLAYER_SHOWN', 'لاعب معروض');
+tz_def('ADM_PP_FROM', 'من');
+tz_def('ADM_UNLIMITED', 'غير محدود');
+tz_def('ADM_PP_STATUS_OVER', 'تجاوز');
+tz_def('ADM_PP_STATUS_NEAR', 'قريب من الحد');
+tz_def('ADM_PP_STATUS_OK', 'طبيعي');
+tz_def('ADM_EXEMPT', 'معفى');
+tz_def('ADM_SENDER', 'المرسل');
+tz_def('ADM_NO_MESSAGES_AVAILABLE', 'لا توجد رسائل متاحة.');
+tz_def('ADM_MT_NEW_TILE_TYPE', 'نوع مربع الخريطة الجديد');
+tz_def('ADM_MT_OASIS_WORD', 'واحة');
+tz_def('ADM_MT_VALLEY_WORD', 'الوادي');
+tz_def('ADM_MT_ERR_VILLAGE_EXISTS', 'لا يمكن تغيير نوع المربع لقرية موجودة بالفعل!');
+tz_def('ADM_MT_ERR_SAME_TYPE', 'لا يمكن التغيير إلى نفس نوع الحقل!');
+tz_def('ADM_MT_SAVED', 'تم الحفظ!');
+tz_def('ADM_MT_ABANDONED_VALLEY', 'وادٍ مهجور');
+tz_def('ADM_MT_UNOCCUPIED_OASIS', 'واحة غير مأهولة');
+tz_def('ADM_MT_OCCUPIED_OASIS', 'واحة مأهولة');
+tz_def('ADM_DETAIL', 'التفاصيل');
+tz_def('ADM_ACCESS_DENIED_NOT_ADMIN', 'الوصول مرفوض: لست مديرًا!');
+tz_def('ADM_INACTIVE_1_3_DAYS', '1-3 يوم');
+tz_def('ADM_INACTIVE_3_7_DAYS', '3-7 أيام');
+tz_def('ADM_INACTIVE_7_PLUS_DAYS', 'أكثر من 7 أيام');
+tz_def('ADM_INACTIVE_NO_USERS_RANGE', 'لا يوجد مستخدمون في هذا النطاق');
+tz_def('ADM_DAY_ABBR', 'ي');
+tz_def('ADM_HOUR_ABBR', 'س');
+tz_def('ADM_AGO', 'مضت');
+tz_def('ADM_VILLAGE_ABBR', 'قرية');
+tz_def('ADM_DELETE_QUESTION', 'حذف؟');
+tz_def('ADM_CAPTURE_ON', 'التسجيل مفعّل');
+tz_def('ADM_CAPTURE_OFF', 'التسجيل متوقف');
+tz_def('ADM_OFF', 'متوقف');
+tz_def('ADM_SINCE', 'منذ');
+tz_def('ADM_NEVER', 'أبدًا');
+tz_def('ADM_TURN_CAPTURE_ON', 'تفعيل التسجيل');
+tz_def('ADM_TURN_CAPTURE_OFF', 'إيقاف التسجيل');
+tz_def('ADM_LAST', 'آخر');
+tz_def('ADM_LINES', 'سطر');
+tz_def('ADM_CLEAR_LOG_CONFIRM', 'هل تريد مسح ملف سجل الأخطاء؟');
+tz_def('ADM_LOG_IS_EMPTY', 'السجل فارغ');
+
+// Admin: editHero.tpl (added by AR localization pass)
+tz_def('ADM_POINTS_USED', 'النقاط المستخدمة:');
+tz_def('ADM_HERO_MAX_LEVEL_WARN', '⚠ البطل في أقصى مستوى (%s) — لا يمكن إضافة المزيد من النقاط.');
+tz_def('ADM_PLEASE_FILL_HERO_NAME', 'الرجاء إدخال اسم البطل');
+
+// Admin: alliance.tpl (added by AR localization pass)
+tz_def('ADM_PERM_ASSIGN', 'تعيين');
+tz_def('ADM_PERM_KICK', 'طرد');
+tz_def('ADM_PERM_EDIT_DESC', 'تعديل الوصف');
+tz_def('ADM_PERM_INVITE', 'دعوة');
+tz_def('ADM_PERM_FORUM', 'المنتدى');
+tz_def('ADM_PERM_DIPLOMACY', 'الدبلوماسية');
+tz_def('ADM_PERM_MM', 'إدارة السوق');
+tz_def('ADM_CONFIRM_DELETE_ALLIANCE', 'هل تريد حذف هذا التحالف؟');
+tz_def('ADM_ONLINE_LT1DAY', 'أقل من يوم');
+tz_def('ADM_ONLINE_LT3DAYS', 'أقل من 3 أيام');
+tz_def('ADM_ONLINE_LT7DAYS', 'أقل من 7 أيام');
+tz_def('ADM_OFFLINE', 'غير متصل');
+tz_def('ADM_DIPLOMACY_CONFEDERATION', 'تحالف اتحادي');
+tz_def('ADM_DIPLOMACY_NAP', 'اتفاقية عدم اعتداء');
+tz_def('ADM_DIPLOMACY_WAR', 'حرب');
+tz_def('ADM_ALLIANCE_NOT_FOUND', 'التحالف غير موجود...');
+
+// Admin: online.tpl (added by AR localization pass)
+tz_def('ADM_ROLE_LEVEL', 'مستوى %s');
+tz_def('ADM_LAST_ACTION', 'آخر نشاط:');
+tz_def('ADM_JUST_NOW', 'الآن');
+tz_def('ADM_MIN_AGO', 'دقيقة مضت');
+tz_def('ADM_NOW_SUFFIX', 'الآن');
+
+// Admin: addUsers.tpl (added by AR localization pass)
+tz_def('ADM_ERR_BASENAME_SHORT', 'الاسم الأساسي قصير جدًا (4 أحرف كحد أدنى)');
+tz_def('ADM_ERR_BASENAME_LONG', 'الاسم الأساسي طويل جدًا (20 حرفًا كحد أقصى)');
+tz_def('ADM_ERR_MIN_1_ACCOUNT', 'حساب واحد كحد أدنى');
+tz_def('ADM_ERR_MAX_200_ACCOUNTS', '200 حساب كحد أقصى');
+tz_def('ADM_ERR_MIN_1_VILLAGE', 'قرية واحدة كحد أدنى');
+tz_def('ADM_ERR_MAX_200_VILLAGES', '200 قرية كحد أقصى');
+tz_def('ADM_ERR_UNKNOWN', 'خطأ غير معروف');
+tz_def('ADM_SUCCESS_CREATED_ACCOUNTS', 'تم إنشاء <b>%s</b> حساب بالاسم الأساسي <b>%s</b>');
+tz_def('ADM_SUCCESS_CREATED_ACCOUNT_VILLAGES', 'تم إنشاء الحساب <b>%s</b> بعدد <b>%s</b> قرية');
+tz_def('ADM_TRIBE_LABEL_COLON', 'القبيلة:');
+tz_def('ADM_SKIPPED_EXISTING_NAMES', '%s اسم موجود مسبقًا — تم تخطيه');
+
+// Admin: users.tpl (added by AR localization pass)
+tz_def('ADM_BADGE_MH', 'صياد');
+tz_def('ADM_FOUND_SUFFIX', 'نتيجة');
+
+// Admin: report.tpl (added by AR localization pass)
+tz_def('ADM_REPORT_ID_NOT_EXIST', 'التقرير رقم %s غير موجود!');
+tz_def('ADM_PLAYERS_REPORTS_H', '📜 تقارير اللاعبين (%s)');
+tz_def('ADM_DEFENCES', 'الدفاعات');
+tz_def('ADM_SCOUTS', 'الاستطلاعات');
+tz_def('ADM_TRADES', 'التجارة');
+tz_def('ADM_REPORT_TYPE_TRADE', 'تجارة');
+tz_def('ADM_REPORT_TYPE_SETTLEMENT', 'استيطان');
+tz_def('ADM_REPORT_TYPE_ARTEFACT', 'قطعة أثرية');
+tz_def('ADM_REPORT_TYPE_ADVENTURE', 'مغامرة');
+tz_def('ADM_REPORT_TYPE_SPY', 'تجسس');
+
+// Admin: server_info.tpl (added by AR localization pass)
+tz_def('ADM_NO_TROOPS', 'لا توجد قوات');
+tz_def('ADM_HEROES', 'الأبطال');
+tz_def('ADM_HERO_UNIT_LABEL', 'بطل');
+tz_def('ADM_UPTIME_DAYS', '%s يوم');
+
+// Admin: village.tpl (added by AR localization pass)
+tz_def('ADM_RESOURCES_HEADER', 'الموارد');
+tz_def('ADM_NO_OASES', 'لا توجد واحات');
+
+// Admin: login.tpl / home.tpl (added by AR localization pass)
+tz_def('ADM_COPYRIGHT_FOOTER', '© 2010-2026 مشروع Novaterra • الإصدار 5.0');
+tz_def('ADM_REBUILT_BY_SHADOW', '⚡ لوحة تحكم الأدمن أُعيد بناؤها بالكامل بواسطة Shadow');
+tz_def('ADM_DASHBOARD_CREDITS', 'لوحة التحكم v5.0 • Novaterra 2025 • كود كامل، تصميم وتحسين');
+tz_def('ADM_BASED_ON_CREDITS', 'مبني على: Akakori & Elmar | إصلاح: Dzoki | إعادة تطوير: aggenkeech');
+tz_def('ADM_LOGIN_FAILED', 'فشل تسجيل الدخول');
+tz_def('ADM_INVALID_CREDENTIALS', 'اسم المستخدم أو كلمة المرور غير صحيحة');
+
+// Admin: home.tpl (added by AR localization pass)
+tz_def('ADM_UNKNOWN', 'غير معروف');
+tz_def('ADM_LAUNCHED_VILLAGES', 'تم الإطلاق (%s قرية)');
+tz_def('ADM_LAUNCHED_COUNT_DATE', 'تم الإطلاق (%s) - %s');
+tz_def('ADM_NOT_LAUNCHED', 'لم يتم الإطلاق');
+tz_def('ADM_ADMINISTRATOR_ROLE', 'المدير');
+tz_def('ADM_MULTIHUNTER_ROLE', 'صياد الحسابات المتعددة');
+tz_def('ADM_WELCOME_TO', 'مرحبًا بك في لوحة تحكم');
+tz_def('ADM_CONTROL_PANEL', 'لوحة التحكم');
+tz_def('ADM_SERVER_TIME', 'توقيت السيرفر');
+tz_def('ADM_ACTIVE_24H_SUFFIX', '+ %s نشط خلال 24 ساعة');
+tz_def('ADM_AVG_PER_PLAYER_SUFFIX', 'متوسط %s / لاعب');
+tz_def('ADM_WITH_PLUS_ACTIVE_SUFFIX', '%s بحساب بلس مفعّل');
+tz_def('ADM_ID_HASH', 'المعرف #%s');
+tz_def('ADM_UPTIME_LABEL', 'مدة تشغيل السيرفر: %s');
+
+// Admin: chat.tpl (added by AR localization pass)
+tz_def('ADM_ACCESS_DENIED_DOT', 'الوصول مرفوض.');
+tz_def('ADM_CHAT_MODERATION', 'مراقبة الدردشة');
+tz_def('ADM_CHAT_MODERATION_NOTE', 'تعرض هذه اللوحة أحدث مخالفات دردشة التحالف التي رصدتها طبقة المراقبة الآلية. المخالفات المتكررة تؤدي إلى حظر تلقائي عبر نظام الحظر الحالي.');
+tz_def('ADM_NO_CHAT_VIOLATIONS', 'لا توجد مخالفات دردشة مسجّلة حتى الآن.');
+tz_def('ADM_USER', 'المستخدم');
+tz_def('ADM_ALLIANCE', 'التحالف');
+tz_def('ADM_SCORE', 'النقاط');
+tz_def('ADM_ACTION', 'الإجراء');
+tz_def('ADM_UNKNOWN_LC', 'غير معروف');
+tz_def('ADM_BLOCKED', 'محظور');
+
+// Admin: admin_log.tpl (added by AR localization pass)
+tz_def('ADM_ADMIN_CONTROL_PANEL_TITLE', 'لوحة تحكم الأدمن');
+tz_def('ADM_MULTIHUNTER_CONTROL_PANEL_TITLE', 'لوحة تحكم صياد الحسابات المتعددة');
+tz_def('ADM_SYSTEM', 'النظام');
+tz_def('ADM_LOG_BANNED_USER', 'تم حظر المستخدم <a href=\'admin.php?p=player&uid=%d\'>%s</a> (السبب: %s)');
+tz_def('ADM_LOG_UNBANNED_USER', 'تم رفع الحظر عن المستخدم <a href=\'admin.php?p=player&uid=%d\'>%s</a>');
+tz_def('ADM_CAT_ALL', 'الكل');
+tz_def('ADM_CAT_BAN', '🔨 حظر');
+tz_def('ADM_CAT_UNBAN', '🔓 رفع حظر');
+tz_def('ADM_CAT_GOLD', '💰 ذهب');
+tz_def('ADM_CAT_PLUS', '⭐ بلس');
+tz_def('ADM_CAT_BONUS', '📈 مكافأة');
+tz_def('ADM_CAT_VILLAGE', '🏘 قرية');
+tz_def('ADM_CAT_MESSAGE', '✉ رسالة');
+tz_def('ADM_CAT_RESET', '⚙ إعادة تعيين');
+tz_def('ADM_CAT_OTHER', '📝 أخرى');
+
+// playerinfo.tpl
+tz_def('ADM_NOT_AVAILABLE', 'غير متاح');
+tz_def('ADM_EDIT_USER_LINK', '» تعديل المستخدم');
+tz_def('ADM_DELETE_USER_LINK', '» حذف المستخدم');
+
+// playerinfo.tpl - tribes
+tz_def('ADM_NATURE', 'الطبيعة');
+tz_def('ADM_NATARS_TRIBE', 'التتار');
+tz_def('ADM_HUNS', 'الهون');
+tz_def('ADM_EGYPTIANS', 'المصريون');
+tz_def('ADM_SPARTANS', 'الإسبرطيون');
+tz_def('ADM_VIKINGS', 'الفايكنج');
+tz_def('ADM_UNKNOWN_2', 'غير معروف');
+
+// playerinfo.tpl - quest short names
+tz_def('ADM_QNAME_1', 'الحطّاب');
+tz_def('ADM_QNAME_2', 'الحقل');
+tz_def('ADM_QNAME_3', 'اسم قريتك');
+tz_def('ADM_QNAME_4', 'لاعبون آخرون');
+tz_def('ADM_QNAME_5', 'أمر بناء اثنين');
+tz_def('ADM_QNAME_6', 'الرسائل');
+tz_def('ADM_QNAME_7', 'جيش ضخم!');
+tz_def('ADM_QNAME_8', 'الكل إلى المستوى 1!');
+tz_def('ADM_QNAME_9', 'حمامة السلام');
+tz_def('ADM_QNAME_10', 'المخبأ');
+tz_def('ADM_QNAME_11', 'إلى اثنين!');
+tz_def('ADM_QNAME_12', 'التعليمات');
+tz_def('ADM_QNAME_13', 'المبنى الرئيسي');
+tz_def('ADM_QNAME_14', 'متقدم!');
+tz_def('ADM_QNAME_15', 'أسلحة أم عجين');
+tz_def('ADM_QNAME_16', 'عسكري: نقطة التجمع');
+tz_def('ADM_QNAME_17', 'عسكري: الثكنة');
+tz_def('ADM_QNAME_18', 'عسكري: تدريب وحدتين');
+tz_def('ADM_QNAME_19', 'اقتصاد: المخزن');
+tz_def('ADM_QNAME_20', 'اقتصاد: المستودع');
+tz_def('ADM_QNAME_21', 'اقتصاد: السوق');
+tz_def('ADM_QNAME_22', 'الكل إلى المستوى 2!');
+tz_def('ADM_QNAME_28', 'التحالف: انضم لتحالف');
+tz_def('ADM_QNAME_29', 'المبنى الرئيسي إلى 5');
+tz_def('ADM_QNAME_30', 'المخزن إلى المستوى 3');
+tz_def('ADM_QNAME_31', 'المستودع إلى المستوى 7');
+tz_def('ADM_QNAME_32', 'الكل إلى المستوى 5!');
+tz_def('ADM_QNAME_33', 'القصر أو المقر');
+tz_def('ADM_QNAME_34', '3 مستوطنين');
+tz_def('ADM_QNAME_35', 'قرية جديدة');
+tz_def('ADM_QNAME_36', 'ابنِ سورًا/سياجًا');
+tz_def('ADM_QNAME_FINISH', 'انتهى');
+
+// results_*.tpl
+tz_def('ADM_NO_RESULTS_GENERIC', 'لا توجد نتائج');

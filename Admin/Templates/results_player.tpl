@@ -61,7 +61,7 @@ if($result){
 ';
     }
 } else {
-    echo '<tr><td colspan="4" class="no-res">No results</td></tr>';
+    echo '<tr><td colspan="4" class="no-res"><?php echo ADM_NO_RESULTS_GENERIC; ?></td></tr>';
 }
 ?>
   </table>

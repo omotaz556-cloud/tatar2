@@ -151,7 +151,7 @@ body > img[src*="Novaterra"], img[src*="admin.gif"]{display:none !important}
       </form>
 
       <div class="login-footer">
-        © 2010-2026 Novaterra Project • v5.0
+        <?php echo ADM_COPYRIGHT_FOOTER; ?>
       </div>
     </div>
 
@@ -162,9 +162,9 @@ body > img[src*="Novaterra"], img[src*="admin.gif"]{display:none !important}
     </div>
 
 	<div class="credits">
-		<div class="shadow-main">⚡ ADMIN PANEL 100% REBUILT BY Shadow</div>
-		<div class="shadow-sub">Dashboard v5.0 • Novaterra 2025 • Full code, design & optimization</div>
-		<div class="shadow-old">Based on: Akakori & Elmar | Fixed by: Dzoki | Reworked by: aggenkeech</div>
+		<div class="shadow-main"><?php echo ADM_REBUILT_BY_SHADOW; ?></div>
+		<div class="shadow-sub"><?php echo ADM_DASHBOARD_CREDITS; ?></div>
+		<div class="shadow-old"><?php echo ADM_BASED_ON_CREDITS; ?></div>
 	</div>
   </div>
 </div>
@@ -185,7 +185,7 @@ body > img[src*="Novaterra"], img[src*="admin.gif"]{display:none !important}
   if(found || document.body.innerText.includes('Error')){
     const holder = document.getElementById('tz-error-holder');
     if(holder){
-      holder.innerHTML = '<div class="login-error"><div><strong>Login failed</strong> – Invalid username or password</div></div>';
+      holder.innerHTML = '<div class="login-error"><div><strong><?php echo ADM_LOGIN_FAILED; ?></strong> – <?php echo ADM_INVALID_CREDENTIALS; ?></div></div>';
     }
   }
 })();

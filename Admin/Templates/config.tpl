@@ -57,9 +57,9 @@ $editIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=
   <table class="config-table">
     <tr><td class="b"><?php echo SERV_VARIABLE ?></td><td class="b"><?php echo SERV_VALUE ?></td></tr>
     <tr><td><?php echo CONF_SERV_NAME ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NAME_TOOLTIP ?></span></em></td><td><?php echo SERVER_NAME;?></td></tr>
-    <tr><td><?php echo CONF_SERV_STARTED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_STARTED_TOOLTIP ?></span></em></td><td><?php echo "Date:".START_DATE." Time:".START_TIME;?></td></tr>
+    <tr><td><?php echo CONF_SERV_STARTED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_STARTED_TOOLTIP ?></span></em></td><td><?php echo ADM_DATE_LABEL.START_DATE." ".ADM_TIME_LABEL.START_TIME;?></td></tr>
     <tr><td><?php echo CONF_SERV_TIMEZONE ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_TIMEZONE_TOOLTIP ?></span></em></td><td><?php echo TIMEZONE;?></td></tr>
-    <tr><td><?php echo CONF_SERV_LANG ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_LANG_TOOLTIP ?></span></em></td><td><?php if((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'en') echo "English"; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'fr') echo "French"; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'it') echo "Italian"; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'ro') echo "Romanian"; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'zh') echo "Chinese"; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'ar') echo "Arabic"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_LANG ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_LANG_TOOLTIP ?></span></em></td><td><?php if((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'en') echo ADM_LANG_ENGLISH; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'fr') echo ADM_LANG_FRENCH; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'it') echo ADM_LANG_ITALIAN; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'ro') echo ADM_LANG_ROMANIAN; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'zh') echo ADM_LANG_CHINESE; elseif((defined('SERVER_LANG') ? SERVER_LANG : LANG) == 'ar') echo ADM_LANG_ARABIC; ?></td></tr>
     <tr><td><?php echo CONF_SERV_SERVSPEED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_SERVSPEED_TOOLTIP ?></span></em></td><td><?php echo ''.SPEED.'x';?></td></tr>
     <tr><td><?php echo CONF_SERV_TROOPSPEED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_TROOPSPEED_TOOLTIP ?></span></em></td><td><?php echo INCREASE_SPEED;?>x</td></tr>
     <tr><td><?php echo CONF_SERV_EVASIONSPEED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_EVASIONSPEED_TOOLTIP ?></span></em></td><td><?php echo EVASION_SPEED;?></td></tr>
@@ -73,24 +73,24 @@ $editIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=
     <tr><td><?php echo CONF_SERV_NATARS_WW_BUILDING_PLAN_SPAWN_TIME ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NATARS_WW_BUILDING_PLAN_SPAWN_TIME_TOOLTIP ?></span></em></td><td><?php echo NATARS_WW_BUILDING_PLAN_SPAWN_TIME;?></td></tr>
     <tr><td><?php echo CONF_SERV_NATARS_WW_START_DELAY ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NATARS_WW_START_DELAY_TOOLTIP ?></span></em></td><td><?php echo NATARS_WW_START_DELAY;?></td></tr>
     <tr><td><?php echo CONF_SERV_MAPSIZE ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_MAPSIZE_TOOLTIP ?></span></em></td><td><?php echo WORLD_MAX;?>x<?php echo WORLD_MAX;?></td></tr>
-    <tr><td><?php echo CONF_SERV_VILLEXPSPEED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_VILLEXPSPEED_TOOLTIP ?></span></em></td><td><?php echo CP == 0 ? "Fast" : "Slow"; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_BEGINPROTECT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_BEGINPROTECT_TOOLTIP ?></span></em></td><td><?php echo (PROTECTION / 3600);?> hour/s</td></tr>
-    <tr><td><?php echo CONF_SERV_REGOPEN ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_REGOPEN_TOOLTIP ?></span></em></td><td><?php echo REG_OPEN ? "<span class='badge blue'>True</span>" : "<span class='badge red'>False</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_VILLEXPSPEED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_VILLEXPSPEED_TOOLTIP ?></span></em></td><td><?php echo CP == 0 ? ADM_FAST : ADM_SLOW; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_BEGINPROTECT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_BEGINPROTECT_TOOLTIP ?></span></em></td><td><?php echo (PROTECTION / 3600);?> <?php echo ADM_HOUR_UNIT; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_REGOPEN ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_REGOPEN_TOOLTIP ?></span></em></td><td><?php echo REG_OPEN ? "<span class='badge blue'>".ADM_TRUE."</span>" : "<span class='badge red'>".ADM_FALSE."</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_ACTIVMAIL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_ACTIVMAIL_TOOLTIP ?></span></em></td><td><?php echo AUTH_EMAIL ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_QUEST ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_QUEST_TOOLTIP ?></span></em></td><td><?php echo QUEST ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_QTYPE ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_QTYPE_TOOLTIP ?></span></em></td><td><?php echo QTYPE == 25 ? "<span class='badge blue'>Novaterra Official</span>" : "<span class='badge blue'>Novaterra Extended</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_QTYPE ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_QTYPE_TOOLTIP ?></span></em></td><td><?php echo QTYPE == 25 ? "<span class='badge blue'>".ADM_NOVATERRA_OFFICIAL."</span>" : "<span class='badge blue'>".ADM_NOVATERRA_EXTENDED."</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_DLR ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_DLR_TOOLTIP ?></span></em></td><td><?php echo DEMOLISH_LEVEL_REQ; ?></td></tr>
     <tr><td><?php echo CONF_SERV_WWSTATS ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_WWSTATS_TOOLTIP ?></span></em></td><td><?php echo WW ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_NTRTIME ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NTRTIME_TOOLTIP ?></span></em></td><td><?php echo NATURE_REGTIME >= 86400 ? (NATURE_REGTIME/86400).' Days' : (NATURE_REGTIME/3600).' Hours'; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_NTRTIME ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NTRTIME_TOOLTIP ?></span></em></td><td><?php echo NATURE_REGTIME >= 86400 ? (NATURE_REGTIME/86400).' '.DAYS : (NATURE_REGTIME/3600).' '.HOURS; ?></td></tr>
     <tr><td><?php echo CONF_SERV_OASIS_WOOD_PROD_MULT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_OASIS_WOOD_PROD_MULT_TOOLTIP ?></span></em></td><td><?php echo OASIS_WOOD_MULTIPLIER ?></td></tr>
     <tr><td><?php echo CONF_SERV_OASIS_CLAY_PROD_MULT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_OASIS_CLAY_PROD_MULT_TOOLTIP ?></span></em></td><td><?php echo OASIS_CLAY_MULTIPLIER ?></td></tr>
     <tr><td><?php echo CONF_SERV_OASIS_IRON_PROD_MULT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_OASIS_IRON_PROD_MULT_TOOLTIP ?></span></em></td><td><?php echo OASIS_IRON_MULTIPLIER ?></td></tr>
     <tr><td><?php echo CONF_SERV_OASIS_CROP_PROD_MULT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_OASIS_CROP_PROD_MULT_TOOLTIP ?></span></em></td><td><?php echo OASIS_CROP_MULTIPLIER ?></td></tr>
-    <tr><td><?php echo CONF_SERV_MEDALINTERVAL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_MEDALINTERVAL_TOOLTIP ?></span></em></td><td><?php echo MEDALINTERVAL >= 86400 ? (MEDALINTERVAL/86400).' Days' : (MEDALINTERVAL/3600).' Hours'; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_MEDALINTERVAL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_MEDALINTERVAL_TOOLTIP ?></span></em></td><td><?php echo MEDALINTERVAL >= 86400 ? (MEDALINTERVAL/86400).' '.DAYS : (MEDALINTERVAL/3600).' '.HOURS; ?></td></tr>
     <tr><td><?php echo CONF_SERV_TOURNTHRES ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_TOURNTHRES_TOOLTIP ?></span></em></td><td><?php echo TS_THRESHOLD;?></td></tr>
     <tr><td><?php echo CONF_SERV_GWORKSHOP ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_GWORKSHOP_TOOLTIP ?></span></em></td><td><?php echo GREAT_WKS ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_NATARSTAT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NATARSTAT_TOOLTIP ?></span></em></td><td><?php echo SHOW_NATARS ? "<span class='badge blue'>True</span>" : "<span class='badge red'>False</span>"; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_PEACESYST ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_PEACESYST_TOOLTIP ?></span></em></td><td><?php echo (["None", "Normal", "Christmas", "New Year", "Easter"])[PEACE]; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_NATARSTAT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NATARSTAT_TOOLTIP ?></span></em></td><td><?php echo SHOW_NATARS ? "<span class='badge blue'>".ADM_TRUE."</span>" : "<span class='badge red'>".ADM_FALSE."</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_PEACESYST ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_PEACESYST_TOOLTIP ?></span></em></td><td><?php echo ([ADM_PEACE_NONE, ADM_PEACE_NORMAL, ADM_PEACE_CHRISTMAS, ADM_PEACE_NEW_YEAR, ADM_PEACE_EASTER])[PEACE]; ?></td></tr>
     <tr><td><?php echo CONF_SERV_GRAPHICPACK ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_GRAPHICPACK_TOOLTIP ?></span></em></td><td><?php echo GP_ENABLE ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_ERRORREPORT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_ERRORREPORT_TOOLTIP ?></span></em></td><td><b><?php echo (ERROR_REPORT=="error_reporting (0);")? "No": "Yes";?></b></td></tr>
     <tr>
@@ -117,7 +117,7 @@ $editIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=
 	<tr><td><?php echo CONF_SERV_USRNM_MAX; ?></td><td><b><?php echo defined('USRNM_MAX_LENGTH') ? (int) USRNM_MAX_LENGTH : 15; ?></b></td></tr>
 	<tr><td><?php echo CONF_SERV_PW_MIN; ?></td><td><b><?php echo defined('PW_MIN_LENGTH') ? (int) PW_MIN_LENGTH : 4; ?></b></td></tr>
 	<tr><td><?php echo CONF_SERV_USRNM_SPECIAL; ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_USRNM_SPECIAL_TOOLTIP; ?></span></em></td><td><?php echo (!defined('USRNM_SPECIAL') || USRNM_SPECIAL) ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
-	<tr><td><?php echo ADM_PROTECTED_PLAYERS; ?> <em class="tooltip">?<span class="classic"><?php echo ADM_PROTECTED_PLAYERS_TIP; ?></span></em></td><td><?php echo (defined('PROTECTED_PLAYERS') && trim(PROTECTED_PLAYERS) !== '') ? htmlspecialchars(PROTECTED_PLAYERS, ENT_QUOTES, 'UTF-8') : "<span class='badge red'>None</span>"; ?></td></tr>
+	<tr><td><?php echo ADM_PROTECTED_PLAYERS; ?> <em class="tooltip">?<span class="classic"><?php echo ADM_PROTECTED_PLAYERS_TIP; ?></span></em></td><td><?php echo (defined('PROTECTED_PLAYERS') && trim(PROTECTED_PLAYERS) !== '') ? htmlspecialchars(PROTECTED_PLAYERS, ENT_QUOTES, 'UTF-8') : "<span class='badge red'>".ADM_NONE."</span>"; ?></td></tr>
   </table>
 </div>
 
@@ -161,8 +161,8 @@ $cronKeyMasked = ($cronKey === '')
     <tr>
       <td><?php echo ADM_AUTOMATION_SOURCE; ?><em class="tooltip">?<span class="classic"><?php echo ADM_WHERE_THE_GAME_TICK_BATTLES_MOVEMENTS_TRAINI; ?></span></em></td>
       <td><?php echo $cronActive
-            ? "<span class='badge green'>Cron job</span>"
-            : "<span class='badge red'>Page loads (fallback)</span>"; ?></td>
+            ? "<span class='badge green'>".ADM_CRON_JOB_RUNNING."</span>"
+            : "<span class='badge red'>".ADM_CRON_FALLBACK_PAGELOADS."</span>"; ?></td>
     </tr>
 
     <tr>
@@ -171,7 +171,7 @@ $cronKeyMasked = ($cronKey === '')
             if ($cronLastRun > 0) {
                 echo date('d.m.Y H:i:s', $cronLastRun) . ' <span style="color:#777">(' . $cronAge . 's ago)</span>';
             } else {
-                echo "<span class='badge red'>Never</span>";
+                echo "<span class='badge red'>".ADM_NEVER."</span>";
             }
           ?></td>
     </tr>
@@ -179,8 +179,8 @@ $cronKeyMasked = ($cronKey === '')
     <tr>
       <td><?php echo ADM_INVOCATION_LENGTH; ?><em class="tooltip">?<span class="classic"><?php echo ADM_CRON_LOOP_SECONDS_HOW_LONG_ONE_CRON_PHP_INVO; ?></span></em></td>
       <td><?php echo $cronLoop > 0
-            ? $cronLoop . ' s <span style="color:#777">(' . (int) floor($cronLoop / max($cronTick, 1)) . ' ticks per invocation)</span>'
-            : "<span class='badge blue'>Single tick</span>"; ?></td>
+            ? $cronLoop . ' s <span style="color:#777">(' . (int) floor($cronLoop / max($cronTick, 1)) . ' '.ADM_TICKS_PER_INVOCATION.')</span>'
+            : "<span class='badge blue'>".ADM_CRON_SINGLE_TICK."</span>"; ?></td>
     </tr>
 
     <tr>
@@ -211,9 +211,9 @@ $cronKeyMasked = ($cronKey === '')
       <td><?php echo ADM_DATABASE_CLEANUP; ?><em class="tooltip">?<span class="classic"><?php echo ADM_AUTOMATION_TRIMS_TABLES_THAT_WOULD_OTHERWISE; ?></span></em></td>
       <td><?php
             $parts = array();
-            $parts[] = 'reports: ' . ($cleanReports > 0 ? $cleanReports . 'd' : 'off');
-            $parts[] = 'chat: '    . ($cleanChat > 0 ? $cleanChat . 'd' : 'off');
-            $parts[] = 'deleted messages: ' . ($cleanMessages > 0 ? $cleanMessages . 'd' : 'off');
+            $parts[] = ADM_CLEANUP_REPORTS . ': ' . ($cleanReports > 0 ? $cleanReports . ADM_D_SUFFIX : ADM_CLEANUP_OFF);
+            $parts[] = ADM_CLEANUP_CHAT . ': '    . ($cleanChat > 0 ? $cleanChat . ADM_D_SUFFIX : ADM_CLEANUP_OFF);
+            $parts[] = ADM_CLEANUP_DELETED_MESSAGES . ': ' . ($cleanMessages > 0 ? $cleanMessages . ADM_D_SUFFIX : ADM_CLEANUP_OFF);
             echo implode(' &nbsp;|&nbsp; ', $parts);
           ?></td>
     </tr>
@@ -228,7 +228,7 @@ $cronKeyMasked = ($cronKey === '')
                    . (int) ($r['chat'] ?? 0) . ' chat, '
                    . (int) ($r['messages'] ?? 0) . ' messages)</span>';
             } else {
-                echo "<span class='badge blue'>Not run yet</span>";
+                echo "<span class='badge blue'>".ADM_CLEANUP_NOT_RUN_YET."</span>";
             }
           ?></td>
     </tr>
@@ -303,8 +303,8 @@ $cronKeyMasked = ($cronKey === '')
     <tr><td><?php echo CONF_PLUS_PACKAGEPRICED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_PLUS_PACKAGEPRICED_TOOLTIP ?></span></em></td><td><?php echo (defined('PLUS_PACKAGE_D_PRICE') ? PLUS_PACKAGE_D_PRICE : '19,99') . ' ' . (defined('PAYPAL_CURRENCY') ? PAYPAL_CURRENCY : 'EUR'); ?></td></tr>
     <tr><td><?php echo CONF_PLUS_PACKAGEGOLDE ?> <em class="tooltip">?<span class="classic"><?php echo CONF_PLUS_PACKAGEGOLDE_TOOLTIP ?></span></em></td><td><?php echo (defined('PLUS_PACKAGE_E_GOLD') ? PLUS_PACKAGE_E_GOLD : 2000); ?></td></tr>
     <tr><td><?php echo CONF_PLUS_PACKAGEPRICEE ?> <em class="tooltip">?<span class="classic"><?php echo CONF_PLUS_PACKAGEPRICEE_TOOLTIP ?></span></em></td><td><?php echo (defined('PLUS_PACKAGE_E_PRICE') ? PLUS_PACKAGE_E_PRICE : '49,99') . ' ' . (defined('PAYPAL_CURRENCY') ? PAYPAL_CURRENCY : 'EUR'); ?></td></tr>
-    <tr><td><?php echo CONF_PLUS_ACCDURATION ?> <em class="tooltip">?<span class="classic"><?php echo CONF_PLUS_ACCDURATION_TOOLTIP ?></span></em></td><td><?php echo PLUS_TIME >= 86400 ? (PLUS_TIME/86400).' Days' : (PLUS_TIME/3600).' Hours'; ?></td></tr>
-    <tr><td><?php echo CONF_PLUS_PRODUCTDURATION ?> <em class="tooltip">?<span class="classic"><?php echo CONF_PLUS_PRODUCTDURATION_TOOLTIP ?></span></em></td><td><?php echo PLUS_PRODUCTION >= 86400 ? (PLUS_PRODUCTION/86400).' Days' : (PLUS_PRODUCTION/3600).' Hours'; ?></td></tr>
+    <tr><td><?php echo CONF_PLUS_ACCDURATION ?> <em class="tooltip">?<span class="classic"><?php echo CONF_PLUS_ACCDURATION_TOOLTIP ?></span></em></td><td><?php echo PLUS_TIME >= 86400 ? (PLUS_TIME/86400).' '.DAYS : (PLUS_TIME/3600).' '.HOURS; ?></td></tr>
+    <tr><td><?php echo CONF_PLUS_PRODUCTDURATION ?> <em class="tooltip">?<span class="classic"><?php echo CONF_PLUS_PRODUCTDURATION_TOOLTIP ?></span></em></td><td><?php echo PLUS_PRODUCTION >= 86400 ? (PLUS_PRODUCTION/86400).' '.DAYS : (PLUS_PRODUCTION/3600).' '.HOURS; ?></td></tr>
   </table>
 </div>
 
@@ -365,11 +365,11 @@ $cronKeyMasked = ($cronKey === '')
   <div class="config-head"><span><?php echo ADMIN_INFO ?></span><a href="admin.php?p=editAdminInfo" title="<?php echo EDIT_ADMIN_INFO ?>" class="edit-btn"><?php echo $editIcon; ?></a></div>
   <table class="config-table">
     <tr><td class="b"><?php echo SERV_VARIABLE ?></td><td class="b"><?php echo SERV_VALUE ?></td></tr>
-    <tr><td><?php echo CONF_ADMIN_NAME ?> <em class="tooltip">?<span class="classic"><?php echo CONF_ADMIN_NAME_TOOLTIP ?></span></em></td><td><?php echo empty(ADMIN_NAME) ? "<span class='badge red'>No admin name defined!</span>" : ADMIN_NAME; ?></td></tr>
-    <tr><td><?php echo CONF_ADMIN_EMAIL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_ADMIN_EMAIL_TOOLTIP ?></span></em></td><td><?php echo empty(ADMIN_EMAIL) ? "<span class='badge red'>No admin email defined!</span>" : ADMIN_EMAIL; ?></td></tr>
+    <tr><td><?php echo CONF_ADMIN_NAME ?> <em class="tooltip">?<span class="classic"><?php echo CONF_ADMIN_NAME_TOOLTIP ?></span></em></td><td><?php echo empty(ADMIN_NAME) ? "<span class='badge red'>".ADM_NO_ADMIN_NAME_DEFINED."</span>" : ADMIN_NAME; ?></td></tr>
+    <tr><td><?php echo CONF_ADMIN_EMAIL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_ADMIN_EMAIL_TOOLTIP ?></span></em></td><td><?php echo empty(ADMIN_EMAIL) ? "<span class='badge red'>".ADM_NO_ADMIN_EMAIL_DEFINED."</span>" : ADMIN_EMAIL; ?></td></tr>
     <tr><td><?php echo CONF_ADMIN_SHOWSTATS ?> <em class="tooltip">?<span class="classic"><?php echo CONF_ADMIN_SHOWSTATS_TOOLTIP ?></span></em></td><td><?php echo INCLUDE_ADMIN ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
     <tr><td><?php echo CONF_ADMIN_SUPPMESS ?> <em class="tooltip">?<span class="classic"><?php echo CONF_ADMIN_SUPPMESS_TOOLTIP ?></span></em></td><td><?php echo ADMIN_RECEIVE_SUPPORT_MESSAGES ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
-    <tr><td><?php echo CONF_ADMIN_RAIDATT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_ADMIN_RAIDATT_TOOLTIP ?></span></em></td><td><?php echo ADMIN_ALLOW_INCOMING_RAIDS ? "<span class='badge green'>Yes</span>" : "<span class='badge red'>No</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_ADMIN_RAIDATT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_ADMIN_RAIDATT_TOOLTIP ?></span></em></td><td><?php echo ADMIN_ALLOW_INCOMING_RAIDS ? "<span class='badge green'>".ADM_YES."</span>" : "<span class='badge red'>".ADM_NO."</span>"; ?></td></tr>
   </table>
 </div>
 

@@ -20,7 +20,7 @@
 #################################################################################
 
 if(!isset($_SESSION)) session_start();
-if($_SESSION['access'] < ADMIN) die("Access Denied");
+if($_SESSION['access'] < ADMIN) die(ADM_ACCESS_DENIED_DOT);
 ?>
 <style>
 .notreg-wrap{max-width:100%;margin:12px auto;font-family:Tahoma,Verdana,Arial,sans-serif;padding:0 10px;box-sizing:border-box}

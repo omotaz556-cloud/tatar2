@@ -2,7 +2,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="shortcut icon" href="favicon.ico"/>
-  <title><?php echo ($_SESSION['access'] == ADMIN ? 'Admin Control Panel' : 'Multihunter Control Panel'); ?> - Novaterra</title>
+  <title><?php echo ($_SESSION['access'] == ADMIN ? ADM_ADMIN_CONTROL_PANEL_TITLE : ADM_MULTIHUNTER_CONTROL_PANEL_TITLE); ?> - Novaterra</title>
   <link rel="stylesheet" type="text/css" href="../img/admin/admin.css">
   <link rel="stylesheet" type="text/css" href="../img/admin/acp.css">
   <link rel="stylesheet" type="text/css" href="../img/../img.css">
@@ -61,7 +61,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < ADMIN) die("Access Denied: You are not Admin!");
+if($_SESSION['access'] < ADMIN) die(ACCESS_DENIED_ADMIN);
 
 $adminLogs = $database->getAdminLog();
 $unified = [];
@@ -94,7 +94,7 @@ while($b = mysqli_fetch_assoc($banQ)) {
         'time' => $b['time'],
         'user' => $b['admin'] ?: 1,
         'type' => 'ban',
-        'text' => "Banned user <a href='admin.php?p=player&uid={$b['uid']}'>{$b['name']}</a> (Reason: {$b['reason']})",
+        'text' => sprintf(ADM_LOG_BANNED_USER, $b['uid'], $b['name'], $b['reason']),
         'active' => $b['active']
     ];
     // UNBAN
@@ -104,7 +104,7 @@ while($b = mysqli_fetch_assoc($banQ)) {
             'time' => $b['end'],
             'user' => $b['admin'] ?: 1,
             'type' => 'unban',
-            'text' => "Unbanned user <a href='admin.php?p=player&uid={$b['uid']}'>{$b['name']}</a>",
+            'text' => sprintf(ADM_LOG_UNBANNED_USER, $b['uid'], $b['name']),
             'active' => 0
         ];
     }
@@ -152,9 +152,9 @@ function logCategory($entry) {
   <div class="log-filters" id="logFilters">
     <?php
     $cats = [
-        'all'=>'All','BAN'=>'🔨 Ban','UNBAN'=>'🔓 Unban','GOLD'=>'💰 Gold',
-        'PLUS'=>'⭐ Plus','BONUS'=>'📈 Bonus','VILLAGE'=>'🏘 Village',
-        'MESSAGE'=>'✉ Message','RESET'=>'⚙ Reset','OTHER'=>'📝 Other'
+        'all'=>ADM_CAT_ALL,'BAN'=>ADM_CAT_BAN,'UNBAN'=>ADM_CAT_UNBAN,'GOLD'=>ADM_CAT_GOLD,
+        'PLUS'=>ADM_CAT_PLUS,'BONUS'=>ADM_CAT_BONUS,'VILLAGE'=>ADM_CAT_VILLAGE,
+        'MESSAGE'=>ADM_CAT_MESSAGE,'RESET'=>ADM_CAT_RESET,'OTHER'=>ADM_CAT_OTHER
     ];
     $curCat = ($catFilter === '' ? 'ALL' : $catFilter);
     foreach ($cats as $key=>$label):
@@ -183,8 +183,8 @@ function logCategory($entry) {
 foreach($paged as $e) {
     $admid = (int)$e['user'];
     $username = $database->getUserField($admid, "username", 0);
-    $adminLink = $username ? '<a href="admin.php?p=player&uid='.$admid.'">'.htmlspecialchars($username).'</a>' : '<b>SYSTEM</b>';
-    if($username == 'Multihunter') $adminLink = '<b style="color:#c00">CONTROL PANEL</b>';
+    $adminLink = $username ? '<a href="admin.php?p=player&uid='.$admid.'">'.htmlspecialchars($username).'</a>' : '<b>'.ADM_SYSTEM.'</b>';
+    if($username == 'Multihunter') $adminLink = '<b style="color:#c00">'.ADM_CONTROL_PANEL.'</b>';
     
     list($cat,$class,$icon) = logCategory($e);
     $date = date("d.m.Y H:i:s", $e['time'] + 3600*2);

@@ -19,7 +19,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < MULTIHUNTER) die("Access Denied!");
+if($_SESSION['access'] < MULTIHUNTER) die(ADM_ACCESS_DENIED_BANG);
 global $database;
 
 function inactiveRange($daysMin, $daysMax = null){

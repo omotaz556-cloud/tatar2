@@ -18,7 +18,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 if (!isset($_SESSION)) { session_start(); }
-if($_SESSION['access'] < ADMIN) die("Access Denied: You are not Admin!");
+if($_SESSION['access'] < ADMIN) die(ACCESS_DENIED_ADMIN);
 $id = (int)$_GET['uid'];
 $dur = $user['protect'] - time();
 $protect = 0;

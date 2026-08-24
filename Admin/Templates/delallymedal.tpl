@@ -18,7 +18,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < ADMIN) die("Access Denied: You are not Admin!");
+if($_SESSION['access'] < ADMIN) die(ACCESS_DENIED_ADMIN);
 include("../GameEngine/config.php");
 $id = $_SESSION['id'];
 $sql = mysqli_fetch_array(mysqli_query($GLOBALS["link"], "SELECT Count(*) as Total FROM ".TB_PREFIX."allimedal"), MYSQLI_ASSOC);

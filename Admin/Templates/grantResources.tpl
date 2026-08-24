@@ -1,5 +1,5 @@
 <?php
-if (empty($_SESSION['access']) || (int) $_SESSION['access'] < 9) die('Access Denied');
+if (empty($_SESSION['access']) || (int) $_SESSION['access'] < 9) die(ADM_ACCESS_DENIED_DOT);
 $grantError = (string) ($_GET['error'] ?? '');
 $grantSuccess = isset($_GET['success']);
 ?>

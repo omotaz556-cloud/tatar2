@@ -18,7 +18,7 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-if($_SESSION['access'] < MULTIHUNTER) die("Access Denied!");
+if($_SESSION['access'] < MULTIHUNTER) die(ADM_ACCESS_DENIED_BANG);
 include_once("../GameEngine/Generator.php");
 include_once("../GameEngine/Technology.php");
 include_once("../GameEngine/Message.php");

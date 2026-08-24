@@ -8,7 +8,7 @@
 #################################################################################
 
 if (!isset($_SESSION['access']) || $_SESSION['access'] < ADMIN) {
-    echo '<p style="color:#f87171;padding:16px;">Access denied.</p>';
+    echo '<p style="color:#f87171;padding:16px;">'.ADM_ACCESS_DENIED_DOT.'</p>';
     return;
 }
 
@@ -28,22 +28,22 @@ $violations = ChatModeration::recentViolations(50);
 </style>
 
 <div class="chat-mod-wrap">
-    <h2>Chat Moderation</h2>
-    <div class="note">This panel lists the recent alliance chat violations detected by the automatic moderation layer. Repeated matches trigger a ban using the existing ban enforcement system.</div>
+    <h2><?php echo ADM_CHAT_MODERATION; ?></h2>
+    <div class="note"><?php echo ADM_CHAT_MODERATION_NOTE; ?></div>
 
     <?php if (empty($violations)): ?>
-        <div class="chat-mod-empty">No chat violations have been recorded yet.</div>
+        <div class="chat-mod-empty"><?php echo ADM_NO_CHAT_VIOLATIONS; ?></div>
     <?php else: ?>
         <table class="chat-mod-table">
             <thead>
                 <tr>
-                    <th>Time</th>
-                    <th>User</th>
-                    <th>Alliance</th>
-                    <th>Type</th>
-                    <th>Score</th>
-                    <th>Action</th>
-                    <th>Message</th>
+                    <th><?php echo ADM_TIME; ?></th>
+                    <th><?php echo ADM_USER; ?></th>
+                    <th><?php echo ADM_ALLIANCE; ?></th>
+                    <th><?php echo ADM_TYPE; ?></th>
+                    <th><?php echo ADM_SCORE; ?></th>
+                    <th><?php echo ADM_ACTION; ?></th>
+                    <th><?php echo ADM_MESSAGE; ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -52,9 +52,9 @@ $violations = ChatModeration::recentViolations(50);
                         <td><?php echo date('Y-m-d H:i:s', (int)($row['created'] ?? 0)); ?></td>
                         <td>#<?php echo (int)($row['uid'] ?? 0); ?> / <?php echo htmlspecialchars((string)($row['username'] ?? '')); ?></td>
                         <td><?php echo htmlspecialchars((string)($row['alliance'] ?? '')); ?></td>
-                        <td><span class="chat-badge"><?php echo htmlspecialchars((string)($row['offense'] ?? 'unknown')); ?></span></td>
+                        <td><span class="chat-badge"><?php echo htmlspecialchars((string)($row['offense'] ?? ADM_UNKNOWN_LC)); ?></span></td>
                         <td><?php echo (int)($row['score'] ?? 0); ?></td>
-                        <td><?php echo htmlspecialchars((string)($row['action'] ?? 'blocked')); ?></td>
+                        <td><?php echo htmlspecialchars((string)($row['action'] ?? ADM_BLOCKED)); ?></td>
                         <td><?php echo htmlspecialchars((string)($row['message'] ?? '')); ?></td>
                     </tr>
                 <?php endforeach; ?>

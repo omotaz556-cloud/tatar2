@@ -13,7 +13,7 @@
 ##  Copyright      : Novaterra mods (c) 2010-2026; base engine (c) TravianZ authors (GPLv3). ##
 ## --------------------------------------------------------------------------- ##
 #################################################################################
-if($_SESSION['access'] < MULTIHUNTER) die("Access Denied!");
+if($_SESSION['access'] < MULTIHUNTER) die(ADM_ACCESS_DENIED_BANG);
 
 if (!class_exists('Punishment')) {
     require_once __DIR__ . '/../../GameEngine/Punishment.php';

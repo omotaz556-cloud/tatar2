@@ -17,7 +17,7 @@
 ##  Copyright      : Novaterra (c) 2010-2025. All rights reserved.              ##
 ## --------------------------------------------------------------------------- ##
 #################################################################################
-if($_SESSION['access'] < MULTIHUNTER) die("Access Denied!");
+if($_SESSION['access'] < MULTIHUNTER) die(ADM_ACCESS_DENIED_BANG);
 
 $filter = $_GET['filter']??'all';
 $page = max(1, (int)($_GET['upage']??1));
