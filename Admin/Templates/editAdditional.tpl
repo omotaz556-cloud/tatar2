@@ -103,13 +103,34 @@ if(isset($id)) {
 			<div class="form-row">
 				<label><?php echo ADM_VACATION_MODE_2; ?></label>
 				<div class="field">
-						<select name="vac_mode">
+						<select name="vac_mode" id="vac_mode_select" onchange="document.getElementById('vac_days_row').style.display = (this.value==='1') ? '' : 'none';">
 							<option value="0" <?php if(!$user['vac_mode']) echo 'selected'; ?>><?php echo ADM_0_DISABLED; ?></option>
 							<option value="1" <?php if($user['vac_mode']) echo 'selected'; ?>><?php echo ADM_1_ENABLED; ?></option>
 						</select>
 					</div>
 			</div>
+			<div class="form-row" id="vac_days_row" style="<?php echo $user['vac_mode'] ? '' : 'display:none;'; ?>">
+				<label><?php echo ADM_VACATION_MODE_2; ?> (2-14)</label>
+				<div class="field input-icon">
+					<?php
+						// Same 2-14 day range Profile::setvactionmode() enforces for a
+						// player's own vacation activation. If vacation is already
+						// enabled, prefill with the days remaining until vac_time so
+						// re-saving the form without touching this field doesn't
+						// silently shorten an in-progress vacation.
+						$vacDaysDefault = 7;
+						if ($user['vac_mode'] && (int)$user['vac_time'] > time()) {
+							$vacDaysDefault = (int) ceil(((int)$user['vac_time'] - time()) / 86400);
+							if ($vacDaysDefault < 2) $vacDaysDefault = 2;
+							if ($vacDaysDefault > 14) $vacDaysDefault = 14;
+						}
+					?>
+					<input type="number" name="vac_days" min="2" max="14" value="<?php echo $vacDaysDefault; ?>">
+					<span style="font-size:12px;color:#666;"><?php echo ADM_ZILE; ?></span>
+				</div>
+			</div>
                     <div class="form-row">
+
                         <label><?php echo ADM_GOLD; ?></label>
                         <div class="field input-icon">
                             <input type="number" name="gold" value="<?php echo (int)$user['gold']; ?>">
