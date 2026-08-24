@@ -529,6 +529,10 @@ define("NEW_FUNCTIONS_MHS_IMAGES", false);
 define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", false);
 define("NEW_FUNCTIONS_DISPLAY_WONDER", false);
 define("NEW_FUNCTIONS_VACATION", false);
+
+// Vacation Test Mode - TESTING / DEVELOPMENT ONLY, keep OFF in production.
+// See GameEngine/config.php for the full explanation.
+define("VACATION_TEST_MODE_ADMIN_GOLD", false);
 define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", false);
 define("NEW_FUNCTIONS_MANUAL_NATURENATARS", false);
 define("NEW_FUNCTIONS_DISPLAY_LINKS", false);

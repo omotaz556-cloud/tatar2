@@ -73,7 +73,10 @@ $id = $_SESSION['id'];
         <input type="number" name="gold" value="20" min="1" max="999999" required>
       </div>
 
-      <?php if (class_exists('CentralGold') && CentralGold::isConfigured()) { ?>
+      <?php if (defined('ADMIN_GOLD_TEST_MODE') && ADMIN_GOLD_TEST_MODE === true && class_exists('CentralGold') && CentralGold::isConfigured()) { ?>
+      <div class="field full" style="background:#fff3cd;border:1px solid #ffe69c;border-radius:6px;padding:8px 10px;color:#664d03;font-size:12px;font-weight:bold">
+        ⚠ TEST MODE ACTIVE — grants below are also mirrored into CentralGold as 'admin_test_grant' so Vacation Mode can be tested. This must never be enabled on production.
+      </div>
       <div class="field full" style="flex-direction:row;align-items:center;gap:8px">
         <input type="checkbox" name="local_only" value="1" id="ug_local_only" style="width:auto">
         <label for="ug_local_only" style="font-weight:normal"><?php echo ADM_GOLD_LOCAL_ONLY_LABEL; ?></label>

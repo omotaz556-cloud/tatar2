@@ -102,8 +102,23 @@ class CentralGold
             return null;
         }
         mysqli_query($link, "SET NAMES 'utf8mb4'");
-        @mysqli_query($link, "ALTER TABLE central_gold_accounts ADD COLUMN email_verified tinyint(1) NOT NULL DEFAULT 0");
-        @mysqli_query($link, "ALTER TABLE central_gold_accounts ADD COLUMN email_verified_at int(11) NOT NULL DEFAULT 0");
+        // PHP 8.1+ defaults mysqli to exception-throwing mode, so the leading
+        // '@' below no longer silences an error the way it did pre-8.1 - a
+        // second/subsequent process hitting an ALTER TABLE ADD COLUMN that
+        // already exists throws an uncaught mysqli_sql_exception and fatals
+        // the whole request (pre-existing bug, unrelated to Vacation Test
+        // Mode, found while testing it). try/catch keeps the original
+        // "best-effort, ignore if already there" intent working on PHP 8.1+.
+        try {
+            @mysqli_query($link, "ALTER TABLE central_gold_accounts ADD COLUMN email_verified tinyint(1) NOT NULL DEFAULT 0");
+        } catch (\mysqli_sql_exception $e) {
+            // Column already exists - expected after the first successful run.
+        }
+        try {
+            @mysqli_query($link, "ALTER TABLE central_gold_accounts ADD COLUMN email_verified_at int(11) NOT NULL DEFAULT 0");
+        } catch (\mysqli_sql_exception $e) {
+            // Column already exists - expected after the first successful run.
+        }
         self::$link = $link;
         return self::$link;
     }
@@ -349,6 +364,66 @@ class CentralGold
         $row = $res ? mysqli_fetch_assoc($res) : null;
         mysqli_stmt_close($stmt);
         return $row ? (int) $row['paid_gold'] : 0;
+    }
+
+    /* ---- Vacation Test Mode helpers ---------------------------------------- */
+
+    /**
+     * Net amount of PAID gold ever credited to this account via an admin
+     * grant (Admin Panel -> Player -> Add/Remove Gold, reason 'admin_grant'),
+     * minus any admin_grant debits (an admin removing gold again). Computed
+     * straight from the existing ledger - no new column, no change to how
+     * paid_gold itself is stored or spent.
+     *
+     * This does NOT change what admin-granted gold is worth or where it can
+     * be spent: it is, and remains, ordinary paid gold everywhere else
+     * (Plus, Auction House, transfers, ...). It is used ONLY as a read-only
+     * signal for the Vacation Mode "Test Mode" gate - see
+     * nonAdminGrantedBalance() and Profile::setvactionmode().
+     */
+    public static function adminGrantedNet($email)
+    {
+        $link = self::link();
+        if (!$link) {
+            return 0;
+        }
+        $email = self::normEmail($email);
+        $stmt = mysqli_prepare($link,
+            "SELECT COALESCE(SUM(l.delta), 0) AS net
+             FROM central_gold_ledger l
+             JOIN central_gold_accounts a ON a.id = l.account_id
+             WHERE a.email = ? AND l.reason = 'admin_grant'");
+        if (!$stmt) {
+            return 0;
+        }
+        mysqli_stmt_bind_param($stmt, 's', $email);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        $row = $res ? mysqli_fetch_assoc($res) : null;
+        mysqli_stmt_close($stmt);
+        return $row ? (int) $row['net'] : 0;
+    }
+
+    /**
+     * Portion of the current paid-gold balance that is GUARANTEED not to
+     * originate from an admin grant (i.e. it came from a real purchase,
+     * an incoming transfer, a refund, etc.) - current balance minus the net
+     * amount ever admin-granted, floored at 0.
+     *
+     * Conservative by construction: any gold ever added by an admin_grant
+     * is subtracted from the balance before comparison, so a balance that
+     * is entirely admin-granted always evaluates to 0 here, even though the
+     * same gold is still fully spendable as paid gold everywhere else.
+     *
+     * Used exclusively to decide whether Vacation Mode may be activated
+     * when VACATION_TEST_MODE_ADMIN_GOLD is OFF - see
+     * Profile::setvactionmode().
+     */
+    public static function nonAdminGrantedBalance($email)
+    {
+        $balance = (int) self::balance($email);
+        $adminGranted = (int) self::adminGrantedNet($email);
+        return max(0, $balance - $adminGranted);
     }
 
     /* ---- Player-to-player transfer ---------------------------------------- */

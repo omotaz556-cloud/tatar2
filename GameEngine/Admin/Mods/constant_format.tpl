@@ -485,11 +485,11 @@ define("WORLD_KEY", "");
 // Leave CENTRAL_GOLD_HOST empty to disable the feature entirely: gold then
 // behaves exactly as before (purely local to this world), and none of the
 // central-gold code paths are used.
-define("CENTRAL_GOLD_HOST", "");
-define("CENTRAL_GOLD_PORT", 3306);
-define("CENTRAL_GOLD_USER", "");
-define("CENTRAL_GOLD_PASS", "");
-define("CENTRAL_GOLD_DB",   "");
+define("CENTRAL_GOLD_HOST", %CENTRALGOLDHOST%);
+define("CENTRAL_GOLD_PORT", %CENTRALGOLDPORT%);
+define("CENTRAL_GOLD_USER", %CENTRALGOLDUSER%);
+define("CENTRAL_GOLD_PASS", %CENTRALGOLDPASS%);
+define("CENTRAL_GOLD_DB",   %CENTRALGOLDDB%);
 
 ////////////////////////////////////
 //   ****  EXTRA SETTINGS  ****   //
@@ -541,6 +541,15 @@ define("NEW_FUNCTIONS_MHS_IMAGES", %NEW_FUNCTIONS_MHS_IMAGES%);
 define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", %NEW_FUNCTIONS_DISPLAY_ARTIFACT%);
 define("NEW_FUNCTIONS_DISPLAY_WONDER", %NEW_FUNCTIONS_DISPLAY_WONDER%);
 define("NEW_FUNCTIONS_VACATION", %NEW_FUNCTIONS_VACATION%);
+
+// Vacation Test Mode - TESTING / DEVELOPMENT ONLY. Do not enable on a live
+// production server. Admin Panel: New Functions page. Owned/written by
+// GameEngine/Admin/Mods/editNewFunctions.php; any OTHER admin mod that
+// regenerates config.php from this template leaves this placeholder alone,
+// so tz_config_finalize() (see config_template.php) fills it back in from
+// the value already defined in the config.php being replaced - the setting
+// survives saves made from any other Admin Panel page.
+define("VACATION_TEST_MODE_ADMIN_GOLD", %VACATION_TEST_MODE_ADMIN_GOLD%);
 define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", %NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET%);
 define("NEW_FUNCTIONS_MANUAL_NATURENATARS", %NEW_FUNCTIONS_MANUAL_NATURENATARS%);
 define("NEW_FUNCTIONS_DISPLAY_LINKS", %NEW_FUNCTIONS_DISPLAY_LINKS%);

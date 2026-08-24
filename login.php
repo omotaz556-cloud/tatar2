@@ -170,6 +170,7 @@ CountBack(gsecs);
 }else{ ?>
 <form method="post" name="snd" action="login.php">
 <input type="hidden" name="ft" value="a4" />
+<input type="hidden" name="csrf" value="<?php echo htmlspecialchars($key, ENT_QUOTES, 'UTF-8'); ?>" />
 <script type="text/javascript">
 Element.implement({
 	 //imgid: if an arrow belongs to the link this can be "opened"

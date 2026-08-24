@@ -148,6 +148,20 @@ if($_SESSION['access'] < 9) die(ACCESS_DENIED_ADMIN);
                         </select>
                     </td>
                 </tr>
+                <tr style="background:#fff7ed;">
+                    <td class="b">
+                        <?php echo ADM_VACATION_TEST_MODE; ?>
+                        <span style="display:inline-block;margin-left:6px;padding:1px 6px;border-radius:3px;background:#dc2626;color:#fff;font-size:10px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;vertical-align:middle;"><?php echo ADM_TESTING_ONLY_BADGE; ?></span>
+                        <em class="tooltip">?<span class="classic"><?php echo ADM_VACATION_TEST_MODE_DESC; ?></span></em>
+                        <?php if (!defined('VACATION_TEST_MODE_ADMIN_GOLD')): ?><br><span style="color:#c0392b;font-size:11px;font-weight:normal;text-transform:none;"><?php echo ADM_NOT_PRESENT_IN_CONFIG_PHP_YET_SAVING_THIS_FO; ?></span><?php endif; ?>
+                    </td>
+                    <td>
+                        <select name="vacation_test_mode_admin_gold">
+                            <option value="true" <?php if (defined('VACATION_TEST_MODE_ADMIN_GOLD') && VACATION_TEST_MODE_ADMIN_GOLD) echo "selected"; ?>><?php echo ADM_TRUE; ?></option>
+                            <option value="false" <?php if (!defined('VACATION_TEST_MODE_ADMIN_GOLD') || !VACATION_TEST_MODE_ADMIN_GOLD) echo "selected"; ?>><?php echo ADM_FALSE; ?></option>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <td class="b"><?php echo ADM_CATAPULT_TARGETS; ?><em class="tooltip">?<span class="classic"><?php echo ADM_ENABLE_DISABLE_THE_DISPLAY_OF_THE_TARGETS_OF; ?></span></em></td>
                     <td>

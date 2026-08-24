@@ -215,6 +215,36 @@ if (!function_exists('admin_config_template_path')) {
             $text = str_replace('%CRONTICK%', (string) $cronTick, $text);
         }
 
+        // CENTRAL_GOLD_* connection settings: these are NOT exposed on any
+        // Admin Panel form (there is nothing for an admin to submit for
+        // them), so - unlike %ALLIANCEBONUSES% etc. below - no edit*.php
+        // page ever supplies an override for these placeholders. Without
+        // this block every single Admin Panel save (New Functions, Server
+        // Configuration, Extra Settings, ...) would silently reset these to
+        // empty/default here, which disables the entire cross-world paid
+        // Gold ledger (CentralGold, and therefore Vacation Mode's real-gold
+        // check) after the very first save from ANY settings page. Preserve
+        // whatever is currently defined, exactly like %CRONKEY% above.
+        $centralGoldDefaults = array(
+            '%CENTRALGOLDHOST%' => array('CENTRAL_GOLD_HOST', '', 'string'),
+            '%CENTRALGOLDPORT%' => array('CENTRAL_GOLD_PORT', 3306, 'bare'),
+            '%CENTRALGOLDUSER%' => array('CENTRAL_GOLD_USER', '', 'string'),
+            '%CENTRALGOLDPASS%' => array('CENTRAL_GOLD_PASS', '', 'string'),
+            '%CENTRALGOLDDB%'   => array('CENTRAL_GOLD_DB', '', 'string'),
+        );
+        foreach ($centralGoldDefaults as $placeholder => $spec) {
+            if (strpos($text, $placeholder) === false) {
+                continue;
+            }
+            list($constant, $default, $type) = $spec;
+            $value = defined($constant) ? constant($constant) : $default;
+            if ($type === 'string') {
+                $text = str_replace($placeholder, '"' . addcslashes((string) $value, "\\'\"$") . '"', $text);
+            } else {
+                $text = str_replace($placeholder, (string) (int) $value, $text);
+            }
+        }
+
         // Retentiile de curatenie: la fel, editate din ACP, deci orice alt mod
         // care regenereaza config.php trebuie sa le pastreze.
         $cleanupDefaults = array(

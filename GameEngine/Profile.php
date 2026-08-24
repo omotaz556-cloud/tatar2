@@ -453,6 +453,27 @@ class Profile {
 				exit;
 			}
 
+			// Vacation Test Mode (Admin Panel -> New Functions -> TESTING ONLY,
+			// stored as VACATION_TEST_MODE_ADMIN_GOLD in config.php, default OFF).
+			//
+			// OFF (production default): Vacation only accepts a REAL purchased
+			// paid-gold balance. Gold added by an admin (Admin -> Player -> Add
+			// Gold) is deliberately NOT accepted here, even though it is fully
+			// spendable as paid gold everywhere else - this does not change the
+			// Paid/Free gold classification at all, it only narrows what this
+			// one feature will accept.
+			// ON: admin-granted gold is also accepted, so QA/testers can
+			// activate Vacation without a real purchase.
+			$vacationTestMode = defined('VACATION_TEST_MODE_ADMIN_GOLD') && VACATION_TEST_MODE_ADMIN_GOLD;
+
+			if (!$vacationTestMode && CentralGold::nonAdminGrantedBalance($userEmail) < 1) {
+				$_SESSION['vac_error'] = defined('TZ_VACATION_REAL_GOLD_REQUIRED')
+					? TZ_VACATION_REAL_GOLD_REQUIRED
+					: TZ_VACATION_PAID_GOLD_REQUIRED;
+				header("Location: spieler.php?s=5");
+				exit;
+			}
+
 			$paidGoldResult = CentralGold::debit(
 				$userEmail,
 				$session->username,

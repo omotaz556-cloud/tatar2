@@ -144,6 +144,13 @@ $myFile = "../../config.php";
 		tz_config_set($text, '%NEW_FUNCTIONS_DISPLAY_ARTIFACT%', $_POST['new_functions_display_artifact'] ?? '');
 		tz_config_set($text, '%NEW_FUNCTIONS_DISPLAY_WONDER%', $_POST['new_functions_display_wonder'] ?? '');
 		tz_config_set($text, '%NEW_FUNCTIONS_VACATION%', $_POST['new_functions_vacation'] ?? '');
+		// Vacation Test Mode - TESTING ONLY. Explicit true/false, defaulting
+		// to OFF (false) whenever the field is missing/tampered with, since
+		// this toggle widens what Vacation Mode will accept and must never
+		// silently end up ON.
+		$__vacationTestMode = (isset($_POST['vacation_test_mode_admin_gold'])
+			&& strtolower((string) $_POST['vacation_test_mode_admin_gold']) === 'true') ? 'true' : 'false';
+		tz_config_set($text, '%VACATION_TEST_MODE_ADMIN_GOLD%', $__vacationTestMode);
 		tz_config_set($text, '%NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET%', $_POST['new_functions_display_catapult_target'] ?? '');
 		tz_config_set($text, '%NEW_FUNCTIONS_MANUAL_NATURENATARS%', $_POST['new_functions_manual_naturenatars'] ?? '');
 		tz_config_set($text, '%NEW_FUNCTIONS_DISPLAY_LINKS%', $_POST['new_functions_display_links'] ?? '');
