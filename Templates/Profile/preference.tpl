@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 #################################################################################
 ##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
@@ -27,6 +27,55 @@ if (isset($_GET['del']) && is_numeric($_GET['del'])) {
     header("Location: spieler.php?s=2");
     exit;
 }
+
+?>
+<style type="text/css">
+body.pg-spieler #content.player > table.set,
+body.pg-spieler #content.player > table#links {
+    width: 100%;
+    margin: 0 0 12px;
+    border: 1px solid #d2d2d2;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 13px;
+}
+body.pg-spieler #content.player > table.set thead th,
+body.pg-spieler #content.player > table#links thead th {
+    height: 28px;
+    padding: 3px 9px;
+    background: linear-gradient(#eef8e9, #dcefd3);
+    border-bottom: 1px solid #b8d89f;
+    color: #315526;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+}
+body.pg-spieler #content.player > table.set thead td,
+body.pg-spieler #content.player > table#links thead td,
+body.pg-spieler #content.player > table.set tbody td,
+body.pg-spieler #content.player > table#links tbody td {
+    padding: 6px 9px;
+    border-bottom: 1px solid #ededed;
+    background: #ffffff;
+    vertical-align: middle;
+}
+html[dir="rtl"] body.pg-spieler #content.player > table.set td,
+html[dir="rtl"] body.pg-spieler #content.player > table#links td,
+html[dir="rtl"] body.pg-spieler #content.player > table.set th,
+html[dir="rtl"] body.pg-spieler #content.player > table#links th {
+    text-align: right;
+}
+body.pg-spieler #content.player > table.set input.text,
+body.pg-spieler #content.player > table#links input.text,
+body.pg-spieler #content.player > table.set select,
+body.pg-spieler #content.player > table#links select {
+    min-height: 25px;
+    border: 1px solid #71d000;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+</style>
+<?php
 
 // =========================
 // LEGACY EARLY EXIT
@@ -176,7 +225,7 @@ while ($data = mysqli_fetch_assoc($query)) {
 // =========================
 // USER SETTINGS SAVE
 // =========================
-if (isset($_POST['v1']) || isset($_POST['v2']) || isset($_POST['timezone']) || isset($_POST['lang']) || isset($_POST['upgrade_redirect'])) {
+if (isset($_POST['v1']) || isset($_POST['timezone']) || isset($_POST['lang']) || isset($_POST['upgrade_redirect']) || isset($_POST['night_mode'])) {
 
     $v1 = isset($_POST['v1']) ? 1 : 0;
     $v2 = isset($_POST['v2']) ? 1 : 0;
@@ -299,10 +348,9 @@ if(isset($_POST['lang']))
             </td>
 
             <td class="nr">
-                <input <?php if (!$session->plus) echo "disabled"; ?>
-                       class="text"
-                       type="text"
-                       name="nr<?php echo $i; ?>"
+                  <input class="text"
+                      type="text"
+                      name="nr<?php echo $i; ?>"
                        value="<?php echo (int)$link['pos']; ?>"
                        size="1"
                        maxlength="3" />
@@ -313,19 +361,17 @@ if(isset($_POST['lang']))
             </td>
 
             <td class="nam">
-                <input <?php if (!$session->plus) echo "disabled"; ?>
-                       class="text"
-                       type="text"
-                       name="linkname<?php echo $i; ?>"
+                  <input class="text"
+                      type="text"
+                      name="linkname<?php echo $i; ?>"
                        value="<?php echo htmlspecialchars($link['name'], ENT_QUOTES, 'UTF-8'); ?>"
                        maxlength="30" />
             </td>
 
             <td class="txt">
-                <input <?php if (!$session->plus) echo "disabled"; ?>
-                       class="text"
-                       type="text"
-                       name="linkziel<?php echo $i; ?>"
+                  <input class="text"
+                      type="text"
+                      name="linkziel<?php echo $i; ?>"
                        value="<?php echo htmlspecialchars($link['url'], ENT_QUOTES, 'UTF-8'); ?>"
                        maxlength="255" />
             </td>
@@ -340,29 +386,26 @@ if(isset($_POST['lang']))
         <tr>
             <td></td>
             <td class="nr">
-                <input <?php if (!$session->plus) echo "disabled"; ?>
-                       class="text"
-                       type="text"
-                       name="nr<?php echo $i; ?>"
+                  <input class="text"
+                      type="text"
+                      name="nr<?php echo $i; ?>"
                        value="<?php echo ($last_pos + 1); ?>"
                        size="1"
                        maxlength="3">
             </td>
 
             <td class="nam">
-                <input <?php if (!$session->plus) echo "disabled"; ?>
-                       class="text"
-                       type="text"
-                       name="linkname<?php echo $i; ?>"
+                  <input class="text"
+                      type="text"
+                      name="linkname<?php echo $i; ?>"
                        value=""
                        maxlength="30">
             </td>
 
             <td class="txt">
-                <input <?php if (!$session->plus) echo "disabled"; ?>
-                       class="text"
-                       type="text"
-                       name="linkziel<?php echo $i; ?>"
+                  <input class="text"
+                      type="text"
+                      name="linkziel<?php echo $i; ?>"
                        value=""
                        maxlength="255">
             </td>
@@ -452,6 +495,57 @@ if(isset($_POST['lang']))
 <td><?php echo TZ_NO_REPORTS_FOR_TRANSFERS_FROM_FORE; ?></td>
 </tr>
 
+</tbody>
+</table>
+
+<!-- =========================
+    DISPLAY OPTIONS
+========================= -->
+<table cellpadding="1" cellspacing="1" id="display_options" class="set">
+<thead>
+<tr>
+    <th colspan="2"><?php echo PREF_OPTIONS; ?></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th><?php echo PREF_MOBILE_MODE; ?></th>
+<td>
+<label><input class="radio" type="radio" name="mobile_mode" value="0" <?php if((int)($session->userinfo['mobile_mode'] ?? 0) === 0) echo 'checked'; ?>> <?php echo PREF_MOBILE_AUTO; ?></label><br>
+<label><input class="radio" type="radio" name="mobile_mode" value="1" <?php if((int)($session->userinfo['mobile_mode'] ?? 0) === 1) echo 'checked'; ?>> <?php echo PREF_MOBILE_DESKTOP; ?></label><br>
+<label><input class="radio" type="radio" name="mobile_mode" value="2" <?php if((int)($session->userinfo['mobile_mode'] ?? 0) === 2) echo 'checked'; ?>> <?php echo PREF_MOBILE_PHONE; ?></label>
+</td>
+</tr>
+<tr>
+<th><?php echo PREF_NIGHT_MODE; ?></th>
+<td>
+<label><input class="radio" type="radio" name="night_mode" value="0" <?php if((int)($session->userinfo['night_mode'] ?? 0) === 0) echo 'checked'; ?>> <?php echo PREF_NIGHT_AUTO; ?></label><br>
+<label><input class="radio" type="radio" name="night_mode" value="1" <?php if((int)($session->userinfo['night_mode'] ?? 0) === 1) echo 'checked'; ?>> <?php echo PREF_LIGHT_MODE; ?></label><br>
+<label><input class="radio" type="radio" name="night_mode" value="2" <?php if((int)($session->userinfo['night_mode'] ?? 0) === 2) echo 'checked'; ?>> <?php echo PREF_DARK_MODE; ?></label>
+</td>
+</tr>
+<tr>
+<th><?php echo PREF_TIMER_REFRESH; ?></th>
+<td>
+<label><input class="radio" type="radio" name="timer_refresh" value="0" <?php if(empty($session->userinfo['timer_refresh'])) echo 'checked'; ?>> <?php echo PREF_NO; ?></label><br>
+<label><input class="radio" type="radio" name="timer_refresh" value="1" <?php if(!empty($session->userinfo['timer_refresh'])) echo 'checked'; ?>> <?php echo PREF_YES; ?></label>
+</td>
+</tr>
+<tr>
+<th><?php echo PREF_INVERT_COLORS; ?></th>
+<td>
+<label><input class="radio" type="radio" name="invert_colors" value="0" <?php if(empty($session->userinfo['invert_colors'])) echo 'checked'; ?>> <?php echo PREF_NO; ?></label><br>
+<label><input class="radio" type="radio" name="invert_colors" value="1" <?php if(!empty($session->userinfo['invert_colors'])) echo 'checked'; ?>> <?php echo PREF_YES; ?></label>
+</td>
+</tr>
+<tr>
+<th><?php echo PREF_STATS_FORMAT; ?></th>
+<td>
+<label><input class="radio" type="radio" name="stats_format" value="0" <?php if((int)($session->userinfo['stats_format'] ?? 0) === 0) echo 'checked'; ?>> <?php echo PREF_STATS_AUTO; ?></label><br>
+<label><input class="radio" type="radio" name="stats_format" value="1" <?php if((int)($session->userinfo['stats_format'] ?? 0) === 1) echo 'checked'; ?>> <?php echo PREF_STATS_CLASSIC; ?></label><br>
+<label><input class="radio" type="radio" name="stats_format" value="2" <?php if((int)($session->userinfo['stats_format'] ?? 0) === 2) echo 'checked'; ?>> <?php echo PREF_STATS_COMPACT; ?></label>
+</td>
+</tr>
 </tbody>
 </table>
 

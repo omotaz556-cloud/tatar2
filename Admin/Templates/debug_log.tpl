@@ -2,7 +2,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="shortcut icon" href="favicon.ico"/>
-  <title><?php echo ($_SESSION['access'] == ADMIN ? 'Admin Control Panel' : 'Multihunter Control Panel'); ?> - Novaterra</title>
+  <title><?php echo ($_SESSION['access'] == ADMIN ? ADM_ADMIN_CONTROL_PANEL_TITLE : ADM_MULTIHUNTER_CONTROL_PANEL_TITLE); ?> - Novaterra</title>
   <link rel="stylesheet" type="text/css" href="../img/admin/admin.css">
   <link rel="stylesheet" type="text/css" href="../img/admin/acp.css">
   <link rel="stylesheet" type="text/css" href="../img/../img.css">
@@ -72,21 +72,37 @@ if (is_file($logFile)) {
 // Active-since label + auto-off info.
 $since = !empty($cfg['started_at']) ? date('d.m.Y H:i', $cfg['started_at']) : '-';
 $autoOff = (int)($cfg['auto_off_hours'] ?? 0);
+
+function localizeDebugLogLine($line) {
+  return strtr($line, [
+    'PHP Warning' => ADM_DEBUG_PHP_WARNING,
+    'PHP Notice' => ADM_DEBUG_PHP_NOTICE,
+    'PHP Deprecated' => ADM_DEBUG_PHP_DEPRECATED,
+    'Fatal error' => ADM_DEBUG_FATAL_ERROR,
+    'Warning' => ADM_DEBUG_WARNING,
+    'Notice' => ADM_DEBUG_NOTICE,
+    'Deprecated' => ADM_DEBUG_DEPRECATED,
+    'Undefined variable' => ADM_DEBUG_UNDEFINED_VARIABLE,
+    'Undefined array key' => ADM_DEBUG_UNDEFINED_ARRAY_KEY,
+    'Undefined constant' => ADM_DEBUG_UNDEFINED_CONSTANT,
+    'Failed to open stream' => ADM_DEBUG_FAILED_OPEN_STREAM,
+  ]);
+}
 ?>
 <div class="dbg-wrap">
 
   <div class="dbg-head">
     <h2><?php echo ADM_DEBUG_ERROR_LOG; ?></h2>
     <span class="dbg-state <?php echo $isOn ? 'dbg-on' : 'dbg-off'; ?>">
-      <?php echo $isOn ? 'CAPTURE ON' : 'CAPTURE OFF'; ?>
+      <?php echo $isOn ? ADM_CAPTURE_ON : ADM_CAPTURE_OFF; ?>
     </span>
   </div>
 
   <div class="dbg-card">
     <h3><?php echo ADM_STATUS; ?></h3>
     <div class="dbg-row">
-      <span><?php echo ADM_CAPTURE_IS; ?><b><?php echo $isOn ? 'ON' : 'OFF'; ?></b><?php echo $isOn ? ' since '.$since : ''; ?>.</span>
-      <span><?php echo ADM_AUTO_OFF; ?><b><?php echo $autoOff > 0 ? $autoOff.' h' : 'never'; ?></b></span>
+      <span><?php echo ADM_CAPTURE_IS; ?><b><?php echo $isOn ? ADM_ON : ADM_OFF; ?></b><?php echo $isOn ? ' '.ADM_SINCE.' '.$since : ''; ?>.</span>
+      <span><?php echo ADM_AUTO_OFF; ?><b><?php echo $autoOff > 0 ? $autoOff.' '.ADM_HOUR_ABBR : ADM_NEVER; ?></b></span>
       <span><?php echo ADM_LOG_SIZE; ?><b><?php echo number_format($logSize / 1024, 1); ?> KB</b></span>
     </div>
     <form action="../GameEngine/Admin/Mods/debugLog.php" method="POST" style="display:inline">
@@ -94,7 +110,7 @@ $autoOff = (int)($cfg['auto_off_hours'] ?? 0);
       <input type="hidden" name="do" value="toggle">
       <input type="hidden" name="active" value="<?php echo $isOn ? 0 : 1; ?>">
       <button type="submit" class="dbg-btn <?php echo $isOn ? 'red' : 'green'; ?>">
-        <?php echo $isOn ? 'Turn capture OFF' : 'Turn capture ON'; ?>
+        <?php echo $isOn ? ADM_TURN_CAPTURE_OFF : ADM_TURN_CAPTURE_ON; ?>
       </button>
     </form>
     <p class="dbg-note"><?php echo ADM_TRANSPARENT_TO_PLAYERS_ERRORS_ARE_ONLY_WRITT; ?></p>
@@ -123,11 +139,11 @@ $autoOff = (int)($cfg['auto_off_hours'] ?? 0);
   </div>
 
   <div class="dbg-card">
-    <h3>Last <?php echo $maxLines; ?> lines</h3>
+    <h3><?php echo ADM_LAST; ?> <?php echo $maxLines; ?> <?php echo ADM_LINES; ?></h3>
     <div class="dbg-actions">
       <a class="dbg-btn" href="../GameEngine/Admin/Mods/debugLog.php?do=download"><?php echo ADM_DOWNLOAD_FULL_LOG; ?></a>
       <form action="../GameEngine/Admin/Mods/debugLog.php" method="POST" style="display:inline"
-            onsubmit="return confirm('Clear the debug log file?');">
+            onsubmit="return confirm('<?php echo addslashes(ADM_CLEAR_LOG_CONFIRM); ?>');">
         <?php echo csrf_field(); ?>
         <input type="hidden" name="do" value="clear">
         <button type="submit" class="dbg-btn red"><?php echo ADM_CLEAR_LOG; ?></button>
@@ -136,10 +152,10 @@ $autoOff = (int)($cfg['auto_off_hours'] ?? 0);
     </div>
     <div class="dbg-log" style="margin-top:8px"><?php
       if (empty($lines)) {
-          echo "(log is empty)";
+          echo '(' . ADM_LOG_IS_EMPTY . ')';
       } else {
           foreach ($lines as $l) {
-              echo htmlspecialchars($l) . "\n";
+              echo htmlspecialchars(localizeDebugLogLine($l)) . "\n";
           }
       }
     ?></div>

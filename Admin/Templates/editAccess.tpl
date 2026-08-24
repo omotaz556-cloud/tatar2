@@ -34,7 +34,7 @@ if(isset($_GET['uid']))
 		<table id="member" style="width:300px;">
 			<thead>
 				<tr>
-					<th colspan="2">Edit <?php echo htmlspecialchars($player['username']); ?>'s access</th>
+					<th colspan="2"><?php echo ADMIN_EDIT_ACCESS; ?> <?php echo htmlspecialchars($player['username']); ?></th>
 				</tr>
 				<tr>
 					<td></td>
@@ -71,7 +71,7 @@ if(isset($_GET['uid']))
 	</form><?php
 	if(isset($_GET['g']))
 	{
-		echo '<br /><br /><font color="Red"><b>Players Access Changed</font></b>';
+		echo '<br /><br /><font color="Red"><b>'.ADMIN_ACCESS_CHANGED.'</font></b>';
 	}
 }
 else

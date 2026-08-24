@@ -119,10 +119,10 @@ $msgs = $database->query("SELECT * FROM ".TB_PREFIX."mdata WHERE $where ORDER BY
   <div class="msg-head">
     <h1>
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7l-3 3v-3H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" fill="#3498db"/></svg>
-      Players Messages (<?php echo number_format($total);?>)
+      <?php echo ADMIN_PLAYERS_MESSAGES; ?> (<?php echo number_format($total);?>)
     </h1>
     <div class="filters">
-      <?php foreach(['all'=>'All','inbox'=>'Inbox','sent'=>'Sent','system'=>'System'] as $k=>$v){?>
+      <?php foreach(['all'=>ADMIN_ALL_FILTER,'inbox'=>INBOX,'sent'=>SENT,'system'=>ADMIN_SYSTEM] as $k=>$v){?>
         <a href="?p=msg&f=<?php echo $k;?>&q=<?php echo urlencode($search);?>" class="<?php echo $filter==$k?'active':'';?>"><?php echo $v;?></a>
       <?php }?>
     </div>
@@ -148,7 +148,7 @@ $msgs = $database->query("SELECT * FROM ".TB_PREFIX."mdata WHERE $where ORDER BY
           <span class="msg-from"><?php echo htmlspecialchars($from);?> → <?php echo htmlspecialchars($to);?></span>
           <span class="msg-time"><?php echo $time;?></span>
         </div>
-        <div class="msg-topic"><?php echo htmlspecialchars($m['topic']?: '(no subject)');?></div>
+        <div class="msg-topic"><?php echo htmlspecialchars($m['topic']?: ADMIN_NO_SUBJECT);?></div>
         <div class="msg-preview"><?php echo htmlspecialchars($preview);?>...</div>
         <div class="msg-foot">
           <span>#<?php echo $m['id'];?></span>

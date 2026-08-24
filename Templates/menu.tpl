@@ -48,6 +48,60 @@ $username    = isset($session->username) ? $session->username : '';
 $sessionOk   = (isset($_SESSION['ok']) && $_SESSION['ok'] == 1);
 $idUser      = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 ?>
+<?php if ($isLoggedIn) { ?>
+<style type="text/css">
+html.tz-mobile-mode body{min-width:0 !important;}
+html.tz-mobile-mode #mid{width:100% !important;min-width:0 !important;}
+html.tz-mobile-mode #side_navi,html.tz-mobile-mode #content,html.tz-mobile-mode #side_info{float:none !important;width:100% !important;max-width:100% !important;box-sizing:border-box;}
+html.tz-invert-colors body{filter:invert(1) hue-rotate(180deg);}
+html.tz-dark-mode body{background:#20252b !important;color:#e7ecef !important;}
+html.tz-dark-mode #mid,html.tz-dark-mode #content,html.tz-dark-mode #side_navi,html.tz-dark-mode #side_info{background:#20252b !important;color:#e7ecef !important;}
+html.tz-dark-mode table,html.tz-dark-mode td,html.tz-dark-mode th{background-color:#2b3239 !important;color:#e7ecef !important;border-color:#46515a !important;}
+html.tz-stats-compact body #content.statistics table{font-size:11px !important;}
+html.tz-stats-compact body #content.statistics th,html.tz-stats-compact body #content.statistics td{padding:3px 5px !important;}
+html.tz-stats-classic body #content.statistics table{font-size:14px !important;}
+html.tz-stats-classic body #content.statistics th,html.tz-stats-classic body #content.statistics td{padding:9px 10px !important;line-height:1.5;}
+</style>
+<script type="text/javascript">
+(function () {
+    var root = document.documentElement;
+    var mobileMode = <?php echo (int)($session->userinfo['mobile_mode'] ?? 0); ?>;
+    var timerRefresh = <?php echo !empty($session->userinfo['timer_refresh']) ? 'true' : 'false'; ?>;
+    var invertColors = <?php echo !empty($session->userinfo['invert_colors']) ? 'true' : 'false'; ?>;
+    var statsFormat = <?php echo (int)($session->userinfo['stats_format'] ?? 0); ?>;
+    var nightMode = <?php echo (int)($session->userinfo['night_mode'] ?? 0); ?>;
+
+    if (mobileMode === 2 || (mobileMode === 0 && window.innerWidth <= 700)) {
+        root.className += ' tz-mobile-mode';
+    }
+    if (invertColors) {
+        root.className += ' tz-invert-colors';
+    }
+    if (nightMode === 2 || (nightMode === 0 && (new Date()).getHours() >= 18 || nightMode === 0 && (new Date()).getHours() < 5)) {
+        root.className += ' tz-dark-mode';
+    }
+    if (statsFormat === 2 && /(?:^|\/)statistiken\.php(?:$|\?)/.test(window.location.pathname + window.location.search)) {
+        root.className += ' tz-stats-compact';
+    }
+    if (statsFormat === 1 && /(?:^|\/)statistiken\.php(?:$|\?)/.test(window.location.pathname + window.location.search)) {
+        root.className += ' tz-stats-classic';
+    }
+    root.setAttribute('data-stats-format', String(statsFormat));
+
+    if (timerRefresh) {
+        window.setInterval(function () {
+            var timers = document.querySelectorAll('[id^="timer"]');
+            for (var i = 0; i < timers.length; i++) {
+                if (/^(0+:)?00:00(?::00)?$/.test((timers[i].textContent || '').trim())) {
+                    window.location.reload();
+                    return;
+                }
+            }
+        }, 1000);
+    }
+})();
+</script>
+<?php } ?>
 <?php if(!$isLoggedIn) { ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

@@ -15,7 +15,7 @@
 #################################################################################
 
 if (!isset($_SESSION['access']) || $_SESSION['access'] < ADMIN) {
-    echo '<p style="color:#f87171;padding:16px;">Access denied.</p>';
+    echo '<p style="color:#f87171;padding:16px;">'.ADMIN_ACCESS_DENIED.'</p>';
     return;
 }
 
@@ -60,13 +60,9 @@ $msg   = isset($_GET['msg']) ? (string) $_GET['msg'] : '';
 </style>
 
 <div class="ff-wrap">
-    <h2><?php echo ADMIN_ADMIN; ?><span>Feature Flags</span></h2>
+    <h2><?php echo ADMIN_ADMIN; ?><span><?php echo ADMIN_FEATURE_FLAGS; ?></span></h2>
     <p class="ff-intro">
-        Add or remove on/off switches for any feature here, without needing a code
-        or config.php change. Flags apply the moment you toggle them - no server
-        restart or config regeneration involved. This is separate from the
-        Server / PLUS / Log settings pages: those control fixed, built-in
-        switches; this page is for free-form flags you define yourself.
+        <?php echo ADMIN_ADD_REMOVE_FLAGS_INTRO; ?>
     </p>
 
     <?php if ($msg !== ''): ?>
@@ -74,44 +70,44 @@ $msg   = isset($_GET['msg']) ? (string) $_GET['msg'] : '';
     <?php endif; ?>
 
     <div class="ff-card">
-        <h3>Add a new flag</h3>
+        <h3><?php echo ADMIN_ADD_FLAG; ?></h3>
         <form method="post" action="../GameEngine/Admin/Mods/featureFlags.php" class="ff-add">
             <?php echo csrf_field(); ?>
             <input type="hidden" name="do" value="create">
             <div>
-                <label>Key</label>
+                <label><?php echo ADMIN_KEY; ?></label>
                 <input class="key" type="text" name="flag_key" maxlength="80" placeholder="gold_res_purchase" required>
             </div>
             <div>
-                <label>Label</label>
+                <label><?php echo ADMIN_LABEL; ?></label>
                 <input class="label" type="text" name="label" maxlength="150" placeholder="Gold &rarr; Resources purchase">
             </div>
             <div>
-                <label>Note (optional)</label>
-                <input class="note" type="text" name="note" maxlength="255" placeholder="What this flag controls">
+                <label><?php echo ADMIN_NOTE_OPTIONAL; ?></label>
+                <input class="note" type="text" name="note" maxlength="255" placeholder="<?php echo ADMIN_FLAG_NOTE_PLACEHOLDER; ?>">
             </div>
             <div class="chk">
                 <input type="checkbox" name="enabled" id="ff_enabled_new" checked>
-                <label for="ff_enabled_new" style="margin:0;text-transform:none;letter-spacing:0;">Enabled</label>
+                <label for="ff_enabled_new" style="margin:0;text-transform:none;letter-spacing:0;"><?php echo ADMIN_ENABLED; ?></label>
             </div>
-            <button type="submit">Add Flag</button>
+            <button type="submit"><?php echo ADMIN_ADD_FLAG_BUTTON; ?></button>
         </form>
-        <div class="ff-hint">Keys are lowercased and normalised to letters, numbers and underscores. Check a flag in code with <code>FeatureFlags::isEnabled('your_key')</code>.</div>
+        <div class="ff-hint"><?php echo ADMIN_FLAG_HINT; ?></div>
     </div>
 
     <div class="ff-card" style="padding:0;">
         <?php if (empty($flags)): ?>
-            <div class="ff-empty">No feature flags yet. Add one above.</div>
+            <div class="ff-empty"><?php echo ADMIN_NO_FEATURE_FLAGS; ?></div>
         <?php else: ?>
             <div class="ff-scroll">
             <table class="ff-table">
                 <thead>
                     <tr>
-                        <th>Key</th>
-                        <th>Label</th>
-                        <th>Status</th>
-                        <th>Note</th>
-                        <th>Updated</th>
+                        <th><?php echo ADMIN_KEY; ?></th>
+                        <th><?php echo ADMIN_LABEL; ?></th>
+                        <th><?php echo ADMIN_STATUS; ?></th>
+                        <th><?php echo ADM_NOTE; ?></th>
+                        <th><?php echo ADMIN_UPDATED; ?></th>
                         <th style="width:150px;"></th>
                     </tr>
                 </thead>
@@ -122,7 +118,7 @@ $msg   = isset($_GET['msg']) ? (string) $_GET['msg'] : '';
                     <tr>
                         <td class="ff-key"><?php echo e($fl['flag_key']); ?></td>
                         <td><?php echo $fl['label'] !== '' ? e($fl['label']) : '&ndash;'; ?></td>
-                        <td><span class="badge <?php echo $on ? 'st-on' : 'st-off'; ?>"><?php echo $on ? 'ON' : 'OFF'; ?></span></td>
+                        <td><span class="badge <?php echo $on ? 'st-on' : 'st-off'; ?>"><?php echo $on ? ADMIN_ON : ADMIN_OFF; ?></span></td>
                         <td class="note-col" style="color:#94a3b8;"><?php echo $fl['note'] !== '' ? e($fl['note']) : '&ndash;'; ?></td>
                         <td class="num" style="color:#94a3b8;"><?php echo $fl['time'] ? date('Y-m-d H:i', (int) $fl['time']) : '&ndash;'; ?></td>
                         <td>
@@ -132,13 +128,13 @@ $msg   = isset($_GET['msg']) ? (string) $_GET['msg'] : '';
                                     <input type="hidden" name="do" value="toggle">
                                     <input type="hidden" name="id" value="<?php echo (int) $fl['id']; ?>">
                                     <input type="hidden" name="enabled" value="<?php echo $on ? 0 : 1; ?>">
-                                    <button type="submit" class="b-toggle"><?php echo $on ? 'Disable' : 'Enable'; ?></button>
+                                    <button type="submit" class="b-toggle"><?php echo $on ? ADMIN_DISABLE : ADMIN_ENABLE; ?></button>
                                 </form>
-                                <form method="post" action="../GameEngine/Admin/Mods/featureFlags.php" onsubmit="return confirm('Delete this flag? Any code checking it will fall back to its default value.');">
+                                <form method="post" action="../GameEngine/Admin/Mods/featureFlags.php" onsubmit="return confirm('<?php echo addslashes(ADMIN_DELETE_FLAG_CONFIRM); ?>');">
                                     <?php echo csrf_field(); ?>
                                     <input type="hidden" name="do" value="delete">
                                     <input type="hidden" name="id" value="<?php echo (int) $fl['id']; ?>">
-                                    <button type="submit" class="b-del">Delete</button>
+                                    <button type="submit" class="b-del"><?php echo ADMIN_DELETE; ?></button>
                                 </form>
                             </div>
                         </td>

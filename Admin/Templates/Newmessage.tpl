@@ -45,7 +45,7 @@ $user = $database->getUserArray($id,1);
 </style>
 
 <div class="msg-wrap">
-  <?php if(isset($_GET['msg'])){ echo '<div class="alert-ok">✓ Message sent successfully</div>'; } ?>
+  <?php if(isset($_GET['msg'])){ echo '<div class="alert-ok">✓ '.ADMIN_MESSAGE_SENT.'</div>'; } ?>
   
   <div class="msg-card">
     <div class="msg-head">

@@ -34,8 +34,13 @@ class Heatmap
     public static function tribeNames()
     {
         return [
-            1 => 'Romans', 2 => 'Teutons', 3 => 'Gauls',
-            6 => 'Huns', 7 => 'Egyptians', 8 => 'Spartans', 9 => 'Vikings',
+            1 => defined('TRIBE1') ? TRIBE1 : 'Romans',
+            2 => defined('TRIBE2') ? TRIBE2 : 'Teutons',
+            3 => defined('TRIBE3') ? TRIBE3 : 'Gauls',
+            6 => defined('TRIBE6') ? TRIBE6 : 'Huns',
+            7 => defined('TRIBE7') ? TRIBE7 : 'Egyptians',
+            8 => defined('TRIBE8') ? TRIBE8 : 'Spartans',
+            9 => defined('TRIBE9') ? TRIBE9 : 'Vikings',
         ];
     }
 

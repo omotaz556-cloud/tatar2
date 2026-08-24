@@ -57,7 +57,7 @@ $t4SlotNames = [1=>'Helmet',2=>'Body',3=>'Right hand',4=>'Left hand',5=>'Shoes',
 .t4a-msg.err{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
 </style>
 
-<h2>T4 Hero controls — user #<?php echo $id; ?>
+<h2><?php echo ADMIN_T4_HERO_CONTROLS_TITLE; ?> — user #<?php echo $id; ?>
     <small><a href="admin.php?p=editHero&uid=<?php echo $id; ?>"><?php echo ADM_CLASSIC_HERO_EDITOR; ?></a></small>
 </h2>
 
@@ -162,7 +162,7 @@ $t4SlotNames = [1=>'Helmet',2=>'Body',3=>'Right hand',4=>'Left hand',5=>'Shoes',
         <?php if ($t4Running) { ?>
             <p><b><?php echo ADM_RUNNING; ?></b> adventure #<?php echo (int) $t4Running['id']; ?>,
                difficulty <?php echo (int) $t4Running['difficulty'] === 1 ? 'hard' : 'normal'; ?>,
-               arrives <?php echo date('d.m H:i:s', (int) $t4Running['endtime']); ?> (do not delete running adventures).</p>
+               <?php echo ADMIN_T4_RUNNING_ADVENTURE_NOTE; ?></p>
         <?php } ?>
         <?php if (count($t4Offers)) { ?>
         <table class="t4a-table">

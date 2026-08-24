@@ -60,6 +60,13 @@ $sitterView = isset($session) && is_object($session)
 
     |
 
+    <!-- ================= DISPLAY OPTIONS ================= -->
+    <a href="spieler.php?s=2#display_options">
+        <?php echo PREF_OPTIONS; ?>
+    </a>
+
+    |
+
     <!-- ================= ACCOUNT ================= -->
     <a href="spieler.php?s=3"
        <?php echo ($sParam === 3) ? 'class="selected"' : ''; ?>>

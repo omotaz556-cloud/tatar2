@@ -61,6 +61,16 @@ html[dir="rtl"] {
     zoom: 1.5 !important;
 }
 
+/* Map tile and oasis details should read as Arabic, not as an LTR table. */
+html[dir="rtl"] div#content.map h1,
+html[dir="rtl"] div#content.map div#map_details,
+html[dir="rtl"] div#content.map div#map_details table,
+html[dir="rtl"] div#content.map div#map_details th,
+html[dir="rtl"] div#content.map div#map_details td {
+    direction: rtl;
+    text-align: right;
+}
+
 /* شريط الموارد absolute، لذلك نترك مساحة واضحة تحته قبل بداية الأعمدة. */
 /* ---------------------------------------------------------------------
  * CENTERING FIX: lang/en/compact.css sets "#mid { float:left; width:100%;

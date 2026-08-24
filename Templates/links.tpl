@@ -147,20 +147,10 @@ foreach ($links as $link) {
             <td class="link">
 
 <?php
-/**
- * Fără PLUS
- */
-if ((int)$session->plus == 0) {
-
-    echo 'buy Plus';
-
-} else {
-
-    echo '<a href="' . safeHTML($linkUrl) . '"' . $target . '>'
-        . safeHTML($linkName)
-        . $externalIcon
-        . '</a>';
-}
+echo '<a href="' . safeHTML($linkUrl) . '"' . $target . '>'
+    . safeHTML($linkName)
+    . $externalIcon
+    . '</a>';
 ?>
 
             </td>

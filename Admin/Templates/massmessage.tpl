@@ -76,7 +76,7 @@ $_SESSION['mass_color']   = $_SESSION['mass_color'] ?? 'black';
       </div>
       <div>
         <h3><?php echo ADM_SEND_MESSAGE_TO_ALL_PLAYERS; ?></h3>
-        <p>In-game message for all users (ID > 5)</p>
+        <p><?php echo ADM_IN_GAME_MESSAGE_ALL_USERS; ?></p>
       </div>
     </div>
 

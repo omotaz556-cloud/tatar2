@@ -69,7 +69,7 @@
       $averagerank = 0; $i = 0;
       foreach($varmedal as $m){ if($m['plaats']>0){ $i++; $averagerank += $m['plaats']; } }
       $average = $i ? round($averagerank/$i,1) : 0;
-      echo '<tr class="avg-row"><td style="text-align:left"><b>Average Rank</b></td><td>'.$average.'</td><td></td><td></td><td>Delete All</td>
+      echo '<tr class="avg-row"><td style="text-align:left"><b>'.ADMIN_AVERAGE_RANK.'</b></td><td>'.$average.'</td><td></td><td></td><td>'.ADMIN_DELETE_ALL.'</td>
         <td>
           <form action="../GameEngine/Admin/Mods/medals.php" method="POST" style="margin:0">
             '.csrf_field().'

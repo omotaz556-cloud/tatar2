@@ -30,11 +30,11 @@ function formatNum($n) {
 }
 function q1($sql){ global $database; $r=$database->query($sql); return $r ? $r->fetch_assoc() : []; }
 
-// ---- DATE ----
+// ---- البيانات ----
 $users = (int)(q1("SELECT COUNT(*) c FROM ".TB_PREFIX."users WHERE tribe IN (1,2,3,6,7,8,9)")['c'] ?? 0);
-// Jucatori online: se numara din users.timestamp, ca in home.tpl si in pagina
-// Online Players - aceeasi fereastra de 5 minute, aceeasi sursa.
-// Tabela separata "active" a fost eliminata: dubla exact aceasta informatie.
+// اللاعبون المتصلون: يتم عدهم من users.timestamp، كما في home.tpl وفي الصفحة
+// لاعبون متصلون الآن - نفس نافذة 5 دقائق، نفس المصدر.
+// تم حذف جدول منفصل "active": يحتوي على نفس هذه المعلومات بالضبط.
 $active = (int)(q1("SELECT COUNT(*) c FROM ".TB_PREFIX."users WHERE timestamp > ".(time()-300)." AND id > 5")['c'] ?? 0);
 $online = (int)(q1("SELECT COUNT(*) c FROM ".TB_PREFIX."users WHERE timestamp > ".(time()-300)." AND tribe>0")['c'] ?? 0);
 $banned = (int)(q1("SELECT COUNT(*) c FROM ".TB_PREFIX."users WHERE access=0")['c'] ?? 0);
@@ -46,7 +46,7 @@ foreach([1,2,3,6,7,8,9] as $t){ $tribes[$t] = (int)(q1("SELECT COUNT(*) c FROM "
 
 $gold = (int)(q1("SELECT SUM(gold) s FROM ".TB_PREFIX."users")['s'] ?? 0);
 
-// ---- TRUPE ----
+// ---- الجنود ----
 $cells = ['SUM(hero) as hero'];
 for($i=1;$i<=90;$i++) $cells[] = "SUM(u$i) AS u$i";
 $uv = q1("SELECT ".implode(',',$cells)." FROM ".TB_PREFIX."units");

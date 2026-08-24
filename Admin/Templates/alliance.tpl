@@ -180,7 +180,7 @@ if($_GET['aid']) {
 
         <div class="btn-row">
             <a class="btn edit" href="?p=editAli&aid=<?php echo $alidata['id'];?>"><?php echo ADM_EDIT_ALLIANCE; ?></a>
-            <a class="btn del" href="?p=delAli&aid=<?php echo $alidata['id'];?>" onclick="return confirm('Delete alliance?')"><?php echo ADM_DELETE_2; ?></a>
+            <a class="btn del" href="?p=delAli&aid=<?php echo $alidata['id'];?>" onclick="return confirm('<?php echo ADMIN_DELETE_ALLIANCE_CONFIRM; ?>')"><?php echo ADM_DELETE_2; ?></a>
         </div>
     </div>
 </div>
@@ -298,7 +298,7 @@ if($_GET['aid']) {
 
 <?php
     } else {
-        echo "<div style='padding:30px;text-align:center;'>Alliance not found... <a href='javascript:history.go(-1)'>Back</a></div>";
+        echo "<div style='padding:30px;text-align:center;'>".ADMIN_NOT_FOUND."... <a href='javascript:history.go(-1)'>".ADMIN_BACK."</a></div>";
     }
 }
 ?>

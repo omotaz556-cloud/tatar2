@@ -39,6 +39,26 @@ $settings = XTatarGold::settings();
 $enabled = (int) $settings['enabled'] === 1;
 $log = XTatarGold::recentLog(40);
 $topEarners = XTatarGold::topEarners(15);
+
+function xtatarGoldTypeLabel($type) {
+    $labels = [
+        'points_awarded' => ADM_XG_TYPE_POINTS_AWARDED,
+        'gold_converted' => ADM_XG_TYPE_GOLD_CONVERTED,
+        'admin_adjust' => ADM_XG_TYPE_ADMIN_ADJUST,
+    ];
+    return $labels[$type] ?? $type;
+}
+
+function xtatarGoldSourceLabel($source) {
+    if ($source === 'daily_login') return ADM_XG_SOURCE_DAILY_LOGIN;
+    if (strpos($source, 'xtatar_web:') === 0) return ADM_XG_SOURCE_WEBHOOK;
+    if ($source === 'admin_adjust') return ADM_XG_SOURCE_ADMIN;
+    return $source !== '' ? $source : ADM_XG_SOURCE_OTHER;
+}
+
+function xtatarGoldNoteLabel($note) {
+    return $note === 'X-Tatar.com webhook' ? ADM_XG_NOTE_WEBHOOK : $note;
+}
 ?>
 <style>
 .xg-wrap{color:#e2e8f0;font-family:Verdana,Arial,sans-serif;font-size:12px;padding:6px 4px 26px;}
@@ -174,10 +194,10 @@ $topEarners = XTatarGold::topEarners(15);
                             <?php foreach ($lookupLog as $row): ?>
                                 <tr>
                                     <td class="num" style="color:#94a3b8;"><?php echo $row['time'] ? date('Y-m-d H:i', (int) $row['time']) : '&ndash;'; ?></td>
-                                    <td><?php echo e($row['type']); ?></td>
+                                    <td><?php echo e(xtatarGoldTypeLabel($row['type'])); ?></td>
                                     <td class="num"><?php echo number_format((int) $row['points']); ?></td>
                                     <td class="num xg-gold"><?php echo (int) $row['gold'] > 0 ? number_format((int) $row['gold']) : '&ndash;'; ?></td>
-                                    <td><?php echo e($row['source']); ?></td>
+                                    <td><?php echo e(xtatarGoldSourceLabel($row['source'])); ?></td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>
@@ -240,7 +260,7 @@ $topEarners = XTatarGold::topEarners(15);
                         <th><?php echo ADM_XG_POINTS; ?></th>
                         <th><?php echo ADM_XG_GOLD; ?></th>
                         <th><?php echo ADM_XG_SOURCE; ?></th>
-                        <th><?php echo ADM_NOTE; ?></th>
+                        <th><?php echo ADM_XG_NOTE_COLUMN; ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -251,11 +271,11 @@ $topEarners = XTatarGold::topEarners(15);
                     <tr>
                         <td class="num" style="color:#94a3b8;"><?php echo $row['time'] ? date('Y-m-d H:i', (int) $row['time']) : '&ndash;'; ?></td>
                         <td><?php echo e($row['username'] ?? ('#' . $row['uid'])); ?></td>
-                        <td><?php echo e($row['type']); ?></td>
+                        <td><?php echo e(xtatarGoldTypeLabel($row['type'])); ?></td>
                         <td class="num <?php echo $pointsClass; ?>"><?php echo number_format($points); ?></td>
                         <td class="num xg-gold"><?php echo (int) $row['gold'] > 0 ? number_format((int) $row['gold']) : '&ndash;'; ?></td>
-                        <td><?php echo e($row['source']); ?></td>
-                        <td style="color:#94a3b8;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><?php echo $row['note'] !== '' ? e($row['note']) : '&ndash;'; ?></td>
+                        <td><?php echo e(xtatarGoldSourceLabel($row['source'])); ?></td>
+                        <td style="color:#94a3b8;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><?php echo $row['note'] !== '' ? e(xtatarGoldNoteLabel($row['note'])) : '&ndash;'; ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

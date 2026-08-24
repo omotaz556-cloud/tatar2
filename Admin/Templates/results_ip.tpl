@@ -46,7 +46,7 @@ if($result){
 </style>
 
 <div class="search-wrap">
-  <div class="search-head">Found IPs (<?php echo count($rows);?>)</div>
+  <div class="search-head"><?php echo ADMIN_FOUND_IPS; ?> (<?php echo count($rows);?>)</div>
 
   <table class="search-table">
 	<tr>

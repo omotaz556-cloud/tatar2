@@ -76,7 +76,7 @@ $result = mysqli_query($GLOBALS["link"], $sql);
 $i = 0;
 while($row = mysqli_fetch_assoc($result)) {
     $i++;
-    $tribe = $row['tribe']==1?'Roman':($row['tribe']==2?'Teuton':'Gaul');
+    $tribe = $row['tribe']==1?TRIBE1:($row['tribe']==2?TRIBE2:TRIBE3);
     $tclass = 'tribe-'.$row['tribe'];
     $time = date('d.m.Y H:i', $row['timestamp']);
     echo "<tr>
@@ -90,7 +90,7 @@ while($row = mysqli_fetch_assoc($result)) {
       <td class='time'>{$time}</td>
     </tr>";
 }
-if($i==0) echo "<tr><td colspan='8' style='text-align:center;padding:20px;color:#777'>Niciun jucător neactivat</td></tr>";
+if($i==0) echo "<tr><td colspan='8' style='text-align:center;padding:20px;color:#777'>".ADMIN_NO_UNACTIVATED_PLAYERS."</td></tr>";
 ?>
       </tbody>
     </table>

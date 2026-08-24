@@ -22,6 +22,7 @@ if(!isset($_SESSION)) session_start();
 if($_SESSION['access'] < 9) die(ACCESS_DENIED_ADMIN);
 
 $editIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>';
+ob_start();
 ?>
 <style>
 .config-wrap{max-width:1100px;margin:0 auto;font-family:system-ui,-apple-system,Segoe UI,Roboto}
@@ -76,11 +77,11 @@ $editIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=
     <tr><td><?php echo CONF_SERV_VILLEXPSPEED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_VILLEXPSPEED_TOOLTIP ?></span></em></td><td><?php echo CP == 0 ? ADM_FAST : ADM_SLOW; ?></td></tr>
     <tr><td><?php echo CONF_SERV_BEGINPROTECT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_BEGINPROTECT_TOOLTIP ?></span></em></td><td><?php echo (PROTECTION / 3600);?> <?php echo ADM_HOUR_UNIT; ?></td></tr>
     <tr><td><?php echo CONF_SERV_REGOPEN ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_REGOPEN_TOOLTIP ?></span></em></td><td><?php echo REG_OPEN ? "<span class='badge blue'>".ADM_TRUE."</span>" : "<span class='badge red'>".ADM_FALSE."</span>"; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_ACTIVMAIL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_ACTIVMAIL_TOOLTIP ?></span></em></td><td><?php echo AUTH_EMAIL ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_QUEST ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_QUEST_TOOLTIP ?></span></em></td><td><?php echo QUEST ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_ACTIVMAIL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_ACTIVMAIL_TOOLTIP ?></span></em></td><td><?php echo AUTH_EMAIL ? "<span class='badge green'>".ADMIN_ENABLED."</span>" : "<span class='badge red'>".ADMIN_DISABLED."</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_QUEST ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_QUEST_TOOLTIP ?></span></em></td><td><?php echo QUEST ? "<span class='badge green'>".ADMIN_ENABLED."</span>" : "<span class='badge red'>".ADMIN_DISABLED."</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_QTYPE ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_QTYPE_TOOLTIP ?></span></em></td><td><?php echo QTYPE == 25 ? "<span class='badge blue'>".ADM_NOVATERRA_OFFICIAL."</span>" : "<span class='badge blue'>".ADM_NOVATERRA_EXTENDED."</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_DLR ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_DLR_TOOLTIP ?></span></em></td><td><?php echo DEMOLISH_LEVEL_REQ; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_WWSTATS ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_WWSTATS_TOOLTIP ?></span></em></td><td><?php echo WW ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_WWSTATS ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_WWSTATS_TOOLTIP ?></span></em></td><td><?php echo WW ? "<span class='badge green'>".ADMIN_ENABLED."</span>" : "<span class='badge red'>".ADMIN_DISABLED."</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_NTRTIME ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NTRTIME_TOOLTIP ?></span></em></td><td><?php echo NATURE_REGTIME >= 86400 ? (NATURE_REGTIME/86400).' '.DAYS : (NATURE_REGTIME/3600).' '.HOURS; ?></td></tr>
     <tr><td><?php echo CONF_SERV_OASIS_WOOD_PROD_MULT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_OASIS_WOOD_PROD_MULT_TOOLTIP ?></span></em></td><td><?php echo OASIS_WOOD_MULTIPLIER ?></td></tr>
     <tr><td><?php echo CONF_SERV_OASIS_CLAY_PROD_MULT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_OASIS_CLAY_PROD_MULT_TOOLTIP ?></span></em></td><td><?php echo OASIS_CLAY_MULTIPLIER ?></td></tr>
@@ -88,10 +89,10 @@ $editIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=
     <tr><td><?php echo CONF_SERV_OASIS_CROP_PROD_MULT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_OASIS_CROP_PROD_MULT_TOOLTIP ?></span></em></td><td><?php echo OASIS_CROP_MULTIPLIER ?></td></tr>
     <tr><td><?php echo CONF_SERV_MEDALINTERVAL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_MEDALINTERVAL_TOOLTIP ?></span></em></td><td><?php echo MEDALINTERVAL >= 86400 ? (MEDALINTERVAL/86400).' '.DAYS : (MEDALINTERVAL/3600).' '.HOURS; ?></td></tr>
     <tr><td><?php echo CONF_SERV_TOURNTHRES ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_TOURNTHRES_TOOLTIP ?></span></em></td><td><?php echo TS_THRESHOLD;?></td></tr>
-    <tr><td><?php echo CONF_SERV_GWORKSHOP ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_GWORKSHOP_TOOLTIP ?></span></em></td><td><?php echo GREAT_WKS ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_GWORKSHOP ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_GWORKSHOP_TOOLTIP ?></span></em></td><td><?php echo GREAT_WKS ? "<span class='badge green'>".ADMIN_ENABLED."</span>" : "<span class='badge red'>".ADMIN_DISABLED."</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_NATARSTAT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NATARSTAT_TOOLTIP ?></span></em></td><td><?php echo SHOW_NATARS ? "<span class='badge blue'>".ADM_TRUE."</span>" : "<span class='badge red'>".ADM_FALSE."</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_PEACESYST ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_PEACESYST_TOOLTIP ?></span></em></td><td><?php echo ([ADM_PEACE_NONE, ADM_PEACE_NORMAL, ADM_PEACE_CHRISTMAS, ADM_PEACE_NEW_YEAR, ADM_PEACE_EASTER])[PEACE]; ?></td></tr>
-    <tr><td><?php echo CONF_SERV_GRAPHICPACK ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_GRAPHICPACK_TOOLTIP ?></span></em></td><td><?php echo GP_ENABLE ? "<span class='badge green'>Enabled</span>" : "<span class='badge red'>Disabled</span>"; ?></td></tr>
+    <tr><td><?php echo CONF_SERV_GRAPHICPACK ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_GRAPHICPACK_TOOLTIP ?></span></em></td><td><?php echo GP_ENABLE ? "<span class='badge green'>".ADMIN_ENABLED."</span>" : "<span class='badge red'>".ADMIN_DISABLED."</span>"; ?></td></tr>
     <tr><td><?php echo CONF_SERV_ERRORREPORT ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_ERRORREPORT_TOOLTIP ?></span></em></td><td><b><?php echo (ERROR_REPORT=="error_reporting (0);")? "No": "Yes";?></b></td></tr>
     <tr>
       <td><?php echo ADM_SERVER_GRAPHIC_PACK; ?> <em class="tooltip">?<span class="classic"><?php echo ADM_SERVER_GRAPHIC_PACK_TIP; ?></span></em></td>
@@ -374,6 +375,14 @@ $cronKeyMasked = ($cronKey === '')
 </div>
 
 </div>
+<?php
+$configOutput = ob_get_clean();
+echo str_replace(
+  ['>Enabled<', '>Disabled<', '>Limit mailbox disabled<'],
+  ['>'.ADMIN_ENABLED.'<', '>'.ADMIN_DISABLED.'<', '>'.ADMIN_LIMIT_MAILBOX_DISABLED.'<'],
+  $configOutput
+);
+?>
 <?php
 function define_array($array, $keys = null){
 	foreach($array as $key => $value){

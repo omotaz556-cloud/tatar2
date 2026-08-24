@@ -8,10 +8,10 @@ The taskmaster will help you on your way to establishing your empire with advice
 
 <ul style="margin-top:0;margin-bottom:0;">
 <li>You have to heed the <a href="rules.php">game rules</a></li>
-<li>Information concerning troops and buildings can be found in the <a href="#" onClick="return Popup(0,0);">instructions</a></li>
+<li>Information concerning troops and buildings can be found in the <a href="#" onClick="return Popup(0,0);"><?php echo ADMIN_INSTRUCTIONS; ?></a></li>
 <li>Problems? Check the <a href="http://t3.answers.novaterra.example" target="_blank">Novaterra Answers</a> first!</li>
 <li>No solution? Try asking in the <a href="https://github.com/omotaz556-cloud/tatar">Forum</a></li>
-<li>Tried everything to no avail? Write an answer to this message to contact the Support</li>
+<li><?php echo ADMIN_CONTACT_SUPPORT; ?></li>
 </ul>
 
 <b>Game World Timeline</b>
@@ -32,7 +32,7 @@ The estimated end date is calculated dynamically from the World Wonder Construct
 
 After approximately <b>%NATAR_TIME%</b>, the <b>legendary tribe of the Natars</b> will enter the battlefield. Prepare your armies, strengthen your alliances and get ready for the final stage of the game.
 
-<b>Active Server Features</b>
+<b><?php echo ADMIN_ACTIVE_SERVER_FEATURES; ?></b>
 
 The following features are currently active on this game world:
 

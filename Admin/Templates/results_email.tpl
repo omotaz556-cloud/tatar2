@@ -33,7 +33,7 @@
 </style>
 
 <div class="search-wrap">
-  <div class="search-head">Found emails (<?php echo count($result);?>)</div>
+	<div class="search-head"><?php echo ADMIN_FOUND_EMAILS; ?> (<?php echo count($result);?>)</div>
 
   <table class="search-table">
 	<tr>

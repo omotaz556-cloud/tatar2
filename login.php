@@ -51,9 +51,9 @@ $_SESSION[ 'csrf' ] = $key;
 <html <?php echo tz_html_dir_attrs(); ?>>
 	<head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME; ?> - Login</title>
+	<title><?php echo SERVER_NAME; ?> - <?php echo LOGIN; ?></title>
 		<link rel="shortcut icon" href="favicon.ico"/>
-	<meta name="content-language" content="en" />
+	<meta name="content-language" content="<?php echo htmlspecialchars(LANG, ENT_QUOTES, 'UTF-8'); ?>" />
 	<meta http-equiv="cache-control" content="max-age=0" />
 	<meta http-equiv="imagetoolbar" content="no" />
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -79,7 +79,7 @@ $_SESSION[ 'csrf' ] = $key;
 
 <div id="content"  class="login">
 
-<h1><img class="img_login" src="img/x.gif" alt="log in the game" /></h1>
+<h1><img class="img_login" src="img/x.gif" alt="<?php echo htmlspecialchars(LOGIN, ENT_QUOTES, 'UTF-8'); ?>" /></h1>
 
 <?php
 $time = time();
@@ -90,7 +90,7 @@ echo '<p><font color="red" size="6">'.NOT_OPENED_YET.'</font></p>' ;
 else
 {
 ?>
-<h5><img class="img_u04" src="img/x.gif" alt="login" /></h5>
+<h5><img class="img_u04" src="img/x.gif" alt="<?php echo htmlspecialchars(LOGIN, ENT_QUOTES, 'UTF-8'); ?>" /></h5>
 <p><?php echo COOKIES; ?></p>
 <?php
 $stime = strtotime( date( 'm/d/Y H:i', strtotime(START_DATE . ' ' . START_TIME ) ) );
@@ -98,14 +98,14 @@ $stime = strtotime( date( 'm/d/Y H:i', strtotime(START_DATE . ' ' . START_TIME )
 // check whether the server has started or is yet to start
 if ( $stime > $time ){
 ?>
-<br/><div style="text-align: center"><big>Server will start in: </big></div>
+<br/><div style="text-align: center"><big><?php echo SERVER_STARTS_IN; ?></big></div>
 <script language="JavaScript">
 TargetDate = "<?php echo date( 'm/d/Y H:i', strtotime(START_DATE . ' ' . START_TIME ) ); ?>";
 CountActive = true;
 CountStepper = -1;
 LeadingZero = true;
 DisplayFormat = "%%H%%:%%M%%:%%S%%";
-FinishMessage = "START NOW";
+FinishMessage = <?php echo json_encode(START_NOW); ?>;
 
 function calcage(secs, num1, num2) {
   s = ((Math.floor(secs/num1))%num2).toString();
@@ -210,7 +210,7 @@ Element.implement({
 
 <p class="btn">
 	<!--<input type="hidden" name="e1d9d0c" value="" />-->
-		<button value="login" name="s1"	onclick="xy();" id="btn_login" class="trav_buttons" alt="login button"	/> Login </button>
+		<button value="login" name="s1"	onclick="xy();" id="btn_login" class="trav_buttons" alt="<?php echo htmlspecialchars(LOGIN, ENT_QUOTES, 'UTF-8'); ?>"	/> <?php echo LOGIN; ?> </button>
 </p>
 
 </form>

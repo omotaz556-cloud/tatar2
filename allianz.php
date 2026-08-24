@@ -70,7 +70,8 @@ if(isset($_GET['fid']) || isset($_GET['fid2'])){
 	}
 }
 if(isset($_GET['aid']) || isset($_GET['fid']) || isset($_GET['fid2']) ||
-		$session->alliance > 0 || ($session->alliance == 0 && isset($_GET['s']) && $_GET['s'] == 2)){
+		$session->alliance > 0 || ($session->alliance == 0 && isset($_GET['s']) &&
+			($_GET['s'] == 2 || ($_GET['s'] == 6 && !empty($_GET['public']))))){
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html <?php echo tz_html_dir_attrs(); ?>>

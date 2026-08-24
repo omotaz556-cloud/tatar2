@@ -203,11 +203,18 @@ foreach ($varmedal as $medal) {
         case "16": $titel=TZ_MEDAL_TOP10_RANK; break;
     }
 
+    $medalImage = preg_replace('/[^a-zA-Z0-9_.-]/', '', (string)($medal['img'] ?? ''));
+    $medalImageUrl = $medalImage !== ''
+        ? GP_LOCATE . 'img/t/' . rawurlencode($medalImage) . '.jpg'
+        : '';
+    $medalPreview = $medalImageUrl !== ''
+        ? '<img class="badge-option" src="' . htmlspecialchars($medalImageUrl, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($titel, ENT_QUOTES, 'UTF-8') . '">'
+        : '';
     echo "<tr>
     <td>$titel</td>
     <td>{$medal['plaats']}</td>
     <td>{$medal['week']}</td>
-    <td><a href='#' onclick=\"insertMedal('[#{$medal['id']}]'); return false;\">[#{$medal['id']}]</a></td>
+    <td><a href='#' title='إدراج الوسام' onclick=\"insertMedal('[#{$medal['id']}]'); return false;\">" . $medalPreview . "</a></td>
     </tr>";
 }
 ?>

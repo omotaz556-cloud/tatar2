@@ -21,6 +21,7 @@
 ?>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Cinzel:wght@600&display=swap');
+html{zoom:1 !important}
 *{box-sizing:border-box}
 body{margin:0;background:#0a0f1c;font-family:'Inter',sans-serif;color:#e2e8f0}
 /* ASCUNDE ELEMENTELE VECHI */
@@ -31,6 +32,7 @@ body > img[src*="Novaterra"], img[src*="admin.gif"]{display:none !important}
 .login-page::before{display:none}
 
 .login-container{position:relative;z-index:2;width:100%;max-width:420px;margin-top:0}
+.login-container{transform:none;margin-bottom:0;max-width:420px}
 .login-header{text-align:center;margin-bottom:24px}
 .novaterra-logo{font-family:'Cinzel',serif;font-size:38px;font-weight:600;color:#fff;letter-spacing:2px;text-shadow:0 0 20px rgba(14,165,233,.6);margin-bottom:8px}
 .novaterra-logo span{color:#0ea5e9}

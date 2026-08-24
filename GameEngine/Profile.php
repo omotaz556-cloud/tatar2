@@ -104,6 +104,14 @@ class Profile {
 		$v4  = empty($post['v4'])  ? 0 : 1;
 		$v5  = empty($post['v5'])  ? 0 : 1;
 		$v6  = empty($post['v6'])  ? 0 : 1;
+		$mobileMode = isset($post['mobile_mode']) ? (int)$post['mobile_mode'] : 0;
+		$timerRefresh = empty($post['timer_refresh']) ? 0 : 1;
+		$invertColors = empty($post['invert_colors']) ? 0 : 1;
+		$statsFormat = isset($post['stats_format']) ? (int)$post['stats_format'] : 0;
+		$nightMode = isset($post['night_mode']) ? (int)$post['night_mode'] : 0;
+		if (!in_array($mobileMode, [0, 1, 2], true)) $mobileMode = 0;
+		if (!in_array($statsFormat, [0, 1, 2], true)) $statsFormat = 0;
+		if (!in_array($nightMode, [0, 1, 2], true)) $nightMode = 0;
 		$upgradeRedirect = isset($post['upgrade_redirect']) ? (int)$post['upgrade_redirect'] : 0;
 		if (!in_array($upgradeRedirect, [0, 1, 2], true)) {
 			$upgradeRedirect = 0;
@@ -126,10 +134,29 @@ class Profile {
 				"ALTER TABLE `" . TB_PREFIX . "users` ADD COLUMN `upgrade_redirect` TINYINT(1) NOT NULL DEFAULT '0'"
 			);
 		}
+		foreach ([
+			'mobile_mode' => "TINYINT(1) NOT NULL DEFAULT '0'",
+			'timer_refresh' => "TINYINT(1) NOT NULL DEFAULT '0'",
+			'invert_colors' => "TINYINT(1) NOT NULL DEFAULT '0'",
+			'stats_format' => "TINYINT(1) NOT NULL DEFAULT '0'",
+			'night_mode' => "TINYINT(1) NOT NULL DEFAULT '0'",
+		] as $column => $definition) {
+			$columnCheck = mysqli_query(
+				$database->dblink,
+				"SHOW COLUMNS FROM `" . TB_PREFIX . "users` LIKE '" . $column . "'"
+			);
+			if ($columnCheck && mysqli_num_rows($columnCheck) === 0) {
+				mysqli_query(
+					$database->dblink,
+					"ALTER TABLE `" . TB_PREFIX . "users` ADD COLUMN `" . $column . "` " . $definition
+				);
+			}
+		}
 
 		$database->query(
 			"UPDATE " . TB_PREFIX . "users SET " .
 			"v1=$v1, v2=$v2, v3=$v3, map=$map, upgrade_redirect=$upgradeRedirect, v4=$v4, v5=$v5, v6=$v6, " .
+			"mobile_mode=$mobileMode, timer_refresh=$timerRefresh, invert_colors=$invertColors, stats_format=$statsFormat, night_mode=$nightMode, " .
 			"timezone=$timezone, tformat=$tformat " .
 			"WHERE id=" . (int)$session->uid
 		);

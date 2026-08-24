@@ -20,15 +20,19 @@
 ?>
 <style>
 .reset-wrap{max-width:720px;margin:20px auto;font-family:Tahoma,Verdana,Arial,sans-serif;padding:0 10px;box-sizing:border-box}
+html[dir="rtl"] .reset-wrap{direction:rtl;text-align:right}
+html[dir="rtl"] .reset-body,html[dir="rtl"] .reset-option{text-align:right}
+html[dir="rtl"] .reset-foot{direction:rtl}
 .reset-card{background:#fff;border:1px solid #bbb;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
 .reset-head{background:linear-gradient(135deg,#66CCFF,#66CCCC);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:8px}
 .reset-head h2{margin:0;font-size:16px;font-weight:bold}
 .reset-body{padding:24px 20px 10px;text-align:center;color:#333;font-size:13px;line-height:1.6}
 .reset-warning{background:#fff5f5;border:1px solid #e74c3c;border-left:4px solid #c0392b;padding:14px;margin:0 auto 16px;max-width:520px;border-radius:4px;color:#a93226;text-align:left}
 .reset-warning strong{display:block;margin-bottom:4px;font-size:13px}
-.reset-option{padding:0 20px 18px;text-align:left;background:#fff} /* DOAR ASTA E NOU */
+.reset-option{padding:0 20px 18px;text-align:right;direction:rtl;background:#fff}
 .reset-option label{font-size:12px;color:#333;cursor:pointer}
 .reset-option input{margin-right:6px;vertical-align:-1px}
+html[dir="rtl"] .reset-option input{margin-right:0;margin-left:6px}
 .reset-foot{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#f8f9fa;border-top:1px solid #ddd;gap:10px}
 .btn{padding:7px 16px;border-radius:4px;font-size:12px;font-weight:bold;cursor:pointer;border:1px solid transparent;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s}
 .btn-back{background:#ecf0f1;color:#2c3e50;border-color:#bdc3c7}
@@ -61,7 +65,7 @@
     <div class="reset-option">
        <label>
         <input type="checkbox" name="keep_admin" value="1" checked>
-Keep Admin accout (<?php echo htmlspecialchars($_SESSION['username'] ?? 'Admin'); ?>) after reset
+الإبقاء على حساب الأدمن (<?php echo htmlspecialchars($_SESSION['username'] ?? 'Admin'); ?>) بعد إعادة الضبط
       </label>
     </div>
 </br></br>
@@ -80,7 +84,7 @@ Keep Admin accout (<?php echo htmlspecialchars($_SESSION['username'] ?? 'Admin')
 
 <script type="text/javascript">
 function go_proceed() {
-    if(!confirm('ARE YOU SURE? All data will be deleted permanently!')) return;
+    if(!confirm('هل أنت متأكد؟ سيتم حذف جميع البيانات نهائيًا!')) return;
     
     document.getElementById("txtreset").style.display = 'none';
     document.querySelector('.reset-option').style.display = 'none';

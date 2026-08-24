@@ -137,7 +137,7 @@ echo ' '.$coords;
         for($i=31;$i<=40;$i++) if($unit['u'.$i]>0){
             $has=true;
             if(!$oasislink) $oasislink = rtrim(HOMEPAGE,'/').'/warsim.php?target=4';
-            $oasislink.= '&amp;u'.$i.'='.$unit['u'.$i];
+            $oasislink.= '&u'.$i.'='.(int)$unit['u'.$i];
             echo '<tr><td class="ico"><img class="unit u'.$i.'" src="img/x.gif" alt="'.$unames[$i].'"></td><td class="val">'.$unit['u'.$i].'</td><td class="desc">'.$unames[$i].'</td></tr>';
         }
         if(!$has) echo '<tr><td>'.NOTROOP.'</td></tr>';
@@ -208,7 +208,7 @@ if($isOasis){
     } else {
         echo '&raquo; '.RAID.' '.$otext.' ('.BUILDRALLY.')';
     }
-    if($oasislink) echo '</td></tr><tr><td><a href="'.$oasislink.'">&raquo; Combat Simulator</a>';
+    if($oasislink) echo '</td></tr><tr><td><a href="'.htmlspecialchars($oasislink, ENT_QUOTES, 'UTF-8').'">&raquo; '.COMBAT_SIMULATOR.'</a>';
 } else {
     $total = count($database->getProfileVillages($session->uid));
     $need = ${'cp'.CP}[$total+1];

@@ -143,6 +143,71 @@ function logCategory($entry) {
     if (strpos($t,'message')!==false) return ['MESSAGE','cat-msg','✉'];
     return ['OTHER','cat-other','📝'];
 }
+
+function logCategoryLabel($category) {
+    $labels = [
+        'BAN' => ADM_CAT_BAN,
+        'UNBAN' => ADM_CAT_UNBAN,
+        'GOLD' => ADM_CAT_GOLD,
+        'PLUS' => ADM_CAT_PLUS,
+        'BONUS' => ADM_CAT_BONUS,
+        'VILLAGE' => ADM_CAT_VILLAGE,
+        'MESSAGE' => ADM_CAT_MESSAGE,
+        'RESET' => ADM_CAT_RESET,
+        'OTHER' => ADM_CAT_OTHER,
+    ];
+    return $labels[$category] ?? $category;
+}
+
+function localizeAdminLogText($text) {
+    $translations = [
+        'logged in' => 'سجّل الدخول',
+        'tried to log in with username' => 'حاول تسجيل الدخول باسم المستخدم',
+        'but access was denied!' => 'لكن تم رفض الصلاحية!',
+        'Added new village' => 'تمت إضافة قرية جديدة',
+        'to user' => 'للمستخدم',
+        'Punished user:' => 'تمت معاقبة المستخدم:',
+        'Deleted user' => 'تم حذف المستخدم',
+        'Banned user' => 'تم حظر المستخدم',
+        'Unbanned user' => 'تم إلغاء حظر المستخدم',
+        'Changed troop upgrade levels in village' => 'تم تغيير مستويات ترقية القوات في القرية',
+        'Changed troop amounts in village' => 'تم تغيير أعداد القوات في القرية',
+        'edited Additional for' => 'عدّل المعلومات الإضافية لـ',
+        'cancelled Vacation Mode for' => 'ألغى وضع الإجازة لـ',
+        'Changed Debug Error Log settings' => 'غيّر إعدادات سجل أخطاء التصحيح',
+        'Enabled Debug Error Log' => 'فعّل سجل أخطاء التصحيح',
+        'Disabled Debug Error Log' => 'عطّل سجل أخطاء التصحيح',
+        'Deleted alliance ID' => 'تم حذف التحالف بالمعرف',
+        'Edited alliance' => 'تم تعديل التحالف',
+        'Deleted all medals' => 'تم حذف كل الأوسمة',
+        'Deleted player medals' => 'تم حذف أوسمة اللاعب',
+        'Changed password for user' => 'تم تغيير كلمة مرور المستخدم',
+        'Edited profile for user' => 'تم تعديل ملف المستخدم',
+        'Changed username for user' => 'تم تغيير اسم مستخدم',
+        'Changed owner for village' => 'تم تغيير مالك القرية',
+        'Renamed village' => 'تمت إعادة تسمية القرية',
+        'Sent message to uid' => 'تم إرسال رسالة إلى المعرف',
+        'Changed General Server Settings' => 'تم تغيير إعدادات الخادم العامة',
+        'Changed Server Settings' => 'تم تغيير إعدادات الخادم',
+        'Changed PLUS Settings' => 'تم تغيير إعدادات بلس',
+        'Changed Log Settings' => 'تم تغيير إعدادات السجل',
+        'Changed NewsBox Settings' => 'تم تغيير إعدادات صندوق الأخبار',
+        'Changed Extra server settings' => 'تم تغيير إعدادات الخادم الإضافية',
+        'Changed New Mechanics and Functions Settings' => 'تم تغيير إعدادات الآليات والوظائف الجديدة',
+        'Changed Cron, Automation & Cleanup Settings' => 'تم تغيير إعدادات Cron والأتمتة والتنظيف',
+        'Added' => 'تمت الإضافة',
+        'gold to ALL players' => 'ذهبًا لكل اللاعبين',
+        'gold to user' => 'ذهبًا للمستخدم',
+        'Gave' => 'تم منح',
+        'Reset gold to 0 for all users' => 'تمت إعادة الذهب إلى صفر لكل المستخدمين',
+        'Reset Plus to 0 for all users' => 'تمت إعادة بلس إلى صفر لكل المستخدمين',
+        'Cleared banlist' => 'تم مسح قائمة الحظر',
+        'Mass ban for' => 'حظر جماعي لـ',
+        'Mass unban for' => 'إلغاء حظر جماعي لـ',
+        'Changed access for user' => 'تم تغيير صلاحية المستخدم',
+    ];
+    return strtr($text, $translations);
+}
 ?>
 <div class="log-wrap">
   <div class="log-head">
@@ -188,12 +253,12 @@ foreach($paged as $e) {
     
     list($cat,$class,$icon) = logCategory($e);
     $date = date("d.m.Y H:i:s", $e['time'] + 3600*2);
-    $details = $e['text'];
+    $details = localizeAdminLogText($e['text']);
 ?>
 <tr data-cat="<?php echo $cat; ?>">
   <td>#<?php echo $e['id'] % 1000000; ?></td>
   <td><?php echo $adminLink; ?></td>
-  <td><span class="logCat <?php echo $class; ?>"><?php echo $icon.' '.$cat; ?></span></td>
+    <td><span class="logCat <?php echo $class; ?>"><?php echo logCategoryLabel($cat); ?></span></td>
   <td><?php echo $details; ?></td>
   <td><?php echo $date; ?></td>
 </tr>

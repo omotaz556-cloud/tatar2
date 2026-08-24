@@ -345,7 +345,7 @@ class XTatarGold
         }
 
         $points = (int) $settings['daily_login_points'] * $streak;
-        self::awardPoints($uid, $points, 'daily_login', 'Consecutive login day ' . $streak);
+        self::awardPoints($uid, $points, 'daily_login', ADM_CONSECUTIVE_LOGIN_DAY . ' ' . $streak);
     }
 
     /* ---- Admin: manual point adjustment ------------------------------------ */

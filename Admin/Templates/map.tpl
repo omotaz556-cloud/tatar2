@@ -60,7 +60,7 @@ if ($check1 == "" && $check2 == "" && $check3 == "") $criteria = "";
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta charset="utf-8">
-<title><?php echo SERVER_NAME; ?> Map</title>
+<title><?php echo SERVER_NAME; ?> <?php echo ADMIN_MAP_TITLE; ?></title>
 <style>
 body{margin:0;background:#f1f5f9;font-family:system-ui,-apple-system,Segoe UI,Roboto;color:#0f172a}
 .map-wrap{max-width:1200px;margin:16px auto;padding:0 12px}
@@ -131,7 +131,7 @@ body{margin:0;background:#f1f5f9;font-family:system-ui,-apple-system,Segoe UI,Ro
 
 <div class="map-wrap">
   <div class="map-header">
-    <h2><?php echo SERVER_NAME;?> Map</h2>
+    <h2><?php echo SERVER_NAME;?> <?php echo ADMIN_MAP_TITLE; ?></h2>
     <p><?php echo ADM_INTERACTIVE_WORLD_MAP_SEARCH_PLAYERS_VILLAGE; ?></p>
   </div>
 
@@ -197,18 +197,18 @@ body{margin:0;background:#f1f5f9;font-family:system-ui,-apple-system,Segoe UI,Ro
               $p_x = $pixelDiv + ($x * $xdiv);
               $p_y = $pixelDiv - ($y * $xdiv);
               $tooltip = "<ul class='p_info'>";
-              $tooltip.= "<li>Player: <b>{$p_name}</b></li>";
-              $tooltip.= "<li>Village: <b>{$p_village}</b></li>";
-              $tooltip.= "<li>Coord: <b>({$x}|{$y})</b></li>";
-              $tooltip.= "<li>Pop: <b>{$p_pop}</b></li>";
-              $tooltip.= "<li>Tribe: <b>{$p_tribe}</b></li>";
+              $tooltip.= "<li>".ADMIN_PLAYER.": <b>{$p_name}</b></li>";
+              $tooltip.= "<li>".VILLAGE.": <b>{$p_village}</b></li>";
+              $tooltip.= "<li>".ADMIN_COORD.": <b>({$x}|{$y})</b></li>";
+              $tooltip.= "<li>".ADMIN_POP.": <b>{$p_pop}</b></li>";
+              $tooltip.= "<li>".TRIBE.": <b>{$p_tribe}</b></li>";
               if ($check3!= "" && isset($p_array['size'])) {
-                  $tooltip.= "<li>Artifact: <b>".$artifactsEffect[$p_array['size']]."</b></li>";
+                  $tooltip.= "<li>".ADMIN_ARTIFACT.": <b>".$artifactsEffect[$p_array['size']]."</b></li>";
               }
               $tooltip.= "</ul>";
               $tooltip.= "<div class='p_actions'>"
-                      . "<a class='p_btn' href='?p=village&did={$did}' target='_blank'>Village</a>"
-                      . "<a class='p_btn' href='?p=player&uid={$uid}' target='_blank'>Profile</a>"
+                      . "<a class='p_btn' href='?p=village&did={$did}' target='_blank'>".VILLAGE."</a>"
+                      . "<a class='p_btn' href='?p=player&uid={$uid}' target='_blank'>".ADMIN_PROFILE."</a>"
                       . "</div>";
               $tooltipHover = str_replace(["\\", "'"], ["\\\\", "\\'"], $tooltip);
               $tooltipAttr = htmlspecialchars($tooltip, ENT_QUOTES);

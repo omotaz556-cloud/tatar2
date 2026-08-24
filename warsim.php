@@ -110,7 +110,7 @@ if(isset($_POST['result'])) {
 
 if (!empty($_GET['target'])) {
     // this only works for Nature, as GET links like this one will come from an oasis
-    if (!$_GET['target'] != 4) {
+	if ((int)$_GET['target'] !== 4) {
         $_GET['target'] = 4;
     }
 

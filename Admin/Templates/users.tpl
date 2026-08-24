@@ -46,25 +46,25 @@ $result = mysqli_query($GLOBALS['link'], "
 function tribeLabel($t){
     $t = (int)$t;
     switch($t){
-        case 1: return array('Roman','🏛','#c0392b');
-        case 2: return array('Teuton','🪓','#7f8c8d');
-        case 3: return array('Gaul','🌾','#27ae60');
-        case 4: return array('Nature','🌲','#16a085');
-        case 5: return array('Natars','👑','#8e44ad');
-        case 6: return array('Huns','🐎','#a16207');
-        case 7: return array('Egyptians','🏺','#d97706');
-        case 8: return array('Spartans','🛡','#7c3aed');
-        case 9: return array('Vikings','🪓','#0891b2');
-        default: return array('N/A','❓','#95a5a6');
+    case 1: return array(TRIBE1,'🏛','#c0392b');
+    case 2: return array(TRIBE2,'🪓','#7f8c8d');
+    case 3: return array(TRIBE3,'🌾','#27ae60');
+    case 4: return array(TRIBE4,'🌲','#16a085');
+    case 5: return array(TRIBE5,'👑','#8e44ad');
+    case 6: return array(TRIBE6,'🐎','#a16207');
+    case 7: return array(TRIBE7,'🏺','#d97706');
+    case 8: return array(TRIBE8,'🛡','#7c3aed');
+    case 9: return array(TRIBE9,'🪓','#0891b2');
+    default: return array(ADM_NOT_AVAILABLE,'❓','#95a5a6');
     }
 }
 function accessBadge($a){
     $a = (int)$a;
-    if($a == 9) return array('Admin','#c0392b');
+  if($a == 9) return array(ADMIN_ROLE_ADMIN,'#c0392b');
     if($a == 8) return array('MH','#e67e22');
-    if($a == 2) return array('Normal','#3498db'); 
-    if($a == 0) return array('Banned','#7f8c8d');
-    return array('Lvl '.$a,'#95a5a6');
+  if($a == 2) return array(ADM_NORMAL,'#3498db'); 
+  if($a == 0) return array(ADM_BANNED,'#7f8c8d');
+  return array(ADM_LEVEL.' '.$a,'#95a5a6');
 }
 function shortEmail($e){if(!$e)return '-';if(strlen($e)>22)return substr($e,0,19).'...';return $e;}
 ?>
@@ -115,7 +115,7 @@ function shortEmail($e){if(!$e)return '-';if(strlen($e)>22)return substr($e,0,19
 <div class="users-wrap">
   <div class="users-head">
     <h2><?php echo ADM_USERS_H; ?></h2>
-    <div style="font-size:11px;color:#94a3b8"><?php echo number_format($totalUsers);?> found</div>
+    <div style="font-size:11px;color:#94a3b8"><?php echo number_format($totalUsers);?> <?php echo ADMIN_FOUND; ?></div>
   </div>
 
 <div class="users-filters">

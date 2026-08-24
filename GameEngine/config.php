@@ -129,7 +129,7 @@ define("START_TIME", "00:47");
 // strictly sanitized to [a-z_] (no path traversal) and the target file MUST
 // exist, otherwise we fall back to the server default. This prevents Local
 // File Inclusion via a crafted session value.
-define("SERVER_LANG", "en");
+define("SERVER_LANG", "ar");
 if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 $__user_lang = isset($_SESSION['lang']) ? preg_replace('/[^a-z_]/', '', strtolower((string) $_SESSION['lang'])) : '';
 define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang . ".php")) ? $__user_lang : SERVER_LANG);
@@ -704,11 +704,10 @@ if (!function_exists('tz_rtl_stylesheet_tag')) {
     // are root-relative paths.
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
+        $tag = "\n\t<style id=\"tz-page-zoom\">html { zoom: 1.5 !important; }</style>";
         if (!tz_is_rtl_lang($langCode)) {
-            return '';
+            return $tag;
         }
-
-        $tag = '';
 
         // (1) Optional per-gpack override (legacy hook). Some gpacks may
         // ship their own lang/{code}/lang.css tweaks; only emitted if that

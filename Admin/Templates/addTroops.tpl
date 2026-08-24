@@ -60,7 +60,7 @@ if(isset($id)){
 <input type="hidden" name="admid" value="<?php echo $_SESSION['id']; ?>">
 
 <div class="addtroops-card">
-  <div class="addtroops-head">Edit troops – <?php echo htmlspecialchars($village['name']); ?> (<?php echo $coor['x'].'|'.$coor['y']; ?>)</div>
+  <div class="addtroops-head"><?php echo ADMIN_EDIT_TROOPS_TITLE; ?> – <?php echo htmlspecialchars($village['name']); ?> (<?php echo $coor['x'].'|'.$coor['y']; ?>)</div>
   
   <div class="addtroops-grid">
   <?php for($i=1;$i<11;$i++){

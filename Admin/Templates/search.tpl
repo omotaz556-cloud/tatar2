@@ -20,12 +20,12 @@
 if($_SESSION['access'] < MULTIHUNTER) die(ADM_ACCESS_DENIED_BANG);
 
 $types = [
-    'player' => ['Search Players','👤'],
-    'alliances' => ['Search Alliances','🛡️'],
-    'villages' => ['Search Villages','🏘️'],
-    'email' => ['Search E-mails','✉️'],
-    'ip' => ['Search IPs','🌐'],
-    'deleted_players' => ['Search Deleted','🗑️']
+    'player' => ['بحث في اللاعبين','👤'],
+    'alliances' => ['بحث في التحالفات','🛡️'],
+    'villages' => ['بحث في القرى','🏘️'],
+    'email' => ['بحث في البريد الإلكتروني','✉️'],
+    'ip' => ['بحث في الآي بي','🌐'],
+    'deleted_players' => ['بحث في المحذوفين','🗑️']
 ];
 $current = $_POST['p']?? 'player';
 $search = stripslashes($_POST['s']?? '');
@@ -76,7 +76,7 @@ $search = stripslashes($_POST['s']?? '');
       <?php foreach($types as $k=>$v){?>
         <div class="qtype <?php echo $current==$k?'active':'';?>" onclick="setType('<?php echo $k;?>')">
           <span><?php echo $v[1];?></span>
-          <?php echo str_replace('Search ','',$v[0]);?>
+          <?php echo str_replace('بحث في ','',$v[0]);?>
         </div>
       <?php }?>
     </div>

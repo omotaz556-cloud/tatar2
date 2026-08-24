@@ -48,7 +48,7 @@
 			<td>
 				<?php
 				if($user['access'] == 0) echo '<span class="badge badge-banned">Banned</span>';
-				else if($user['access'] == 2) echo '<span class="badge badge-user">Normal user</span>';
+								else if($user['access'] == 2) echo '<span class="badge badge-user">'.ADMIN_NORMAL_USER.'</span>';
 				else if($user['access'] == 8) echo '<span class="badge badge-mh">Multihunter</span>';
 				else if($user['access'] == 9) echo '<span class="badge badge-admin">Administrator</span>';
 				?>
@@ -73,11 +73,11 @@
 		</tr>
 		<tr>
 			<td><?php echo ADM_SITTER_1_2; ?></td>
-			<td><?php echo $user['sit1'] >= 1 ? '<a href="admin.php?p=player&uid='.$user['sit1'].'">'.htmlspecialchars($database->getUserField($user['sit1'],"username",0)).'</a>' : '<span style="color:#94a3b8">No Sitter</span>'; ?></td>
+			  <td><?php echo $user['sit1'] >= 1 ? '<a href="admin.php?p=player&uid='.$user['sit1'].'">'.htmlspecialchars($database->getUserField($user['sit1'],"username",0)).'</a>' : '<span style="color:#94a3b8">'.ADMIN_NO_SITTER.'</span>'; ?></td>
 		</tr>
 		<tr>
 			<td><?php echo ADM_SITTER_2_2; ?></td>
-			<td><?php echo $user['sit2'] >= 1 ? '<a href="admin.php?p=player&uid='.$user['sit2'].'">'.htmlspecialchars($database->getUserField($user['sit2'],"username",0)).'</a>' : '<span style="color:#94a3b8">No Sitter</span>'; ?></td>
+			  <td><?php echo $user['sit2'] >= 1 ? '<a href="admin.php?p=player&uid='.$user['sit2'].'">'.htmlspecialchars($database->getUserField($user['sit2'],"username",0)).'</a>' : '<span style="color:#94a3b8">'.ADMIN_NO_SITTER.'</span>'; ?></td>
 		</tr>
 		<tr>
 			<td><?php echo ADM_BEGINNERS_PROTECTION; ?></td>

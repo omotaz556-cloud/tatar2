@@ -109,7 +109,7 @@ $deletedArtifacts = $database->getDeletedArtifacts();
     <div class="body" style="padding:0">
       <table class="nat-table">
         <tr><th></th><th></th><th><?php echo ADM_NAME; ?></th><th><?php echo ADM_BONUS; ?></th><th><?php echo ADM_EFFECT; ?></th><th><?php echo ADM_TIME; ?></th><th><?php echo ADM_OLD_OWNER; ?></th><th><?php echo ADM_OLD_VILLAGE; ?></th></tr>
-        <?php if(empty($deletedArtifacts)){ echo '<tr><td colspan="8" class="none">No artifacts</td></tr>'; } else { foreach($deletedArtifacts as $artifact){ $info=Artifacts::getArtifactInfo($artifact);?>
+        <?php if(empty($deletedArtifacts)){ echo '<tr><td colspan="8" class="none">لا توجد قطع أثرية</td></tr>'; } else { foreach($deletedArtifacts as $artifact){ $info=Artifacts::getArtifactInfo($artifact);?>
         <tr>
           <td><a href="?action=returnArtifact&artid=<?php echo $artifact['id'];?>&del=1"><img src="../../img/admin/acc.gif" title="<?php echo ADM_RESTORE; ?>"></a></td>
           <td class="icon"><img class="artefact_icon_<?php echo $artifact['type'];?>" src="../img/x.gif"></td>
@@ -133,7 +133,7 @@ $deletedArtifacts = $database->getDeletedArtifacts();
         <tr><th><?php echo ADM_ICON; ?></th><th><?php echo ADM_NAME; ?></th><th><?php echo ADM_EFFECT; ?></th><th><?php echo ADM_PLAYER_2; ?></th><th><?php echo ADMIN_ALLIANCE; ?></th></tr>
         <?php
         $small=$database->getArtifactsBysize(1); $big=$database->getArtifactsBysize(2); $unique=$database->getArtifactsBysize(3);
-        if(empty($small)&&empty($big)&&empty($unique)){ echo '<tr><td colspan="5" class="none">No artifacts found</td></tr>'; }
+        if(empty($small)&&empty($big)&&empty($unique)){ echo '<tr><td colspan="5" class="none">لم يتم العثور على قطع أثرية</td></tr>'; }
         else { $all=array(); if(is_array($small))$all=array_merge($all,$small); if(is_array($big))$all=array_merge($all,$big); if(is_array($unique))$all=array_merge($all,$unique);
 	foreach($all as $a){
     $player=$database->getUserField($a['owner'],"username",0);

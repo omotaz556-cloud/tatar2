@@ -37,13 +37,13 @@ function inactiveRange($daysMin, $daysMax = null){
 }
 
 $ranges = [
-    '1-3 days' => inactiveRange(1,3),
-    '3-7 days' => inactiveRange(3,7),
-    '7+ days' => inactiveRange(7,null)
+    ADM_1_3_DAYS => inactiveRange(1,3),
+    ADM_3_7_DAYS => inactiveRange(3,7),
+    ADM_7_PLUS_DAYS => inactiveRange(7,null)
 ];
 
 $tribeImg = [1=>'',2=>'1',3=>'2'];
-$tribeName = [1=>'Roman',2=>'Teuton',3=>'Gaul'];
+$tribeName = [1=>TRIBE1,2=>TRIBE2,3=>TRIBE3];
 ?>
 <style>
 .inactive-wrap{max-width:1100px;margin:20px auto;font-family:Verdana}
@@ -79,7 +79,7 @@ $tribeName = [1=>'Roman',2=>'Teuton',3=>'Gaul'];
 
   <?php $i=0; foreach($ranges as $label=>$users){ $i++; ?>
   <div class="inactive-panel <?php echo $i==1?'active':''; ?>" id="tab<?php echo $i; ?>">
-    <?php if(empty($users)){ echo "<div style='color:#999;padding:20px;text-align:center'>No users in this range</div>"; } else { ?>
+    <?php if(empty($users)){ echo "<div style='color:#999;padding:20px;text-align:center'>".ADM_NO_USERS_IN_RANGE."</div>"; } else { ?>
     <div class="inactive-grid">
       <?php foreach($users as $u){
         $uid = $u['id'];
@@ -96,14 +96,14 @@ $tribeName = [1=>'Roman',2=>'Teuton',3=>'Gaul'];
             <img src="../gpack/novaterra_classic/img/u/<?php echo $tribeImg[$tribe]; ?>9.gif" title="<?php echo $tribeName[$tribe]; ?>" width="16">
           </div>
           <div class="meta">
-            <span>⏱ <?php echo $days; ?>d <?php echo $hours; ?>h ago</span>
-            <span>👥 <?php echo $totalpop; ?> pop</span>
-            <span>🏘 <?php echo count($varray); ?> vil</span>
+            <span>⏱ <?php echo $days; ?><?php echo ADM_DAYS_AGO; ?> <?php echo $hours; ?><?php echo ADM_HOURS_AGO; ?></span>
+            <span>👥 <?php echo $totalpop; ?> <?php echo ADM_POPULATION_SHORT; ?></span>
+            <span>🏘 <?php echo count($varray); ?> <?php echo ADM_VILLAGES_SHORT; ?></span>
           </div>
         </div>
         <div class="stats">
           <span class="badge gold">💰 <?php echo $u['gold']; ?></span>
-          <span><a href="?p=player&uid=<?php echo $uid; ?>&action=delete" onclick="return confirm('Delete?')" style="color:#c00;text-decoration:none"><?php echo ADM_DELETE_L; ?></a></span>
+          <span><a href="?p=player&uid=<?php echo $uid; ?>&action=delete" onclick="return confirm('<?php echo ADM_DELETE_CONFIRM; ?>')" style="color:#c00;text-decoration:none"><?php echo ADM_DELETE_L; ?></a></span>
         </div>
       </div>
       <?php } ?>

@@ -448,16 +448,15 @@ while ($donnees = mysqli_fetch_assoc($result2)) {
 			var mmode = 0;
 			function init_local(){map_init();}
 		</script><?php
-		if($session->plus){
-			if(!empty($session->userinfo['map'])){
-				// Preference "Show the large map in an extra window" (#198):
-				// open the large map (karte2.php) in a separate browser window
-				// instead of the in-page iframe overlay.
-				echo '<a id="map_makelarge" href="karte2.php?z='.$bigmid.'" target="bigmap" onclick="window.open(this.href, \'bigmap\', \'width=1020,height=600,scrollbars=yes,resizable=yes\'); return false;"><img class="ml" src="img/x.gif" alt="'.LARGE_MAP.'" title="'.LARGE_MAP.'"/></a>';
-			} else {
-				echo '<a id="map_makelarge" href="#" onclick="PopupMap('.$bigmid.');" ><img class="ml" src="img/x.gif" alt="'.LARGE_MAP.'" title="'.LARGE_MAP.'"/></a>';
-			}
-		}?>
+        if(!empty($session->userinfo['map'])){
+            // Preference "Show the large map in an extra window" (#198):
+            // open the large map (karte2.php) in a separate browser window
+            // instead of the in-page iframe overlay.
+            echo '<a id="map_makelarge" href="karte2.php?z='.$bigmid.'" target="bigmap" onclick="window.open(this.href, \'bigmap\', \'width=1020,height=600,scrollbars=yes,resizable=yes\'); return false;"><img class="ml" src="img/x.gif" alt="'.LARGE_MAP.'" title="'.LARGE_MAP.'"/><span style="display:inline-block;margin-left:4px;white-space:nowrap;vertical-align:top;line-height:25px;">'.LARGE_MAP.'</span></a>';
+        } else {
+            echo '<a id="map_makelarge" href="#" onclick="PopupMap('.$bigmid.');" ><img class="ml" src="img/x.gif" alt="'.LARGE_MAP.'" title="'.LARGE_MAP.'"/><span style="display:inline-block;margin-left:4px;white-space:nowrap;vertical-align:top;line-height:25px;">'.LARGE_MAP.'</span></a>';
+        }
+        ?>
 		<img id="map_navibox" src="img/x.gif" usemap="#map_navibox"/>
 		<map name="map_navibox">
 			<area id="ma_n1p7" href="karte.php?z=<?php echo $generator->getBaseID($x,$yp7) ?>" coords="51,15,73,3,95,15,73,27" shape="poly" title="<?php echo NORTH;?>"/>

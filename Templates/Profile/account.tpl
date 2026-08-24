@@ -32,6 +32,12 @@ $sitterError = $form->getError("sit");
 $count = 0;
 if ($session->userinfo['sit1'] != 0) $count += 1;
 if ($session->userinfo['sit2'] != 0) $count += 1;
+$heroCount = 0;
+$heroCountQuery = $database->query("SELECT COUNT(*) AS total FROM " . TB_PREFIX . "hero WHERE uid=" . (int)$session->uid);
+if ($heroCountQuery) {
+    $heroCountRow = $heroCountQuery->fetch_assoc();
+    $heroCount = min(2, (int)($heroCountRow['total'] ?? 0));
+}
 
 /**
  * PERMISIUNI SITTER
@@ -176,6 +182,56 @@ if (!empty($emailError)) {
     echo "<span class=\"error\">".$emailError."</span>";
 }
 ?>
+
+<!-- =========================
+     ACCOUNT FEATURE SECTIONS
+========================= -->
+<table cellpadding="1" cellspacing="1" id="account_options" class="account">
+<thead><tr><th colspan="2"><?php echo PREF_OPTIONS; ?></th></tr></thead>
+<tbody>
+<tr>
+    <th><?php echo PREF_OPTIONS; ?></th>
+    <td><a class="account-action" href="spieler.php?s=2#display_options"><?php echo PREF_OPEN_OPTIONS; ?></a></td>
+</tr>
+</tbody>
+</table>
+
+<table cellpadding="1" cellspacing="1" id="name_reservation" class="account">
+<thead><tr><th colspan="2"><?php echo PREF_NAME_RESERVATION; ?></th></tr></thead>
+<tbody>
+<tr>
+    <th><?php echo PREF_HERO_COUNT; ?></th>
+    <td><span class="account-count"><?php echo $heroCount; ?>/2</span></td>
+</tr>
+<tr>
+    <th><?php echo PREF_NAME_RESERVATION; ?></th>
+    <td><a class="account-action" href="build.php?gid=37&amp;rename"><?php echo PREF_HERO_NAME_MANAGE; ?></a></td>
+</tr>
+</tbody>
+</table>
+
+<table cellpadding="1" cellspacing="1" id="web_notifications" class="account">
+<thead><tr><th colspan="2"><?php echo PREF_WEB_NOTIFICATIONS; ?></th></tr></thead>
+<tbody>
+<tr>
+    <th><?php echo PREF_WEB_NOTIFICATIONS; ?></th>
+    <td>
+        <button type="button" class="account-action" id="web-notification-button"><?php echo PREF_NOTIFICATION_SETTINGS; ?></button>
+        <span id="web-notification-status" class="account-status"></span>
+    </td>
+</tr>
+</tbody>
+</table>
+
+<table cellpadding="1" cellspacing="1" id="linked_accounts" class="account">
+<thead><tr><th colspan="2"><?php echo PREF_LINKED_ACCOUNTS; ?></th></tr></thead>
+<tbody>
+<tr>
+    <th><?php echo PREF_LINKED_ACCOUNTS; ?></th>
+    <td><a class="account-action" href="feeding.php"><?php echo PREF_LINKED_ACCOUNTS_SETTINGS; ?></a></td>
+</tr>
+</tbody>
+</table>
 
 <style type="text/css">
 /* =======================================================================
@@ -333,7 +389,184 @@ html[dir="rtl"] #sitter .permMark {
     margin-right: 0;
     margin-left: 5px;
 }
+
+/* Account page visual language: the compact green Travian-style sections. */
+body.pg-spieler #content.player > table.account {
+    width: 100%;
+    margin: 0 0 12px;
+    border: 1px solid #d2d2d2;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 13px;
+}
+
+body.pg-spieler #content.player > table.account thead th {
+    height: 28px;
+    padding: 3px 9px;
+    background: linear-gradient(#eef8e9, #dcefd3);
+    border-bottom: 1px solid #b8d89f;
+    color: #315526;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+}
+
+body.pg-spieler #content.player > table.account tbody th,
+body.pg-spieler #content.player > table.account tbody td {
+    min-height: 30px;
+    padding: 6px 9px;
+    border-bottom: 1px solid #ededed;
+    background: #ffffff;
+    vertical-align: middle;
+}
+
+body.pg-spieler #content.player > table.account tbody tr:last-child th,
+body.pg-spieler #content.player > table.account tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+body.pg-spieler #content.player > table.account tbody th {
+    width: 34%;
+    color: #222222;
+    font-weight: bold;
+    text-align: right;
+}
+
+body.pg-spieler #content.player > table.account tbody td {
+    color: #444444;
+    text-align: left;
+}
+
+body.pg-spieler #content.player > table.account td.note {
+    color: #8c8c8c;
+    font-size: 11px;
+    line-height: 15px;
+    text-align: right;
+}
+
+body.pg-spieler #content.player > table.account input.text,
+body.pg-spieler #content.player > table.account input[type="password"] {
+    width: min(220px, 100%);
+    min-height: 25px;
+    padding: 3px 6px;
+    border: 1px solid #71d000;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+body.pg-spieler #content.player > table.account input.radio {
+    vertical-align: middle;
+}
+
+body.pg-spieler #content.player > table.account .count {
+    color: #aaaaaa;
+    font-size: 11px;
+}
+
+body.pg-spieler #content.player > table.account .account-action {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    background: linear-gradient(#ffffff, #f1f3f5);
+    color: #416b2d;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+body.pg-spieler #content.player > table.account .account-action:hover {
+    border-color: #71d000;
+    background: #f4faef;
+}
+
+body.pg-spieler #content.player > table.account button.account-action {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+body.pg-spieler #content.player > table.account .account-status {
+    margin-right: 8px;
+    color: #888888;
+    font-size: 11px;
+}
+
+body.pg-spieler #content.player > table.account .sitter,
+body.pg-spieler #content.player > table.account .del_selection {
+    text-align: left;
+}
+
+body.pg-spieler #content.player > table.account .sitterCard {
+    background: #ffffff;
+    border-color: #e5e5e5;
+    border-radius: 0;
+}
+
+body.pg-spieler #content.player > table.account .sitterHead {
+    color: #222222;
+}
+
+body.pg-spieler #content.player > table.account + .error,
+body.pg-spieler #content.player > span.error {
+    display: block;
+    margin: -5px 0 10px;
+    color: #b12b2b;
+    font-size: 12px;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account tbody td,
+html[dir="rtl"] body.pg-spieler #content.player > table.account .sitter,
+html[dir="rtl"] body.pg-spieler #content.player > table.account .del_selection {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account input.text,
+html[dir="rtl"] body.pg-spieler #content.player > table.account input[type="password"] {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-spieler #content.player > table.account .account-status {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
+@media screen and (max-width: 700px) {
+    body.pg-spieler #content.player > table.account tbody th,
+    body.pg-spieler #content.player > table.account tbody td {
+        display: block;
+        width: auto;
+        text-align: right;
+    }
+}
 </style>
+
+<script type="text/javascript">
+(function () {
+    var button = document.getElementById('web-notification-button');
+    var status = document.getElementById('web-notification-status');
+    if (!button || !status) return;
+
+    function updateStatus() {
+        if (!('Notification' in window)) {
+            status.textContent = 'المتصفح لا يدعم إشعارات الويب';
+        } else if (Notification.permission === 'granted') {
+            status.textContent = 'مفعّلة';
+        } else if (Notification.permission === 'denied') {
+            status.textContent = 'محظورة من المتصفح';
+        } else {
+            status.textContent = 'غير مفعّلة';
+        }
+    }
+
+    button.onclick = function () {
+        if (!('Notification' in window)) {
+            updateStatus();
+            return;
+        }
+        Notification.requestPermission().then(updateStatus);
+    };
+    updateStatus();
+})();
+</script>
 
 <!-- =========================
      SITTERS

@@ -94,7 +94,7 @@ if($id){
             ?>
             </tbody>
         </table>
-        <?php } else { echo '<div class="empty">No login records found.</div>'; } ?>
+        <?php } else { echo '<div class="empty">'.ADMIN_NO_LOGIN_RECORDS.'</div>'; } ?>
     </div>
 
     <div class="actions">

@@ -60,7 +60,7 @@ $accessColors = [
 <div class="online-wrap">
   <div class="online-head">
     <h1><?php echo ADM_ONLINE_USERS_H; ?></h1>
-    <div class="count"><?php echo $count;?> now</div>
+    <div class="count"><?php echo $count;?> <?php echo ADMIN_NOW; ?></div>
   </div>
 
   <?php if(!$active){?>
@@ -87,7 +87,7 @@ $accessColors = [
         </div>
         <img src="../gpack/novaterra_classic/img/u/<?php echo $tribeImg[$tribe];?>9.gif" title="<?php echo $tribeName[$tribe];?>" width="16">
       </div>
-      <div class="uo-time">Last action: <?php echo $mins<1? 'just now' : $mins.' min ago';?> — <?php echo date("H:i:s",$u['timestamp']);?></div>
+      <div class="uo-time"><?php echo ADMIN_LAST_ACTION; ?>: <?php echo $mins<1? ADMIN_JUST_NOW : $mins.' '.ADMIN_MIN_AGO;?> — <?php echo date("H:i:s",$u['timestamp']);?></div>
       <div class="uo-stats">
         <span class="uo-stat">👥 <?php echo number_format($totalpop);?></span>
         <span class="uo-stat">🏘 <?php echo count($varray);?></span>

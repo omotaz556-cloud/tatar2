@@ -19,7 +19,7 @@
 #################################################################################
 $aid = (int)$_GET['aid'];
 $alidata = $database->getAlliance($aid);
-if(!$alidata){ echo "<div class='card'><div class='body'>Alliance not found</div></div>"; return; }
+if(!$alidata){ echo "<div class='card'><div class='body'>".ADMIN_NOT_FOUND."</div></div>"; return; }
 $members = $database->getAllMember($aid);
 ?>
 <style>

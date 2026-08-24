@@ -57,7 +57,7 @@ if(isset($id)) { include("search2.tpl"); ?>
 <input type="hidden" name="id" value="<?php echo (int)($_GET['did'] ?? 0); ?>">
 
 <div class="vcard">
-  <div class="vhead">Edit Village – <?php echo htmlspecialchars($village['name']); ?> (<?php echo $coor['x'].'|'.$coor['y']; ?>)
+  <div class="vhead"><?php echo ADMIN_EDIT; ?> – <?php echo htmlspecialchars($village['name']); ?> (<?php echo $coor['x'].'|'.$coor['y']; ?>)
     <a class="instr-link" onclick="document.getElementById('instr').style.display = document.getElementById('instr').style.display=='none'?'block':'none';return false"><?php echo ADM_SHOW_INSTRUCTIONS; ?></a>
   </div>
 <div id="instr" style="display:none;padding:12px;background:#fcfcfd;border-bottom:1px solid #e5e7eb">

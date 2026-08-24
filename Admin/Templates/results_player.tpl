@@ -33,7 +33,7 @@
 </style>
 
 <div class="search-wrap">
-  <div class="search-head">Found players (<?php echo count($result);?>)</div>
+	<div class="search-head"><?php echo ADMIN_FOUND_PLAYERS; ?> (<?php echo count($result);?>)</div>
 
   <table class="search-table">
 	<tr>

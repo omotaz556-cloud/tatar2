@@ -18,7 +18,7 @@
 #################################################################################
 
 if (!isset($_SESSION['access']) || $_SESSION['access'] < MULTIHUNTER) {
-    echo '<p style="color:#f87171;padding:16px;">Access denied.</p>';
+    echo '<p style="color:#f87171;padding:16px;">'.ADM_HEATMAP_ACCESS_DENIED.'</p>';
     return;
 }
 
@@ -109,7 +109,7 @@ $js = [
                 <div class="hm-stat"><span><?php echo ADM_PLAYERS; ?></span><b><?php echo number_format($data['totals']['players']); ?></b></div>
                 <div class="hm-stat"><span><?php echo ADM_INACTIVE_VILLAGES; ?></span><b><?php echo number_format($data['totals']['inactive']); ?></b></div>
                 <div class="hm-stat"><span><?php echo ADM_ATTACKS_IN_FLIGHT; ?></span><b><?php echo number_format($data['totals']['attacks']); ?></b></div>
-                <div class="hm-note">Map <?php echo (int)$data['world_max']; ?>&times;<?php echo (int)$data['world_max']; ?> radius, <?php echo (int)$data['res']; ?>&times;<?php echo (int)$data['res']; ?> grid (&asymp;<?php echo (int)round($data['cell_span']); ?> tiles/cell).</div>
+                <div class="hm-note"><?php echo ADM_HEATMAP_MAP_RADIUS; ?> <?php echo (int)$data['world_max']; ?>&times;<?php echo (int)$data['world_max']; ?>، <?php echo (int)$data['res']; ?>&times;<?php echo (int)$data['res']; ?> <?php echo ADM_HEATMAP_GRID; ?> (&asymp;<?php echo (int)round($data['cell_span']); ?> <?php echo ADM_HEATMAP_TILES_CELL; ?>).</div>
             </div>
 
             <div class="hm-card">
@@ -127,11 +127,11 @@ $js = [
                 ?>
                     <div class="tribebar">
                         <?php foreach ($tt as $t => $n): if ($n<=0) continue; ?>
-                            <span style="width:<?php echo round($n/$sum*100,2); ?>%;background:<?php echo $tribeColors[$t]??'#64748b'; ?>;" title="<?php echo e(($tribeNames[$t]??('Tribe '.$t)).': '.$n); ?>"></span>
+                            <span style="width:<?php echo round($n/$sum*100,2); ?>%;background:<?php echo $tribeColors[$t]??'#64748b'; ?>;" title="<?php echo e(($tribeNames[$t]??(ADM_TRIBE.' '.$t)).': '.$n); ?>"></span>
                         <?php endforeach; ?>
                     </div>
                     <?php foreach ($tt as $t => $n): if ($n<=0) continue; ?>
-                        <div class="hm-stat"><span><span class="sw" style="background:<?php echo $tribeColors[$t]??'#64748b'; ?>;display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;"></span><?php echo e($tribeNames[$t]??('Tribe '.$t)); ?></span><b><?php echo number_format($n); ?></b></div>
+                        <div class="hm-stat"><span><span class="sw" style="background:<?php echo $tribeColors[$t]??'#64748b'; ?>;display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;"></span><?php echo e($tribeNames[$t]??(ADM_TRIBE.' '.$t)); ?></span><b><?php echo number_format($n); ?></b></div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="hm-note"><?php echo ADM_NO_PLAYER_VILLAGES_FOUND; ?></div>
@@ -207,12 +207,12 @@ $js = [
 
     function showTip(e,cell){
         var names=HM.tribeNames||{};
-        var domName = cell[6]? (names[cell[6]]||('Tribe '+cell[6])) : '-';
+        var domName = cell[6]? (names[cell[6]]||('<?php echo addslashes(ADM_TRIBE); ?> '+cell[6])) : '-';
         tip.innerHTML =
             '<b>x '+cell[7]+'..'+cell[9]+' , y '+cell[8]+'..'+cell[10]+'</b><br>'+
-            'villages: '+cell[2]+' &nbsp; pop: '+cell[5].toLocaleString()+'<br>'+
-            'inactive: '+cell[3]+' &nbsp; attacks: '+cell[4]+'<br>'+
-            'dominant: '+domName;
+            '<?php echo ADM_HEATMAP_VILLAGES; ?>: '+cell[2]+' &nbsp; <?php echo ADM_HEATMAP_POPULATION; ?>: '+cell[5].toLocaleString()+'<br>'+
+            '<?php echo ADM_HEATMAP_INACTIVE; ?>: '+cell[3]+' &nbsp; <?php echo ADM_HEATMAP_ATTACKS; ?>: '+cell[4]+'<br>'+
+            '<?php echo ADM_HEATMAP_DOMINANT; ?>: '+domName;
         var host=svg.parentNode.getBoundingClientRect();
         tip.style.left=(e.clientX-host.left+12)+'px';
         tip.style.top=(e.clientY-host.top+12)+'px';
@@ -229,14 +229,14 @@ $js = [
     }
 
     function drawLegend(){
-        var titles={density:'Village density',tribe:'Tribe density',inactive:'Inactivity',attacks:'Attacks'};
-        legendTitle.textContent=titles[layer]||'Legend';
+        var titles={density:'<?php echo addslashes(ADM_HEATMAP_VILLAGE_DENSITY); ?>',tribe:'<?php echo addslashes(ADM_HEATMAP_TRIBE_DENSITY); ?>',inactive:'<?php echo addslashes(ADM_HEATMAP_INACTIVITY); ?>',attacks:'<?php echo addslashes(ADM_HEATMAP_ATTACKS); ?>'};
+        legendTitle.textContent=titles[layer]||'<?php echo addslashes(ADM_HEATMAP_LEGEND); ?>';
         if(layer==='tribe'){
             var html=''; var names=HM.tribeNames||{};
             Object.keys(tribeColors).forEach(function(t){
                 if(names[t]) html+='<div class="row"><span class="sw" style="background:'+tribeColors[t]+'"></span>'+names[t]+'</div>';
             });
-            legend.innerHTML=html+'<div class="hm-note">Cell shows the dominant tribe; brighter = more villages.</div>';
+            legend.innerHTML=html+'<div class="hm-note"><?php echo addslashes(ADM_HEATMAP_CELL_DOMINANT); ?></div>';
             return;
         }
         var grad={density:['#1e293b','#f97316'],inactive:['#1e293b','#a855f7'],attacks:['#1e293b','#ef4444']}[layer];
@@ -245,7 +245,7 @@ $js = [
         legend.innerHTML=
             '<div class="hm-scale" style="background:linear-gradient(90deg,'+grad[0]+','+grad[1]+')"></div>'+
             '<div class="row"><span>0</span><span style="margin-left:auto">'+mx+'</span></div>'+
-            '<div class="hm-note">Darker/brighter cells = higher count in that region.</div>';
+            '<div class="hm-note"><?php echo addslashes(ADM_HEATMAP_HIGHER_COUNT); ?></div>';
     }
 
     var btns=document.querySelectorAll('.hm-layers button');

@@ -128,25 +128,26 @@ $fsCanAddMore = $fsSettings['enabled'] && $fsCount < $fsSettings['max_linked_per
 	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
 	?>
 	<style>
-	.fs-p-wrap{color:#e2e8f0;font-family:Verdana,Arial,sans-serif;font-size:12px;padding:14px;max-width:720px;}
-	.fs-p-wrap h2{font-size:17px;margin:0 0 6px;color:#2b2214;}
-	.fs-p-intro{color:#5a4a34;font-size:11px;margin:0 0 14px;line-height:1.6;}
-	.fs-p-msg-ok{background:#d1fae5;border:1px solid #34d399;color:#065f46;border-radius:6px;padding:8px 12px;font-size:11px;margin-bottom:14px;}
-	.fs-p-msg-err{background:#fee2e2;border:1px solid #f87171;color:#7f1d1d;border-radius:6px;padding:8px 12px;font-size:11px;margin-bottom:14px;}
-	.fs-p-disabled{background:#f3f4f6;border:1px solid #d1d5db;color:#4b5563;border-radius:6px;padding:10px 14px;font-size:11px;margin-bottom:14px;}
-	.fs-p-card{background:#fffaf0;border:1px solid #e2d5b8;border-radius:8px;padding:14px 16px;margin-bottom:16px;}
-	.fs-p-card h3{margin:0 0 4px;font-size:13px;color:#2b2214;}
-	.fs-p-limit{color:#8a7754;font-size:10.5px;margin:0 0 10px;}
+	.fs-p-wrap{color:#444;font-family:Verdana,Arial,sans-serif;font-size:12px;padding:14px;width:100%;max-width:560px;margin:0 auto 12px;box-sizing:border-box;}
+	.fs-p-wrap h2{font-size:17px;margin:0 0 6px;color:#222;}
+	.fs-p-intro{color:#888;font-size:11px;margin:0 0 14px;line-height:1.6;}
+	.fs-p-msg-ok{background:#eff9e9;border:1px solid #b8d89f;color:#416b2d;border-radius:4px;padding:8px 12px;font-size:11px;margin-bottom:14px;}
+	.fs-p-msg-err{background:#fff1f1;border:1px solid #e5bcbc;color:#9b2c2c;border-radius:4px;padding:8px 12px;font-size:11px;margin-bottom:14px;}
+	.fs-p-disabled{background:#f5f5f5;border:1px solid #d2d2d2;color:#777;border-radius:4px;padding:10px 14px;font-size:11px;margin-bottom:14px;}
+	.fs-p-card{background:#fff;border:1px solid #d2d2d2;border-radius:0;padding:0 0 12px;margin-bottom:12px;}
+	.fs-p-card h3{margin:0 0 10px;padding:6px 9px;background:linear-gradient(#eef8e9,#dcefd3);border-bottom:1px solid #b8d89f;font-size:13px;color:#315526;}
+	.fs-p-limit{color:#888;font-size:10.5px;margin:0 12px 10px;}
 	.fs-p-add{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;}
-	.fs-p-add input[type=text]{border:1px solid #c8b78e;border-radius:5px;padding:6px 9px;width:220px;}
-	.fs-p-add button{background:#a9762b;color:#fff;font-weight:bold;border:0;border-radius:5px;padding:8px 16px;cursor:pointer;}
-	.fs-p-add button[disabled]{background:#c8b78e;cursor:not-allowed;}
-	.fs-p-table{width:100%;border-collapse:collapse;margin-top:12px;}
-	.fs-p-table th{text-align:left;padding:6px 7px;font-size:9px;text-transform:uppercase;color:#8a7754;border-bottom:1px solid #e2d5b8;}
+	.fs-p-add input[type=text]{border:1px solid #71d000;border-radius:0;padding:6px 9px;width:220px;}
+	.fs-p-add button{background:linear-gradient(#fff,#eef2f4);color:#416b2d;font-weight:bold;border:1px solid #d1d5db;border-radius:5px;padding:7px 16px;cursor:pointer;}
+	.fs-p-add button[disabled]{background:#eee;color:#aaa;cursor:not-allowed;}
+	.fs-p-table{width:calc(100% - 24px);border-collapse:collapse;margin:12px;}
+	.fs-p-table th{text-align:left;padding:6px 7px;font-size:9px;text-transform:uppercase;color:#777;border-bottom:1px solid #d2d2d2;}
 	html[dir="rtl"] .fs-p-table th{text-align:right;}
-	.fs-p-table td{padding:6px 7px;border-bottom:1px solid #eee0c4;font-size:11px;}
-	.fs-p-remove{background:#b91c1c;color:#fff;border:0;border-radius:4px;padding:4px 10px;font-size:10px;cursor:pointer;}
-	.fs-p-empty{color:#8a7754;font-size:11px;padding:10px 0;}
+	.fs-p-table td{padding:6px 7px;border-bottom:1px solid #ededed;font-size:11px;}
+	.fs-p-remove{background:#fff1f1;color:#a33;border:1px solid #e5bcbc;border-radius:4px;padding:4px 10px;font-size:10px;cursor:pointer;}
+	.fs-p-empty{color:#888;font-size:11px;padding:10px 12px;}
+	html[dir="rtl"] .fs-p-wrap{text-align:right;}
 	</style>
 	<script type="text/javascript">
 		window.addEvent('domready', start);
@@ -163,6 +164,7 @@ $fsCanAddMore = $fsSettings['enabled'] && $fsCount < $fsSettings['max_linked_per
 <div id="mid">
 <?php include("Templates/menu.tpl"); ?>
 
+<div id="content" class="feeding">
 <div class="fs-p-wrap">
 	<h2><?php echo FS_PLAYER_TITLE; ?></h2>
 	<p class="fs-p-intro"><?php echo FS_PLAYER_INTRO; ?></p>
@@ -217,6 +219,7 @@ $fsCanAddMore = $fsSettings['enabled'] && $fsCount < $fsSettings['max_linked_per
 			</table>
 		<?php endif; ?>
 	</div>
+</div>
 </div>
 
 <br /><br /><br /><br /><div id="side_info">

@@ -186,6 +186,6 @@ elseif(isset($_GET['rc'])) echo '<div class="notice notice-blue"><b>Hero has bee
 elseif(isset($_GET['re'])) echo '<div class="notice notice-red"><b>Cannot revive – another hero lives.</b></div>';
 elseif(isset($_GET['ac'])) echo '<div class="notice notice-blue"><b>New hero added.</b></div>';
 elseif(isset($_GET['cs'])) echo '<div class="notice notice-blue"><b>Hero information saved.</b></div>';
-elseif(isset($_GET['ce'])) echo '<div class="notice notice-red"><b>Edit failed.</b></div>';
+elseif(isset($_GET['ce'])) echo '<div class="notice notice-red"><b>'.ADMIN_EDIT_FAILED.'</b></div>';
 ?>
 </div>

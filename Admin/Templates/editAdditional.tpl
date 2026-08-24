@@ -95,7 +95,7 @@ if(isset($id)) {
                             $names=[0=>'Banned',2=>'Normal',8=>'Multihunter',9=>'Admin'];
                             $cls=[0=>'banned',2=>'user',8=>'mh',9=>'admin'];
                             echo '<input type="hidden" name="access" value="'.$user['access'].'">';
-                            echo '<span class="badge '.$cls[$user['access']].'">'.$names[$user['access']].'</span> <span style="font-size:11px;color:#c00;">(you cannot change your own access)</span>';
+                            echo '<span class="badge '.$cls[$user['access']].'">'.$names[$user['access']].'</span> <span style="font-size:11px;color:#c00;">('.ADMIN_CANNOT_CHANGE_OWN_ACCESS.')</span>';
                         } ?>
                         </div>
                     </div>
@@ -156,14 +156,14 @@ if(isset($id)) {
                         <label><?php echo ADM_SITTER_1_UID; ?></label>
                         <div class="field">
                             <input type="number" name="sitter1" value="<?php echo (int)$user['sit1']; ?>">
-                            <span class="sitter-link"><?php echo $sitter1 ? '→ <a href="admin.php?p=player&uid='.$sitter1['id'].'">'.htmlspecialchars($sitter1['username']).'</a>' : 'No Sitter'; ?></span>
+                            <span class="sitter-link"><?php echo $sitter1 ? '→ <a href="admin.php?p=player&uid='.$sitter1['id'].'">'.htmlspecialchars($sitter1['username']).'</a>' : ADMIN_NO_SITTER; ?></span>
                         </div>
                     </div>
                     <div class="form-row">
                         <label><?php echo ADM_SITTER_2_UID; ?></label>
                         <div class="field">
                             <input type="number" name="sitter2" value="<?php echo (int)$user['sit2']; ?>">
-                            <span class="sitter-link"><?php echo $sitter2 ? '→ <a href="admin.php?p=player&uid='.$sitter2['id'].'">'.htmlspecialchars($sitter2['username']).'</a>' : 'No Sitter'; ?></span>
+                            <span class="sitter-link"><?php echo $sitter2 ? '→ <a href="admin.php?p=player&uid='.$sitter2['id'].'">'.htmlspecialchars($sitter2['username']).'</a>' : ADMIN_NO_SITTER; ?></span>
                         </div>
                     </div>
                 </div>

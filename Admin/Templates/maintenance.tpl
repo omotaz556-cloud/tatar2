@@ -64,7 +64,7 @@ if($maint['started_by'] > 0){
 <div class="maint-card">
   <div class="maint-head"><?php echo ADMIN_SERVER_MAINTENANCE; ?></div>
   <div class="maint-status <?= $maint['active'] ? 'on' : 'off' ?>">
-    <?= $maint['active'] ? 'ACTIVE since '.($maint['started_at'] ? date('H:i d.m.Y',$maint['started_at']) : '-') : 'INACTIVE – server open' ?>
+    <?= $maint['active'] ? 'نشط منذ '.($maint['started_at'] ? date('H:i d.m.Y',$maint['started_at']) : '-') : 'غير نشط – السيرفر مفتوح' ?>
   </div>
   <?php if($maint['active']){ ?>
     <div class="maint-info"><?php echo ADM_STARTED_BY; ?><b><?= htmlspecialchars($starterName) ?></b> (UID: <?= (int)$maint['started_by'] ?>)</div>

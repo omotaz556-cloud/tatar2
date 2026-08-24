@@ -79,7 +79,7 @@ function refresh(tz) {
                 </tr>
                 <tr>
                     <td class="b"><?php echo CONF_SERV_STARTED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_STARTED_TOOLTIP ?></span></em></td>
-                    <td><?php echo "Date:".START_DATE." Time:".START_TIME;?></td>
+                    <td><?php echo ADMIN_DATE.': '.START_DATE.' '.ADMIN_TIME.': '.START_TIME;?></td>
                 </tr>
                 <tr>
                     <td class="b"><?php echo CONF_SERV_TIMEZONE ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_TIMEZONE_TOOLTIP ?></span></em></td>
@@ -215,8 +215,8 @@ function refresh(tz) {
                     <td class="b"><?php echo CONF_SERV_USRNM_SPECIAL ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_USRNM_SPECIAL_TOOLTIP ?></span></em></td>
                     <td>
                         <select name="usrnm_special">
-                            <option value="true" <?php if (!defined('USRNM_SPECIAL') || USRNM_SPECIAL) echo "selected"; ?>>True</option>
-                            <option value="false" <?php if (defined('USRNM_SPECIAL') && !USRNM_SPECIAL) echo "selected"; ?>>False</option>
+                            <option value="true" <?php if (!defined('USRNM_SPECIAL') || USRNM_SPECIAL) echo "selected"; ?>><?php echo ADMIN_TRUE; ?></option>
+                            <option value="false" <?php if (defined('USRNM_SPECIAL') && !USRNM_SPECIAL) echo "selected"; ?>><?php echo ADMIN_FALSE; ?></option>
                         </select>
                     </td>
                 </tr>
@@ -396,7 +396,7 @@ function refresh(tz) {
                     </td>
                 </tr>
                 <tr>
-                    <td class="b">Server graphic pack <em class="tooltip">?<span class="classic">The graphic pack every player sees by default. Packs are read from the gpack/ folder &mdash; a folder counts as a pack when it contains novaterra.css. Changing this switches the whole server's look.</span></em></td>
+                    <td class="b"><?php echo ADMIN_SERVER_GRAPHIC_PACK; ?> <em class="tooltip">?<span class="classic"><?php echo ADMIN_GRAPHIC_PACK_INFO; ?></span></em></td>
                     <td>
                         <select name="gp_locate">
                         <?php

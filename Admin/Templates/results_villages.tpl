@@ -37,7 +37,7 @@
 </style>
 
 <div class="search-wrap">
-  <div class="search-head">Found villages (<?php echo count($result);?>)</div>
+  <div class="search-head"><?php echo ADM_FOUND_VILLAGES; ?> (<?php echo count($result);?>)</div>
 
   <table class="search-table">
 	<tr>
@@ -60,10 +60,10 @@
 		<td>'.$delLink.'</td>
 	</tr>';
     }
-    echo '</table><div class="search-foot"><font>'.count($result).'</font> Villages Found "<font>'.e($_POST['s'] ?? '').'</font>"</div>';
+    echo '</table><div class="search-foot"><font>'.count($result).'</font> '.ADM_VILLAGES_FOUND.' "<font>'.e($_POST['s'] ?? '').'</font>"</div>';
 } else {
-    echo '<tr><td colspan="5" class="no-res">No results</td></tr></table>';
-    echo '<div class="search-foot">No Villages Called "<font>'.e($_POST['s'] ?? '').'</font>"</div>';
+    echo '<tr><td colspan="5" class="no-res">'.ADM_NO_RESULTS_GENERIC.'</td></tr></table>';
+    echo '<div class="search-foot">'.ADM_NO_VILLAGES_CALLED.' "<font>'.e($_POST['s'] ?? '').'</font>"</div>';
 }
 ?>
 </div>

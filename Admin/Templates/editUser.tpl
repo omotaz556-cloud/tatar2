@@ -72,7 +72,7 @@ select.dropdown { width:100%; }
 <div class="editUser-wrap">
     <div class="editUser-head">
         <h2><?php echo ADM_EDIT_PLAYER; ?><a href="admin.php?p=player&uid=<?php echo $user['id']; ?>"><?php echo htmlspecialchars($user['username']); ?></a></h2>
-        <div class="meta">ID: <?php echo $id; ?> | Villages: <?php echo count($varray); ?> | Gold: <?php echo $user['gold']; ?> <img src="../img/x.gif" class="gold" style="vertical-align:-2px;"></div>
+        <div class="meta">ID: <?php echo $id; ?> | <?php echo ADM_VILLAGES_LABEL; ?>: <?php echo count($varray); ?> | <?php echo ADM_GOLD_LABEL; ?>: <?php echo $user['gold']; ?> <img src="../img/x.gif" class="gold" style="vertical-align:-2px;"></div>
     </div>
 
     <div class="editUser-grid">
@@ -197,6 +197,6 @@ select.dropdown { width:100%; }
 </div>
 <?php
 } else {
-    echo "<div style='padding:20px; text-align:center;'>❌ Player not found. <a href=\"javascript:history.go(-1)\">Go Back</a></div>";
+    echo "<div style='padding:20px; text-align:center;'>❌ ".ADMIN_PLAYER_NOT_FOUND." <a href=\"javascript:history.go(-1)\">".ADMIN_GO_BACK."</a></div>";
 }
 ?>

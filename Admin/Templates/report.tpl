@@ -107,9 +107,9 @@ $typeNames = [1=>'reinforcement',2=>'attack',3=>'defence',4=>'scout',5=>'trade',
 
 <div class="reports-wrap">
   <div class="reports-head">
-    <h1>📜 Players Reports (<?php echo number_format($total);?>)</h1>
+    <h1>📜 <?php echo ADMIN_PLAYERS_REPORTS; ?> (<?php echo number_format($total);?>)</h1>
     <div class="filters">
-      <?php foreach(['all'=>'All','attacks'=>'Attacks','defences'=>'Defences','scouts'=>'Scouts','trades'=>'Trades'] as $k=>$v){?>
+      <?php foreach(['all'=>ADMIN_ALL_FILTER,'attacks'=>ADMIN_ATTACKS,'defences'=>ADMIN_DEFENCES,'scouts'=>ADMIN_SCOUTS,'trades'=>ADMIN_TRADES] as $k=>$v){?>
         <a href="?p=report&f=<?php echo $k;?>&q=<?php echo urlencode($search);?>" class="<?php echo $filter==$k?'active':'';?>"><?php echo $v;?></a>
       <?php }?>
     </div>

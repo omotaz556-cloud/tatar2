@@ -66,7 +66,7 @@ for ($i = 0; $i < count($varray); $i++) {
 		<td style="text-align:left"><a href="?p=village&did='.$varray[$i]['wref'].'">'.$varray[$i]['name'].'</a> '.$capital.'</td>
 		<td>'.$varray[$i]['pop'].' '.$recount.'</td>
 		<td>('.$coor['x'].'|'.$coor['y'].')</td>
-		<td><a href="?p=addTroops&did='.$varray[$i]['wref'].'">Edit</a></td>
+		<td><a href="?p=addTroops&did='.$varray[$i]['wref'].'">'.ADMIN_EDIT.'</a></td>
 		<td>'.$delLink.'</td>
 	</tr>';
 }

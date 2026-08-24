@@ -679,7 +679,7 @@ if (!headers_sent()) {
 <html <?php echo tz_html_dir_attrs(); ?>>
     <head>
         <link rel="shortcut icon" href="favicon.ico"/>
-        <title>Admin Panel - <?php echo e($subpage); ?></title>
+        <title><?php echo ADMIN_PANEL_TITLE; ?> - <?php echo e($subpage); ?></title>
         <link rel="stylesheet" type="text/css" href="../img/admin/admin.css">
         <link rel="stylesheet" type="text/css" href="../img/admin/acp.css">
         <link rel="stylesheet" type="text/css" href="../img/img.css">
@@ -832,7 +832,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
             <div class="tz-brand">
                 <div class="tz-logo">TZ</div>
                 <div>
-                    <h1>Novaterra <span>Admin Panel</span></h1>
+                    <h1>Novaterra <span><?php echo ADMIN_PANEL_TITLE; ?></span></h1>
                     <span class="tz-sub"><?php echo e($subpage); ?> • v14.06.2026</span>
                 </div>
             </div>
@@ -841,13 +841,13 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                     <?php
                         $adminName   = $database->getUserField($_SESSION['id'], 'username', 0);
                         $adminAccess = $database->getUserField($_SESSION['id'], 'access', 0);
-                        $rank        = $adminAccess == 9 ? 'Admin' : ($adminAccess == 8 ? 'MH' : 'User');
+                        $rank        = $adminAccess == 9 ? ADMIN_ROLE_ADMIN : ($adminAccess == 8 ? 'MH' : ADMIN_ROLE_USER);
                     ?>
-                    Logged: <b><?php echo e($adminName); ?></b>
+                    <?php echo ADMIN_LOGGED; ?>: <b><?php echo e($adminName); ?></b>
                     <span style="color:#999;font-size:11px">(<?php echo e($rank); ?>)</span>
                     <a href="?action=logout" class="tz-logout"><?php echo ADMIN_LOGOUT; ?></a>
                 <?php } else { ?>
-                    Not Logged in
+                    <?php echo ADMIN_NOT_LOGGED_IN; ?>
                 <?php } ?>
             </div>
         </div>
@@ -903,7 +903,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                         <li class="sub"><a href="#"><?php echo ADMIN_BAN; ?></a>
                             <ul>
                                 <li><a href="?p=ban"><?php echo ADMIN_BAN_UNBAN_PLAYERS; ?></a></li>
-                                <li><a href="?p=punishments"><font color="Red"><b>Punishments (Mute / Market / Army)</b></font></a></li>
+                                <li><a href="?p=punishments"><font color="Red"><b><?php echo ADMIN_PUNISHMENTS; ?></b></font></a></li>
                                 <li><a href="?p=cleanban"><?php echo ADMIN_CLEAN_BANLIST_DATA; ?></a></li>
                             </ul>
                         </li>
@@ -922,7 +922,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                             <ul>
                                 <li><a href="?p=feedingSystem"><?php echo ADMIN_FEEDING_SYSTEM; ?></a></li>
                                 <li><a href="?p=relatedAccountProtection"><?php echo ADMIN_RELATED_ACCOUNT_PROTECTION; ?></a></li>
-                                <li><a href="?p=chat"><font color="Red"><b>Chat Moderation</b></font></a></li>
+                                <li><a href="?p=chat"><font color="Red"><b><?php echo ADMIN_CHAT_MODERATION; ?></b></font></a></li>
                             </ul>
                         </li>
                         <li class="sub"><a href="#"><?php echo ADMIN_PLUS_RES_BONUS; ?></a>
@@ -967,7 +967,7 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                         <li><a href="?p=search"><?php echo ADMIN_SEARCH; ?></a></li>
                         <li><a href="?p=message"><?php echo ADMIN_MSG_REP; ?></a></li>
                         <li><a href="?p=ban"><?php echo ADMIN_BAN; ?></a></li>
-                        <li><a href="?p=punishments">Punishments</a></li>
+                        <li><a href="?p=punishments"><?php echo ADMIN_PUNISHMENTS_SHORT; ?></a></li>
                         <li><a href="?p=multiacc"><?php echo ADMIN_MULTI_ACCOUNT_DETECTION; ?></a></li>
                         <li><a href="?p=pushprot"><?php echo ADMIN_PUSH_PROTECTION; ?></a></li>
                         <li><a href="?p=heatmap"><?php echo ADMIN_WORLD_MAP_HEATMAP; ?></a></li>
