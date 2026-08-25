@@ -46,7 +46,7 @@ define('CRON_TICK_SECONDS', 60);
 // Key used to access cron.php via HTTP (wget/curl or an external cron service).
 // Command-line execution (e.g. a cPanel cron job) does NOT require it.
 // Automatically generated during installation and preserved when saving configuration settings from the ACP.
-define('CRON_KEY', '77c589c1216001ca7f89d64f745f7ac06b827c7f67da799a');
+define('CRON_KEY', '5e143b1a5e649651a235d3af48189eafe245e616897a62fc');
 
 //////////////////////////////////
 // *****  DATABASE CLEANUP  *****//
@@ -110,11 +110,11 @@ date_default_timezone_set(TIMEZONE);
 
 // ***** Started
 // Defines when has server started.
-define("COMMENCE","1787604600");
+define("COMMENCE","1787614317");
 
 // ***** Server Start Date / Time
-define("START_DATE", "24.08.2026");
-define("START_TIME", "23:49");
+define("START_DATE", "25.08.2026");
+define("START_TIME", "02:31");
 
 // ***** Language
 // SERVER_LANG is the DEFAULT language of the server (chosen at install / in
@@ -443,7 +443,7 @@ define("SQL_PASS", "novaterrapass");
 define("SQL_DB", "novaterra");
 
 // ***** Database - Table Prefix
-define("TB_PREFIX", "s344c_");
+define("TB_PREFIX", "s652b_");
 
 // ***** Database type
 // 0 = MYSQL
@@ -616,7 +616,7 @@ if (!function_exists('tz_html_dir_attrs')) {
     function tz_html_dir_attrs($langCode = null) {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
         $dir = tz_is_rtl_lang($langCode) ? 'rtl' : 'ltr';
-        return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="' . $dir . '"';
+        return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="' . $dir . '" style="zoom: 1.25"';
     }
 }
 if (!function_exists('tz_default_village_name')) {
@@ -646,22 +646,20 @@ if (!function_exists('tz_display_village_name')) {
 if (!function_exists('tz_rtl_stylesheet_tag')) {
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
-        if (!tz_is_rtl_lang($langCode)) {
-            return '';
-        }
-
-        $tag = '';
+        $tag = "\n\t" . '<link href="' . htmlspecialchars($relPath . 'css/global.css', ENT_QUOTES) . '?global8" rel="stylesheet" type="text/css" />';
         $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra/');
-        $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
-        if (is_file($gpDiskPath)) {
-            $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
-            $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
-        }
+        if (tz_is_rtl_lang($langCode)) {
+            $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
+            if (is_file($gpDiskPath)) {
+                $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
+                $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
+            }
 
-        $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
-        if (is_file($rtlDiskPath)) {
-            $rtlHref = $relPath . 'css/rtl.css';
-            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl" rel="stylesheet" type="text/css" />';
+            $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
+            if (is_file($rtlDiskPath)) {
+                $rtlHref = $relPath . 'css/rtl.css';
+                $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl50" rel="stylesheet" type="text/css" />';
+            }
         }
 
         return $tag;

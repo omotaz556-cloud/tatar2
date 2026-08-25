@@ -86,7 +86,7 @@ class Session {
     var $logged_in = false;
     var $inAdmin = false;
     var $referrer, $url;
-    var $username, $uid, $access, $plus, $tribe, $isAdmin, $alliance, $gold, $oldrank, $gpack, $goldclub;
+    var $username, $uid, $access, $plus, $tribe, $isAdmin, $alliance, $gold, $temporary_gold, $oldrank, $gpack, $goldclub;
 
     var $bonus = 0;
     var $bonus1 = 0;
@@ -496,6 +496,21 @@ function __construct() {
     }
 
     $this->populated = true;	
+
+    static $temporaryGoldSchemaChecked = false;
+    if (!$temporaryGoldSchemaChecked) {
+        $columnCheck = mysqli_query(
+            $database->dblink,
+            "SHOW COLUMNS FROM `" . TB_PREFIX . "users` LIKE 'temporary_gold'"
+        );
+        if ($columnCheck && mysqli_num_rows($columnCheck) === 0) {
+            mysqli_query(
+                $database->dblink,
+                "ALTER TABLE `" . TB_PREFIX . "users` ADD COLUMN `temporary_gold` INT(9) NOT NULL DEFAULT '0'"
+            );
+        }
+        $temporaryGoldSchemaChecked = true;
+    }
 		
 	// -----------------------------
 	// SIMPLE SESSION CACHE LAYER
@@ -611,6 +626,7 @@ function __construct() {
 
         $this->cp = floor($this->userarray['cp']);
         $this->gold = $this->userarray['gold'];
+        $this->temporary_gold = (int)($this->userarray['temporary_gold'] ?? 0);
         $this->oldrank = $this->userarray['oldrank'];
 
         $this->sharedForums = $database->getSharedForums($this->uid, $this->alliance);

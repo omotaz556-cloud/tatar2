@@ -231,24 +231,37 @@ if ($hour > 1759 || $hour < 500) {
             {
                 $cls = 'tzCoinStack tzCoin-' . $tone;
 
+                if ($tone === 'gold' || $tone === 'goldOff') {
+                    $file = $tone === 'gold' ? 'gold.gif' : 'gold_g.gif';
+                    $src = (defined('GP_LOCATE') ? GP_LOCATE : 'gpack/novaterra_classic/') . 'img/a/' . $file;
+                    return '<img src="' . htmlspecialchars($src, ENT_QUOTES, 'UTF-8') . '" class="' . $cls . '" alt="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" title="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" />';
+                }
+
                 return '<svg viewBox="0 0 24 24" class="' . $cls . '" role="img">'
                      . '<title>' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</title>'
-                     . '<circle cx="12" cy="12" r="11" class="tzCoinBg" />'
-                     . '<ellipse cx="12" cy="16.1" rx="6.2" ry="2.3" class="tzCoinDisc" />'
-                     . '<ellipse cx="12" cy="13.1" rx="6.2" ry="2.3" class="tzCoinDisc" />'
-                     . '<ellipse cx="12" cy="10.1" rx="6.2" ry="2.3" class="tzCoinDisc" />'
-                     . '<ellipse cx="12" cy="10.1" rx="2.6" ry="0.9" class="tzCoinShine" />'
+                     . '<ellipse cx="8.5" cy="15.5" rx="5.2" ry="2.1" class="tzCoinDisc" />'
+                     . '<ellipse cx="8.5" cy="14.1" rx="5.2" ry="2.1" class="tzCoinDisc" />'
+                     . '<ellipse cx="15.5" cy="10.5" rx="5.2" ry="2.1" class="tzCoinDisc" />'
+                     . '<ellipse cx="15.5" cy="9.1" rx="5.2" ry="2.1" class="tzCoinDisc" />'
+                     . '<ellipse cx="15.5" cy="9.1" rx="2.2" ry="0.7" class="tzCoinShine" />'
                      . '</svg>';
             }
             }
 
             // sub 2 monede aurul era deja afisat stins in interfata veche
-            $goldTone = ($goldValue <= 1) ? 'goldOff' : 'gold';
+            $goldTone = 'gold';
 
             echo '<div id="goldHeaderRow" class="tzCoinRow tzCoinRow-' . $goldTone . '">'
                . tzCoinIcon($goldTone, $goldValue . ' ' . $goldLabel)
                . '<span class="tzCoinValue">' . $goldValue . '</span>'
                . '</div>';
+
+                $temporaryGoldValue = (int)($session->temporary_gold ?? 0);
+                echo '<div id="temporaryGoldHeaderRow" class="tzCoinRow tzCoinRow-temporary">'
+                    . '<span class="tzTemporaryGoldLabel">' . (defined('TZ_TEMPORARY_GOLD') ? TZ_TEMPORARY_GOLD : 'المؤقت') . '</span>'
+                    . tzCoinIcon('gold', number_format($temporaryGoldValue) . ' ' . (defined('GOLD') ? GOLD : 'Gold'))
+                    . '<span class="tzCoinValue">' . number_format($temporaryGoldValue) . '</span>'
+                    . '</div>';
 
             /**
              * Argintul eroului, afisat sub aur (doar cu functiile T4 pornite).
@@ -310,7 +323,7 @@ if ($hour > 1759 || $hour < 500) {
         <style type="text/css">
 
         html[dir="rtl"] {
-            zoom: 1.5 !important;
+            zoom: 1.32 !important;
         }
 
         #topNavIcons {

@@ -63,7 +63,7 @@ if (isset($_POST['buy_protection']) && isset($session->uid)) {
 	$option = (int) $_POST['buy_protection'];
 	$uid = (int) $session->uid;
 
-		if (!isset($protectionOptions[$option])) {
+	if (!isset($protectionOptions[$option])) {
 		$protectionMsg = install_is_rtl() ? 'اختيار حماية غير صالح.' : 'Invalid protection option.';
 	} else {
 		$database->query("CREATE TABLE IF NOT EXISTS " . TB_PREFIX . "protection_purchases (
@@ -90,25 +90,25 @@ if (isset($_POST['buy_protection']) && isset($session->uid)) {
 					'Protection opportunity ' . ($uses + 1)
 				);
 				if (!$goldResult[0]) {
-				$protectionMsg = install_is_rtl() ? 'تحتاج إلى ذهب مشتَرى كافٍ لتفعيل الحماية.' : 'You need enough paid gold to activate protection.';
+					$protectionMsg = install_is_rtl() ? 'تحتاج إلى ذهب مشتَرى كافٍ لتفعيل الحماية.' : 'You need enough paid gold to activate protection.';
 				} else {
-				$seconds = $protectionOptions[$option]['seconds'];
-				mysqli_begin_transaction($database->dblink);
-				$updated = $database->query("INSERT INTO " . TB_PREFIX . "protection_purchases (uid, uses)
-					VALUES ($uid, 1)
-					ON DUPLICATE KEY UPDATE uses = uses + 1");
-				$updated = $updated && $database->query("UPDATE " . TB_PREFIX . "users
-					SET protect = GREATEST(protect, UNIX_TIMESTAMP()) + $seconds
-					WHERE id = $uid LIMIT 1");
-				if ($updated) {
-					mysqli_commit($database->dblink);
-					$protectionOk = true;
-					$protectionMsg = install_is_rtl() ? 'تم تفعيل حماية اللاعب الجديد بنجاح.' : 'Beginner protection activated successfully.';
-				} else {
-					mysqli_rollback($database->dblink);
-					CentralGold::credit($email, $session->username, $uid, $protectionOptions[$option]['cost'], 'beginner_protection_refund', 'Protection update failed');
-					$protectionMsg = install_is_rtl() ? 'تعذر تفعيل الحماية، وتمت إعادة الذهب.' : 'Protection could not be activated; the gold was refunded.';
-				}
+					$seconds = $protectionOptions[$option]['seconds'];
+					mysqli_begin_transaction($database->dblink);
+					$updated = $database->query("INSERT INTO " . TB_PREFIX . "protection_purchases (uid, uses)
+						VALUES ($uid, 1)
+						ON DUPLICATE KEY UPDATE uses = uses + 1");
+					$updated = $updated && $database->query("UPDATE " . TB_PREFIX . "users
+						SET protect = GREATEST(protect, UNIX_TIMESTAMP()) + $seconds
+						WHERE id = $uid LIMIT 1");
+					if ($updated) {
+						mysqli_commit($database->dblink);
+						$protectionOk = true;
+						$protectionMsg = install_is_rtl() ? 'تم تفعيل حماية اللاعب الجديد بنجاح.' : 'Beginner protection activated successfully.';
+					} else {
+						mysqli_rollback($database->dblink);
+						CentralGold::credit($email, $session->username, $uid, $protectionOptions[$option]['cost'], 'beginner_protection_refund', 'Protection update failed');
+						$protectionMsg = install_is_rtl() ? 'تعذر تفعيل الحماية، وتمت إعادة الذهب.' : 'Protection could not be activated; the gold was refunded.';
+					}
 				}
 			}
 		}
@@ -218,26 +218,6 @@ if (isset($_POST['redeem_code']) && class_exists('GoldShop')) {
 <?php include("Templates/header.tpl"); ?>
 <div id="mid">
 <?php include("Templates/menu.tpl"); ?>
-<?php
-/**
- * BUG FIXED: this page never wrapped its Plus/*.tpl includes in a
- * <div id="content"> the way every other page with this same
- * #side_navi / #content / #side_info layout does (spieler.php,
- * statistiken.php, karte.php via mapview.tpl/vilview.tpl,
- * dorf1.php/dorf2.php via menu.tpl). menu.tpl only opens #side_navi
- * here (its own #content/#side_info block is guarded by
- * if($sessionOk) and is only used for the post-registration
- * announcement screen), so without this wrapper #side_info - opened
- * a few lines below - had no #content sibling to float beside.
- * lang/en/compact.css floats #side_navi, #content and #side_info as
- * three siblings; missing the middle one broke that chain and
- * #side_info (menu.tpl's "hero" column, which is where
- * Templates/quest.tpl's #qge character image lives) fell out of the
- * column layout and rendered loose in the page's whitespace instead
- * of sitting in its normal spot in the sidebar.
- */
-?>
-<div id="content" class="plus">
 <?php
 if(isset($_GET['id'])){
 	$id = preg_replace("/[^a-zA-Z0-9_-]/", "", $_GET['id']);

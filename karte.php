@@ -78,7 +78,7 @@ else{
 </head>
 
 
-<body class="v35 ie ie8">
+<body class="v35 ie ie8 pg-map">
 <div class="wrapper">
 <img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
 <div id="dynamic_header">

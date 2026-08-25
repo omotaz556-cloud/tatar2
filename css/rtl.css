@@ -58,7 +58,7 @@
  * The !important guard prevents a graphic pack from changing this value.
  * --------------------------------------------------------------------- */
 html[dir="rtl"] {
-    zoom: 1.5 !important;
+    zoom: 132% !important;
 }
 
 /* Map tile and oasis details should read as Arabic, not as an LTR table. */
@@ -92,11 +92,26 @@ html[dir="rtl"] #mid {
     float: none !important;
     width: 980px !important;
     min-width: 0 !important;
+    left: 0 !important;
     margin-top: 28px !important;
     margin-left: auto !important;
     margin-right: auto !important;
     position: relative;
-    left: -105px;
+}
+
+html[dir="rtl"] body.pg-plus #mid,
+html[dir="rtl"] body.pg-plus1 #mid {
+    width: 980px !important;
+}
+
+html[dir="rtl"] body.pg-plus #content.plus,
+html[dir="rtl"] body.pg-plus1 #content {
+    width: 620px !important;
+}
+
+html[dir="rtl"] body.pg-plus #side_info,
+html[dir="rtl"] body.pg-plus1 #side_info {
+    width: 300px !important;
 }
 
 html[dir="rtl"] body.indexPage .world_list .w_big .label_players,
@@ -140,6 +155,77 @@ html[dir="rtl"] #side_info {
     box-sizing: border-box;
     margin-top: 0 !important;
     width: 267px;
+}
+
+html[dir="rtl"] body.dorf1Page #side_info {
+    float: none !important;
+    left: calc((100% - 980px) / 2) !important;
+    position: absolute !important;
+    right: auto !important;
+    top: 200px !important;
+}
+
+html[dir="rtl"] body.dorf1Page > .wrapper {
+    position: relative;
+    left: 0 !important;
+    transform: none !important;
+}
+
+html[dir="rtl"] body.pg-statistics > .wrapper,
+html[dir="rtl"] body.pg-map > .wrapper,
+html[dir="rtl"] body.pg-dorf2 > .wrapper,
+html[dir="rtl"] body.pg-berichte > .wrapper,
+html[dir="rtl"] body.pg-plus > .wrapper,
+html[dir="rtl"] body.pg-plus1 > .wrapper {
+    position: relative;
+    left: 0 !important;
+    transform: none !important;
+}
+
+html[dir="rtl"] body.pg-statistics #res,
+html[dir="rtl"] body.pg-map #res,
+html[dir="rtl"] body.pg-dorf2 #res,
+html[dir="rtl"] body.pg-berichte #res,
+html[dir="rtl"] body.pg-plus #res,
+html[dir="rtl"] body.pg-plus1 #res {
+    left: 0 !important;
+}
+
+html[dir="rtl"] body.pg-plus #content.plus,
+html[dir="rtl"] body.pg-plus1 #content {
+    position: relative;
+    z-index: 10;
+    text-align: center !important;
+}
+
+html[dir="rtl"] body.pg-plus #content.plus table,
+html[dir="rtl"] body.pg-plus #content.plus th,
+html[dir="rtl"] body.pg-plus #content.plus td,
+html[dir="rtl"] body.pg-plus1 #content table,
+html[dir="rtl"] body.pg-plus1 #content th,
+html[dir="rtl"] body.pg-plus1 #content td {
+    text-align: center !important;
+}
+
+html[dir="rtl"] body.pg-plus #side_info {
+    pointer-events: none;
+}
+
+html[dir="rtl"] body.pg-plus #side_info a,
+html[dir="rtl"] body.pg-plus #side_info button,
+html[dir="rtl"] body.pg-plus #side_info input {
+    pointer-events: auto;
+}
+
+html[dir="rtl"] body.pg-plus #content.plus td.act {
+    pointer-events: none;
+}
+
+html[dir="rtl"] body.pg-plus #content.plus td.act a,
+html[dir="rtl"] body.pg-plus #content.plus td.act button {
+    pointer-events: auto;
+    position: relative;
+    z-index: 20;
 }
 
 html[dir="rtl"] #footer {
@@ -350,6 +436,13 @@ html[dir="rtl"] #topNavIcons > a#n4,
 html[dir="rtl"] #topNavIcons > div#n5 {
     float: none !important;
     flex: 0 0 70px;
+}
+
+html[dir="rtl"] #topNavIcons > a#n1,
+html[dir="rtl"] #topNavIcons > a#n2,
+html[dir="rtl"] #topNavIcons > a#n3,
+html[dir="rtl"] #topNavIcons > a#n4 {
+    margin-left: -2px;
 }
 
 html[dir="rtl"] #topNavIcons > div#n5 { order: 1; }
@@ -775,18 +868,26 @@ html[dir="rtl"] #res table {
     background-color: transparent;
 }
 html[dir="rtl"] #res table td.respill {
+    align-items: center;
     background-color: #8bc34a;
     border-radius: 12px;
+    box-sizing: border-box;
+    display: inline-flex;
     padding: 3px 8px;
     white-space: nowrap;
 }
 html[dir="rtl"] #res table td.respill span {
     color: #ffffff;
+    display: inline-block;
     font-weight: 700;
     font-size: 13px;
+    line-height: 18px;
     margin-right: 4px;
+    vertical-align: middle;
 }
 html[dir="rtl"] #res table td.respill img {
+    display: inline-block;
+    flex: 0 0 auto;
     vertical-align: middle;
     margin-left: 0;
 }
@@ -813,9 +914,9 @@ html[dir="rtl"] #goldHeader .tzCoinRow {
     padding: 3px 8px;
 }
 html[dir="rtl"] #goldHeader .tzCoinStack {
-    width: 20px;
-    height: 20px;
-    flex: 0 0 20px;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
 }
 html[dir="rtl"] #goldHeader .tzCoinBg {
     fill: #ffffff;
@@ -844,12 +945,84 @@ html[dir="rtl"] #goldHeader .tzCoinValue {
  * flipped too so the pill hugs its new left anchor the same way it
  * hugged the right one before. */
 html[dir="rtl"] #goldHeader {
-    left: -100px;
+    left: -215px;
     right: auto;
     text-align: left;
 }
 html[dir="rtl"] #goldHeader .tzCoinRow {
     justify-content: flex-start;
+}
+
+html[dir="rtl"] #goldHeader {
+    box-sizing: border-box;
+    width: 152px;
+    height: 34px;
+    min-height: 34px;
+    padding: 0 6px 0 42px;
+    background: linear-gradient(#ffffff, #edf1f4);
+    border: 1px solid #cbd5df;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .16);
+}
+
+html[dir="rtl"] #goldHeader::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e6bd76 !important;
+    font-size: 18px;
+    font-weight: bold;
+    border-right: 1px solid #cbd5df;
+}
+
+html[dir="rtl"] #goldHeader .tzCoinRow {
+    width: 104px;
+    height: 16px;
+    gap: 5px;
+    direction: rtl;
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
+
+html[dir="rtl"] #goldHeader .tzCoinValue {
+    font-size: 15px;
+    line-height: 18px;
+}
+
+html[dir="rtl"] #goldHeader img.tzCoinStack {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    margin: 0;
+    object-fit: contain;
+}
+
+html[dir="rtl"] #goldHeader .tzCoinRow-temporary {
+    color: #65717d;
+    font-size: 11px;
+}
+
+html[dir="rtl"] #goldHeader .tzCoinRow-temporary .tzCoinValue {
+    color: #65717d;
+    font-size: 13px;
+}
+
+html[dir="rtl"] #goldHeader .tzTemporaryGoldLabel {
+    color: #f39c12;
+    font-size: 10px;
+    margin-right: 2px;
+    transform: translateX(-5px);
+}
+
+html[dir="rtl"] #mtop > a#plus {
+    display: none !important;
 }
 
 /* Day/night icon (Templates/header.tpl .dayNightIcon - the sun/moon
@@ -859,7 +1032,7 @@ html[dir="rtl"] #goldHeader .tzCoinRow {
  * area. Pushing it down clears the time block without touching its
  * own horizontal position or the Plus button layout around it. */
 html[dir="rtl"] .dayNightIcon {
-    margin-top: 22px;
+    margin-top: 32px;
     padding-left: 100px;
 }
 

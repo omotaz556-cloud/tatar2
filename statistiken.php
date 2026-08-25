@@ -122,7 +122,7 @@ if (!empty($_GET['id'])) {
 </head>
 
 
-<body class="v35 ie ie8">
+<body class="v35 ie ie8 pg-statistics">
 <div class="wrapper">
 <img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
 <div id="dynamic_header">

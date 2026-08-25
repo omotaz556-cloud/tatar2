@@ -1,0 +1,5 @@
+/* Apply the requested browser-like scale consistently to every page. */
+html {
+    zoom: 132% !important;
+}
+
