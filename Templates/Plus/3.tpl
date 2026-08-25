@@ -294,7 +294,11 @@ $protectionMsg = isset($protectionMsg) ? $protectionMsg : '';
     <?php endforeach; ?>
     </tbody>
 </table>
-<?php if ($protectionMsg !== ''): ?><p class="none"><?php echo htmlspecialchars($protectionMsg, ENT_QUOTES, 'UTF-8'); ?></p><?php endif; ?>
+<?php if ($protectionMsg !== ''): ?>
+<p style="font-weight:bold;color:<?php echo !empty($protectionOk) ? '#2e7d32' : '#b3261e'; ?>;">
+    <?php echo htmlspecialchars($protectionMsg, ENT_QUOTES, 'UTF-8'); ?>
+</p>
+<?php endif; ?>
 
 <?php
 // Gold shop: promo-code redemption box (sits between Plus function and Gold Club).

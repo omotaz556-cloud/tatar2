@@ -445,12 +445,13 @@ if ($hour > 1759 || $hour < 500) {
             right: 8px;
             left: auto;
             white-space: nowrap;
-            top: 40%;
+            top: 50%;
             transform: translateY(-50%);
             width: auto;
             height: auto;
             min-height: 22px;
-            line-height: 16px;
+            max-height: 56px;
+            line-height: 12px;
             text-align: right;
             font-size: 11px;
             font-weight: bold;
@@ -458,24 +459,28 @@ if ($hour > 1759 || $hour < 500) {
         }
 
         /* Randurile de aur/argint: iconita si valoarea aliniate pe aceeasi
-           linie de baza, ca sa nu mai "sara" una fata de alta. */
+           linie de baza, ca sa nu mai "sara" una fata de alta.
+           Inaltimea e tinuta mica ca cele 3 randuri (T4) sa incapain #mtop. */
         #goldHeader .tzCoinRow {
             display: flex;
             align-items: center;
             justify-content: flex-end;
             gap: 4px;
-            height: 18px;
+            height: 12px;
+            line-height: 12px;
         }
 
         #goldHeader .tzCoinStack {
             display: block;
-            width: 16px;
-            height: 16px;
-            flex: 0 0 16px;
+            width: 12px;
+            height: 12px;
+            flex: 0 0 12px;
         }
 
         #goldHeader .tzCoinValue {
             display: inline-block;
+            line-height: 12px;
+            font-size: 11px;
         }
 
         /* Rama comuna: acelasi cerc pentru toate cele trei variante */
@@ -501,20 +506,24 @@ if ($hour > 1759 || $hour < 500) {
 
         #goldHeader img {
             vertical-align: middle;
-            margin-right: 4px;
+            margin-right: 0;
         }
 
-        /* ARGINT (erou T4) - pe rand propriu, chiar sub aur */
+        /* ARGINT (erou T4) - pe rand propriu, chiar sub aur.
+           display:flex (not block) so it stays a clean flex child of
+           #goldHeader's column; rtl.css overrides chrome for Arabic. */
         #silverHeader {
-            display: block;
+            display: flex;
+            align-items: center;
             white-space: nowrap;
-            line-height: 16px;
-            margin-top: -4px;
+            line-height: 12px;
+            height: 12px;
+            margin-top: 0;
         }
 
         #silverHeader img {
             vertical-align: middle;
-            margin-right: 4px;
+            margin-right: 0;
             width: 12px;
             height: 12px;
         }

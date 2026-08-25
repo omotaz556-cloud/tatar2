@@ -32,8 +32,8 @@ AccessLogger::logRequest();
  * RESTRICTIE SITTER pe pagina de profil.
  *
  * Un sitter are voie DOAR la Overview (spieler.php?uid=...). Taburile
- * Profile / Preferences / Account / Vacation / Graphic Pack (s=1..5) sunt
- * interzise, inclusiv prin URL scris de mana sau POST trimis direct.
+ * Profile / Preferences / Account / Vacation / Graphic Pack / Options hub
+ * (s=1..6) sunt interzise, inclusiv prin URL scris de mana sau POST.
  *
  * De ce aici si nu la finalul fisierului, unde exista deja o verificare
  * "$_GET['s'] > 5 or $session->sit == 1":
@@ -54,18 +54,116 @@ if (isset($session) && is_object($session) && method_exists($session, 'isSitterS
 
 $profile->procProfile($_POST);
 $profile->procSpecial($_GET);
+
+/**
+ * Profile hub toggles / cycles (one-page settings).
+ * Ensures preference columns exist, writes DB, clears 30s user cache.
+ */
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST'
+    && (isset($_POST['hub_toggle']) || isset($_POST['hub_cycle']))
+    && isset($session) && is_object($session)
+    && !(method_exists($session, 'isSitterSession') && $session->isSitterSession())
+) {
+    $uid = (int) $session->uid;
+
+    // Same column bootstrap as Profile::updatePreferences
+    foreach ([
+        'mobile_mode' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'timer_refresh' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'invert_colors' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'stats_format' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'night_mode' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'upgrade_redirect' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'map' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'v4' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'v5' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'v6' => "TINYINT(1) NOT NULL DEFAULT '0'",
+        'web_notifications' => "TINYINT(1) NOT NULL DEFAULT '0'",
+    ] as $column => $definition) {
+        $columnCheck = mysqli_query(
+            $database->dblink,
+            "SHOW COLUMNS FROM `" . TB_PREFIX . "users` LIKE '" . $column . "'"
+        );
+        if ($columnCheck && mysqli_num_rows($columnCheck) === 0) {
+            mysqli_query(
+                $database->dblink,
+                "ALTER TABLE `" . TB_PREFIX . "users` ADD COLUMN `" . $column . "` " . $definition
+            );
+        }
+    }
+
+    $setParts = [];
+    if (isset($_POST['hub_toggle'])) {
+        $field = (string) $_POST['hub_toggle'];
+        $on = !empty($_POST['hub_on']);
+        if ($field === 'night_mode') {
+            // ON = dark (2), OFF = light (1)
+            $setParts[] = 'night_mode=' . ($on ? 2 : 1);
+        } elseif ($field === 'stop_auto_update') {
+            // ON = stop refresh → timer_refresh=0; OFF = allow refresh → 1
+            $setParts[] = 'timer_refresh=' . ($on ? 0 : 1);
+        } elseif ($field === 'timer_refresh') {
+            $setParts[] = 'timer_refresh=' . ($on ? 1 : 0);
+        } elseif ($field === 'map') {
+            $setParts[] = 'map=' . ($on ? 1 : 0);
+        } elseif ($field === 'invert_colors') {
+            $setParts[] = 'invert_colors=' . ($on ? 1 : 0);
+        } elseif ($field === 'v4') {
+            $setParts[] = 'v4=' . ($on ? 1 : 0);
+        } elseif ($field === 'v5') {
+            $setParts[] = 'v5=' . ($on ? 1 : 0);
+        } elseif ($field === 'v6') {
+            $setParts[] = 'v6=' . ($on ? 1 : 0);
+        } elseif ($field === 'mobile_mode') {
+            // 0=auto, 1=desktop, 2=mobile — hub toggle: ON=mobile(2), OFF=desktop(1)
+            $setParts[] = 'mobile_mode=' . ($on ? 2 : 1);
+        } elseif ($field === 'web_notifications') {
+            $setParts[] = 'web_notifications=' . ($on ? 1 : 0);
+        }
+    }
+    if (isset($_POST['hub_cycle'])) {
+        $cycle = (string) $_POST['hub_cycle'];
+        if ($cycle === 'upgrade_redirect') {
+            $cur = (int) ($session->userinfo['upgrade_redirect'] ?? 0);
+            $setParts[] = 'upgrade_redirect=' . (($cur + 1) % 3);
+        } elseif ($cycle === 'stats_format') {
+            $cur = (int) ($session->userinfo['stats_format'] ?? 0);
+            $setParts[] = 'stats_format=' . (($cur + 1) % 3);
+        } elseif ($cycle === 'night_mode') {
+            // 0 auto → 1 light → 2 dark → 0
+            $cur = (int) ($session->userinfo['night_mode'] ?? 0);
+            $setParts[] = 'night_mode=' . (($cur + 1) % 3);
+        }
+    }
+
+    if ($setParts) {
+        $database->query(
+            'UPDATE ' . TB_PREFIX . 'users SET ' . implode(', ', $setParts)
+            . ' WHERE id=' . $uid
+        );
+        $cacheKeyUser = 'cache_user_' . ($_SESSION['username'] ?? '');
+        unset($_SESSION[$cacheKeyUser]);
+        // Refresh in-memory userinfo for this request / redirect target
+        foreach ($setParts as $part) {
+            if (preg_match('/^([a-z_]+)=(\d+)$/', $part, $m)) {
+                $session->userinfo[$m[1]] = (int) $m[2];
+                if ($m[1] === 'night_mode') {
+                    $_SESSION['night_mode'] = (int) $m[2];
+                }
+            }
+        }
+    }
+
+    header('Location: spieler.php?uid=' . $uid);
+    exit;
+}
+
 if(isset($_GET['newdid'])){
-	$_SESSION['wid'] = $_GET['newdid'];
-	if(isset($_GET['s'])){
-		header("Location: ".$_SERVER['PHP_SELF']."?s=".preg_replace("/[^a-zA-Z0-9_-]/", "", $_GET['s']));
-		exit();
-	}else if(isset($_GET['uid'])){
-		header("Location: ".$_SERVER['PHP_SELF']."?uid=".preg_replace("/[^a-zA-Z0-9_-]/", "", $_GET['uid']));
-		exit();
-	}else{
-		header("Location: ".$_SERVER['PHP_SELF']);
-		exit();
-	}
+	$_SESSION['wid'] = (int) $_GET['newdid'];
+	// Village list / deep links: open the village overview, not the profile.
+	header('Location: dorf1.php');
+	exit();
 }
 else $building->procBuild($_GET);
 
@@ -171,7 +269,18 @@ if(isset($_GET['uid'])) {
                 unset($_SESSION['vac_error']);
             }
 
-            include("Templates/Profile/overview.tpl");
+            // Own profile home = one-page settings hub (Manage → separate tabs).
+            // Classic overview (villages / medals): ?uid=X&details=1
+            // Other players always see the classic overview.
+            $viewingSelf = ((int) $user['id'] === (int) $session->uid);
+            $wantDetails = !empty($_GET['details']);
+            if ($viewingSelf && !$wantDetails
+                && !(method_exists($session, 'isSitterSession') && $session->isSitterSession())
+            ) {
+                include("Templates/Profile/settings_hub.tpl");
+            } else {
+                include("Templates/Profile/overview.tpl");
+            }
 
         } else {
             include("Templates/Profile/notfound.tpl");
@@ -206,7 +315,13 @@ else if (isset($_GET['s'])) {
         include("Templates/Profile/vacation.tpl");
     }
 
-    if($_GET['s'] > 5 or $session->sit == 1) {
+    if($_GET['s'] == 6) {
+        // Legacy link: options hub is now the profile home
+        header('Location: spieler.php?uid=' . (int) $session->uid);
+        exit;
+    }
+
+    if($_GET['s'] > 6 or $session->sit == 1) {
         header("Location: ".$_SERVER['PHP_SELF']."?uid=".preg_replace("/[^a-zA-Z0-9_-]/","",$session->uid));
         exit;
     }

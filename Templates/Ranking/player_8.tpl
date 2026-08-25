@@ -56,14 +56,14 @@ if (isset($_GET['rank']) && is_numeric($_GET['rank'])) {
     <thead>
         <tr>
             <th colspan="5">
-                <?php echo TZ_THE_LARGEST_SPARTANS; ?>
-                <div id="submenu">
+                <div class="statHeadBar">
+                    <div id="submenu">
                     <a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=7"><img class="btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>" /></a>
                     <a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=32"><img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>" /></a>
                     <a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=31"><img class="btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>" /></a>
-                </div>
-                <br>
-                <div id="submenu2">
+                    </div>
+                    <span class="statHeadTitle"><?php echo TZ_THE_LARGEST_SPARTANS; ?></span>
+                    <div id="submenu2">
                     <a title="<?php echo TRIBE1; ?>" href="statistiken.php?id=11"><img class="btn_v1" src="img/x.gif" alt="<?php echo ATTACKER; ?>"></a>
                     <a title="<?php echo TRIBE2; ?>" href="statistiken.php?id=12"><img class="btn_v2" src="img/x.gif" alt="<?php echo ATTACKER; ?>"></a>
                     <a title="<?php echo TRIBE3; ?>" href="statistiken.php?id=13"><img class="btn_v3" src="img/x.gif" alt="<?php echo ATTACKER; ?>"></a>
@@ -71,6 +71,7 @@ if (isset($_GET['rank']) && is_numeric($_GET['rank'])) {
                     <?php if (defined('NEW_FUNCTION_TRIBE_EGIPTEANS') && NEW_FUNCTION_TRIBE_EGIPTEANS): ?><a title="<?php echo TRIBE7; ?>" href="statistiken.php?id=17"><img class="btn_v7" src="img/x.gif" alt="<?php echo TRIBE7; ?>"></a><?php endif; ?>
                     <?php if (defined('NEW_FUNCTION_TRIBE_SPARTANS') && NEW_FUNCTION_TRIBE_SPARTANS): ?><a title="<?php echo TRIBE8; ?>" href="statistiken.php?id=18"><img class="active btn_v8" src="img/x.gif" alt="<?php echo TRIBE8; ?>"></a><?php endif; ?>
                     <?php if (defined('NEW_FUNCTION_TRIBE_VIKINGS') && NEW_FUNCTION_TRIBE_VIKINGS): ?><a title="<?php echo TRIBE9; ?>" href="statistiken.php?id=19"><img class="btn_v9" src="img/x.gif" alt="<?php echo TRIBE9; ?>"></a><?php endif; ?>
+                    </div>
                 </div>
             </th>
         </tr>

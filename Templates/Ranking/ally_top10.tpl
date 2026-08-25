@@ -45,13 +45,15 @@
     $result = mysqli_query($database->dblink,"SELECT * FROM ".TB_PREFIX."alidata ORDER BY ap DESC, id DESC Limit 10");
     $result2 = mysqli_query($database->dblink,"SELECT * FROM ".TB_PREFIX."alidata WHERE id = '".$session->alliance."' ORDER BY ap DESC, id DESC Limit 1");
 	?>
-	<table cellpadding="1" cellspacing="1">
-	<thead>
-		<tr>
-			<th><?php echo TZ_TOP_10_ALLIANCES; ?><div id="submenu"><a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=43"><img class="active btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>"></a><a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=42"><img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>"></a><a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=41"><img class="btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>"></a></div><div id="submenu2"></div></th>
-		</tr>
-	</thead>
-</table>
+				<div class="statHeadBar top10PageHead">
+					<div id="submenu">
+						<a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=43"><img class="active btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>"></a>
+						<a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=42"><img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>"></a>
+						<a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=41"><img class="btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>"></a>
+					</div>
+					<span class="statHeadTitle"><?php echo TZ_TOP_10_ALLIANCES; ?></span>
+					<span class="statHeadSpacer" aria-hidden="true"></span>
+				</div>
 <!-- ADDED: row with Week / Medal reset -->
 <?php if (defined('NEW_FUNCTIONS_MEDAL_RESET') && NEW_FUNCTIONS_MEDAL_RESET): ?>
 <table cellpadding="1" cellspacing="1" style="width:100%; margin:2px 0;">

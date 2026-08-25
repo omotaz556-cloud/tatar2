@@ -35,8 +35,8 @@ if (!isset($_SESSION['search']) || !is_numeric($_SESSION['search'])) {
     <thead>
         <tr>
             <th colspan="5">
-                <?php echo TZ_THE_MOST_SUCCESSFUL_ATTACKERS; ?>
-                <div id="submenu">
+                <div class="statHeadBar">
+                    <div id="submenu">
 				    <?php
                         // Tabul de statistici grafice: apare doar cand functia e
                         // pornita SI jucatorul are Plus activ.
@@ -63,6 +63,9 @@ if (!isset($_SESSION['search']) || !is_numeric($_SESSION['search'])) {
                     <a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=31">
                         <img class="active btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>" />
                     </a>
+                    </div>
+                    <span class="statHeadTitle"><?php echo TZ_THE_MOST_SUCCESSFUL_ATTACKERS; ?></span>
+                    <div class="statHeadSpacer" aria-hidden="true"></div>
                 </div>
             </th>
         </tr>

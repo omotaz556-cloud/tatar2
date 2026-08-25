@@ -169,10 +169,29 @@ if (count($session->villages) > 0) {
             : '';
 
         /**
-         * Build village switch URL
+         * Build village switch URL.
+         * On village-context pages keep the current script so e.g. build.php
+         * stays on the same building after switching. Everywhere else
+         * (profile, stats, plus, …) a relative ?newdid= only reloads the
+         * same page and looks broken — send the player to dorf1 instead.
          */
-        $villageUrl =
-            '?newdid=' . $villageWref . $extraParams;
+        $currentScript = basename(str_replace('\\', '/', (string) ($_SERVER['PHP_SELF'] ?? 'dorf1.php')));
+        $stayOnPageScripts = [
+            'dorf1.php',
+            'dorf2.php',
+            'dorf3.php',
+            'build.php',
+            'a2b.php',
+            'warsim.php',
+            'karte.php',
+            'berichte.php',
+            'nachrichten.php',
+        ];
+        if (in_array($currentScript, $stayOnPageScripts, true)) {
+            $villageUrl = $currentScript . '?newdid=' . $villageWref . $extraParams;
+        } else {
+            $villageUrl = 'dorf1.php?newdid=' . $villageWref;
+        }
 
 ?>
         <tr>
@@ -182,7 +201,7 @@ if (count($session->villages) > 0) {
             </td>
 
             <td class="link">
-                <a href="<?php echo $villageUrl; ?>">
+                <a href="<?php echo htmlspecialchars($villageUrl, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php echo htmlspecialchars($villageName, ENT_QUOTES, 'UTF-8'); ?>
                 </a>
             </td>

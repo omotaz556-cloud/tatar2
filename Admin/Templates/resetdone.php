@@ -17,7 +17,12 @@
 ##  Copyright      : Novaterra mods (c) 2010-2025; base engine (c) TravianZ authors (GPLv3). ##
 ## --------------------------------------------------------------------------- ##
 #################################################################################
-unset($_SESSION['admin_username'], $_SESSION['sessid']);
+$adminPreserved = !empty($_SESSION['admin_preserved']);
+if (!$adminPreserved) {
+    unset($_SESSION['admin_username'], $_SESSION['sessid']);
+} else {
+    unset($_SESSION['admin_preserved']);
+}
 
 // SECURITY FIX (2026-08-15): previously a hardcoded '123456' shown regardless
 // of what was actually stored — now reads the real one-time random password
@@ -61,7 +66,12 @@ unset($_SESSION['mh_reset_password']);
       </div>
       
       <p>All game data has been deleted: players, villages, alliances, reports, and messages.<br>
-      Admin sessions have been terminated automatically.</p>
+      <?php if ($adminPreserved) { ?>
+        Administrator account(s) were preserved with a new starter village — you can log in with the same password.
+      <?php } else { ?>
+        Admin sessions have been terminated automatically.
+      <?php } ?>
+      </p>
 
       <div class="reset-info">
         <span style="color:#333;">Multihunter account password:</span><br>

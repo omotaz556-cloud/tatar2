@@ -283,12 +283,14 @@ body.contentpage #content ul
 	padding-top:30px
 }
 
-body.indexpage
+body.indexpage,
+body.indexPage
 {
 	background:#fff url(images/main_background_front.jpg) repeat-x top
 }
 
-body.contentpage
+body.contentpage,
+body.contentPage
 {
 	background:#fff url(images/main_background_content.jpg) repeat-x top
 }
@@ -304,14 +306,16 @@ body.contentpage
 	z-index:10
 }
 
-body.indexpage #header
+body.indexpage #header,
+body.indexPage #header
 {
 	background:transparent url(images/artwork.jpg) no-repeat top center;
 	height:389px;
-	overflow:auto
+	overflow:hidden
 }
 
-body.contentpage #header
+body.contentpage #header,
+body.contentPage #header
 {
 	background:transparent none;
 	height:200px
@@ -453,13 +457,15 @@ body.contentpage #header
 	z-index:50
 }
 
-body.indexpage #content
+body.indexpage #content,
+body.indexPage #content
 {
 	padding-bottom:120px;
 	padding-top:367px
 }
 
-body.contentpage #content
+body.contentpage #content,
+body.contentPage #content
 {
 	padding-bottom:160px;
 	padding-top:177px
@@ -471,13 +477,15 @@ body.contentpage #content
 	position:relative
 }
 
-body.indexpage #content .grit
+body.indexpage #content .grit,
+body.indexPage #content .grit
 {
 	background:transparent none;
 	width:830px
 }
 
-body.contentpage #content .grit
+body.contentpage #content .grit,
+body.contentPage #content .grit
 {
 	background:transparent url(images/content_background.jpg) no-repeat top left;
 	min-height:400px;

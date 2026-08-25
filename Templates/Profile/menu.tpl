@@ -1,101 +1,62 @@
 <?php
 
 #################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Project:       Novaterra      					       		 		  	   ##
-##  Version:       06.05.2026 						       	 				   ##
-##  Filename       menu.tpl                                                    ##
-##  Refactored by  Shadow					                                   ##
-##  License:       Novaterra Project                                            ##
-##  Copyright:     Novaterra (c) 2010-2026. All rights reserved.                ##
-##  URLs:          http://novaterra.example						       	 		   ##
-##  Source code:   http://github.com/omotaz556-cloud/tatar/         	       	   ##
-##                                                                             ##
+##  Filename       : menu.tpl                                                  ##
+##  Shown on edit tabs (s=1..5) — home link returns to the one-page hub.       ##
 #################################################################################
 
-// determinăm UID sigur (evităm repetarea directă $_GET peste tot)
 $menuUid = isset($_GET['uid']) ? (int)$_GET['uid'] : (int)$session->uid;
-
-// helper simplu pentru "selected"
-$selectedUid = isset($_GET['uid']);
 $sParam = isset($_GET['s']) ? (int)$_GET['s'] : null;
+$onDetails = !empty($_GET['details']);
 
-/**
- * Un sitter vede DOAR Overview. Restul taburilor nu se mai deseneaza.
- *
- * Ascunderea e doar cosmetica - blocarea reala e in spieler.php (redirect
- * inainte de orice include) si in Profile::procProfile()/procSpecial()
- * (refuza POST-urile trimise direct). Aici doar nu mai aratam linkuri care
- * oricum ar redirectiona.
- */
 $sitterView = isset($session) && is_object($session)
     && method_exists($session, 'isSitterSession') && $session->isSitterSession();
 ?>
 
 <div id="textmenu">
 
-    <!-- ================= OVERVIEW ================= -->
-    <a href="spieler.php?uid=<?php echo $menuUid; ?>"
-       <?php echo $selectedUid ? 'class="selected"' : ''; ?>>
+    <a href="spieler.php?uid=<?php echo (int) $session->uid; ?>"
+       <?php echo (!$sParam && !$onDetails) ? 'class="selected"' : ''; ?>>
         <?php echo OVERVIEW; ?>
     </a>
 
 <?php if (!$sitterView) { ?>
     |
-
-    <!-- ================= PROFILE ================= -->
+    <a href="spieler.php?uid=<?php echo (int) $session->uid; ?>&amp;details=1"
+       <?php echo $onDetails ? 'class="selected"' : ''; ?>>
+        <?php echo PLAYER_PROFILE; ?>
+    </a>
+    |
     <a href="spieler.php?s=1"
        <?php echo ($sParam === 1) ? 'class="selected"' : ''; ?>>
         <?php echo PROFILE; ?>
     </a>
-
     |
-
-    <!-- ================= PREFERENCES ================= -->
     <a href="spieler.php?s=2"
        <?php echo ($sParam === 2) ? 'class="selected"' : ''; ?>>
         <?php echo PREFERENCES; ?>
     </a>
-
     |
-
-    <!-- ================= DISPLAY OPTIONS ================= -->
-    <a href="spieler.php?s=2#display_options">
-        <?php echo PREF_OPTIONS; ?>
-    </a>
-
-    |
-
-    <!-- ================= ACCOUNT ================= -->
     <a href="spieler.php?s=3"
        <?php echo ($sParam === 3) ? 'class="selected"' : ''; ?>>
         <?php echo ACCOUNT; ?>
     </a>
 
-    <?php
-    // ================= VACATION MODE =================
-    if (defined('NEW_FUNCTIONS_VACATION') && NEW_FUNCTIONS_VACATION) {
-    ?>
+    <?php if (defined('NEW_FUNCTIONS_VACATION') && NEW_FUNCTIONS_VACATION) { ?>
         |
         <a href="spieler.php?s=5"
            <?php echo ($sParam === 5) ? 'class="selected"' : ''; ?>>
             <?php echo VACATION; ?>
         </a>
-    <?php
-    }
+    <?php } ?>
 
-    // ================= GRAPHIC PACK =================
-    if (defined('GP_ENABLE') && GP_ENABLE) {
-    ?>
+    <?php if (defined('GP_ENABLE') && GP_ENABLE) { ?>
         |
         <a href="spieler.php?s=4"
            <?php echo ($sParam === 4) ? 'class="selected"' : ''; ?>>
             <?php echo GRAPH_PACK; ?>
         </a>
-    <?php
-    }
-    ?>
-<?php } // fara taburi de setari pentru sitteri ?>
+    <?php } ?>
+<?php } ?>
 
 </div>

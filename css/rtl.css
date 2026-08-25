@@ -61,6 +61,16 @@ html[dir="rtl"] {
     zoom: 132% !important;
 }
 
+/* Portal / marketing pages keep 100% zoom: html zoom mis-aligns
+ * artwork.jpg against main_background_front.jpg and leaves white
+ * gutters beside the hero. In-game pages keep the 132% zoom above. */
+html[dir="rtl"]:has(body.indexPage),
+html[dir="rtl"]:has(body.indexpage),
+html[dir="rtl"]:has(body.contentPage),
+html[dir="rtl"]:has(body.contentpage) {
+    zoom: 1 !important;
+}
+
 /* Map tile and oasis details should read as Arabic, not as an LTR table. */
 html[dir="rtl"] div#content.map h1,
 html[dir="rtl"] div#content.map div#map_details,
@@ -73,45 +83,403 @@ html[dir="rtl"] div#content.map div#map_details td {
 
 /* شريط الموارد absolute، لذلك نترك مساحة واضحة تحته قبل بداية الأعمدة. */
 /* ---------------------------------------------------------------------
- * CENTERING FIX: lang/en/compact.css sets "#mid { float:left; width:100%;
- * min-width:980px; }" - a full-width floated box. margin:auto on a
- * width:100% box has no visual effect (there is no leftover space to
- * distribute), so the three floated columns inside it (#side_navi,
- * #content, #side_info - only ~949px combined) end up hugging one edge
- * of the viewport instead of sitting in the middle, which is what made
- * every page look pushed to one side instead of centered.
- * Giving #mid back its own fixed content width (980px - big enough for
- * the 949px column group, same value already assumed everywhere else in
- * this file's comments) and switching float:left -> float:none turns it
- * back into a normal block box, so margin-left/right:auto now has
- * something to center - equal space on both sides on every page that
- * loads this stylesheet. The existing #mid::after clearfix above still
- * contains the floated columns inside it, so nothing about their
- * internal layout changes, only the outer box's own width/position. */
+ * CONTENT CENTERING + COLUMN ORDER (ALL game pages):
+ * Same proven pattern as dorf1/plus: LTR flex row + fixed column widths
+ * so #side_info (hero/character + villages) can never be squeezed away
+ * when #content grows. Order: hero(1) | content(2) | menu(3).
+ * --------------------------------------------------------------------- */
 html[dir="rtl"] #mid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    direction: ltr !important;
+    unicode-bidi: isolate;
+    float: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 980px !important;
+    /* Nudge the column group left so it lines up under the centered
+     * resource bar / header (zoom + RTL otherwise leave it biased right). */
+    left: -120px !important;
+    right: auto !important;
+    transform: none !important;
+    margin-top: 28px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+html[dir="rtl"] #mid > .clear,
+html[dir="rtl"] #mid > br {
+    display: none !important;
+}
+
+/* Scripts/styles inside #mid must not become flex items (they break the
+ * 3-column row on spieler / build / stats / dorf1 / etc.). */
+html[dir="rtl"] #mid > script,
+html[dir="rtl"] #mid > style {
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    flex: 0 0 0 !important;
+    order: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+html[dir="rtl"] #mid::after {
+    content: none !important;
+    display: none !important;
+}
+
+html[dir="rtl"] #side_navi,
+html[dir="rtl"] #content,
+html[dir="rtl"] #side_info {
+    float: none !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    margin: 0 !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    box-sizing: border-box !important;
+}
+
+html[dir="rtl"] #side_info {
+    order: 1 !important;
+    flex: 0 0 257px !important;
+    width: 257px !important;
+    max-width: 257px !important;
+    align-self: flex-start !important;
+    overflow: visible !important;
+    z-index: 6;
+}
+
+html[dir="rtl"] #content {
+    order: 2 !important;
+    flex: 0 0 537px !important;
+    width: 537px !important;
+    max-width: 537px !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    text-align: right;
+    z-index: 1;
+}
+
+html[dir="rtl"] #side_navi {
+    order: 3 !important;
+    flex: 0 0 155px !important;
+    width: 155px !important;
+    max-width: 155px !important;
+}
+
+/* ---------------------------------------------------------------------
+ * Portal / marketing pages (index.php, tutorial.php, anleitung.php, …)
+ * use gpack/novaterra/main.css: artwork hero + centered ~830px .grit.
+ * Do NOT use background-size:cover on the hero — it crops the scene and
+ * makes #content (padding-top:367px) look like it sits on top of the
+ * soldier/village. Keep the pack's native 1332×389 artwork.
+ * Game pages (#mid flex) are untouched.
+ * --------------------------------------------------------------------- */
+
+/* Pack CSS uses lowercase body.indexpage; HTML uses indexPage. */
+html[dir="rtl"] body.indexPage,
+html[dir="rtl"] body.indexpage {
+    background: #fff url("../gpack/novaterra/images/main_background_front.jpg") repeat-x top !important;
+}
+html[dir="rtl"] body.contentPage,
+html[dir="rtl"] body.contentpage {
+    background: #fff url("../gpack/novaterra/images/main_background_content.jpg") repeat-x top !important;
+}
+html[dir="rtl"] body.indexPage #header,
+html[dir="rtl"] body.indexpage #header {
+    background: transparent url("../gpack/novaterra/images/artwork.jpg") no-repeat top center !important;
+    background-size: auto !important;
+    height: 389px !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    max-width: none !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: absolute !important;
+    top: 0 !important;
+    z-index: 10 !important;
+    direction: ltr !important;
+    unicode-bidi: isolate;
+}
+html[dir="rtl"] body.indexPage #navigation,
+html[dir="rtl"] body.indexpage #navigation {
+    left: 50% !important;
+    right: auto !important;
+    margin-left: -437px !important;
+    margin-right: 0 !important;
+    width: 830px !important;
+    top: 52px !important;
+    height: 114px !important;
+    z-index: 80 !important;
+    direction: ltr !important;
+}
+html[dir="rtl"] body.indexPage #register_now,
+html[dir="rtl"] body.indexpage #register_now {
+    left: 50% !important;
+    right: auto !important;
+    margin-left: -151px !important;
+    margin-right: 0 !important;
+    top: 277px !important;
+    width: 145px !important;
+    height: 50px !important;
+    z-index: 250 !important;
+    direction: ltr !important;
+    text-align: center !important;
+}
+
+html[dir="rtl"] body.indexPage #content,
+html[dir="rtl"] body.indexpage #content,
+html[dir="rtl"] body.contentPage #content,
+html[dir="rtl"] body.contentpage #content {
+    display: block !important;
+    float: none !important;
+    flex: none !important;
+    order: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    direction: rtl;
+    text-align: right;
+    box-sizing: content-box !important;
+    z-index: 50;
+    background: transparent !important;
+}
+html[dir="rtl"] body.indexPage #content,
+html[dir="rtl"] body.indexpage #content {
+    /* Pack value: sits just under the 389px artwork (22px intentional overlap) */
+    padding-top: 367px !important;
+    padding-bottom: 120px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+html[dir="rtl"] body.contentPage #content,
+html[dir="rtl"] body.contentpage #content {
+    padding-top: 177px !important;
+    padding-bottom: 160px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+html[dir="rtl"] body.indexPage #content .grit,
+html[dir="rtl"] body.indexpage #content .grit {
+    width: 830px !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    background: transparent none !important;
+    clear: both !important;
+}
+html[dir="rtl"] body.contentPage #content .grit,
+html[dir="rtl"] body.contentpage #content .grit {
+    width: 840px !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    position: relative !important;
+}
+/* Keep pack float:left order so boxes sit under the artwork, not stacked oddly.
+ * (Earlier float:right made the staggered secondarybox look broken.) */
+html[dir="rtl"] body.indexPage .grit .infobox,
+html[dir="rtl"] body.indexpage .grit .infobox {
+    float: left !important;
+    margin-left: 15px !important;
+    margin-right: 9px !important;
+}
+html[dir="rtl"] body.indexPage .grit .secondarybox,
+html[dir="rtl"] body.indexpage .grit .secondarybox {
+    float: left !important;
+    margin-top: 22px !important;
+}
+
+/* dorf1.php — same 980px centered #mid as LTR dorf1.css.
+ * width:100% here was stretching the flex row across the whole
+ * viewport and leaving huge white gaps between hero / village / menu. */
+html[dir="rtl"] body.dorf1Page #mid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    direction: ltr !important;
+    unicode-bidi: isolate;
     float: none !important;
     width: 980px !important;
-    min-width: 0 !important;
-    left: 0 !important;
+    max-width: 980px !important;
+    min-width: 980px !important;
+    left: -95px !important;
+    right: auto !important;
+    transform: none !important;
     margin-top: 28px !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    position: relative;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
 }
 
+html[dir="rtl"] body.dorf1Page #side_info {
+    order: 1 !important;
+    flex: 0 0 267px !important;
+    width: 267px !important;
+    max-width: 267px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    align-self: flex-start !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    /* Keep pack shadow (shadow-b-rtl.png) — do NOT wipe with background:transparent */
+    background-color: transparent !important;
+    background-image: url("../gpack/novaterra_classic/images/shadow-b-rtl.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: right top !important;
+    overflow: visible !important;
+    z-index: 6;
+}
+
+html[dir="rtl"] body.dorf1Page #content,
+html[dir="rtl"] body.dorf1Page #content.village1 {
+    order: 2 !important;
+    flex: 0 0 537px !important;
+    width: 537px !important;
+    max-width: 537px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    overflow: visible !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    background: transparent !important;
+    z-index: 1;
+    box-sizing: border-box !important;
+}
+
+html[dir="rtl"] body.dorf1Page #side_navi {
+    order: 3 !important;
+    flex: 0 0 155px !important;
+    width: 155px !important;
+    max-width: 155px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    margin-top: 120px !important;
+    float: none !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+}
+
+/* plus.php / plus1.php — same HTML fix as dorf1: #side_info must stay
+ * inside #mid. Mirror the working dorf1 flex/order/centering so Plus and
+ * all its sub-tabs (id=1..5, packages, etc.) match the rest of the game.
+ * Does not change the general #mid rule used by other pages. */
 html[dir="rtl"] body.pg-plus #mid,
 html[dir="rtl"] body.pg-plus1 #mid {
-    width: 980px !important;
-}
-
-html[dir="rtl"] body.pg-plus #content.plus,
-html[dir="rtl"] body.pg-plus1 #content {
-    width: 620px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    direction: ltr !important;
+    unicode-bidi: isolate;
+    float: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 980px !important;
+    left: -120px !important;
+    right: auto !important;
+    transform: none !important;
+    margin-top: 28px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
 }
 
 html[dir="rtl"] body.pg-plus #side_info,
 html[dir="rtl"] body.pg-plus1 #side_info {
-    width: 300px !important;
+    order: 1 !important;
+    flex: 0 0 267px !important;
+    width: 267px !important;
+    max-width: 267px !important;
+    margin: 0 !important;
+    float: none !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    align-self: flex-start !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    pointer-events: auto !important;
+}
+
+html[dir="rtl"] body.pg-plus #content,
+html[dir="rtl"] body.pg-plus #content.plus,
+html[dir="rtl"] body.pg-plus1 #content,
+html[dir="rtl"] body.pg-plus1 #content.plus {
+    order: 2 !important;
+    flex: 0 0 620px !important;
+    width: 620px !important;
+    max-width: 620px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    overflow: hidden !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    position: relative !important;
+    z-index: 10;
+    text-align: right !important;
+}
+
+html[dir="rtl"] body.pg-plus #side_navi,
+html[dir="rtl"] body.pg-plus1 #side_navi {
+    order: 3 !important;
+    flex: 0 0 155px !important;
+    width: 155px !important;
+    max-width: 155px !important;
+    margin: 0 !important;
+    float: none !important;
+    direction: rtl;
+    unicode-bidi: isolate;
 }
 
 html[dir="rtl"] body.indexPage .world_list .w_big .label_players,
@@ -141,16 +509,6 @@ html[dir="rtl"] body.indexPage #signup_list h2 {
     width: max-content;
 }
 
-/* بعض الصفحات تضع فواصل BR قبل العمود الجانبي، وتبقى ظاهرة إذا كانت
- * طبقة الحزمة القديمة مخزنة في المتصفح. */
-html[dir="rtl"] #mid > br {
-    display: none !important;
-}
-html[dir="rtl"] #mid::after {
-    clear: both;
-    content: "";
-    display: table;
-}
 html[dir="rtl"] #side_info {
     box-sizing: border-box;
     margin-top: 0 !important;
@@ -159,27 +517,10 @@ html[dir="rtl"] #side_info {
 
 html[dir="rtl"] body.dorf1Page #side_info {
     float: none !important;
-    left: calc((100% - 980px) / 2) !important;
-    position: absolute !important;
+    left: auto !important;
     right: auto !important;
-    top: 200px !important;
-}
-
-html[dir="rtl"] body.dorf1Page > .wrapper {
-    position: relative;
-    left: 0 !important;
-    transform: none !important;
-}
-
-html[dir="rtl"] body.pg-statistics > .wrapper,
-html[dir="rtl"] body.pg-map > .wrapper,
-html[dir="rtl"] body.pg-dorf2 > .wrapper,
-html[dir="rtl"] body.pg-berichte > .wrapper,
-html[dir="rtl"] body.pg-plus > .wrapper,
-html[dir="rtl"] body.pg-plus1 > .wrapper {
-    position: relative;
-    left: 0 !important;
-    transform: none !important;
+    position: relative !important;
+    top: auto !important;
 }
 
 html[dir="rtl"] body.pg-statistics #res,
@@ -195,20 +536,52 @@ html[dir="rtl"] body.pg-plus #content.plus,
 html[dir="rtl"] body.pg-plus1 #content {
     position: relative;
     z-index: 10;
-    text-align: center !important;
+    text-align: right !important;
+}
+
+/* All Novaterra Plus pages (plus.php, plus1.php, a2b2.php, …):
+ * force Arabic copy to the right — overrides compact.css + old
+ * center !important rules on .none / p#plus_info / table cells. */
+html[dir="rtl"] #content.plus,
+html[dir="rtl"] #content.plus *,
+html[dir="rtl"] body.pg-plus #content.plus,
+html[dir="rtl"] body.pg-plus #content.plus *,
+html[dir="rtl"] body.pg-plus1 #content,
+html[dir="rtl"] body.pg-plus1 #content *,
+html[dir="rtl"] body.pg-a2b2 #content.plus,
+html[dir="rtl"] body.pg-a2b2 #content.plus * {
+    text-align: right !important;
 }
 
 html[dir="rtl"] body.pg-plus #content.plus table,
 html[dir="rtl"] body.pg-plus #content.plus th,
 html[dir="rtl"] body.pg-plus #content.plus td,
+html[dir="rtl"] body.pg-plus #content.plus p,
+html[dir="rtl"] body.pg-plus #content.plus h1,
+html[dir="rtl"] body.pg-plus #content.plus h2,
+html[dir="rtl"] body.pg-plus #content.plus h3,
+html[dir="rtl"] body.pg-plus #content.plus h4,
+html[dir="rtl"] body.pg-plus #content.plus li,
+html[dir="rtl"] body.pg-plus #content.plus label,
+html[dir="rtl"] body.pg-plus #content.plus .none,
+html[dir="rtl"] body.pg-plus #content.plus p.btn,
+html[dir="rtl"] body.pg-plus #content.plus p#plus_info,
+html[dir="rtl"] body.pg-plus #content.plus #textmenu,
 html[dir="rtl"] body.pg-plus1 #content table,
 html[dir="rtl"] body.pg-plus1 #content th,
-html[dir="rtl"] body.pg-plus1 #content td {
-    text-align: center !important;
-}
-
-html[dir="rtl"] body.pg-plus #side_info {
-    pointer-events: none;
+html[dir="rtl"] body.pg-plus1 #content td,
+html[dir="rtl"] body.pg-plus1 #content p,
+html[dir="rtl"] body.pg-plus1 #content h1,
+html[dir="rtl"] body.pg-plus1 #content h2,
+html[dir="rtl"] body.pg-plus1 #content h3,
+html[dir="rtl"] body.pg-plus1 #content h4,
+html[dir="rtl"] body.pg-plus1 #content li,
+html[dir="rtl"] body.pg-plus1 #content label,
+html[dir="rtl"] body.pg-plus1 #content .none,
+html[dir="rtl"] body.pg-plus1 #content p.btn,
+html[dir="rtl"] body.pg-plus1 #content p#plus_info,
+html[dir="rtl"] body.pg-plus1 #content #textmenu {
+    text-align: right !important;
 }
 
 html[dir="rtl"] body.pg-plus #side_info a,
@@ -346,31 +719,62 @@ html[dir="rtl"] body.build-id-21 #footer {
     width: 100% !important;
 }
 
-/* أزرار الإحصائيات كانت absolute على إحداثيات ثابتة، فتتداخل مع تبويبات
- * الصفحة بعد تكبير RTL. وضعها في تدفق مستقل يحافظ على المسافات بينها. */
-html[dir="rtl"] div.statistics div#submenu {
-    align-items: center;
-    display: flex;
+/* أزرار الإحصائيات (مهاجم / مدافع / أفضل 10 / قبائل):
+ * الكلاسيك يحط #submenu بـ position:absolute; top:107px فوق الجدول،
+ * وفي RTL (بعد تكبير الخط والقائمة) الأيقونات تغطي #textmenu.
+ * نخليها داخل صف العنوان (th) لكل جداول الإحصائيات، بما فيها اللي
+ * من غير .statHeadBar (player_attack / defend / top10 / tribes). */
+html[dir="rtl"] body.pg-statistics #content.statistics div#submenu,
+html[dir="rtl"] body.pg-statistics #content.statistics div#submenu2,
+html[dir="rtl"] div.statistics div#submenu,
+html[dir="rtl"] div.statistics div#submenu2 {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    float: none !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
     gap: 5px;
-    justify-content: center;
-    margin: 6px 0 4px;
-    position: static;
-    right: auto;
-    top: auto;
+    margin: 0 6px !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+    z-index: auto !important;
+    vertical-align: middle;
 }
+html[dir="rtl"] body.pg-statistics #content.statistics div#submenu img,
+html[dir="rtl"] body.pg-statistics #content.statistics div#submenu2 img,
 html[dir="rtl"] div.statistics div#submenu img,
 html[dir="rtl"] div.statistics div#submenu2 img {
-    float: none;
-    margin: 0;
+    float: none !important;
+    margin: 0 !important;
+    display: block !important;
 }
-html[dir="rtl"] div.statistics div#submenu2 {
-    align-items: center;
-    display: flex;
-    float: none;
-    gap: 5px;
-    justify-content: center;
-    margin: 4px 0 8px;
-    overflow: visible;
+html[dir="rtl"] body.pg-statistics #content.statistics table thead > tr:first-child > th,
+html[dir="rtl"] div.statistics table thead > tr:first-child > th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    height: auto !important;
+    min-height: 36px !important;
+    padding: 8px 6px !important;
+    position: relative !important;
+    white-space: normal !important;
+}
+
+/* .statHeadBar cancels the floating absolute #submenu rules above */
+html[dir="rtl"] div.statistics .statHeadBar #submenu,
+html[dir="rtl"] div.statistics .statHeadBar #submenu2 {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    float: none !important;
+    transform: none !important;
+    z-index: auto;
 }
 
 /* جدول تفاصيل الخريطة موضوع فوق طبقات الخريطة المطلقة؛ خلفية كاملة تمنع
@@ -387,15 +791,9 @@ html[dir="rtl"] div.map table#map_infobox td {
 }
 html[dir="rtl"] div#content.map {
     min-height: 540px;
-    overflow: visible;
-}
-
-/* dorf1 يحتوي على قوالب القرية القديمة التي تجعل side_info خارج mid عند
- * parsing في بعض المتصفحات؛ نثبته بجوار المحتوى بدون تغيير الخريطة. */
-html[dir="rtl"] body.dorf1Page #side_info {
-    left: 0;
-    position: absolute;
-    top: 200px;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
 }
 
 /* ---------------------------------------------------------------------
@@ -485,7 +883,7 @@ html[dir="rtl"] #topNavIcons > div#n5 {
  * that true.
  * --------------------------------------------------------------------- */
 html[dir="rtl"] #side_navi {
-    float: right;
+    float: none;
     margin-right: 0 !important;
 }
 /* gpack/novaterra_classic/modules/new_images.css sets
@@ -501,7 +899,7 @@ html[dir="rtl"] #side_navi {
  * empty gaps between groups. Tightening it stacks all the links
  * (Home/Guide/Profile/Logout/Forum/Discord/Plus/Support) close under
  * each other, matching the reference; #side_navi's own position
- * (float:right, outside #content) above is untouched. */
+ * (flex item under #mid) above is untouched. */
 html[dir="rtl"] #side_navi p {
     margin: 0 0 2px;
 }
@@ -519,12 +917,12 @@ html[dir="rtl"] #side_navi td.link {
 }
 
 html[dir="rtl"] #content {
-    float: right;
+    float: none;
     text-align: right;
 }
 
 html[dir="rtl"] #side_info {
-    float: right;
+    float: none;
     padding-left: 0;
     padding-right: 10px;
     text-align: right;
@@ -598,20 +996,127 @@ html[dir="rtl"] div.village1 span#cap font {
 }
 
 /* ---------------------------------------------------------------------
- * Map / production pane (dorf1.php: #village_map inside
- * #village_map_wrap, and #map_details - movement/production/troops -
- * a sibling of #village_map_wrap, pulled up next to it with a negative
- * margin-top). In English these sit map on the left, production info
- * on the right (lang/en/compact.css: village_map float:left,
- * map_details float:right). The Arabic reference mirrors this pair:
- * production/movement/troops on the LEFT, village map on the RIGHT.
- * Only the float side of these two boxes flips here - #village_map's
- * own internal pixel coordinates (resource field icons etc.) stay
- * LTR/isolated via the direction:ltr rule above, so no sprite or
- * coordinate is touched, just which side of the row each box renders
- * on. margin-right/-left swap for the same reason td.ico padding was
- * swapped below: keep the existing 1px visual gap, on the new side.
+ * Map / production pane (dorf1.php ONLY).
+ *
+ * Keep map + production on ONE row inside the fixed 537px column:
+ *   map (300px) on the right, #map_details (~229px) on its left.
+ * Flex + wrap is used so nowrap Arabic ("في الساعة") cannot bump the
+ * details pane onto a second row the way inline-block/float did when
+ * the table's min-content grew past the leftover width.
  * --------------------------------------------------------------------- */
+html[dir="rtl"] body.dorf1Page #content.village1 {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    direction: rtl !important;
+    unicode-bidi: isolate;
+    overflow: visible !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+    width: 537px !important;
+    max-width: 537px !important;
+}
+html[dir="rtl"] body.dorf1Page #content.village1 > h1 {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+html[dir="rtl"] body.dorf1Page #village_map_wrap {
+    flex: 0 0 300px !important;
+    display: block !important;
+    float: none !important;
+    width: 300px !important;
+    max-width: 300px !important;
+    margin: 0 !important;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+html[dir="rtl"] body.dorf1Page div.village1 div#village_map {
+    display: block !important;
+    float: none !important;
+    width: 300px !important;
+    margin: 0 !important;
+}
+html[dir="rtl"] body.dorf1Page div.village1 div#map_details {
+    flex: 0 0 229px !important;
+    display: block !important;
+    float: none !important;
+    clear: none !important;
+    width: 229px !important;
+    max-width: 229px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+/* dorf1.php puts two empty <br>s at the top of #map_details; hide them
+ * so production lines up with the top of the map instead of sitting low. */
+html[dir="rtl"] body.dorf1Page div.village1 div#map_details > br {
+    display: none !important;
+}
+html[dir="rtl"] body.dorf1Page div.village1 div#map_details table {
+    width: auto !important;
+    max-width: 100% !important;
+    table-layout: auto !important;
+    box-sizing: border-box !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    /* sit next to the map (right edge of #map_details in RTL) */
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+/* Classic Travian row: [icon][name:][num][في الساعة] — compact, no
+ * stretched gap between the number and "per hour". */
+html[dir="rtl"] body.dorf1Page div.village1 table#production tbody td,
+html[dir="rtl"] body.dorf1Page div.village1 table#troops tbody td {
+    padding: 1px 0 !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+}
+html[dir="rtl"] body.dorf1Page div.village1 table#production td.ico,
+html[dir="rtl"] body.dorf1Page div.village1 table#troops td.ico {
+    width: 1% !important;
+    padding: 1px 0 1px 3px !important;
+}
+html[dir="rtl"] body.dorf1Page div.village1 table#production td.res {
+    width: 1% !important;
+    padding: 1px 0 !important;
+    letter-spacing: 0 !important;
+    text-align: right !important;
+}
+html[dir="rtl"] body.dorf1Page div.village1 table#production td.num,
+html[dir="rtl"] body.dorf1Page div.village1 table#troops td.num {
+    width: 1% !important;
+    padding: 1px 3px !important;
+    text-align: left !important;
+}
+html[dir="rtl"] body.dorf1Page div.village1 table#production td.per {
+    width: 1% !important;
+    font-size: 12px !important;
+    letter-spacing: 0 !important;
+    padding: 1px 0 1px 2px !important;
+    text-align: left !important;
+}
+html[dir="rtl"] body.dorf1Page div.village1 table#troops td.un {
+    width: 1% !important;
+    padding: 1px 0 !important;
+    text-align: right !important;
+}
+html[dir="rtl"] body.dorf1Page div.village1 table#production thead th,
+html[dir="rtl"] body.dorf1Page div.village1 table#troops thead th {
+    text-align: right !important;
+}
+/* Flex parent must not grow a clearfix pseudo as a flex item. */
+html[dir="rtl"] body.dorf1Page div.village1::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Fallback if a page renders village1 without body.dorf1Page. */
 html[dir="rtl"] div.village1 div#village_map {
     float: right;
 }
@@ -654,14 +1159,43 @@ html[dir="rtl"] #content h1 {
         overflow-x: hidden;
     }
     html[dir="rtl"] #mid {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
         width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
-    html[dir="rtl"] body.dorf1Page #side_info {
-        left: 0;
-        position: static;
-        top: auto;
+    html[dir="rtl"] body.dorf1Page #mid,
+    html[dir="rtl"] body.pg-plus #mid,
+    html[dir="rtl"] body.pg-plus1 #mid {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        left: 0 !important;
+        direction: rtl !important;
+    }
+    html[dir="rtl"] #side_navi,
+    html[dir="rtl"] #content,
+    html[dir="rtl"] #side_info,
+    html[dir="rtl"] body.dorf1Page #side_info,
+    html[dir="rtl"] body.dorf1Page #content,
+    html[dir="rtl"] body.dorf1Page #content.village1,
+    html[dir="rtl"] body.dorf1Page #side_navi {
+        float: none !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 auto !important;
+        order: 0 !important;
     }
     html[dir="rtl"] div#content.map {
         direction: ltr !important;
@@ -852,117 +1386,84 @@ html[dir="rtl"] div.plus table.plusFunctions {
 }
 
 /* ---------------------------------------------------------------------
- * Resource bar (#res, Templates/res.tpl) as green "pill" badges,
- * matching the reference screenshot: each resource is one rounded
- * green box with the number then its icon. Templates/res.tpl now
- * emits a single "respill" <td> per resource (RTL branch only, gated
- * by tz_is_rtl_lang()) instead of two separate <td>s, so each pill is
- * one real box - no cross-cell border tricks needed. #res itself is
- * already forced direction:ltr above, so "number then icon" in the
- * markup renders left-to-right as intended (matches the reference,
- * where the number sits left of its icon inside each pill).
+ * Resource bar (#res, Templates/res.tpl): sharp green RECTANGLE on the
+ * NUMBER only — icons sit outside to the right (matches the reference).
+ * td.respill is a transparent flex wrapper; the inner <span> is the
+ * green box. #res stays direction:ltr so markup "number then icon"
+ * reads left-to-right.
  * --------------------------------------------------------------------- */
 html[dir="rtl"] #res table {
     border-collapse: separate;
-    border-spacing: 6px 0;
+    border-spacing: 10px 0;
     background-color: transparent;
 }
 html[dir="rtl"] #res table td.respill {
     align-items: center;
-    background-color: #8bc34a;
-    border-radius: 12px;
+    background-color: transparent;
+    border-radius: 0;
     box-sizing: border-box;
     display: inline-flex;
-    padding: 3px 8px;
+    gap: 5px;
+    padding: 0;
     white-space: nowrap;
 }
 html[dir="rtl"] #res table td.respill span {
+    background-color: #5cbf6a;
+    border-radius: 0;
+    box-sizing: border-box;
     color: #ffffff;
     display: inline-block;
     font-weight: 700;
-    font-size: 13px;
-    line-height: 18px;
-    margin-right: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0;
+    padding: 2px 8px;
+    text-align: right;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .25);
     vertical-align: middle;
+    width: max-content;
+    white-space: nowrap;
 }
 html[dir="rtl"] #res table td.respill img {
     display: inline-block;
     flex: 0 0 auto;
+    margin: 0 !important;
     vertical-align: middle;
-    margin-left: 0;
 }
 
 /* ---------------------------------------------------------------------
- * Gold badge (#goldHeader, Templates/header.tpl) - low contrast fix.
- * header.tpl's own inline <style> block (loaded in <body>, AFTER
- * css/rtl.css in <head>, so it would normally win on source order)
- * draws the coin as a 16px SVG with a near-white background circle
- * (.tzCoinBg fill #f6f5f2) and a thin, muted stroke - easy to lose
- * against the header's own light background, which is what made it
- * hard to see. Every selector here is prefixed "html[dir="rtl"]",
- * giving it higher specificity than header.tpl's plain "#goldHeader
- * ..." rules regardless of source order, so this wins in Arabic only;
- * English keeps the original small/subtle coin untouched. Wrapping
- * .tzCoinRow in its own light pill + enlarging the coin to 20px + a
- * darker/thicker stroke on both the coin's outer ring and its gold
- * disc gives the icon a real edge to read against, instead of relying
- * on color alone. */
-html[dir="rtl"] #goldHeader .tzCoinRow {
-    background-color: #fdf6e3;
-    border: 1px solid #d9c98a;
-    border-radius: 10px;
-    padding: 3px 8px;
-}
-html[dir="rtl"] #goldHeader .tzCoinStack {
-    width: 16px;
-    height: 16px;
-    flex: 0 0 16px;
-}
-html[dir="rtl"] #goldHeader .tzCoinBg {
-    fill: #ffffff;
-    stroke: #c9a227;
-    stroke-width: 1.5;
-}
-html[dir="rtl"] #goldHeader .tzCoin-gold .tzCoinDisc {
-    fill: #f0b90b;
-    stroke: #7a5c00;
-    stroke-width: 1;
-}
-html[dir="rtl"] #goldHeader .tzCoin-gold .tzCoinShine {
-    fill: #fff4c2;
-}
-html[dir="rtl"] #goldHeader .tzCoinValue {
-    color: #7a5c00;
-    font-size: 13px;
-}
-
-/* Move the gold badge to the LEFT edge of #mtop instead of the right
- * (header.tpl's own rule: "right: 8px; left: auto;"). #mtop itself is
- * "position:relative" (compact.css) and #goldHeader is
- * "position:absolute" inside it, so this repositions it within that
- * same box rather than the page - matching the reference's top-left
- * gold badge without touching #mtop's own centering. text-align is
- * flipped too so the pill hugs its new left anchor the same way it
- * hugged the right one before. */
+ * Gold badge (#goldHeader) - ONE rectangular white container inside
+ * #mtop (new_layout: height 72px). Three T4 rows must stay WITHIN the
+ * bar — compact row heights + vertical center, no hang below the edge.
+ * --------------------------------------------------------------------- */
 html[dir="rtl"] #goldHeader {
-    left: -215px;
-    right: auto;
-    text-align: left;
-}
-html[dir="rtl"] #goldHeader .tzCoinRow {
-    justify-content: flex-start;
-}
-
-html[dir="rtl"] #goldHeader {
+    left: -285px !important;
+    right: auto !important;
+    top: 50% !important;
+    /* 5px above true vertical center of #mtop */
+    transform: translateY(calc(-50% - 5px)) !important;
     box-sizing: border-box;
-    width: 152px;
-    height: 34px;
-    min-height: 34px;
-    padding: 0 6px 0 42px;
-    background: linear-gradient(#ffffff, #edf1f4);
-    border: 1px solid #cbd5df;
-    border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .16);
+    display: inline-flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 0;
+    width: max-content;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    max-height: 56px;
+    min-height: 0;
+    padding: 2px 6px 2px 34px !important;
+    background: #ffffff !important;
+    border: 1px solid #d1d5da;
+    border-radius: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+    text-align: right;
+    line-height: 1;
+    white-space: nowrap;
+    z-index: 55;
+    overflow: hidden;
 }
 
 html[dir="rtl"] #goldHeader::before {
@@ -971,58 +1472,97 @@ html[dir="rtl"] #goldHeader::before {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 42px;
+    width: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #e6bd76 !important;
-    font-size: 18px;
-    font-weight: bold;
-    border-right: 1px solid #cbd5df;
+    color: #d4a24a !important;
+    font-size: 13px;
+    font-weight: 700;
+    border-right: 1px solid #d1d5da;
+    background: #ffffff;
 }
 
-html[dir="rtl"] #goldHeader .tzCoinRow {
-    width: 104px;
-    height: 16px;
-    gap: 5px;
+html[dir="rtl"] #goldHeader .tzCoinRow,
+html[dir="rtl"] #goldHeader #silverHeader {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
     direction: rtl;
-    background: transparent;
-    border: 0;
-    padding: 0;
+    width: max-content;
+    max-width: none;
+    height: 12px !important;
+    line-height: 12px !important;
+    gap: 4px;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap;
+    flex: 0 0 12px;
+    box-shadow: none !important;
 }
 
-html[dir="rtl"] #goldHeader .tzCoinValue {
-    font-size: 15px;
-    line-height: 18px;
+html[dir="rtl"] #goldHeader .tzCoinStack {
+    width: 12px !important;
+    height: 12px !important;
+    flex: 0 0 12px;
 }
 
 html[dir="rtl"] #goldHeader img.tzCoinStack {
-    width: 16px;
-    height: 16px;
-    flex: 0 0 16px;
-    margin: 0;
+    width: 12px !important;
+    height: 12px !important;
+    flex: 0 0 12px;
+    margin: 0 !important;
     object-fit: contain;
+    vertical-align: middle;
+}
+
+html[dir="rtl"] #goldHeader .tzCoinValue {
+    color: #7a5c00;
+    font-size: 11px !important;
+    line-height: 12px !important;
 }
 
 html[dir="rtl"] #goldHeader .tzCoinRow-temporary {
     color: #65717d;
-    font-size: 11px;
+    font-size: 9px;
 }
 
 html[dir="rtl"] #goldHeader .tzCoinRow-temporary .tzCoinValue {
     color: #65717d;
-    font-size: 13px;
+    font-size: 10px !important;
+}
+
+html[dir="rtl"] #goldHeader .tzCoinRow-silver .tzCoinValue,
+html[dir="rtl"] #goldHeader #silverHeader .tzCoinValue {
+    color: #5a6570;
+    font-size: 10px !important;
 }
 
 html[dir="rtl"] #goldHeader .tzTemporaryGoldLabel {
     color: #f39c12;
-    font-size: 10px;
-    margin-right: 2px;
-    transform: translateX(-5px);
+    font-size: 9px;
+    line-height: 12px;
+    margin: 0;
+    padding: 0;
+    transform: none;
+    flex-shrink: 0;
 }
 
 html[dir="rtl"] #mtop > a#plus {
     display: none !important;
+}
+
+/* #topNavIcons is 350px wide (5×70). Default hero left:344 / prior
+ * RTL left:300 sat ON TOP of map/village icons. Park the hero cluster
+ * just after the nav group with a small gap. */
+html[dir="rtl"] #tzHeroBox {
+    left: 372px !important;
+    top: 50% !important;
+    margin-top: -36px !important;
+    z-index: 60;
 }
 
 /* Day/night icon (Templates/header.tpl .dayNightIcon - the sun/moon
@@ -1126,6 +1666,68 @@ html[dir="rtl"] body.pg-spieler #villages {
     margin-bottom: 32px;
 }
 
+/* Profile / settings hub — lock the three #mid columns so the hero
+ * sidebar (character + villages) cannot be squeezed off-screen when
+ * the hub content is tall or wide. Same pattern as dorf1 / plus. */
+html[dir="rtl"] body.pg-spieler #mid > script {
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    flex: 0 0 0 !important;
+    order: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+html[dir="rtl"] body.pg-spieler #content,
+html[dir="rtl"] body.pg-spieler #content.player {
+    order: 2 !important;
+    flex: 0 0 537px !important;
+    width: 537px !important;
+    max-width: 537px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+}
+html[dir="rtl"] body.pg-spieler #side_info {
+    order: 1 !important;
+    flex: 0 0 257px !important;
+    width: 257px !important;
+    max-width: 257px !important;
+    margin: 0 !important;
+    float: none !important;
+    align-self: flex-start !important;
+    overflow: visible !important;
+    z-index: 6;
+    pointer-events: auto !important;
+}
+
+html[dir="rtl"] body.pg-spieler #side_info a,
+html[dir="rtl"] body.pg-spieler #side_info #vlist a {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 7;
+}
+html[dir="rtl"] body.pg-spieler #side_navi {
+    order: 3 !important;
+    flex: 0 0 155px !important;
+    width: 155px !important;
+    max-width: 155px !important;
+    margin: 0 !important;
+    float: none !important;
+}
+html[dir="rtl"] body.pg-spieler .settingsHub {
+    width: 502px !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
 /* ---------------------------------------------------------------------
  * Preferences page (spieler.php?s=2) - the "After-upgrade view" row.
  *
@@ -1187,7 +1789,7 @@ html[dir="rtl"] body.pg-dorf2 #side_navi {
 html[dir="rtl"] body.pg-dorf2 #content.village2 {
     font-size: 14px;
     position: relative;
-    left: 20px !important;
+    left: 0 !important;
     font-weight: 400;
 }
 html[dir="rtl"] body.pg-dorf2 #content.village2 h1 {
@@ -1231,4 +1833,404 @@ html[dir="rtl"] div#build.gid25 a.build_logo img.g25 {
 
 html[dir="rtl"] body.pg-build div#build.gid16 a.build_logo img.g16 {
     top: 74px !important;
+}
+
+/* ---------------------------------------------------------------------
+ * Quest popup (div.popup3.quest / #qstd / table.altquest)
+ * e.g. "نظرة عامة على الموارد" / "شحنات مواردك".
+ *
+ * compact.css forces LTR cell alignment (td { text-align:center },
+ * td.desc { text-align:left }) and LTR padding on .popup3
+ * (padding-left:20px). Under Arabic that leaves the table hugging the
+ * left, shipment text left-aligned, and the # column overflowing past
+ * the right edge of the white modal. Mirror padding / #qstbg, lock the
+ * table inside #qstd, and right-align Arabic copy. Resource icon+amount
+ * pairs keep direction:ltr so r1..r4 stay in reading order.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] div.popup3 {
+    padding-left: 0;
+    padding-right: 20px;
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] div.quest div#qstbg {
+    left: auto;
+    right: 11px;
+}
+
+html[dir="rtl"] div.quest div#qstd {
+    width: 100%;
+    max-width: 406px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] div.quest div#qstd h1,
+html[dir="rtl"] div.quest div#qstd i,
+html[dir="rtl"] div.quest div#qstd .rew,
+html[dir="rtl"] div.quest div#qstd .rew p.ta_aw {
+    text-align: right;
+    direction: rtl;
+}
+
+html[dir="rtl"] div.quest div#qstd table.altquest {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] div.quest div#qstd table.altquest thead th,
+html[dir="rtl"] div.quest div#qstd table.altquest thead td,
+html[dir="rtl"] div.quest div#qstd table.altquest tbody td {
+    text-align: right;
+}
+
+html[dir="rtl"] div.quest div#qstd table.altquest td.desc {
+    text-align: right !important;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+html[dir="rtl"] div.quest div#qstd table.altquest td.ra,
+html[dir="rtl"] div.quest div#qstd table.altquest td.dur {
+    text-align: center;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+html[dir="rtl"] div.quest div#qstd table.altquest td.stat {
+    text-align: right;
+}
+
+html[dir="rtl"] div.quest div#qstd span#qst_accpt a.qle {
+    float: right;
+    text-align: right;
+}
+
+html[dir="rtl"] div.quest div#qstd span#qst_accpt a.qri {
+    float: left;
+    text-align: left;
+}
+
+/* ---------------------------------------------------------------------
+ * Statistics player table — match reference screenshot:
+ * centered title bar, green player links, olive alliance, message icon,
+ * highlight row with green frame.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body.pg-statistics #content.statistics {
+    direction: rtl;
+    text-align: right;
+    position: relative;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics > h1 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 8px 0 4px;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics #textmenu {
+    text-align: center;
+    direction: rtl;
+    margin: 8px 0 14px;
+    white-space: normal;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics #textmenu a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics #textmenu a.selected {
+    color: #000000;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player {
+    width: 100%;
+    direction: rtl;
+    border-collapse: collapse;
+    margin-top: 5px;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player thead th {
+    text-align: center;
+    position: relative;
+    height: auto;
+    min-height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    vertical-align: middle;
+    padding: 4px 6px !important;
+}
+
+/* Shared header bar for player + alliance ranking tables:
+ * [icons | title | spacer/tribes] left / center / right */
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadTitle {
+    flex: 1 1 auto;
+    text-align: center;
+    font-weight: 700;
+    color: #000;
+    white-space: nowrap;
+    direction: rtl;
+    unicode-bidi: isolate;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadSpacer {
+    flex: 0 0 105px;
+    width: 105px;
+    height: 1px;
+    visibility: hidden;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadBar #submenu,
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadBar #submenu2 {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    float: none !important;
+    display: flex !important;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 5px;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0;
+    overflow: visible;
+    z-index: auto;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadBar #submenu img,
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadBar #submenu2 img {
+    float: none !important;
+    margin: 0 !important;
+    display: block;
+}
+
+/* Top-10 pages: icon bar is a full-width block (not a tiny orphan table),
+ * and the four ranking grids keep a clear two-column RTL layout. */
+html[dir="rtl"] body.pg-statistics #content.statistics .top10PageHead {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 0 12px !important;
+    min-height: 36px;
+    clear: both;
+}
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 {
+    width: 246px !important;
+    max-width: 48% !important;
+    box-sizing: border-box !important;
+}
+html[dir="rtl"] body.pg-statistics #content.statistics table#top10_offs,
+html[dir="rtl"] body.pg-statistics #content.statistics table#top10_climbers {
+    float: right !important;
+    clear: none !important;
+    margin: 0 0 12px 0 !important;
+}
+html[dir="rtl"] body.pg-statistics #content.statistics table#top10_defs,
+html[dir="rtl"] body.pg-statistics #content.statistics table#top10_raiders {
+    float: left !important;
+    clear: none !important;
+    margin: 0 0 12px 0 !important;
+}
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 td.pla {
+    text-align: right !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player thead td {
+    text-align: center;
+    font-weight: 700;
+    background-color: #f3f3f3;
+    border: 1px solid #c0c0c0;
+    padding: 3px 4px !important;
+    color: #000;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player tbody td {
+    border: 1px solid #c0c0c0;
+    padding: 2px 4px !important;
+    vertical-align: middle;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.pla a {
+    text-align: right;
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.pla a:hover {
+    text-decoration: underline;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.al,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.al a {
+    text-align: center;
+    color: #99a800;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.ra {
+    text-align: center;
+    width: 8%;
+    white-space: nowrap;
+    color: #000;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.vil,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.pop {
+    text-align: center;
+    width: 12%;
+    color: #000;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player td.on {
+    text-align: center;
+    width: 10%;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player tr.hl td {
+    background-color: #f0fff0 !important;
+    border-top: 1px solid #71d000 !important;
+    border-bottom: 1px solid #71d000 !important;
+}
+
+/* RTL: rank is the visual right edge, message is the visual left edge */
+html[dir="rtl"] body.pg-statistics #content.statistics table#player tr.hl td.fc {
+    border-left: 1px solid #c0c0c0 !important;
+    border-right: 1px solid #71d000 !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player tr.hl td.lc {
+    border-right: 1px solid #c0c0c0 !important;
+    border-left: 1px solid #71d000 !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics img.statMsgIcon,
+html[dir="rtl"] body.pg-statistics #content.statistics svg.statMsgIcon {
+    display: inline-block;
+    width: 16px;
+    height: 12px;
+    vertical-align: middle;
+}
+
+/* Alliance ranking tables (alliance / off / def) — same header + cell look */
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def {
+    width: 100%;
+    direction: rtl;
+    border-collapse: collapse;
+    margin-top: 5px;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def thead th {
+    text-align: center;
+    position: relative;
+    height: auto;
+    min-height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    vertical-align: middle;
+    padding: 4px 6px !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def thead td {
+    text-align: center;
+    font-weight: 700;
+    background-color: #f3f3f3;
+    border: 1px solid #c0c0c0;
+    padding: 3px 4px !important;
+    color: #000;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance tbody td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off tbody td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def tbody td {
+    border: 1px solid #c0c0c0;
+    padding: 2px 4px !important;
+    vertical-align: middle;
+    text-align: center;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance td.al,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance td.al a,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off td.al,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off td.al a,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def td.al,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def td.al a {
+    text-align: right;
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance td.ra,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off td.ra,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def td.ra {
+    width: 8%;
+    white-space: nowrap;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance td.av,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance td.po,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off td.po,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def td.po {
+    width: 14%;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance tr.hl td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off tr.hl td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def tr.hl td {
+    background-color: #f0fff0 !important;
+    border-top: 1px solid #71d000 !important;
+    border-bottom: 1px solid #71d000 !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi {
+    direction: rtl;
+    width: 100%;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi div.search {
+    float: right;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi div.navi {
+    float: left;
+    text-align: left;
 }

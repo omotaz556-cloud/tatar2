@@ -12,9 +12,10 @@
  * left and #content.village1 (537px) floats right inside it, so the
  * unused space in between just shows up as a big blank gap. Capping
  * #mid back to its own min-width (980px) and centering it removes
- * that gap. Scoped to body.dorf1Page (this page's body class), so it
- * can never affect any other page's layout. */
-body.dorf1Page div#mid {
+ * that gap. Scoped to LTR only - Arabic/RTL uses css/rtl.css flex
+ * centering + left nudge, and this max-width/margin:auto pair was
+ * fighting that and leaving dorf1.php off-center. */
+html:not([dir="rtl"]) body.dorf1Page div#mid {
     max-width: 980px;
     margin-left: auto;
     margin-right: auto;

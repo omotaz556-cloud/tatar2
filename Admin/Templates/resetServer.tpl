@@ -61,12 +61,12 @@ html[dir="rtl"] .reset-option input{margin-right:0;margin-left:6px}
         <strong><?php echo ADM_WARNING_IRREVERSIBLE_ACTION; ?></strong><?php echo ADM_THIS_OPERATION_WILL_DELETE_ALL_DATA_PLAYERS; ?></div>
       <p><?php echo ADM_THIS_SERVER_WILL_BE_RESET_TO_CREATE_NEW_GAME; ?><br><?php echo ADM_CLICK_BUTTON; ?><b><?php echo ADM_RESET; ?></b><?php echo ADM_TO_PROCEED; ?></p>
     </div>
-<!-- BIFA MUTATA AICI, IN AFARA reset-body -->
     <div class="reset-option">
-       <label>
-        <input type="checkbox" name="keep_admin" value="1" checked>
-الإبقاء على حساب الأدمن (<?php echo htmlspecialchars($_SESSION['username'] ?? 'Admin'); ?>) بعد إعادة الضبط
-      </label>
+      <strong><?php echo ADM_ADMIN_ACCOUNTS_ALWAYS_KEPT; ?></strong><br>
+      <?php echo ADM_ADMIN_ACCOUNTS_ALWAYS_KEPT_HINT; ?>
+      <?php if (!empty($_SESSION['username'])) { ?>
+        <br><span style="color:#1e8449;"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+      <?php } ?>
     </div>
 </br></br>
     <div class="reset-loader" id="resetLoader">
@@ -87,7 +87,8 @@ function go_proceed() {
     if(!confirm('هل أنت متأكد؟ سيتم حذف جميع البيانات نهائيًا!')) return;
     
     document.getElementById("txtreset").style.display = 'none';
-    document.querySelector('.reset-option').style.display = 'none';
+    var resetOption = document.querySelector('.reset-option');
+    if (resetOption) resetOption.style.display = 'none';
     document.getElementById("hideobj").style.display = 'none';
     document.getElementById("resetLoader").style.display = 'block';
     

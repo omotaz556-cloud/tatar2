@@ -44,6 +44,18 @@ div.village1 h1 {
     margin-bottom: 0;
 }
 
+/* Keep the classic 980px centered strip under Arabic (new_layout_ltr.css
+ * already sets this for LTR; rtl.css used to force width:100% and flex,
+ * which opened huge gaps on dorf1). */
+div#mid {
+    width: 980px !important;
+    max-width: 980px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+    left: 0 !important;
+}
+
 /* --- swap the 3-column layout: menu (side_navi) / map (content) / hero (side_info) --- */
 div#side_navi {
     float: right;

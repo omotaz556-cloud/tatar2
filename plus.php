@@ -44,12 +44,18 @@ $promoMsg = '';
 $promoOk  = false;
 $purchaseMsg = '';
 $purchaseOk = false;
+$plusRtlMsg = function_exists('tz_is_rtl_lang') && tz_is_rtl_lang();
 if (isset($_POST['refund_purchase']) && isset($session->uid)) {
 	$purchaseOk = PaymentShop::requestRefund($session->uid, $_POST['refund_purchase'], $_POST['refund_reason'] ?? '');
-	$purchaseMsg = $purchaseOk ? (install_is_rtl() ? 'تم إرسال طلب الاسترداد للمراجعة.' : 'Refund request submitted for review.') : (install_is_rtl() ? 'لا يمكن طلب استرداد لهذا الطلب.' : 'This purchase cannot be refunded.');
+	$purchaseMsg = $purchaseOk
+		? ($plusRtlMsg ? 'تم إرسال طلب الاسترداد للمراجعة.' : 'Refund request submitted for review.')
+		: ($plusRtlMsg ? 'لا يمكن طلب استرداد لهذا الطلب.' : 'This purchase cannot be refunded.');
 }
 
-// Paid beginner-protection extensions: five account-wide opportunities.
+// Beginner-protection extensions: five account-wide opportunities.
+// Uses central (paid) gold when CENTRAL_GOLD_* is configured; otherwise
+// falls back to local users.gold — same as the rest of Plus purchases.
+// NOTE: never call install_is_rtl() here (install-only helper → fatal).
 $protectionMsg = '';
 $protectionOk = false;
 if (isset($_POST['buy_protection']) && isset($session->uid)) {
@@ -58,14 +64,21 @@ if (isset($_POST['buy_protection']) && isset($session->uid)) {
 		2 => ['seconds' => 86400, 'cost' => 7000],
 		3 => ['seconds' => 43200, 'cost' => 9000],
 		4 => ['seconds' => 28800, 'cost' => 10500],
-		5 => ['seconds' => 28800, 'cost' => 12500]
+		5 => ['seconds' => 28800, 'cost' => 12500],
 	];
 	$option = (int) $_POST['buy_protection'];
 	$uid = (int) $session->uid;
+	$cost = 0;
+	$seconds = 0;
+	$usedCentral = false;
+	$email = '';
 
 	if (!isset($protectionOptions[$option])) {
-		$protectionMsg = install_is_rtl() ? 'اختيار حماية غير صالح.' : 'Invalid protection option.';
+		$protectionMsg = $plusRtlMsg ? 'اختيار حماية غير صالح.' : 'Invalid protection option.';
 	} else {
+		$cost = (int) $protectionOptions[$option]['cost'];
+		$seconds = (int) $protectionOptions[$option]['seconds'];
+
 		$database->query("CREATE TABLE IF NOT EXISTS " . TB_PREFIX . "protection_purchases (
 			uid int(11) NOT NULL,
 			uses tinyint(2) NOT NULL DEFAULT 0,
@@ -75,40 +88,107 @@ if (isset($_POST['buy_protection']) && isset($session->uid)) {
 		$uses = $row ? (int) $row[0]['uses'] : 0;
 
 		if ($uses >= 5) {
-			$protectionMsg = install_is_rtl() ? 'لقد استخدمت فرص الحماية الخمس.' : 'All five protection opportunities have been used.';
+			$protectionMsg = $plusRtlMsg
+				? 'لقد استخدمت فرص الحماية الخمس.'
+				: 'All five protection opportunities have been used.';
 		} else {
-			$email = trim((string) ($session->userinfo['email'] ?? ''));
-			if (!CentralGold::isEmailVerified($email)) {
-				$protectionMsg = install_is_rtl() ? 'يجب تأكيد البريد الإلكتروني لاستخدام الذهب المشتَرى.' : 'Verify your email before using purchased gold.';
-			} else {
-				$goldResult = CentralGold::debit(
-					$email,
-					$session->username,
-					$uid,
-					$protectionOptions[$option]['cost'],
-					'beginner_protection',
-					'Protection opportunity ' . ($uses + 1)
-				);
-				if (!$goldResult[0]) {
-					$protectionMsg = install_is_rtl() ? 'تحتاج إلى ذهب مشتَرى كافٍ لتفعيل الحماية.' : 'You need enough paid gold to activate protection.';
+			$goldPaid = false;
+			$email = trim((string) ($session->userinfo['email'] ?? $session->email ?? ''));
+
+			if (class_exists('CentralGold') && CentralGold::isConfigured()) {
+				if ($email === '' || !CentralGold::isEmailVerified($email)) {
+					$protectionMsg = $plusRtlMsg
+						? 'يجب تأكيد البريد الإلكتروني لاستخدام الذهب المشتَرى.'
+						: 'Verify your email before using purchased gold.';
 				} else {
-					$seconds = $protectionOptions[$option]['seconds'];
-					mysqli_begin_transaction($database->dblink);
-					$updated = $database->query("INSERT INTO " . TB_PREFIX . "protection_purchases (uid, uses)
-						VALUES ($uid, 1)
-						ON DUPLICATE KEY UPDATE uses = uses + 1");
-					$updated = $updated && $database->query("UPDATE " . TB_PREFIX . "users
-						SET protect = GREATEST(protect, UNIX_TIMESTAMP()) + $seconds
-						WHERE id = $uid LIMIT 1");
-					if ($updated) {
-						mysqli_commit($database->dblink);
-						$protectionOk = true;
-						$protectionMsg = install_is_rtl() ? 'تم تفعيل حماية اللاعب الجديد بنجاح.' : 'Beginner protection activated successfully.';
+					$goldResult = CentralGold::debit(
+						$email,
+						$session->username,
+						$uid,
+						$cost,
+						'beginner_protection',
+						'Protection opportunity ' . ($uses + 1)
+					);
+					if (!$goldResult[0]) {
+						$protectionMsg = $plusRtlMsg
+							? 'تحتاج إلى ذهب مشتَرى كافٍ لتفعيل الحماية.'
+							: 'You need enough paid gold to activate protection.';
 					} else {
-						mysqli_rollback($database->dblink);
-						CentralGold::credit($email, $session->username, $uid, $protectionOptions[$option]['cost'], 'beginner_protection_refund', 'Protection update failed');
-						$protectionMsg = install_is_rtl() ? 'تعذر تفعيل الحماية، وتمت إعادة الذهب.' : 'Protection could not be activated; the gold was refunded.';
+						$goldPaid = true;
+						$usedCentral = true;
 					}
+				}
+			} else {
+				// Local gold (Plus page standard path when central gold is off).
+				mysqli_query(
+					$database->dblink,
+					"UPDATE " . TB_PREFIX . "users
+					 SET gold = gold - $cost
+					 WHERE id = $uid AND gold >= $cost
+					 LIMIT 1"
+				);
+				if (mysqli_affected_rows($database->dblink) === 1) {
+					$goldPaid = true;
+					if (isset($session->gold)) {
+						$session->gold -= $cost;
+						$_SESSION['gold'] = $session->gold;
+					}
+				} else {
+					$protectionMsg = $plusRtlMsg
+						? 'تحتاج إلى ذهب كافٍ لتفعيل الحماية.'
+						: 'You need enough gold to activate protection.';
+				}
+			}
+
+			if ($goldPaid) {
+				mysqli_begin_transaction($database->dblink);
+				$updated = $database->query(
+					"INSERT INTO " . TB_PREFIX . "protection_purchases (uid, uses)
+					 VALUES ($uid, 1)
+					 ON DUPLICATE KEY UPDATE uses = uses + 1"
+				);
+				$updated = $updated && $database->query(
+					"UPDATE " . TB_PREFIX . "users
+					 SET protect = GREATEST(protect, UNIX_TIMESTAMP()) + $seconds
+					 WHERE id = $uid
+					 LIMIT 1"
+				);
+				if ($updated) {
+					mysqli_commit($database->dblink);
+					$protectionOk = true;
+					$protectionMsg = $plusRtlMsg
+						? 'تم تفعيل حماية اللاعب الجديد بنجاح.'
+						: 'Beginner protection activated successfully.';
+					if (method_exists($database, 'clearUserCache')) {
+						$database->clearUserCache($uid);
+					}
+				} else {
+					mysqli_rollback($database->dblink);
+					if ($usedCentral) {
+						CentralGold::credit(
+							$email,
+							$session->username,
+							$uid,
+							$cost,
+							'beginner_protection_refund',
+							'Protection update failed'
+						);
+					} else {
+						mysqli_query(
+							$database->dblink,
+							"UPDATE " . TB_PREFIX . "users
+							 SET gold = gold + $cost
+							 WHERE id = $uid
+							 LIMIT 1"
+						);
+						if (isset($session->gold)) {
+							$session->gold += $cost;
+							$_SESSION['gold'] = $session->gold;
+						}
+					}
+					$protectionMsg = $plusRtlMsg
+						? 'تعذر تفعيل الحماية، وتمت إعادة الذهب.'
+						: 'Protection could not be activated; the gold was refunded.';
 				}
 			}
 		}
@@ -285,7 +365,6 @@ if($id > 15){
 	include ("Templates/Plus/3.tpl");
 }
 ?>
-</div>
 <?php
 if (isset($_POST['mail'])) {
 

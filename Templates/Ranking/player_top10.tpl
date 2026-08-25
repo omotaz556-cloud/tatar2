@@ -44,19 +44,9 @@
     $result = mysqli_query($database->dblink,"SELECT * FROM ".TB_PREFIX."users WHERE access<".(INCLUDE_ADMIN?"10":"8")." AND id > 5 AND tribe IN (1,2,3,6,7,8,9) ORDER BY ap DESC, id DESC Limit 10");
     $result2 = mysqli_query($database->dblink,"SELECT * FROM ".TB_PREFIX."users WHERE id = '".$session->uid."' ORDER BY ap DESC, id DESC Limit 1");
 	?>
-	<table cellpadding="1" cellspacing="1">
-	<thead>
-		<tr>
-			<th><?php echo TZ_TOP_10_PLAYERS; ?>
-			<div id="submenu">
-										    <?php
-                        // Tabul de statistici grafice: apare doar cand functia e
-                        // pornita SI jucatorul are Plus activ.
-                        //
-                        // Iconita foloseste acelasi tipar ca vecinele ei: un
-                        // img gol (img/x.gif) cu imaginea pusa din CSS prin
-                        // clasa. Sprite-ul e la gpack/<pachet>/img/s/stats.gif,
-                        // 30x63, cu starea normala sus si cea activa jos.
+	<div class="statHeadBar top10PageHead">
+		<div id="submenu">
+		    <?php
                         if (defined('NEW_FUNCTIONS_PLUS_STATISTICS') && NEW_FUNCTIONS_PLUS_STATISTICS
                             && isset($session->plus) && (int) $session->plus == 1) {
                             $psLabel = defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics';
@@ -69,12 +59,10 @@
 			<a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=7"><img class="active btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>"></a>
 			<a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=32"><img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>"></a>
 			<a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=31"><img class="btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>"></a>
-			</div><div id="submenu2">
-			</div>
-			</th>
-		</tr>
-	</thead>
-</table>
+		</div>
+		<span class="statHeadTitle"><?php echo TZ_TOP_10_PLAYERS; ?></span>
+		<div class="statHeadSpacer" aria-hidden="true"></div>
+	</div>
 
 <!-- ADDED: row with Week / Medal reset -->
 <?php if (defined('NEW_FUNCTIONS_MEDAL_RESET') && NEW_FUNCTIONS_MEDAL_RESET): ?>

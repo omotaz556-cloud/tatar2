@@ -133,16 +133,14 @@ if (!empty($_GET['id'])) {
 		<div id="content"  class="statistics">
 <h1><?php echo STATISTICS; ?></h1>
 <div id="textmenu">
-   <a href="statistiken.php" <?php if(!isset($_GET['id']) || (isset($_GET['id']) && ($_GET['id'] == 1 || $_GET['id'] == 31 || $_GET['id'] == 32 || $_GET['id'] == 7))) { echo "class=\"selected \""; } ?>><?php echo PLAYER; ?></a>
+   <a href="statistiken.php" <?php if(!isset($_GET['id']) || (isset($_GET['id']) && ($_GET['id'] == 1 || $_GET['id'] == 31 || $_GET['id'] == 32 || $_GET['id'] == 7))) { echo "class=\"selected \""; } ?>><?php echo PLAYERS; ?></a>
  | <a href="statistiken.php?id=4" <?php if(isset($_GET['id']) && ($_GET['id'] == 4 || $_GET['id'] == 41 || $_GET['id'] == 42 || $_GET['id'] == 43)) { echo "class=\"selected \""; } ?>><?php echo ALLIANCES; ?></a>
  | <a href="statistiken.php?id=2" <?php if(isset($_GET['id']) && $_GET['id'] == 2) { echo "class=\"selected \""; } ?>><?php echo VILLAGES; ?></a>
  | <a href="statistiken.php?id=8" <?php if(isset($_GET['id']) && $_GET['id'] == 8) { echo "class=\"selected \""; } ?>><?php echo HEROES; ?></a>
  | <a href="statistiken.php?id=0" <?php if(isset($_GET['id']) && $_GET['id'] == 0) { echo "class=\"selected \""; } ?>><?php echo GENERAL; ?></a>
-<?php if (defined('NEW_FUNCTIONS_MILESTONES') && NEW_FUNCTIONS_MILESTONES): ?>
  | <a href="statistiken.php?id=3"<?php if (isset($_GET['id']) && $_GET['id'] == 3) echo ' class="selected"'; ?>><?php echo MILESTONES; ?></a>
-<?php endif; ?>
- | <a href="statistiken.php?id=99" <?php if(isset($_GET['id']) && $_GET['id'] == 99) echo 'class="selected"'; ?>><?php echo WWS; ?></a>
  | <a href="index.php"<?php if (basename($_SERVER['PHP_SELF']) === 'index.php') echo ' class="selected"'; ?>><?php echo NEWS; ?></a>
+ | <a href="statistiken.php?id=99" <?php if(isset($_GET['id']) && $_GET['id'] == 99) echo 'class="selected"'; ?>><?php echo WWS; ?></a>
 </div>
 <?php
 if(isset($_GET['id'])) {

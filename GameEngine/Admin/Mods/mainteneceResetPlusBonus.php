@@ -51,7 +51,10 @@ if (!$admin || (int)$admin['access'] !== 9) {
 // ---------------------------------------------------------------------------
 // Reset bonusuri
 // ---------------------------------------------------------------------------
-$database->query("UPDATE " . TB_PREFIX . "users SET b1 = 0, b2 = 0, b3 = 0, b4 = 0 WHERE id > 0");
+require_once(__DIR__ . '/../ServerResetPreserve.php');
+$database->query(
+    "UPDATE " . TB_PREFIX . "users SET b1 = 0, b2 = 0, b3 = 0, b4 = 0 WHERE id > 0 AND " . tz_sql_exclude_admin_accounts()
+);
 
 // ---------------------------------------------------------------------------
 // Log admin

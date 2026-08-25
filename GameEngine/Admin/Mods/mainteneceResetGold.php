@@ -51,7 +51,10 @@ if (!$admin || (int)$admin['access'] !== 9) {
 // ---------------------------------------------------------------------------
 // Reset gold
 // ---------------------------------------------------------------------------
-$database->query("UPDATE " . TB_PREFIX . "users SET gold = 0 WHERE id > 0");
+require_once(__DIR__ . '/../ServerResetPreserve.php');
+$database->query(
+    "UPDATE " . TB_PREFIX . "users SET gold = 0 WHERE id > 0 AND " . tz_sql_exclude_admin_accounts()
+);
 
 // ---------------------------------------------------------------------------
 // Log admin

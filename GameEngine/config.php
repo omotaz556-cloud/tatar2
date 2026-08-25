@@ -265,7 +265,7 @@ define("OASIS_IRON_PRODUCTION",OASIS_IRON_MULTIPLIER*SPEED);
 define("OASIS_CROP_PRODUCTION",OASIS_CROP_MULTIPLIER*SPEED); 
 
 // ***** Medal Interval check
-define("MEDALINTERVAL",(3600*24*7));
+define("MEDALINTERVAL",604800);
 // ***** Great Workshop
 define("GREAT_WKS",false);
 // ***** Tourn threshold
@@ -295,7 +295,7 @@ define("PROTECTED_PLAYERS", "");
 // Members donate resources, allowing the alliance to unlock four bonuses, each
 // with five levels. The costs, durations, and limits below are based on
 // Novaterra T4; upgrade times and donation limits are scaled by the server speed.
-define("NEW_FUNCTIONS_ALLIANCE_BONUSES", false);
+define("NEW_FUNCTIONS_ALLIANCE_BONUSES", true);
 
 // Total resources required for each level (cumulative for that level).
 define("ALLIANCE_BONUS_COSTS", "1200000,5600000,17100000,51200000,153600000");
@@ -385,9 +385,9 @@ define("PLUS_PACKAGE_E_PRICE","49,99");
 //Plus Package E Gold
 define("PLUS_PACKAGE_E_GOLD","2000");
 //Plus account lenght
-define("PLUS_TIME",(3600*24*7));
+define("PLUS_TIME",604800);
 //+25% production lenght
-define("PLUS_PRODUCTION",(3600*24*7));
+define("PLUS_PRODUCTION",604800);
 
 //////////////////////////////////
 //    **** LOG SETTINGS  ****   //
@@ -515,25 +515,25 @@ define("ADMIN_ALLOW_INCOMING_RAIDS", true);
 //   ****  NEW MECHANICS AND FUNCTIONS  ****   //
 /////////////////////////////////////////////////
 
-define("NEW_FUNCTIONS_OASIS", false);
-define("NEW_FUNCTIONS_ALLIANCE_INVITATION", false);
-define("NEW_FUNCTIONS_EMBASSY_MECHANICS", false);
-define("NEW_FUNCTIONS_FORUM_POST_MESSAGE", false);
-define("NEW_FUNCTIONS_TRIBE_IMAGES", false);
-define("NEW_FUNCTIONS_MHS_IMAGES", false);
-define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", false);
-define("NEW_FUNCTIONS_DISPLAY_WONDER", false);
-define("NEW_FUNCTIONS_VACATION", false);
-define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", false);
-define("NEW_FUNCTIONS_MANUAL_NATURENATARS", false);
-define("NEW_FUNCTIONS_DISPLAY_LINKS", false);
-define("NEW_FUNCTIONS_MEDAL_3YEAR", false);
-define("NEW_FUNCTIONS_MEDAL_5YEAR", false);
-define("NEW_FUNCTIONS_MEDAL_10YEAR", false);
-define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", false);
-define("NEW_FUNCTIONS_MILESTONES", false);
-define("NEW_FUNCTIONS_MEDAL_RESET", false);
-define("NEW_FUNCTIONS_HERO_T4", false);
+define("NEW_FUNCTIONS_OASIS", true);
+define("NEW_FUNCTIONS_ALLIANCE_INVITATION", true);
+define("NEW_FUNCTIONS_EMBASSY_MECHANICS", true);
+define("NEW_FUNCTIONS_FORUM_POST_MESSAGE", true);
+define("NEW_FUNCTIONS_TRIBE_IMAGES", true);
+define("NEW_FUNCTIONS_MHS_IMAGES", true);
+define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", true);
+define("NEW_FUNCTIONS_DISPLAY_WONDER", true);
+define("NEW_FUNCTIONS_VACATION", true);
+define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", true);
+define("NEW_FUNCTIONS_MANUAL_NATURENATARS", true);
+define("NEW_FUNCTIONS_DISPLAY_LINKS", true);
+define("NEW_FUNCTIONS_MEDAL_3YEAR", true);
+define("NEW_FUNCTIONS_MEDAL_5YEAR", true);
+define("NEW_FUNCTIONS_MEDAL_10YEAR", true);
+define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", true);
+define("NEW_FUNCTIONS_MILESTONES", true);
+define("NEW_FUNCTIONS_MEDAL_RESET", true);
+define("NEW_FUNCTIONS_HERO_T4", true);
 define("NEW_FUNCTION_TRIBE_HUNS", false);
 define("NEW_FUNCTION_TRIBE_EGIPTEANS", false);
 define("NEW_FUNCTION_TRIBE_SPARTANS", false);
@@ -616,7 +616,7 @@ if (!function_exists('tz_html_dir_attrs')) {
     function tz_html_dir_attrs($langCode = null) {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
         $dir = tz_is_rtl_lang($langCode) ? 'rtl' : 'ltr';
-        return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="' . $dir . '" style="zoom: 1.25"';
+        return 'lang="' . htmlspecialchars($langCode, ENT_QUOTES) . '" dir="' . $dir . '"';
     }
 }
 if (!function_exists('tz_default_village_name')) {
@@ -646,20 +646,23 @@ if (!function_exists('tz_display_village_name')) {
 if (!function_exists('tz_rtl_stylesheet_tag')) {
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
-        $tag = "\n\t" . '<link href="' . htmlspecialchars($relPath . 'css/global.css', ENT_QUOTES) . '?global8" rel="stylesheet" type="text/css" />';
-        $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra/');
-        if (tz_is_rtl_lang($langCode)) {
-            $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
-            if (is_file($gpDiskPath)) {
-                $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
-                $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
-            }
+        if (!tz_is_rtl_lang($langCode)) {
+            return '';
+        }
 
-            $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
-            if (is_file($rtlDiskPath)) {
-                $rtlHref = $relPath . 'css/rtl.css';
-                $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl50" rel="stylesheet" type="text/css" />';
-            }
+        $tag = '';
+        $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra/');
+        $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
+        if (is_file($gpDiskPath)) {
+            $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
+        }
+
+        $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
+        if (is_file($rtlDiskPath)) {
+            $rtlHref = $relPath . 'css/rtl.css';
+            $rtlVer = (int) @filemtime($rtlDiskPath);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?v=' . $rtlVer . '" rel="stylesheet" type="text/css" />';
         }
 
         return $tag;

@@ -117,9 +117,13 @@ $renderAddLink = function ($action) use ($hero_info, $id, $heroStatColumns) {
                     echo "<form action=\"\" method=\"POST\" style=\"display:inline;margin:0;\">"
                        . "<input type=\"hidden\" name=\"userid\" value=\"" . $session->uid . "\">"
                        . "<input type=\"hidden\" name=\"hero\" value=\"1\">"
-                       . "<input type=\"text\" class=\"text\" name=\"name\" maxlength=\"20\" value=\"" . $hero_info['name'] . "\">";
+                       . "<input type=\"text\" class=\"text\" name=\"name\" maxlength=\"20\" value=\""
+                       . htmlspecialchars($hero_info['name'], ENT_QUOTES, 'UTF-8') . "\">"
+                       . " <input type=\"submit\" class=\"dynamic_img\" value=\"" . OK . "\">"
+                       . "</form>";
                 } else {
-                    echo "<a href=\"build.php?id=" . $id . "&rename\">" . $hero_info['name'] . "</a></form>";
+                    echo "<a href=\"build.php?id=" . $id . "&amp;rename\">"
+                       . htmlspecialchars($hero_info['name'], ENT_QUOTES, 'UTF-8') . "</a>";
                 }
             ?>
             <?php echo LEVEL; ?> <?php echo $hero_info['level']; ?>

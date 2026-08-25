@@ -19,8 +19,8 @@
 //////////////////////////////////
 // (E_ALL ^ E_NOTICE) = enabled
 // (0) = disabled
-define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE);");
-error_reporting (E_ALL ^ E_NOTICE);
+define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);");
+error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 define('AUTOMATION_LOCK_FILE_NAME', 'automation.lck');
 
 //////////////////////////////////
@@ -46,7 +46,7 @@ define('CRON_TICK_SECONDS', 60);
 // Key used to access cron.php via HTTP (wget/curl or an external cron service).
 // Command-line execution (e.g. a cPanel cron job) does NOT require it.
 // Automatically generated during installation and preserved when saving configuration settings from the ACP.
-define('CRON_KEY', '75e57250309029c71b2774b352769dad94f6fac96c410100');
+define('CRON_KEY', '5e143b1a5e649651a235d3af48189eafe245e616897a62fc');
 
 //////////////////////////////////
 // *****  DATABASE CLEANUP  *****//
@@ -110,11 +110,11 @@ date_default_timezone_set(TIMEZONE);
 
 // ***** Started
 // Defines when has server started.
-define("COMMENCE","1787176066");
+define("COMMENCE","1787614317");
 
 // ***** Server Start Date / Time
-define("START_DATE", "20.08.2026");
-define("START_TIME", "00:47");
+define("START_DATE", "25.08.2026");
+define("START_TIME", "02:31");
 
 // ***** Language
 // SERVER_LANG is the DEFAULT language of the server (chosen at install / in
@@ -134,17 +134,11 @@ if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 $__user_lang = isset($_SESSION['lang']) ? preg_replace('/[^a-z_]/', '', strtolower((string) $_SESSION['lang'])) : '';
 define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang . ".php")) ? $__user_lang : SERVER_LANG);
 
-// ***** Server duration / speed
-// Supported presets are 7, 10, 20, 21, 30 and 60 days. The game speed is
-// derived from the selected duration so every timed endgame feature uses the
-// same server scale. Keep this value in config so admins can change a preset
-// without editing gameplay code.
-$__server_duration_days = (int) getenv('SERVER_DURATION_DAYS');
-if (!in_array($__server_duration_days, [7, 10, 20, 21, 30, 60], true)) {
-    $__server_duration_days = 60;
-}
-define('SERVER_DURATION_DAYS', $__server_duration_days);
-define('SPEED', 300 / SERVER_DURATION_DAYS);
+// ***** Speed
+// Choose your server speed. NOTICE: Higher speed, more likely
+// to have some bugs. Lower speed, most likely no major bugs.
+// Values: 1 (normal), 3 (3x speed) etc...
+define("SPEED", "45");
 
 // ***** World size
 // Defines world size. NOTICE: DO NOT EDIT!!
@@ -185,22 +179,11 @@ define("PW_MIN_LENGTH", 4);
 // true = activation mail will be sent, users will have to finish registration
 //        by clicking on link recieved in mail.
 // false =  users can register with any mail. Not needed to be real one.
-define("AUTH_EMAIL",true);
-define('REGISTRATION_MAX_PER_IP', 2);
-define('REGISTRATION_MAX_PER_DEVICE', 3);
-define('REGISTRATION_LIMIT_WINDOW', 86400);
-define('BACKUP_DIR', __DIR__ . '/../var/backups');
-define('TEST_SERVER_MODE', false);
-define('TEST_SERVER_DAYS', 7);
-define('TEST_SERVER_STARTED', (int) getenv('TEST_SERVER_STARTED'));
-
-// MyFatoorah sends payment status updates here. Keep this secret outside the
-// repository in production and provide it as an environment variable.
-if (!defined('MYFATOORAH_WEBHOOK_SECRET')) define('MYFATOORAH_WEBHOOK_SECRET', (string) getenv('MYFATOORAH_WEBHOOK_SECRET'));
+define("AUTH_EMAIL",false);
 
 // ***** Troop Speed
 // Values: 1 (normal), 3 (3x speed) etc...
-define("INCREASE_SPEED","2");
+define("INCREASE_SPEED","1");
 
 // ***** Evasion Speed
 define("EVASION_SPEED","1");
@@ -249,7 +232,7 @@ define("PROTECTION","43200");
 define("WW",false);
 
 // ***** Show Natars in Statistics
-define("SHOW_NATARS",true); 
+define("SHOW_NATARS",false); 
 
 // ***** Natars Units Multiplier
 define("NATARS_UNITS",100); 
@@ -312,7 +295,7 @@ define("PROTECTED_PLAYERS", "");
 // Members donate resources, allowing the alliance to unlock four bonuses, each
 // with five levels. The costs, durations, and limits below are based on
 // Novaterra T4; upgrade times and donation limits are scaled by the server speed.
-define("NEW_FUNCTIONS_ALLIANCE_BONUSES", false);
+define("NEW_FUNCTIONS_ALLIANCE_BONUSES", true);
 
 // Total resources required for each level (cumulative for that level).
 define("ALLIANCE_BONUS_COSTS", "1200000,5600000,17100000,51200000,153600000");
@@ -417,15 +400,15 @@ define("LOG_TECH",false);
 // LOG USER LOGIN (IP's)
 define("LOG_LOGIN",false);
 // LOG GOLD
-define("LOG_GOLD_FIN",true);
+define("LOG_GOLD_FIN",false);
 // LOG ADMIN
-define("LOG_ADMIN",true);
+define("LOG_ADMIN",false);
 // LOG ATTACK REPORTS
 define("LOG_WAR",false);
 // LOG MARKET REPORTS
 define("LOG_MARKET",false);
 // LOG ILLEGAL ACTIONS
-define("LOG_ILLEGAL",true);
+define("LOG_ILLEGAL",false);
 
 //////////////////////////////////
 // ****  NEWSBOX SETTINGS  **** //
@@ -460,7 +443,7 @@ define("SQL_PASS", "novaterrapass");
 define("SQL_DB", "novaterra");
 
 // ***** Database - Table Prefix
-define("TB_PREFIX", "sa3e3_");
+define("TB_PREFIX", "s652b_");
 
 // ***** Database type
 // 0 = MYSQL
@@ -485,11 +468,11 @@ define("WORLD_KEY", "");
 // Leave CENTRAL_GOLD_HOST empty to disable the feature entirely: gold then
 // behaves exactly as before (purely local to this world), and none of the
 // central-gold code paths are used.
-define("CENTRAL_GOLD_HOST", "db");
+define("CENTRAL_GOLD_HOST", "");
 define("CENTRAL_GOLD_PORT", 3306);
-define("CENTRAL_GOLD_USER", "novaterra");
-define("CENTRAL_GOLD_PASS", "novaterrapass");
-define("CENTRAL_GOLD_DB",   "central_gold");
+define("CENTRAL_GOLD_USER", "");
+define("CENTRAL_GOLD_PASS", "");
+define("CENTRAL_GOLD_DB",   "");
 
 ////////////////////////////////////
 //   ****  EXTRA SETTINGS  ****   //
@@ -517,7 +500,7 @@ define("INCLUDE_ADMIN", false);
 ////////////////////////////////////
 
 // ***** Admin Email
-define("ADMIN_EMAIL", "omotaz323@gmail.com");
+define("ADMIN_EMAIL", "omotaz32311@gmail.com");
 
 // ***** Admin Name
 define("ADMIN_NAME", "admin");
@@ -532,34 +515,25 @@ define("ADMIN_ALLOW_INCOMING_RAIDS", true);
 //   ****  NEW MECHANICS AND FUNCTIONS  ****   //
 /////////////////////////////////////////////////
 
-define("NEW_FUNCTIONS_OASIS", false);
-define("NEW_FUNCTIONS_ALLIANCE_INVITATION", false);
-define("NEW_FUNCTIONS_EMBASSY_MECHANICS", false);
-define("NEW_FUNCTIONS_FORUM_POST_MESSAGE", false);
+define("NEW_FUNCTIONS_OASIS", true);
+define("NEW_FUNCTIONS_ALLIANCE_INVITATION", true);
+define("NEW_FUNCTIONS_EMBASSY_MECHANICS", true);
+define("NEW_FUNCTIONS_FORUM_POST_MESSAGE", true);
 define("NEW_FUNCTIONS_TRIBE_IMAGES", true);
 define("NEW_FUNCTIONS_MHS_IMAGES", true);
-define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", false);
-define("NEW_FUNCTIONS_DISPLAY_WONDER", false);
+define("NEW_FUNCTIONS_DISPLAY_ARTIFACT", true);
+define("NEW_FUNCTIONS_DISPLAY_WONDER", true);
 define("NEW_FUNCTIONS_VACATION", true);
-
-// Vacation Test Mode - TESTING / DEVELOPMENT ONLY. Do not enable on a live
-// production server. Admin Panel: New Functions page. Owned/written by
-// GameEngine/Admin/Mods/editNewFunctions.php; any OTHER admin mod that
-// regenerates config.php from this template leaves this placeholder alone,
-// so tz_config_finalize() (see config_template.php) fills it back in from
-// the value already defined in the config.php being replaced - the setting
-// survives saves made from any other Admin Panel page.
-define("VACATION_TEST_MODE_ADMIN_GOLD", false);
-define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", false);
+define("NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET", true);
 define("NEW_FUNCTIONS_MANUAL_NATURENATARS", true);
-define("NEW_FUNCTIONS_DISPLAY_LINKS", false);
-define("NEW_FUNCTIONS_MEDAL_3YEAR", false);
-define("NEW_FUNCTIONS_MEDAL_5YEAR", false);
-define("NEW_FUNCTIONS_MEDAL_10YEAR", false);
-define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", false);
+define("NEW_FUNCTIONS_DISPLAY_LINKS", true);
+define("NEW_FUNCTIONS_MEDAL_3YEAR", true);
+define("NEW_FUNCTIONS_MEDAL_5YEAR", true);
+define("NEW_FUNCTIONS_MEDAL_10YEAR", true);
+define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", true);
 define("NEW_FUNCTIONS_MILESTONES", true);
-define("NEW_FUNCTIONS_MEDAL_RESET", false);
-define("NEW_FUNCTIONS_HERO_T4", true);
+define("NEW_FUNCTIONS_MEDAL_RESET", true);
+define("NEW_FUNCTIONS_HERO_T4", false);
 define("NEW_FUNCTION_TRIBE_HUNS", false);
 define("NEW_FUNCTION_TRIBE_EGIPTEANS", false);
 define("NEW_FUNCTION_TRIBE_SPARTANS", false);
@@ -646,13 +620,6 @@ if (!function_exists('tz_html_dir_attrs')) {
     }
 }
 if (!function_exists('tz_default_village_name')) {
-    /**
-     * Default auto-generated village name for a NEWLY created village.
-     * English keeps the original "{username}'s village[ N]" pattern.
-     * Arabic uses "قرية {username}[ N]". $extraIndex is the same optional
-     * numeric suffix the original code used for a player's 2nd+ village
-     * (0 = no suffix, i.e. the first village).
-     */
     function tz_default_village_name($username, $extraIndex = 0) {
         $username = trim((string) $username);
         $suffix = $extraIndex ? ' ' . (int) $extraIndex : '';
@@ -663,14 +630,6 @@ if (!function_exists('tz_default_village_name')) {
     }
 }
 if (!function_exists('tz_display_village_name')) {
-    /**
-     * Display-only localization for a village name already stored in the
-     * database. Never writes to the database. Only rewrites names that
-     * still match the original default pattern "{username}'s village[ N]"
-     * for the given owner - a player's custom (renamed) village name is
-     * returned unchanged. Under a non-Arabic LANG, $vname is always
-     * returned unchanged (English layout/behavior untouched).
-     */
     function tz_display_village_name($vname, $username = null) {
         if (!defined('LANG') || LANG !== 'ar' || $username === null || $username === '') {
             return $vname;
@@ -685,53 +644,24 @@ if (!function_exists('tz_display_village_name')) {
     }
 }
 if (!function_exists('tz_rtl_stylesheet_tag')) {
-    // SINGLE SHARED ENTRY POINT for Arabic/RTL CSS on every game page.
-    //
-    // This is called from the <head> of every top-level page (dorf1.php,
-    // dorf2.php, dorf3.php, karte.php, karte2.php, build.php, berichte.php,
-    // nachrichten.php, allianz.php, spieler.php, Admin/admin.php,
-    // notification/index.php, etc.) right after the base/English gpack
-    // stylesheets. It is the ONLY place that decides which RTL stylesheets
-    // get linked, so fixing/extending RTL here fixes it everywhere at once -
-    // no page should ever link an RTL stylesheet on its own (that is what
-    // previously made the RTL layout work on dorf1.php only and disappear
-    // on every other page/navigation).
-    //
-    // $relPath is the prefix needed to get back to the site root from the
-    // calling script's own folder (e.g. '' for root-level pages like
-    // dorf1.php, '../' for one-level-deep pages like Admin/admin.php or
-    // notification/index.php), since both GP_LOCATE and css/rtl.css below
-    // are root-relative paths.
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
-        $tag = "\n\t<style id=\"tz-page-zoom\">html { zoom: 1.5 !important; }</style>";
         if (!tz_is_rtl_lang($langCode)) {
-            return $tag;
+            return '';
         }
 
-        // (1) Optional per-gpack override (legacy hook). Some gpacks may
-        // ship their own lang/{code}/lang.css tweaks; only emitted if that
-        // file actually exists on disk for the active gpack.
-        $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra_classic/');
-        // project root is one level above GameEngine/, regardless of which
-        // folder the calling script itself lives in.
+        $tag = '';
+        $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra/');
         $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
         if (is_file($gpDiskPath)) {
             $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
             $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
         }
 
-        // (2) The canonical, shared Arabic RTL layout stylesheet. This is
-        // the single source of truth for RTL layout (sidebar/hero position,
-        // main content positioning, text alignment, production layout,
-        // Arabic typography) across the whole game, scoped internally under
-        // html[dir="rtl"] so it never affects English/LTR pages. Loaded
-        // LAST so it wins the cascade over the base gpack CSS and (1) above
-        // on equal-specificity selectors.
         $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
         if (is_file($rtlDiskPath)) {
             $rtlHref = $relPath . 'css/rtl.css';
-            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl-left105-size980-natural-scroll-server-label-number-black-heading-left20" rel="stylesheet" type="text/css" />';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl" rel="stylesheet" type="text/css" />';
         }
 
         return $tag;

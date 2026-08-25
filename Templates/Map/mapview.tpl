@@ -445,12 +445,16 @@ while ($donnees = mysqli_fetch_assoc($result2)) {
 			m_c.size = 7;
 			m_c.world_max = <?php echo WORLD_MAX; ?>;
 			var mdim = {"x":7,"y":7,"rad":3}
-			var mmode = 0;
+			var mmode = <?php echo !empty($session->userinfo['map']) ? 1 : 0; ?>;
 			function init_local(){map_init();}
 		</script><?php
-        // Open the large map directly in a separate tab. Keep the original
-        // absolute position and layer so the control remains in its old spot.
-        echo '<a id="map_makelarge" href="karte2.php?z='.$bigmid.'" target="_blank" rel="noopener" style="z-index:51 !important;"><img class="ml" src="img/x.gif" alt="'.LARGE_MAP.'" title="'.LARGE_MAP.'"/><span style="display:inline-block;margin-left:4px;white-space:nowrap;vertical-align:top;line-height:25px;">'.LARGE_MAP.'</span></a>';
+        // Preference "large map in extra window" (users.map): popup when on,
+        // otherwise open karte2 in a new tab.
+        $mapExtraWin = !empty($session->userinfo['map']);
+        $mapLargeAttrs = $mapExtraWin
+            ? 'onclick="window.open(this.href,\'map\',\'top=100,left=25,width=1007,height=585\');return false;"'
+            : 'target="_blank" rel="noopener"';
+        echo '<a id="map_makelarge" href="karte2.php?z='.$bigmid.'" '.$mapLargeAttrs.' style="z-index:51 !important;"><img class="ml" src="img/x.gif" alt="'.LARGE_MAP.'" title="'.LARGE_MAP.'"/><span style="display:inline-block;margin-left:4px;white-space:nowrap;vertical-align:top;line-height:25px;">'.LARGE_MAP.'</span></a>';
         ?>
 		<img id="map_navibox" src="img/x.gif" usemap="#map_navibox"/>
 		<map name="map_navibox">

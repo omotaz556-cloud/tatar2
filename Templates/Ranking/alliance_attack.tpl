@@ -35,22 +35,25 @@ if (!isset($_SESSION['search']) || !is_numeric($_SESSION['search'])) {
     <thead>
         <tr>
             <th colspan="5">
-                <?php echo TZ_THE_BEST_ALLIANCES_OFF; ?>
-                <div id="submenu">
-                    <a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=43">
-                        <img class="btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>" />
-                    </a>
-                    <a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=42">
-                        <img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>" />
-                    </a>
-                    <a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=41">
-                        <img class="active btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>" />
-                    </a>
+                <div class="statHeadBar">
+                    <div id="submenu">
+                        <a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=43">
+                            <img class="btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>" />
+                        </a>
+                        <a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=42">
+                            <img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>" />
+                        </a>
+                        <a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=41">
+                            <img class="active btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>" />
+                        </a>
+                    </div>
+                    <span class="statHeadTitle"><?php echo TZ_THE_BEST_ALLIANCES_OFF; ?></span>
+                    <span class="statHeadSpacer" aria-hidden="true"></span>
                 </div>
             </th>
         </tr>
         <tr>
-            <td></td>
+            <td>#</td>
             <td><?php echo ALLIANCE; ?></td>
             <td><?php echo PLAYER; ?></td>
             <td><?php echo POINTS; ?></td>

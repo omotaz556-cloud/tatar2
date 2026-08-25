@@ -36,81 +36,81 @@ if (!isset($_SESSION['search']) || !is_numeric($_SESSION['search'])) {
 <table cellpadding="1" cellspacing="1" id="player">
     <thead>
         <tr>
-            <th colspan="5">
-                <?php echo TZ_THE_LARGEST_PLAYERS; ?>
+            <th colspan="6">
+                <div class="statHeadBar">
+                    <div id="submenu">
+                        <?php
+                            // Tabul de statistici grafice: apare doar cand functia e
+                            // pornita SI jucatorul are Plus activ.
+                            //
+                            // Iconita foloseste acelasi tipar ca vecinele ei: un
+                            // img gol (img/x.gif) cu imaginea pusa din CSS prin
+                            // clasa. Sprite-ul e la gpack/<pachet>/img/s/stats.gif,
+                            // 30x63, cu starea normala sus si cea activa jos.
+                            if (defined('NEW_FUNCTIONS_PLUS_STATISTICS') && NEW_FUNCTIONS_PLUS_STATISTICS
+                                && isset($session->plus) && (int) $session->plus == 1) {
+                                $psLabel = defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics';
+                                $psLabel = htmlspecialchars($psLabel, ENT_QUOTES, 'UTF-8');
+                                echo '<a title="' . $psLabel . '" href="statistiken.php?id=50">'
+                                   . '<img class="btn_stats" src="img/x.gif" alt="' . $psLabel . '" />'
+                                   . '</a>';
+                            }
+                        ?>
+                        <a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=7">
+                            <img class="btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>" />
+                        </a>
+                        <a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=32">
+                            <img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>" />
+                        </a>
+                        <a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=31">
+                            <img class="btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>" />
+                        </a>
+                    </div>
 
-                <div id="submenu">
-                    <?php
-                        // Tabul de statistici grafice: apare doar cand functia e
-                        // pornita SI jucatorul are Plus activ.
-                        //
-                        // Iconita foloseste acelasi tipar ca vecinele ei: un
-                        // img gol (img/x.gif) cu imaginea pusa din CSS prin
-                        // clasa. Sprite-ul e la gpack/<pachet>/img/s/stats.gif,
-                        // 30x63, cu starea normala sus si cea activa jos.
-                        if (defined('NEW_FUNCTIONS_PLUS_STATISTICS') && NEW_FUNCTIONS_PLUS_STATISTICS
-                            && isset($session->plus) && (int) $session->plus == 1) {
-                            $psLabel = defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics';
-                            $psLabel = htmlspecialchars($psLabel, ENT_QUOTES, 'UTF-8');
-                            echo '<a title="' . $psLabel . '" href="statistiken.php?id=50">'
-                               . '<img class="btn_stats" src="img/x.gif" alt="' . $psLabel . '" />'
-                               . '</a>';
-                        }
-                    ?>
-                    <a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=7">
-                        <img class="btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>" />
-                    </a>
-                    <a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=32">
-                        <img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>" />
-                    </a>
-                    <a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=31">
-                        <img class="btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>" />
-                    </a>
+                    <span class="statHeadTitle"><?php echo TZ_THE_LARGEST_PLAYERS; ?></span>
+
+                    <div id="submenu2">
+                        <a title="<?php echo TRIBE1; ?>" href="statistiken.php?id=11">
+                            <img class="btn_v1" src="img/x.gif" alt="<?php echo TRIBE1; ?>">
+                        </a>
+                        <a title="<?php echo TRIBE2; ?>" href="statistiken.php?id=12">
+                            <img class="btn_v2" src="img/x.gif" alt="<?php echo TRIBE2; ?>">
+                        </a>
+                        <a title="<?php echo TRIBE3; ?>" href="statistiken.php?id=13">
+                            <img class="btn_v3" src="img/x.gif" alt="<?php echo TRIBE3; ?>">
+                        </a>
+                        <?php if (defined('NEW_FUNCTION_TRIBE_HUNS') && NEW_FUNCTION_TRIBE_HUNS): ?>
+                        <a title="<?php echo TRIBE6; ?>" href="statistiken.php?id=16">
+                            <img class="btn_v6" src="img/x.gif" alt="<?php echo TRIBE6; ?>">
+                        </a>
+                        <?php endif; ?>
+                        <?php if (defined('NEW_FUNCTION_TRIBE_EGIPTEANS') && NEW_FUNCTION_TRIBE_EGIPTEANS): ?>
+                        <a title="<?php echo TRIBE7; ?>" href="statistiken.php?id=17">
+                            <img class="btn_v7" src="img/x.gif" alt="<?php echo TRIBE7; ?>">
+                        </a>
+                        <?php endif; ?>
+                        <?php if (defined('NEW_FUNCTION_TRIBE_SPARTANS') && NEW_FUNCTION_TRIBE_SPARTANS): ?>
+                        <a title="<?php echo TRIBE8; ?>" href="statistiken.php?id=18">
+                            <img class="btn_v8" src="img/x.gif" alt="<?php echo TRIBE8; ?>">
+                        </a>
+                        <?php endif; ?>
+                        <?php if (defined('NEW_FUNCTION_TRIBE_VIKINGS') && NEW_FUNCTION_TRIBE_VIKINGS): ?>
+                        <a title="<?php echo TRIBE9; ?>" href="statistiken.php?id=19">
+                            <img class="btn_v9" src="img/x.gif" alt="<?php echo TRIBE9; ?>">
+                        </a>
+                        <?php endif; ?>
+                    </div>
                 </div>
-
-                <br>
-
-                <div id="submenu2">
-                    <a title="<?php echo TRIBE1; ?>" href="statistiken.php?id=11">
-                        <img class="btn_v1" src="img/x.gif" alt="<?php echo TRIBE1; ?>">
-                    </a>
-                    <a title="<?php echo TRIBE2; ?>" href="statistiken.php?id=12">
-                        <img class="btn_v2" src="img/x.gif" alt="<?php echo TRIBE2; ?>">
-                    </a>
-                    <a title="<?php echo TRIBE3; ?>" href="statistiken.php?id=13">
-                        <img class="btn_v3" src="img/x.gif" alt="<?php echo TRIBE3; ?>">
-                    </a>
-                    <?php if (defined('NEW_FUNCTION_TRIBE_HUNS') && NEW_FUNCTION_TRIBE_HUNS): ?>
-                    <a title="<?php echo TRIBE6; ?>" href="statistiken.php?id=16">
-                        <img class="btn_v6" src="img/x.gif" alt="<?php echo TRIBE6; ?>">
-                    </a>
-                    <?php endif; ?>
-                    <?php if (defined('NEW_FUNCTION_TRIBE_EGIPTEANS') && NEW_FUNCTION_TRIBE_EGIPTEANS): ?>
-                    <a title="<?php echo TRIBE7; ?>" href="statistiken.php?id=17">
-                        <img class="btn_v7" src="img/x.gif" alt="<?php echo TRIBE7; ?>">
-                    </a>
-                    <?php endif; ?>
-                    <?php if (defined('NEW_FUNCTION_TRIBE_SPARTANS') && NEW_FUNCTION_TRIBE_SPARTANS): ?>
-                    <a title="<?php echo TRIBE8; ?>" href="statistiken.php?id=18">
-                        <img class="btn_v8" src="img/x.gif" alt="<?php echo TRIBE8; ?>">
-                    </a>
-                    <?php endif; ?>
-                    <?php if (defined('NEW_FUNCTION_TRIBE_VIKINGS') && NEW_FUNCTION_TRIBE_VIKINGS): ?>
-                    <a title="<?php echo TRIBE9; ?>" href="statistiken.php?id=19">
-                        <img class="btn_v9" src="img/x.gif" alt="<?php echo TRIBE9; ?>">
-                    </a>
-                    <?php endif; ?>
-                </div>
-
             </th>
         </tr>
 
         <tr>
-            <td></td>
+            <td>#</td>
             <td><?php echo PLAYER; ?></td>
             <td><?php echo ALLIANCE; ?></td>
-            <td><?php echo POP; ?></td>
             <td><?php echo VILLAGES; ?></td>
+            <td><?php echo POP; ?></td>
+            <td><?php echo defined('STAT_MESSAGE') ? STAT_MESSAGE : 'Message'; ?></td>
         </tr>
     </thead>
 
@@ -154,7 +154,7 @@ if (count($rankArray) > 1) {
 
         echo $isHighlight
             ? "<tr class=\"hl\"><td class=\"ra fc\">"
-            : "<tr><td class=\"ra \">";
+            : "<tr><td class=\"ra\">";
 
         echo $i . ".</td>";
 
@@ -179,23 +179,31 @@ if (count($rankArray) > 1) {
             $aid = (int)$row['alliance'];
             $aname = htmlspecialchars((string) $row['aname'], ENT_QUOTES, 'UTF-8');
             echo "<a href=\"allianz.php?aid={$aid}\">{$aname}</a>";
-        } else {
-            echo "-";
         }
 
         echo "</td>";
 
+        // ---------------- VILLAGES ----------------
+        echo "<td class=\"vil\">" . (int)($row['totalvillage'] ?? 0) . "</td>";
+
         // ---------------- POP ----------------
         echo "<td class=\"pop\">" . (int)($row['totalpop'] ?? 0) . "</td>";
 
-        // ---------------- VILLAGES ----------------
-        echo "<td class=\"vil\">" . (int)($row['totalvillage'] ?? 0) . "</td>";
+        // ---------------- MESSAGE (orange envelope, like reference) ----------------
+        $msgTitle = defined('WRITE_MESSAGE') ? WRITE_MESSAGE : 'Message';
+        $msgLc = $isHighlight ? ' on lc' : ' on';
+        echo '<td class="' . trim($msgLc) . '"><a href="nachrichten.php?t=1&amp;id=' . $uid . '" title="'
+           . htmlspecialchars($msgTitle, ENT_QUOTES, 'UTF-8') . '">'
+           . '<svg class="statMsgIcon" viewBox="0 0 16 12" width="16" height="12" aria-hidden="true">'
+           . '<rect x="0.5" y="0.5" width="15" height="11" rx="1.2" fill="#f0a000" stroke="#c87800" stroke-width="1"/>'
+           . '<path d="M1 1.5 8 7 15 1.5" fill="none" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/>'
+           . '</svg></a></td>';
 
         echo "</tr>";
     }
 
 } else {
-    echo "<tr><td class=\"none\" colspan=\"5\">".TZ_NO_USERS_FOUND."</td></tr>";
+    echo "<tr><td class=\"none\" colspan=\"6\">".TZ_NO_USERS_FOUND."</td></tr>";
 }
 ?>
     </tbody>

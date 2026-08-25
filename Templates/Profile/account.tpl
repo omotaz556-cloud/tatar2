@@ -191,7 +191,7 @@ if (!empty($emailError)) {
 <tbody>
 <tr>
     <th><?php echo PREF_OPTIONS; ?></th>
-    <td><a class="account-action" href="spieler.php?s=2#display_options"><?php echo PREF_OPEN_OPTIONS; ?></a></td>
+    <td><a class="account-action" href="spieler.php?uid=<?php echo (int)$session->uid; ?>"><?php echo PREF_OPEN_OPTIONS; ?></a></td>
 </tr>
 </tbody>
 </table>
