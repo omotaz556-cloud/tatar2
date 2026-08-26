@@ -80,5 +80,12 @@ switch ($bindicator) {
         echo '<a class="build" href="'.htmlspecialchars($url, ENT_QUOTES, 'UTF-8').'">'.CONSTRUCT_BUILD.' '.WAITING_LOOP;'</a>';
         break;
 }
+
+ob_start();
+include __DIR__ . '/../gold_finish_button.tpl';
+$__goldFinishBtn = trim((string) ob_get_clean());
+if ($__goldFinishBtn !== '') {
+    echo '<br />' . $__goldFinishBtn;
+}
 ?>
     </td>

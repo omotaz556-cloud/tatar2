@@ -205,6 +205,14 @@ class funct
                 $this->handleAddWWVillages($_POST, $artifacts, $database);
                 break;
 
+            case "saveWwWinnerPrize":
+                $this->handleSaveWwWinnerPrize($_POST);
+                return;
+
+            case "resetNatars":
+                $this->handleResetNatars($_POST, $database);
+                return;
+
             case "killHero":
                 $this->handleKillHero($get, $database);
                 return; // handler always redirects+exits itself
@@ -296,6 +304,130 @@ class funct
         }
 
         $artifacts->createWWVillages($count, $playerId, $playerId == Artifacts::NATARS_UID);
+    }
+
+    /**
+     * Save WW_WINNER_GOLD_PRIZE from the Natars admin panel into config.php.
+     */
+    private function handleSaveWwWinnerPrize(array $post): void
+    {
+        if (function_exists('csrf_verify')) {
+            csrf_verify();
+        }
+
+        $prize = isset($post['ww_winner_gold_prize']) ? (int) $post['ww_winner_gold_prize'] : -1;
+        if ($prize < 0 || $prize > 999999999) {
+            header('Location: admin.php?p=natars&prize=0');
+            exit;
+        }
+
+        $configPath = dirname(__DIR__) . '/config.php';
+        if (!is_file($configPath) || !is_writable($configPath)) {
+            header('Location: admin.php?p=natars&prize=0');
+            exit;
+        }
+
+        $content = file_get_contents($configPath);
+        if ($content === false) {
+            header('Location: admin.php?p=natars&prize=0');
+            exit;
+        }
+
+        $replacement = 'define("WW_WINNER_GOLD_PRIZE", ' . $prize . ')';
+        $updated = preg_replace(
+            '/define\s*\(\s*[\'"]WW_WINNER_GOLD_PRIZE[\'"]\s*,\s*[^)]+\)/',
+            $replacement,
+            $content,
+            1,
+            $count
+        );
+
+        if ($count < 1 || $updated === null) {
+            // Constant missing — insert after SERVER_NAME line.
+            $updated = preg_replace(
+                '/(define\s*\(\s*[\'"]SERVER_NAME[\'"]\s*,\s*[^;]+;\s*)/',
+                '$1' . "\ndefine(\"WW_WINNER_GOLD_PRIZE\", " . $prize . ");\n",
+                $content,
+                1,
+                $count2
+            );
+            if ($count2 < 1 || $updated === null) {
+                header('Location: admin.php?p=natars&prize=0');
+                exit;
+            }
+        }
+
+        if (file_put_contents($configPath, $updated) === false) {
+            header('Location: admin.php?p=natars&prize=0');
+            exit;
+        }
+
+        header('Location: admin.php?p=natars&prize=1');
+        exit;
+    }
+
+    /**
+     * Wipe Natars villages/artifacts and restart the spawn countdown from now.
+     * After NATARS_SPAWN_TIME (speed-adjusted) Automation will recreate Natars.
+     */
+    private function handleResetNatars(array $post, $database): void
+    {
+        global $admin, $units;
+
+        if (function_exists('csrf_verify')) {
+            csrf_verify();
+        }
+
+        if (empty($post['confirm_reset']) || (string) $post['confirm_reset'] !== '1') {
+            header('Location: admin.php?p=natars&reset=0');
+            exit;
+        }
+
+        if (!isset($units) || !is_object($units)) {
+            include_once __DIR__ . '/../Units.php';
+        }
+
+        $natarsUid = (int) Artifacts::NATARS_UID;
+
+        // Hard-delete every artifact row — areArtifactsSpawned() ignores soft-delete.
+        $database->query('DELETE FROM ' . TB_PREFIX . 'artefacts');
+        @$database->query('DELETE FROM ' . TB_PREFIX . 'artefacts_chrono');
+        @$database->query('DELETE FROM ' . TB_PREFIX . 'ww_attacks');
+
+        // Remove all Natars-owned villages (capital included).
+        $natarsVillages = $database->getProfileVillages($natarsUid, 0, false);
+        if (is_array($natarsVillages)) {
+            foreach ($natarsVillages as $village) {
+                $wref = (int) ($village['wref'] ?? 0);
+                if ($wref > 0) {
+                    if (isset($admin) && is_object($admin)) {
+                        $admin->DelVillage($wref, 1);
+                    } else {
+                        $database->DelVillage($wref);
+                    }
+                }
+            }
+        }
+
+        // Player-held WW slots keep the village but no longer block a fresh WW spawn.
+        $database->query('UPDATE ' . TB_PREFIX . 'vdata SET natar = 0 WHERE natar = 1');
+
+        // Remove leftover Natars account so createNatars() can register uid 3 again.
+        $database->query('DELETE FROM ' . TB_PREFIX . 'hero WHERE uid = ' . $natarsUid);
+        $database->query('DELETE FROM ' . TB_PREFIX . 'users WHERE id = ' . $natarsUid);
+
+        tz_natars_set_timer_base(time());
+
+        $adminId = (int) ($_SESSION['id'] ?? 0);
+        if ($adminId > 0 && isset($admin) && is_object($admin) && isset($admin->connection)) {
+            mysqli_query(
+                $admin->connection,
+                'INSERT INTO ' . TB_PREFIX . "admin_log VALUES (0,$adminId,'Reset Natars spawn cycle'," . time() . ')'
+            );
+        }
+
+        header('Location: admin.php?p=natars&reset=1');
+        exit;
     }
 
     /** Kill a player's hero, searching every village/defense/movement/oasis they might be in. */

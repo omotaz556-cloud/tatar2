@@ -96,5 +96,12 @@ if (in_array($bindicate, [2,3,7]) && $session->goldclub == 1) {
     }
     echo ' <font color="#B3B3B3">('.COSTS.': <img src="'.GP_LOCATE.'img/a/gold_g.gif" alt="'.GOLD.'" title="'.GOLD.'"/>1)</font>';
 }
+
+ob_start();
+include __DIR__ . '/gold_finish_button.tpl';
+$__goldFinishBtn = trim((string) ob_get_clean());
+if ($__goldFinishBtn !== '') {
+    echo '<br />' . $__goldFinishBtn;
+}
 ?>
 </p>

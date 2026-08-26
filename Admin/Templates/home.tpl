@@ -115,7 +115,7 @@ $role = $_SESSION['access'] == ADMIN ? ADM_ADMINISTRATOR_ROLE : ADM_MULTIHUNTER_
 <div class="dashboard">
   <div class="dash-head">
     <h1><?php echo ADM_WELCOME_TO; ?> <?php echo $role; ?> <?php echo ADM_CONTROL_PANEL; ?></h1>
-    <div class="sub"><?php echo ADM_HELLO; ?><b><?php echo $_SESSION['admin_username']; ?></b> — <?php echo date('d.m.Y H:i'); ?> <?php echo ADM_SERVER_TIME; ?></div>
+    <div class="sub"><?php echo ADM_HELLO; ?><b><?php echo htmlspecialchars((string)($_SESSION['admin_username'] ?? $_SESSION['username'] ?? 'Admin'), ENT_QUOTES, 'UTF-8'); ?></b> — <?php echo date('d.m.Y H:i'); ?> <?php echo ADM_SERVER_TIME; ?></div>
   </div>
   <!-- TOATE CARDURILE ORIGINALE -->
   <div class="cards">

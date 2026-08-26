@@ -363,16 +363,18 @@ trait DatabaseSystemQueries {
 	 * @param string $message The text of the system message that will be written and displayed to all players
 	 */
 	
-	function displaySystemMessage($message){	
-		list($message) = $this->escape_input($message);
+	function displaySystemMessage($message){
 		global $autoprefix;
-		
-		$myFile = $autoprefix."Templates/text.tpl";
-		$fh = fopen($myFile, 'w');
-		$text = file_get_contents($autoprefix."Templates/text_format.tpl");
-		$text = preg_replace("'%TEKST%'", $message, $text);
-		fwrite($fh, $text);
-		
+
+		// Write a PHP include for Templates/text.tpl — do NOT SQL-escape first.
+		// escape_input() turns real newlines/quotes into literal \n and \", which
+		// then show up on the announcement page instead of real line breaks/HTML.
+		// var_export() alone produces a valid PHP string literal for any HTML.
+		$myFile = $autoprefix . 'Templates/text.tpl';
+		$text = file_get_contents($autoprefix . 'Templates/text_format.tpl');
+		$text = str_replace('%TEKST%', var_export((string) $message, true), $text);
+		file_put_contents($myFile, $text);
+
 		//Set "OK" to 1 to all players, so they can visualize the message
 		$this->setUsersOk();
 	}

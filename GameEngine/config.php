@@ -19,8 +19,8 @@
 //////////////////////////////////
 // (E_ALL ^ E_NOTICE) = enabled
 // (0) = disabled
-define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);");
-error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE);");
+error_reporting (E_ALL ^ E_NOTICE);
 define('AUTOMATION_LOCK_FILE_NAME', 'automation.lck');
 
 //////////////////////////////////
@@ -102,6 +102,10 @@ define('HERO_RES_PER_POINT_ONE', 10);
 
 // ***** Name
 define("SERVER_NAME","Novaterra");
+/** Optional world / round number shown on the WW victory report (e.g. "7"). */
+define("SERVER_WORLD_NUMBER", "");
+/** Gold amount announced for the WW owner on the victory report (editable in Admin → Natars). */
+define("WW_WINNER_GOLD_PRIZE", 5000);
 
 // ***** Time zone added by ronix
 // Defines server time zone.
@@ -138,7 +142,7 @@ define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang
 // Choose your server speed. NOTICE: Higher speed, more likely
 // to have some bugs. Lower speed, most likely no major bugs.
 // Values: 1 (normal), 3 (3x speed) etc...
-define("SPEED", "45");
+define("SPEED", "100000");
 
 // ***** World size
 // Defines world size. NOTICE: DO NOT EDIT!!
@@ -241,6 +245,8 @@ define("NATARS_UNITS",100);
 define("NATARS_SPAWN_TIME",260); 
 define("NATARS_WW_SPAWN_TIME",260); 
 define("NATARS_WW_BUILDING_PLAN_SPAWN_TIME",260);
+
+include_once __DIR__ . '/NatarsSchedule.php';
 
 // ***** Natars' World Wonder
 // Number of DAYS after the Building Plans appear before the Natars begin
@@ -443,7 +449,18 @@ define("SQL_PASS", "novaterrapass");
 define("SQL_DB", "novaterra");
 
 // ***** Database - Table Prefix
-define("TB_PREFIX", "s652b_");
+// Portal worlds may override the prefix via cookie (independent worlds on one DB).
+$__portalPrefix = null;
+if (is_file(__DIR__ . '/PortalWorlds.php')) {
+    require_once __DIR__ . '/PortalWorlds.php';
+    if (class_exists('PortalWorlds', false)) {
+        $__portalPrefix = PortalWorlds::bootstrapPrefixOverride();
+    }
+}
+define("TB_PREFIX", $__portalPrefix !== null && $__portalPrefix !== ''
+    ? $__portalPrefix
+    : "s652b_");
+unset($__portalPrefix);
 
 // ***** Database type
 // 0 = MYSQL
@@ -533,7 +550,7 @@ define("NEW_FUNCTIONS_MEDAL_10YEAR", true);
 define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", true);
 define("NEW_FUNCTIONS_MILESTONES", true);
 define("NEW_FUNCTIONS_MEDAL_RESET", true);
-define("NEW_FUNCTIONS_HERO_T4", true);
+define("NEW_FUNCTIONS_HERO_T4", false);
 define("NEW_FUNCTION_TRIBE_HUNS", false);
 define("NEW_FUNCTION_TRIBE_EGIPTEANS", false);
 define("NEW_FUNCTION_TRIBE_SPARTANS", false);
@@ -646,11 +663,18 @@ if (!function_exists('tz_display_village_name')) {
 if (!function_exists('tz_rtl_stylesheet_tag')) {
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
-        if (!tz_is_rtl_lang($langCode)) {
-            return '';
+        $tag = '';
+
+        $globalDiskPath = dirname(__DIR__) . '/css/global.css';
+        if (is_file($globalDiskPath)) {
+            $globalHref = $relPath . 'css/global.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($globalHref, ENT_QUOTES) . '?g3" rel="stylesheet" type="text/css" />';
         }
 
-        $tag = '';
+        if (!tz_is_rtl_lang($langCode)) {
+            return $tag;
+        }
+
         $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra/');
         $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
         if (is_file($gpDiskPath)) {
@@ -661,8 +685,7 @@ if (!function_exists('tz_rtl_stylesheet_tag')) {
         $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
         if (is_file($rtlDiskPath)) {
             $rtlHref = $relPath . 'css/rtl.css';
-            $rtlVer = (int) @filemtime($rtlDiskPath);
-            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?v=' . $rtlVer . '" rel="stylesheet" type="text/css" />';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl50" rel="stylesheet" type="text/css" />';
         }
 
         return $tag;

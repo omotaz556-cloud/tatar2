@@ -112,7 +112,7 @@ if(!$isOasis){
 echo ' '.$coords;
 ?></h1>
 
-<?php if($basearray['occupied'] && $basearray['capital']) echo '<div id="dmain">(capital)</div>';?>
+<?php if($basearray['occupied'] && $basearray['capital']) echo '<div id="dmain">('.CAPITAL1.')</div>';?>
 
 <?php if($uinfo && $uinfo['owner']==3 && $uinfo['name']==PLANVILLAGE){?>
 <img src="img/x.gif" id="detailed_map" class="f99" alt="<?php echo PLANVILLAGE;?>">

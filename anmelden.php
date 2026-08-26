@@ -172,7 +172,7 @@ $regStep = $regErrors ? 3 : 1;
 	<script src="unx.js?f4b7h" type="text/javascript"></script>
 	<script src="new.js?0faab" type="text/javascript"></script>
 	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
+	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?en1" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE ?>novaterra.css?f4b7d" rel="stylesheet" type="text/css" />
 		<link href="<?php echo GP_LOCATE ?>lang/en/lang.css" rel="stylesheet" type="text/css" />
 
@@ -274,7 +274,8 @@ html[dir="rtl"] #regwiz{text-align:right;}
                 border-radius:8px;background:#3f6fb5;color:#fff;font:bold 11px/16px Georgia,serif;text-align:center}
 .rw-agree{margin:0 0 4px;font:bold 12px/16px Arial,Helvetica,sans-serif;color:#5b4a36}
 .rw-agree input{vertical-align:middle;margin:0 5px 2px 0}
-ul.rw-err{margin:0 0 6px;padding:0 0 0 16px;color:#c0392b;font:bold 12px/17px Arial}
+ul.rw-err{margin:10px 0;padding:0;list-style:none;color:#c0392b;font:bold 12px Tahoma,Arial,sans-serif;text-align:right;direction:rtl}
+.rw-err li{margin:4px 0}
 
 /* --- buttons ------------------------------------------------------------- */
 .rw-btn{display:block;width:260px;max-width:90%;height:49px;margin:14px auto 6px;padding:0;border:0;cursor:pointer;

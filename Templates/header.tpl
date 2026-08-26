@@ -322,10 +322,6 @@ if ($hour > 1759 || $hour < 500) {
 
         <style type="text/css">
 
-        html[dir="rtl"] {
-            zoom: 1.32 !important;
-        }
-
         #topNavIcons {
             float: left;
             width: 350px;

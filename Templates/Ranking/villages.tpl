@@ -107,12 +107,10 @@ if (count($rankArray) > 1) {
         // population
         echo "<td class=\"hab\">" . (int)$row['pop'] . "</td>";
 
-        // coordinates
-        echo "<td class=\"aligned_coords \">
-                <div class=\"cox\">(" . (int)$row['x'] . "</div>
-                <div class=\"pi\">|</div>
-                <div class=\"coy\">" . (int)$row['y'] . ")</div>
-              </td>";
+        // coordinates — keep LTR so (x|y) never reverses under Arabic RTL
+        echo '<td class="aligned_coords"><span dir="ltr">('
+            . (int) $row['x'] . '|' . (int) $row['y']
+            . ')</span></td>';
 
         echo "</tr>";
     }

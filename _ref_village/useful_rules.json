@@ -1,0 +1,322 @@
+[
+  {
+    "sel": "div#side_info h5 img",
+    "body": "width:160px;height:15px"
+  },
+  {
+    "sel": ".b,.rbg,.serverInfos .timer,div#build.gid0 table.new_building td.requ,div#build.gid17 div.error,div#build.gid17 p.error,div.a2b p.error,div.a2b table#troops span.none,div.a2b table.troop_details thead",
+    "body": "font-weight:700"
+  },
+  {
+    "sel": "div#side_info",
+    "body": "float:right;padding-top:5px;position:relative"
+  },
+  {
+    "sel": "div#side_info h5,div.player table#advertisement span.note",
+    "body": "margin-right:10px"
+  },
+  {
+    "sel": "div#side_info h6",
+    "body": "margin:0;padding:0;font-size:14px;color:#ff8000;font-weight:700"
+  },
+  {
+    "sel": "div#side_info div.news",
+    "body": "margin-right:10px;width:186px;padding:6px;border:1px dashed Silver"
+  },
+  {
+    "sel": "div#side_info div.news ul",
+    "body": "padding:0;margin-right:15px"
+  },
+  {
+    "sel": "div#build.gid15 h2,div#build.gid27 table.art_details,div#side_info table#llist,div.alliance table#medals,div.alliance table#member,div.alliance table#own,div.alliance table#tip,div.player table,div.pl",
+    "body": "margin-top:25px"
+  },
+  {
+    "sel": "div#build.gid0 h2,div#build.gid16 table.troop_details,div#build.gid17 table.traders,div.map div#map_details table,div.reports table#report_surround td.report_content table,div.reports td.report_conten",
+    "body": "margin-bottom:15px"
+  },
+  {
+    "sel": "div.village1 form.changeName,div.village1 h1",
+    "body": "right:10px;height:29px;position:relative;z-index:500"
+  },
+  {
+    "sel": "div.village1 h1 div#loyality",
+    "body": "position:absolute;top:30px"
+  },
+  {
+    "sel": "div.map h1 div#loyality",
+    "body": "position:absolute;top:80px;z-index:10000"
+  },
+  {
+    "sel": "div.village1 div#village_map",
+    "body": "float:right;width:324px;height:284px;position:relative;margin-bottom:15px;background-size:cover;overflow:clip"
+  },
+  {
+    "sel": "div.village1 div#map_details",
+    "body": "width:229px"
+  },
+  {
+    "sel": "div.village1 div#map_details table",
+    "body": "margin-bottom:14px"
+  },
+  {
+    "sel": "div.village2 h1",
+    "body": "position:relative;z-index:30"
+  },
+  {
+    "sel": "div.village2 div#village_map",
+    "body": "width:540px;height:448px;position:relative"
+  },
+  {
+    "sel": "div#map div#map_rulers,div#map img#map_links,div.village2 div#village_map img",
+    "body": "position:absolute"
+  },
+  {
+    "sel": "div.village2 div#village_map img.ww",
+    "body": "z-index:20;left:155px"
+  },
+  {
+    "sel": "div.village2 div#village_map div#levels",
+    "body": "width:494px;height:370px;position:absolute;top:40px;left:23px;z-index:97;visibility:hidden"
+  },
+  {
+    "sel": "div.village2 div#village_map div#levels div",
+    "body": "width:17px;height:17px;position:absolute;text-align:center;line-height:17px;visibility:hidden;font-family:Arial,Helvetica;font-size:11px;color:#000"
+  },
+  {
+    "sel": "div.village2 div#village_map div#levels.on,div.village2 div#village_map div#levels.on div",
+    "body": "visibility:visible"
+  },
+  {
+    "sel": "div.village2 div#village_map .dx1",
+    "body": "z-index:5;left:316px;top:161px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d1",
+    "body": "z-index:6;left:115px;top:52px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d2",
+    "body": "z-index:9;left:198px;top:27px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d3",
+    "body": "z-index:8;left:258px;top:17px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d4",
+    "body": "z-index:9;left:332px;top:32px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d5",
+    "body": "z-index:10;left:388px;top:81px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d6",
+    "body": "z-index:11;left:80px;top:91px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d7",
+    "body": "z-index:12;left:161px;top:98px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d8",
+    "body": "z-index:13;left:247px;top:81px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d9",
+    "body": "z-index:14;left:395px;top:122px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d10",
+    "body": "z-index:15;left:66px;top:161px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d11",
+    "body": "z-index:16;left:192px;top:126px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d12",
+    "body": "z-index:17;left:155px;top:152px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d13",
+    "body": "z-index:18;left:402px;top:180px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d14",
+    "body": "z-index:19;left:84px;top:200px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d15",
+    "body": "z-index:20;left:227px;top:196px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d16",
+    "body": "z-index:21;left:354px;top:213px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d17",
+    "body": "z-index:22;left:158px;top:236px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d18",
+    "body": "z-index:23;left:286px;top:247px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d19",
+    "body": "z-index:24;left:144px;top:267px"
+  },
+  {
+    "sel": "div.village2 div#village_map .d20",
+    "body": "z-index:25;left:262px;top:276px"
+  },
+  {
+    "sel": "div.village2 div#village_map .g40",
+    "body": "top:138px"
+  },
+  {
+    "sel": "div.village2 div#village_map .g40_1",
+    "body": "top:125px"
+  },
+  {
+    "sel": "div.village2 div#village_map .g40_2",
+    "body": "top:99px"
+  },
+  {
+    "sel": "div.village2 div#village_map .g40_3",
+    "body": "top:62px"
+  },
+  {
+    "sel": "div.village2 div#village_map .g40_4",
+    "body": "top:53px"
+  },
+  {
+    "sel": "div.village2 div#village_map .g40_5",
+    "body": "top:-10px"
+  },
+  {
+    "sel": "div.village2 div#village_map .l39",
+    "body": "left:320px;top:190px"
+  },
+  {
+    "sel": "div.village2 div#village_map .l40",
+    "body": "left:240px;top:350px"
+  },
+  {
+    "sel": "div.village2 div#village_map img.rocket",
+    "body": "z-index:20;width:75px;height:140px"
+  },
+  {
+    "sel": "div.village2 div#village_map img.tur",
+    "body": "left:161px;top:168px"
+  },
+  {
+    "sel": "div.village2 div#village_map img.purp",
+    "body": "left:265px;top:148px"
+  },
+  {
+    "sel": "div.village2 div#village_map img.yell",
+    "body": "left:200px;top:248px"
+  },
+  {
+    "sel": "div.village2 div#village_map img.oran",
+    "body": "left:300px;top:0"
+  },
+  {
+    "sel": "div.village2 div#village_map img.green",
+    "body": "left:110px;top:230px"
+  },
+  {
+    "sel": "div.village2 div#village_map img.red",
+    "body": "left:328px;top:210px"
+  },
+  {
+    "sel": "div.map div#map_details",
+    "body": "float:left;margin-top:25px"
+  },
+  {
+    "sel": "div#build.gid17 p.info,div.a2b .slots,div.a2b table#troops,div.messages table#friendlist",
+    "body": "margin-top:5px"
+  },
+  {
+    "sel": "div#side_info div#anm",
+    "body": "border:1px solid #555;position:absolute;z-index:1000"
+  },
+  {
+    "sel": "div#side_info div#qge",
+    "body": "padding:4px"
+  },
+  {
+    "sel": "div#side_info div#qge img",
+    "body": "display:block;cursor:pointer;position:relative"
+  },
+  {
+    "sel": "div#build.gid16 table#raidTroops input.disabled,div.a2b table#troops input.disabled,input.disable",
+    "body": "background-color:#eee;border-color:#aaa"
+  },
+  {
+    "sel": ".c2,.e,.error,div#build.gid17 p.error2,div#side_info td.hl,div#side_navi p.deltimer a span,div.alliance .error2,div.alliance .error3,div.peace.active,div.player div#gpack_popup span.path,div.player ta",
+    "body": "color:#ff8000"
+  },
+  {
+    "sel": ".c3,div.map h1 div.gr,div.village1 h1 div.gr,div.village1 table#movements .d1",
+    "body": "color:#228b22"
+  },
+  {
+    "sel": ".c5,div.map h1 div.re,div.messages p.warning,div.player table#change_mail th.process,div.village1 h1 div.re,div.village1 table#movements .a1,div.village3 table#warehouse .crit",
+    "body": "color:red"
+  },
+  {
+    "sel": "div#side_info table",
+    "body": "width:auto;background-color:#fff"
+  },
+  {
+    "sel": "div#side_info table td",
+    "body": "padding:0;line-height:18px;text-align:right;white-space:nowrap"
+  },
+  {
+    "sel": "div#side_info table thead td",
+    "body": "background-color:#fff;height:22px"
+  },
+  {
+    "sel": "div#side_info td.dot",
+    "body": "width:10px;padding:0 6px"
+  },
+  {
+    "sel": "div#side_info td.link",
+    "body": "padding-left:10px;font-size:14px"
+  },
+  {
+    "sel": "div#build.gid16 table#raidTroops,div.a2b table#troops,div.activate table,div.login table,div.signup table",
+    "body": "border:1px dashed silver;background-color:#fff"
+  },
+  {
+    "sel": "div.player table#sitter input.text,div.village1 table#troops td.un",
+    "body": "width:80%"
+  },
+  {
+    "sel": "div#build.gid16 table#raidTroops td.column-first,div.a2b table#troops td.column-first",
+    "body": "padding-right:8px"
+  },
+  {
+    "sel": "div#build.gid16 table#raidTroops td.column-last,div.a2b table#troops td.column-last",
+    "body": "padding-left:8px"
+  },
+  {
+    "sel": "div#build.gid16 table#raidTroops td.line-first,div.a2b table#troops td.line-first",
+    "body": "padding-top:8px"
+  },
+  {
+    "sel": "div#build.gid16 table#raidTroops td.line-last,div.a2b table#troops td.line-last",
+    "body": "padding-bottom:8px"
+  },
+  {
+    "sel": "div#build.gid16 table#raidTroops td,div.a2b table#troops td",
+    "body": "width:25%;padding:1px"
+  },
+  {
+    "sel": "div#build.gid16 table#raidTroops img,div.a2b table#troops img",
+    "body": "vertical-align:bottom;position:relative;bottom:3px;margin-left:2px"
+  }
+]

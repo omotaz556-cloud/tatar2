@@ -1,0 +1,82 @@
+[
+  {
+    "rel": "x-tatar\\صفحة القريه - الحقول\\ساحه التتار 7 - Tatar Zone _ حقول القرية.html",
+    "title": "ساحه التتار 7 - Tatar Zone | حقول القرية",
+    "content_class": null,
+    "ids": {
+      "production": true,
+      "vlist": false,
+      "village_map": true,
+      "map_details": true,
+      "troops": false,
+      "levels": false
+    },
+    "css": [
+      "./ساحه التتار 7 - Tatar Zone _ حقول القرية_files/style.css",
+      "./ساحه التتار 7 - Tatar Zone _ حقول القرية_files/chat-widget.min.css",
+      "https://s7.x-tatar.com/assets/chat-widget.min.css?v=18.5"
+    ],
+    "vlist_snip": null,
+    "prod_snip": "id=\"production\" cellpadding=\"1\" cellspacing=\"1\"> <thead> <tr> <th colspan=\"4\">الإنتاج:</th> </tr> </thead> <tbody> <tr> <td class=\"ico\"> <img class=\"r1\" src=\"./ساحه التتار 7 - Tatar Zone _ حقول القرية_files/x.png\" alt=\" الخشب\" title=\" الخشب\"> </td> <td class=\"res\" title=\" سيمتلئ المخزن بعد: 8553:25:34\">الخشب:</td> <td class=\"num\" title=\" سيمتلئ المخزن بعد: 8553:25:34\">800</td> <td class=\"per\" title=\" سيمتلئ المخزن بعد: 8553:25:34\">في الساعة</td> </tr> <tr> <",
+    "len": 224911
+  },
+  {
+    "rel": "x-tatar\\صفحة القريه - المباني\\ساحه التتار 7 - Tatar Zone _ مباني القرية.html",
+    "title": "ساحه التتار 7 - Tatar Zone | مباني القرية",
+    "content_class": null,
+    "ids": {
+      "production": false,
+      "vlist": false,
+      "village_map": true,
+      "map_details": false,
+      "troops": false,
+      "levels": true
+    },
+    "css": [
+      "./ساحه التتار 7 - Tatar Zone _ مباني القرية_files/style.css",
+      "./ساحه التتار 7 - Tatar Zone _ مباني القرية_files/chat-widget.min.css",
+      "https://s7.x-tatar.com/assets/chat-widget.min.css?v=18.5"
+    ],
+    "vlist_snip": null,
+    "prod_snip": null,
+    "len": 231558
+  },
+  {
+    "rel": "greek sa\\صفحة القريه ( الحقول )\\حرب الإغريق 6 - Greek War _ حقول القرية.html",
+    "title": "حرب الإغريق 6 - Greek War | حقول القرية",
+    "content_class": null,
+    "ids": {
+      "production": false,
+      "vlist": false,
+      "village_map": false,
+      "map_details": false,
+      "troops": false,
+      "levels": false
+    },
+    "css": [
+      "./حرب الإغريق 6 - Greek War _ حقول القرية_files/MaxB.css"
+    ],
+    "vlist_snip": null,
+    "prod_snip": null,
+    "len": 42869
+  },
+  {
+    "rel": "greek sa\\صفحة القريه ( المباني )\\حرب الإغريق 6 - Greek War _ مباني القرية.html",
+    "title": "حرب الإغريق 6 - Greek War | مباني القرية",
+    "content_class": null,
+    "ids": {
+      "production": false,
+      "vlist": false,
+      "village_map": false,
+      "map_details": false,
+      "troops": false,
+      "levels": false
+    },
+    "css": [
+      "./حرب الإغريق 6 - Greek War _ مباني القرية_files/MaxB.css"
+    ],
+    "vlist_snip": null,
+    "prod_snip": null,
+    "len": 47031
+  }
+]

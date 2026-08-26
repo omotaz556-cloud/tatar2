@@ -157,21 +157,23 @@ html[dir="rtl"] .ps-sum td:first-child {
     <thead>
         <tr>
             <th>
-                <?php echo defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics'; ?>
-
-                <div id="submenu">
-                    <a title="<?php echo defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics'; ?>" href="statistiken.php?id=50">
-                        <img class="active btn_stats" src="img/x.gif" alt="<?php echo defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics'; ?>" />
-                    </a>
-                    <a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=7">
-                        <img class="btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>" />
-                    </a>
-                    <a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=32">
-                        <img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>" />
-                    </a>
-                    <a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=31">
-                        <img class="btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>" />
-                    </a>
+                <div class="statHeadBar">
+                    <div id="submenu">
+                        <a title="<?php echo defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics'; ?>" href="statistiken.php?id=50">
+                            <img class="active btn_stats" src="img/x.gif" alt="<?php echo defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics'; ?>" />
+                        </a>
+                        <a title="<?php echo TZ_TOP_10; ?>" href="statistiken.php?id=7">
+                            <img class="btn_top10" src="img/x.gif" alt="<?php echo TZ_TOP_10; ?>" />
+                        </a>
+                        <a title="<?php echo DEFENDER; ?>" href="statistiken.php?id=32">
+                            <img class="btn_def" src="img/x.gif" alt="<?php echo DEFENDER; ?>" />
+                        </a>
+                        <a title="<?php echo ATTACKER; ?>" href="statistiken.php?id=31">
+                            <img class="btn_off" src="img/x.gif" alt="<?php echo ATTACKER; ?>" />
+                        </a>
+                    </div>
+                    <span class="statHeadTitle"><?php echo defined('PLUSSTATS_TITLE') ? PLUSSTATS_TITLE : 'Graphical statistics'; ?></span>
+                    <span class="statHeadSpacer" aria-hidden="true"></span>
                 </div>
             </th>
         </tr>

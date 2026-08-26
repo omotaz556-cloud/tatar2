@@ -277,11 +277,25 @@ class MyGenerator
 	}
 
 	/**
-	 * Convert map coordinates to base ID
+	 * Convert map coordinates to base ID.
+	 * Uses the effective map radius (portal worlds may be smaller than WORLD_MAX).
 	 */
 	public function getBaseID($x, $y)
 	{
-		return ((WORLD_MAX - $y) * (WORLD_MAX * 2 + 1)) + (WORLD_MAX + $x + 1);
+		$W = $this->worldMax();
+		return (($W - $y) * ($W * 2 + 1)) + ($W + $x + 1);
+	}
+
+	/**
+	 * Playable map radius for ID math and wrap-around.
+	 */
+	public function worldMax()
+	{
+		global $database;
+		if (isset($database) && is_object($database) && method_exists($database, 'getWorldMax')) {
+			return (int) $database->getWorldMax();
+		}
+		return defined('WORLD_MAX') ? max(1, (int) WORLD_MAX) : 100;
 	}
 
 	/**

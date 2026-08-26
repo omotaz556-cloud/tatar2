@@ -69,6 +69,9 @@ tz_def('EMAIL_EMPTY', '(Email Empty)');
 tz_def('EMAIL_INVALID', '(Invalid email address)');
 tz_def('EMAIL_TAKEN', '(Email is already in use)');
 tz_def('WINNER_ERROR', '<li>The server has ended! No more registrations can be made.</li>');
+tz_def('REG_LIMIT_ERROR', '<li>Registration limit reached for this device or network. Try again later or contact support.</li>');
+tz_def('REG_FAILED', '<li>Could not create the account. Please try again or contact support.</li>');
+tz_def('REG_SPAWN_FAILED', '<li>Could not create your starting village (no free spots in the selected area). Try another region or Random.</li>');
 tz_def('TRIBE_EMPTY', '<li>Please choose a tribe.</li>');
 tz_def('AGREE_ERROR', '<li>You have to agree to the game rules and the general terms & conditions in order to register.</li>');
 tz_def('LOGIN_USR_EMPTY', 'Enter name.');
@@ -809,6 +812,42 @@ tz_def('REGIN_TO', 'Register in '.SERVER_NAME);
 tz_def('P_ONLINE', 'Players online: ');
 tz_def('P_TOTAL', 'Players in total: ');
 tz_def('CHOOSE', 'Please choose a server.');
+tz_def('PORTAL_CHOOSE_LOGIN', 'Choose a world to log in to');
+tz_def('PORTAL_CHOOSE_REGISTER', 'Choose a world to register an account in');
+tz_def('PORTAL_PLAYERS_LABEL', 'Players');
+tz_def('PORTAL_PLAYER_UNIT', 'players');
+tz_def('PORTAL_WORLD_STARTS', 'World starts');
+tz_def('PORTAL_STARTS_AFTER', 'Starts in %s');
+tz_def('PORTAL_AGE_MINUTES', '%d min ago');
+tz_def('PORTAL_AGE_HOURS', '%d h ago');
+tz_def('PORTAL_AGE_DAYS', '%d day(s) ago');
+tz_def('PORTAL_AGE_WEEKS', '%d week(s) ago');
+tz_def('PORTAL_AGE_MONTHS', '%d month(s) ago');
+tz_def('PORTAL_BADGE_NONE', 'None');
+tz_def('PORTAL_BADGE_LIMITED_GOLD', 'Limited gold spending');
+tz_def('PORTAL_BADGE_PERMANENT', 'Permanent server');
+tz_def('PORTAL_BADGE_NEWEST', '[Newest]');
+tz_def('PORTAL_ADM_TITLE', 'Server settings');
+tz_def('PORTAL_ADM_WORLDS', 'Portal worlds');
+tz_def('PORTAL_ADM_MENU', 'Portal worlds (signup/login)');
+tz_def('PORTAL_ADM_CONFIG_HINT', 'Enable or disable worlds in the signup/login picker');
+tz_def('PORTAL_ADM_INTRO', 'These worlds appear in the homepage signup/login picker. Each world is independent (ideally its own install and database). Enable or disable any world here. Only the local world uses this server\'s live player stats.');
+tz_def('PORTAL_ADM_COL_ON', 'On');
+tz_def('PORTAL_ADM_COL_NAME', 'Name');
+tz_def('PORTAL_ADM_COL_LOCAL', 'Local');
+tz_def('PORTAL_ADM_COL_BADGE', 'Badge');
+tz_def('PORTAL_ADM_COL_START', 'Start time');
+tz_def('PORTAL_ADM_COL_LOGIN', 'Login URL');
+tz_def('PORTAL_ADM_COL_REG', 'Register URL');
+tz_def('PORTAL_ADM_COL_PLAYERS', 'Players');
+tz_def('PORTAL_ADM_COL_SORT', 'Sort');
+tz_def('PORTAL_ADM_THIS_INSTALL', 'This install');
+tz_def('PORTAL_ADM_PLAYERS_TIP', 'Used for non-local worlds only');
+tz_def('PORTAL_ADM_HINT', 'Mark only one world as local (this install). Other worlds should point at separate installs with their own databases. Disabled worlds are hidden from the picker.');
+tz_def('PORTAL_ADM_SAVED', 'Portal worlds saved.');
+tz_def('PORTAL_ADM_SAVE_ERR', 'Could not write var/portal_worlds.json — check permissions.');
+tz_def('PORTAL_ADM_ENABLED_OK', 'World enabled.');
+tz_def('PORTAL_ADM_DISABLED_OK', 'World disabled.');
 tz_def('STARTED', ' The server started '. round((time() - COMMENCE) / 86400) .' days ago.');
 
 //ANMELDEN.php
@@ -1582,6 +1621,8 @@ tz_def('RECEIVED_IN_W', 'Received in week');
 tz_def('POINTS_M', 'Points');
 tz_def('RANKS', 'Ranks');
 tz_def('WEEK', 'Week');
+tz_def('TZ_MEDAL_RESET_IN', 'Medal reset in:');
+tz_def('TZ_MEDAL_TIMER_DAY', 'd');
 tz_def('CATEGORY', 'Category');
 tz_def('RANK', 'Rank');
 tz_def('BB_CODE', 'BB-Code');
@@ -1748,7 +1789,7 @@ tz_def('ARTEFACT', '<h1><b>Tatars Artefacts</b></h1>
 
 Whispering rumors echo through the villages, sharing legends told only by the best storytellers. It refers to TATARS, the most feared warrior of the NOVATERRA world. Their killing is the dream of any hero, the purpose of any fighter. No one knows how TATARS got to get such power, and their warriors so cruel. Determined to discover the source of the TATARS power, the fighters send a group of elite spies to spy them. I do not go through many hours and come back with fear in their eyes and balancing fantastic theories: it seems that the natural power comes from the mysterious objects they call artefacts that they stole from our ancestors. Try to steal the artefacts of her, and you can control their power.
 
-<img src="/img/x.gif" class="ArtefactsAnnouncement">
+<img src="img/x.gif" class="ArtefactsAnnouncement">
 
 The time has come for claiming artefacts. Collaborate with your alliance and bring your worriors to get these wanted objects. However, TATARS will not give up without war to the artefacts ... nor your enemies. If you are successful in retrieving artefacts and you will be able to reject enemies, you will be able to collect the rewards. Your buildings will become incredibly strong and mightest, and the troops will be much faster and will consume less food. Capture the artefacts, bring glory over your empire and become new legends for your followers.
 
@@ -1777,7 +1818,7 @@ But to raise such a great Wonder would be no easy task, one would need construct
 Tens of thousands of scouts roamed across all existence searching in vain for these mystical plans, looking in all places but the dreaded Tatarian Capital, yet could not find them. Today however, they return bearing good news, they return baring the locations of the plans, hidden by the armies of the Tatars inside secret strongholds constructed to be hidden from the eyes of man.
 Now begins the final stretch, when the greatest armies of the Free people and the Tatars will clash across the world for the fate of all that lies under heaven. This is the war that will echo across the eons, this is your war, and here you shall etch your name across history, here you shall become legend.
 
-<img src="/img/x.gif" class="WWVillagesAnnouncement" title="'.WWVILLAGE.'" alt="'.WWVILLAGE.'">
+<img src="img/x.gif" class="WWVillagesAnnouncement" title="'.WWVILLAGE.'" alt="'.WWVILLAGE.'">
 
 To conquer one, the following things must happen:
 
@@ -1793,7 +1834,7 @@ To build a WW, you must own a plan yourself (you = the WW village owner) from lv
 
 The construction plans are conquerable immediately when they appear to the server. 
 
-There will be a countdown in game, showing the exact time of the release, '.(5 / SPEED).' days prior to the launch.');
+There will be a countdown in game, showing the exact time of the release, '.rtrim(rtrim(number_format(5 / max((float) SPEED, 1), 6, '.', ''), '0'), '.').' days prior to the launch.');
 
 //Building Plans
 tz_def('WILL_SPAWN_IN', 'will spawn in');
@@ -1813,7 +1854,7 @@ Today, however, this last secret will be revealed. Deprivations and endeavors of
 
 In the end, we will see whether the free tribes of Novaterra can once again outwit the Tatars and vanquish them once and for all. Do not be so foolish as to assume that the Tatars will leave without a fight, though!
 
-<img src="/img/x.gif" class="WWBuildingPlansAnnouncement" title="'.PLAN.'" alt="'.PLAN.'">
+<img src="img/x.gif" class="WWBuildingPlansAnnouncement" title="'.PLAN.'" alt="'.PLAN.'">
 
 To steal a set of Construction Plans from the Tatars, the following things must happen:
 - You must Attack the village (NOT Raid!)
@@ -2296,7 +2337,8 @@ tz_def('TZ_KICK_PLAYER', 'Kick Player:');
 tz_def('TZ_LANGUAGE_SETTINGS', 'Language settings');
 tz_def('TZ_LAST_POST', 'Last post');
 tz_def('TZ_LAST_RAID', 'Last raid');
-tz_def('TZ_LINKS', 'Links:');
+tz_def('TZ_LINKS', 'Private links:');
+tz_def('TZ_PRIVATE_LINKS', 'Private links:');
 tz_def('TZ_LINK_TO_THE_FORUM', 'Link to the forum');
 tz_def('TZ_LOG_IN', 'log in');
 tz_def('TZ_LUMBER_25_5_GOLD', 'Lumber +25% (5 gold)');
@@ -2694,6 +2736,16 @@ tz_def('MANUAL_INTRO', 'This ingame help offers you the chance to look up import
 tz_def('MANUAL_NEW_FEATURES_DESC', 'These are new features that you will not find in the real version of the game Novaterra T3.6. Here you can get acquainted with all new features in more detail.');
 tz_def('MANUAL_FAQ', 'Novaterra FAQ');
 tz_def('MANUAL_FAQ_DESC', 'This ingame help just gives you brief information. More information is available at the');
+tz_def('MANUAL_TOP10_TITLE', 'Top 10 statistics');
+tz_def('MANUAL_TOP10_INTRO', 'The Top 10 statistics are reset every week and run from Monday 00:00 until Sunday 24:00.');
+tz_def('MANUAL_TOP10_CATEGORIES', 'Categories');
+tz_def('MANUAL_TOP10_CLIMBER', 'Climbers');
+tz_def('MANUAL_TOP10_CLIMBER_DESC', 'Rank in the player statistics');
+tz_def('MANUAL_TOP10_ATT_DESC', 'Attack points');
+tz_def('MANUAL_TOP10_DEF_DESC', 'Defence points');
+tz_def('MANUAL_TOP10_ROBBER', 'Robbers');
+tz_def('MANUAL_TOP10_ROBBER_DESC', 'Resources raided');
+tz_def('MANUAL_TOP10_FOOTER', 'At the end of each week the top ten players are awarded a medal. When editing your profile a code (e.g. [#123]) appears in the medals field which you can insert wherever you like. Examples:');
 
 // ===== manual: building pages (PR-A) =====
 tz_def('CONSTRUCTION_TIME', "construction time");
@@ -4316,6 +4368,15 @@ tz_def('ADM_EFFECT', 'Effect');
 tz_def('ADM_OLD_OWNER', 'Old Owner');
 tz_def('ADM_OLD_VILLAGE', 'Old Village');
 tz_def('ADM_ARTIFACTS_OVERVIEW', '📊 Artifacts Overview');
+tz_def('ADM_NATARS_RESET_TITLE', 'Reset Natars');
+tz_def('ADM_NATARS_RESET_DESC', 'Removes Natars villages and all artefacts, then restarts the spawn countdown from now. After the timer ends, Natars will appear on the map again automatically.');
+tz_def('ADM_NATARS_RESET_BUTTON', 'Reset Natars');
+tz_def('ADM_NATARS_RESET_CHECKBOX', 'I confirm I want to reset the Natars cycle');
+tz_def('ADM_NATARS_RESET_CONFIRM', 'Are you sure? This deletes Natars villages and all artefacts and restarts the countdown.');
+tz_def('ADM_NATARS_RESET_SUCCESS', 'Natars were reset. The countdown starts now; they will spawn again when the timer ends.');
+tz_def('ADM_NATARS_RESET_CONFIRM_REQUIRED', 'Please confirm the reset with the checkbox.');
+tz_def('ADM_NATARS_STATUS_SPAWNED', 'Current status: Natars are already on the map.');
+tz_def('ADM_NATARS_STATUS_COUNTDOWN', 'Current status: countdown running — expected spawn %s (about %d days and %d hours left).');
 tz_def('ADM_RESTORE', 'Restore');
 tz_def('ADM_INTERACTIVE_WORLD_MAP_SEARCH_PLAYERS_VILLAGE', 'Interactive world map – search players, villages and artifacts');
 tz_def('ADM_PLAYERS', 'Players');
@@ -4962,6 +5023,24 @@ tz_def('TZ_MEDAL_BONUS_DEFAULT', 'Bonus');
 tz_def('TZ_MEDAL_ARTEFACT_HOLDER', 'Artefact Holder');
 tz_def('TZ_MEDAL_WW_BUILDER', 'WW Builder');
 tz_def('TZ_MEDAL_WW_WINNER', 'WW Winner');
+tz_def('WINNER_RPT_PAGE_TITLE', 'End of the world');
+tz_def('WINNER_RPT_DEAR', 'Dear players of %s');
+tz_def('WINNER_RPT_INTRO', 'After many long days of effort, passion and hard work, alliance %1$s finally raised their wonder while the rest of the world competed for the same goal, spending millions of resources.');
+tz_def('WINNER_RPT_WINNER', 'Thanks to great coordination and teamwork, the workers of %1$s completed the finest building in the game. %2$s therefore receives the title of winner of this world and a prize of %3$s gold. Their name and alliance will be recorded in the hall of fame of %4$s%5$s.');
+tz_def('WINNER_RPT_WORLD_SUFFIX', ' for world %s');
+tz_def('WINNER_RPT_EMPIRE', 'We can now say that %s is the absolute ruler of the largest empire in the game.');
+tz_def('WINNER_RPT_ATTACKER', '%s attacked and defeated more enemies than anyone else, and is therefore the strongest commander.');
+tz_def('WINNER_RPT_DEFENDER', '%s was the greatest defender, slaughtering attacking enemies and filling the land around their villages with their blood.');
+tz_def('WINNER_RPT_HERO', '%s trained their hero, attacked and destroyed the enemies, and deserves to be called the owner of the hero of heroes.');
+tz_def('WINNER_RPT_THANKS', 'We, the %s team, must thank everyone who played loyally until the very end.');
+tz_def('WINNER_RPT_FORWARD', 'Forward');
+tz_def('WINNER_RPT_MENU', 'Victory report');
+tz_def('WINNER_RPT_MSG_SUBJECT', 'End of the world — Natars defeated');
+tz_def('ADM_WW_PRIZE_TITLE', 'World Wonder winner prize');
+tz_def('ADM_WW_PRIZE_DESC', 'Gold amount shown on the end-of-era report and granted to the Wonder owner. When level 100 is completed, the report is also sent as an inbox message to all players.');
+tz_def('ADM_WW_PRIZE_LABEL', 'Prize amount (gold)');
+tz_def('ADM_WW_PRIZE_SAVED', 'World Wonder prize saved.');
+tz_def('ADM_WW_PRIZE_ERROR', 'Could not save the prize. Check write permissions on config.php.');
 tz_def('TZ_MEDAL_GREAT_STORE', 'Great Store');
 tz_def('TZ_MEDAL_WALL_MASTER', 'Wall Master');
 tz_def('TZ_QUEST_PALACE_LABEL', 'Palace ');

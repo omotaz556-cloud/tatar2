@@ -519,9 +519,16 @@ if(isset($_GET['id']) || isset($_GET['gid']) || $route == 1 || isset($_POST['rou
     
     if(isset($_GET['s']) && !ctype_digit($_GET['s'])) $_GET['s'] = null;
     if(isset($_GET['t']) && !ctype_digit($_GET['t'])) $_GET['t'] = null;
-	if (!ctype_digit($_GET['id'])) $_GET['id'] = 1;
+	if (!isset($_GET['id']) || !ctype_digit((string) $_GET['id'])) $_GET['id'] = 1;
 
 	$id = $_GET['id'];
+
+	/* Finish-with-gold must run for ALL build views (upgrade + empty slot). */
+	if (isset($_GET['buildingFinish']) && (int) $_GET['buildingFinish'] === 1 && $session->gold >= 2) {
+		$building->finishAll('build.php?id=' . (int) $_GET['id']);
+		exit;
+	}
+
 	if($_GET['id'] == 99 && $village->resarray['f99t'] == 40){
 	   include("Templates/Build/ww.tpl");
 	} elseif($village->resarray['f'.$_GET['id'].'t'] == 0 && $_GET['id'] >= 19) {
@@ -535,13 +542,11 @@ if(isset($_GET['id']) || isset($_GET['gid']) || $route == 1 || isset($_POST['rou
 			include("Templates/Build/".$village->resarray['f'.$_GET['id'].'t']."_".$_GET['s'].".tpl");
 		}
 		else include("Templates/Build/".$village->resarray['f'.$_GET['id'].'t'].".tpl");
-		
-		if((isset($_GET['buildingFinish'])) && $_GET['buildingFinish'] == 1) {
-        	if($session->gold >= 2) {
-                $building->finishAll("build.php?id=".(int) $_GET['id']);
-        		exit;
-        	}
-        }
+	}
+
+	/* Show the active construction queue + gold finish on build/upgrade pages. */
+	if ($building->NewBuilding) {
+		include("Templates/Building.tpl");
 	}
 }else{
 header("Location: ".$_SERVER['PHP_SELF']."?id=39");

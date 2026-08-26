@@ -309,7 +309,7 @@ body.contentPage
 body.indexpage #header,
 body.indexPage #header
 {
-	background:transparent url(images/artwork.jpg) no-repeat top center;
+	background:transparent url(images/artwork.jpg?ar1) no-repeat top center;
 	height:389px;
 	overflow:hidden
 }
@@ -345,7 +345,7 @@ body.contentPage #header
 
 .contentpage #navigation
 {
-	background:url(images/logo_background.jpg) no-repeat top left
+	background:url(images/logo_background.jpg?en1) no-repeat top left
 }
 
 #navigation table.menu
@@ -885,20 +885,221 @@ body.contentPage #content .grit
 
 #login_layer .overlay_content,#signup_layer .overlay_content
 {
-	background:#fff url(images/gameworld_background.jpg) repeat-y top left;
-	margin-right:-192px;
-	width:384px
+	background:#fff;
+	margin-right:-200px;
+	width:400px;
+	border-radius:4px;
+	box-shadow:0 8px 28px rgba(0,0,0,.45);
+	padding:0 0 12px;
+	border:1px solid #d7d7d7
 }
 
 #login_layer h2,#signup_layer h2
 {
-	background:transparent url(images/gameworld_header.jpg) no-repeat top left;
-	color:#71d000
+	background:none;
+	color:#222;
+	text-align:center;
+	font-size:15px;
+	font-weight:bold;
+	padding:18px 40px 10px;
+	margin:0;
+	border-bottom:1px dashed #c44;
+	line-height:1.4
 }
 
 #login_layer .footer,#signup_layer .footer
 {
-	background:transparent url(images/gameworld_footer.jpg) no-repeat bottom left
+	background:none;
+	height:8px
+}
+
+#login_layer .overlay_content .closer img,
+#signup_layer .overlay_content .closer img
+{
+	right:auto;
+	left:12px;
+	top:12px
+}
+
+ul.world_list,
+ul.tz-world-list
+{
+	list-style:none;
+	margin:0;
+	padding:12px 16px 4px;
+	max-height:420px;
+	overflow-x:hidden;
+	overflow-y:auto
+}
+
+.tz-world-list li,
+li.tz-world-card
+{
+	float:none !important;
+	display:block;
+	position:relative;
+	width:361px;
+	height:64px;
+	margin:0 auto 8px;
+	padding:0;
+	border-radius:6px;
+	overflow:hidden;
+	box-shadow:0 1px 3px rgba(0,0,0,.28);
+	background:none !important
+}
+
+.tz-world-link
+{
+	display:block;
+	position:relative;
+	width:361px;
+	height:64px;
+	text-decoration:none;
+	color:inherit
+}
+
+.tz-world-banner
+{
+	display:block;
+	width:361px;
+	height:64px;
+	border:0;
+	position:relative !important;
+	z-index:1 !important
+}
+
+li.tz-world-card img.tz-world-banner,
+.tz-world-list li img.tz-world-banner,
+.world_list li.tz-world-card img
+{
+	position:relative !important;
+	z-index:1 !important;
+	left:auto !important;
+	top:auto !important
+}
+
+/* Badge only: above the baked-in "Server" word (top-left). */
+.tz-world-badge
+{
+	position:absolute !important;
+	left:10px;
+	top:3px;
+	right:auto;
+	z-index:45 !important;
+	display:inline-block;
+	max-width:160px;
+	font:bold 9px/1.2 Tahoma,Arial,sans-serif;
+	padding:1px 6px;
+	border-radius:3px;
+	pointer-events:none;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	margin:0
+}
+
+.tz-world-badge.badge-limited_gold
+{
+	background:#a85a18;
+	color:#fff
+}
+
+.tz-world-badge.badge-permanent
+{
+	background:#e6c43c;
+	color:#1a5a00
+}
+
+.tz-world-badge.badge-newest
+{
+	background:#b00000;
+	color:#fff
+}
+
+/* Players / age / timer: right glass panel. */
+.tz-world-info
+{
+	position:absolute;
+	right:6px;
+	top:5px;
+	bottom:5px;
+	left:auto;
+	width:128px;
+	z-index:50 !important;
+	background:rgba(255,255,255,.94);
+	border-radius:7px;
+	box-sizing:border-box;
+	padding:5px 8px;
+	text-align:right;
+	direction:rtl;
+	pointer-events:none;
+	font:11px/1.3 Tahoma,Arial,sans-serif;
+	color:#111 !important;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:flex-end;
+	gap:2px;
+	box-shadow:0 0 0 1px rgba(0,0,0,.06);
+	overflow:hidden
+}
+
+.tz-world-players,
+.tz-world-age,
+.tz-world-timer
+{
+	display:block !important;
+	position:static !important;
+	left:auto !important;
+	right:auto !important;
+	top:auto !important;
+	bottom:auto !important;
+	width:auto !important;
+	max-width:100%;
+	color:#111 !important;
+	visibility:visible !important;
+	opacity:1 !important;
+	z-index:auto !important;
+	margin:0;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis
+}
+
+.tz-world-players
+{
+	font-weight:bold;
+	font-size:11px
+}
+
+.tz-world-players b
+{
+	color:#000 !important
+}
+
+.tz-world-age
+{
+	color:#444 !important;
+	font-weight:normal;
+	font-size:10px
+}
+
+.tz-world-timer
+{
+	color:#5aa000 !important;
+	font-weight:bold;
+	font-size:10px
+}
+
+li.tz-world-card.is-pending .tz-world-banner
+{
+	filter:grayscale(1);
+	opacity:.95
+}
+
+li.tz-world-card.is-pending .tz-world-link
+{
+	cursor:default
 }
 
 ul.world_list
@@ -973,6 +1174,78 @@ ul.world_list
 {
 	bottom:15px;
 	right:20px
+}
+
+.world_list .w_badge
+{
+	position:absolute;
+	left:118px;
+	top:22px;
+	z-index:32;
+	font-size:10px;
+	font-weight:bold;
+	line-height:1.2;
+	padding:1px 5px;
+	border-radius:2px;
+	pointer-events:none;
+	max-width:110px;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis
+}
+
+.world_list .w_badge.badge-limited_gold
+{
+	background:rgba(20,40,10,.72);
+	color:#d7ff9a
+}
+
+.world_list .w_badge.badge-permanent
+{
+	background:rgba(30,55,90,.78);
+	color:#cfe4ff
+}
+
+.world_list .w_badge.badge-newest
+{
+	background:#b00000;
+	color:#fff
+}
+
+.world_list .w_big .players
+{
+	right:12px;
+	width:auto;
+	min-width:40px;
+	text-align:right;
+	white-space:nowrap;
+	z-index:31
+}
+
+.world_list .w_big .label_online.tz-world-age-label,
+.world_list .tz-world-age-label
+{
+	left:auto;
+	right:12px;
+	top:33px;
+	width:auto;
+	max-width:200px;
+	text-align:right;
+	white-space:nowrap;
+	z-index:31;
+	color:#222
+}
+
+.world_list li.w_pending
+{
+	opacity:.92
+}
+
+#login_list .world_list,
+#signup_list .world_list
+{
+	max-height:360px;
+	overflow-y:auto
 }
 
 a,a:visited,.c1

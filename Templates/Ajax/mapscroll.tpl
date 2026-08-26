@@ -33,7 +33,9 @@ include_once("GameEngine/Database.php");
 /* =========================
    WORLD CONFIG SHORTCUT
 ========================= */
-$W = WORLD_MAX;
+$W = (isset($database) && method_exists($database, 'getWorldMax'))
+	? (int) $database->getWorldMax()
+	: (int) WORLD_MAX;
 
 /* =========================
    CENTER COORDINATE CALCULATION

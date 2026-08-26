@@ -21,7 +21,11 @@
 
 include_once("../GameEngine/Artifacts.php");
 
-$artifact = reset($database->getOwnArtefactInfo($_GET['did']));
+$ownArts = $database->getOwnArtefactInfo((int)($_GET['did'] ?? 0));
+$artifact = false;
+if (is_array($ownArts) && $ownArts !== []) {
+	$artifact = reset($ownArts);
+}
 $artifactOfTheFool = !empty($artifact) && $artifact['type'] == 8;
 $artifactInfo = $artifact ? Artifacts::getArtifactInfo($artifact) : null;
 ?>

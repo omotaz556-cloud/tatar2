@@ -83,6 +83,9 @@ tz_def('EMAIL_EMPTY', '(البريد الإلكتروني فارغ)');
 tz_def('EMAIL_INVALID', '(عنوان بريد إلكتروني غير صالح)');
 tz_def('EMAIL_TAKEN', '(هذا البريد الإلكتروني مستخدم بالفعل)');
 tz_def('WINNER_ERROR', '<li>انتهى الخادم! لا يمكن إجراء تسجيلات جديدة.</li>');
+tz_def('REG_LIMIT_ERROR', '<li>تم الوصول إلى حد التسجيل من هذا الجهاز أو الشبكة. حاول لاحقًا أو تواصل مع الدعم.</li>');
+tz_def('REG_FAILED', '<li>تعذّر إنشاء الحساب. حاول مرة أخرى أو تواصل مع الدعم.</li>');
+tz_def('REG_SPAWN_FAILED', '<li>تعذّر إنشاء قرية البداية (لا توجد أماكن فارغة في المنطقة المختارة). جرّب منطقة أخرى أو «عشوائي».</li>');
 tz_def('TRIBE_EMPTY', '<li>الرجاء اختيار قبيلة.</li>');
 tz_def('AGREE_ERROR', '<li>يجب الموافقة على قواعد اللعبة والشروط والأحكام العامة للتسجيل.</li>');
 tz_def('LOGIN_USR_EMPTY', 'أدخل الاسم.');
@@ -302,6 +305,50 @@ tz_def('AGB', 'الشروط والأحكام');
 tz_def('P_ONLINE', 'اللاعبون المتصلون: ');
 tz_def('P_TOTAL', 'إجمالي اللاعبين: ');
 tz_def('CHOOSE', 'الرجاء اختيار خادم.');
+tz_def('PORTAL_CHOOSE_LOGIN', 'اختر عالماً لتسجيل الدخول إليه');
+tz_def('PORTAL_CHOOSE_REGISTER', 'اختر عالماً لتسجيل حساب فيه');
+tz_def('PORTAL_PLAYERS_LABEL', 'اللاعبون');
+tz_def('PORTAL_PLAYER_UNIT', 'لاعب');
+tz_def('PORTAL_WORLD_STARTS', 'يبدأ العالم');
+tz_def('PORTAL_STARTS_AFTER', 'يبدأ بعد %s');
+tz_def('PORTAL_AGE_MINUTES', 'منذ %d دقيقة');
+tz_def('PORTAL_AGE_HOURS', 'منذ %d ساعة');
+tz_def('PORTAL_AGE_DAYS', 'منذ %d يوم');
+tz_def('PORTAL_AGE_WEEKS', 'منذ %d أسبوع');
+tz_def('PORTAL_AGE_MONTHS', 'منذ %d شهر');
+tz_def('PORTAL_BADGE_NONE', 'بدون');
+tz_def('PORTAL_BADGE_LIMITED_GOLD', 'صرف ذهب محدود');
+tz_def('PORTAL_BADGE_PERMANENT', 'سيرفر الدوام');
+tz_def('PORTAL_BADGE_NEWEST', '[الأجدد]');
+tz_def('PORTAL_ADM_TITLE', 'إعدادات الخادم');
+tz_def('PORTAL_ADM_WORLDS', 'عوالم البوابة');
+tz_def('PORTAL_ADM_MENU', 'عوالم التسجيل / الدخول');
+tz_def('PORTAL_ADM_CONFIG_HINT', 'تفعيل أو تعطيل عوالم قائمة التسجيل والدخول');
+tz_def('PORTAL_ADM_INTRO', 'هذه العوالم تظهر في قائمة اختيار العالم عند التسجيل أو الدخول من الصفحة الرئيسية. كل عالم مستقل بذاته (يفضّل تثبيت ولعبة وقاعدة بيانات خاصة). من هنا تفعّل أو تعطّل أي عالم. العالم المحلي فقط يستخدم إحصائيات هذا السيرفر.');
+tz_def('PORTAL_ADM_COL_ON', 'تفعيل');
+tz_def('PORTAL_ADM_COL_NAME', 'الاسم');
+tz_def('PORTAL_ADM_COL_LOCAL', 'محلي');
+tz_def('PORTAL_ADM_COL_BADGE', 'شارة');
+tz_def('PORTAL_ADM_COL_START', 'وقت البدء');
+tz_def('PORTAL_ADM_COL_LOGIN', 'رابط الدخول');
+tz_def('PORTAL_ADM_COL_REG', 'رابط التسجيل');
+tz_def('PORTAL_ADM_COL_PLAYERS', 'لاعبون');
+tz_def('PORTAL_ADM_COL_SORT', 'ترتيب');
+tz_def('PORTAL_ADM_THIS_INSTALL', 'هذا التثبيت');
+tz_def('PORTAL_ADM_PLAYERS_TIP', 'يُستخدم للعوالم غير المحلية فقط');
+tz_def('PORTAL_ADM_HINT', 'عيّن عالماً واحداً فقط كـ «محلي» (هذا التثبيت). باقي العوالم تُنشأ بجداول منفصلة تلقائياً عند أول دخول أو من زر التهيئة. العوالم غير المفعّلة لا تظهر في القائمة.');
+tz_def('PORTAL_ADM_SAVED', 'تم حفظ عوالم البوابة.');
+tz_def('PORTAL_ADM_SAVE_ERR', 'تعذر حفظ الملف var/portal_worlds.json — تحقق من صلاحيات الكتابة.');
+tz_def('PORTAL_ADM_ENABLED_OK', 'تم تفعيل العالم.');
+tz_def('PORTAL_ADM_DISABLED_OK', 'تم تعطيل العالم.');
+tz_def('PORTAL_ADM_COL_DB', 'قاعدة البيانات');
+tz_def('PORTAL_ADM_READY', 'جاهز');
+tz_def('PORTAL_ADM_NEED_PROVISION', 'يحتاج تهيئة');
+tz_def('PORTAL_ADM_PROVISION_TITLE', 'تهيئة قواعد بيانات العوالم');
+tz_def('PORTAL_ADM_PROVISION', 'تهيئة الآن');
+tz_def('PORTAL_ADM_REPROVISION', 'إعادة فحص');
+tz_def('PORTAL_ADM_PROVISION_OK', 'تم تجهيز قاعدة بيانات العالم.');
+tz_def('PORTAL_ADM_PROVISION_ERR', 'فشلت تهيئة العالم: ');
 
 //ANMELDEN.php
 tz_def('NICKNAME', 'الاسم المستعار');
@@ -1037,6 +1084,8 @@ tz_def('RECEIVED_IN_W', 'تم الحصول عليه في الأسبوع');
 tz_def('POINTS_M', 'النقاط');
 tz_def('RANKS', 'الرتب');
 tz_def('WEEK', 'الأسبوع');
+tz_def('TZ_MEDAL_RESET_IN', 'إعادة ضبط الأوسمة خلال:');
+tz_def('TZ_MEDAL_TIMER_DAY', 'ي');
 tz_def('CATEGORY', 'الفئة');
 tz_def('RANK', 'الرتبة');
 tz_def('BB_CODE', 'كود BB');
@@ -1203,7 +1252,7 @@ tz_def('ARTEFACT', '<h1><b>قطع التتار الأثرية</b></h1>
 
 تتردد همسات وشائعات عبر القرى، تحكي أساطير لا يرويها إلا أمهر الرواة. إنها تتحدث عن التتار، أشد محاربي عالم نوفاتيرا رهبة. قتلهم حلم كل بطل وغاية كل مقاتل. لا أحد يعرف كيف نال التتار هذه القوة، ولا كيف أصبح محاربوهم بهذه القسوة. عزمًا منهم على اكتشاف مصدر قوة التتار، أرسل المقاتلون مجموعة من الجواسيس النخبة للتجسس عليهم. لم تمضِ ساعات طويلة حتى عادوا بأعين مليئة بالخوف يوازنون بين نظريات خيالية: يبدو أن قوتهم الخارقة تأتي من أغراض غامضة يسمونها القطع الأثرية، سرقوها من أجدادنا. حاول أن تسلبهم إياها، وستتمكن من التحكم بقوتها.
 
-<img src="/img/x.gif" class="ArtefactsAnnouncement">
+<img src="img/x.gif" class="ArtefactsAnnouncement">
 
 حان وقت المطالبة بالقطع الأثرية. تعاون مع تحالفك وأرسل محاربيك للحصول على هذه الأغراض المنشودة. لكن التتار لن يتخلوا عنها دون قتال... ولا أعداؤك أيضًا. إذا نجحت في استرداد القطع الأثرية وصددت الأعداء، ستتمكن من جني المكافآت. ستصبح مبانيك أقوى بشكل مذهل، وستتحرك قواتك أسرع وتستهلك طعامًا أقل. استولِ على القطع الأثرية، وحقق المجد لإمبراطوريتك وكن أسطورة جديدة لأتباعك.
 
@@ -1232,7 +1281,7 @@ tz_def('WWVILLAGEMSG', '<h1><b>قرى عجائب الدنيا</b></h1>
 جاب عشرات الآلاف من الكشافة كل أرجاء الوجود بحثًا عبثًا عن هذه المخططات الغامضة، بحثوا في كل مكان إلا عاصمة التتار الرهيبة، ولم يجدوها. أما اليوم، فقد عادوا بأخبار سارة، عادوا حاملين مواقع المخططات، التي أخفتها جيوش التتار داخل معاقل سرية بُنيت لتكون بعيدة عن أعين البشر.
 والآن تبدأ المرحلة الأخيرة، حين تتصادم أعظم جيوش الأحرار والتتار عبر العالم من أجل مصير كل ما يقع تحت السماء. هذه هي الحرب التي ستتردد أصداؤها عبر العصور، هذه حربك، وهنا ستنقش اسمك في التاريخ، هنا ستصبح أسطورة.
 
-<img src="/img/x.gif" class="WWVillagesAnnouncement" title="'.WWVILLAGE.'" alt="'.WWVILLAGE.'">
+<img src="img/x.gif" class="WWVillagesAnnouncement" title="'.WWVILLAGE.'" alt="'.WWVILLAGE.'">
 
 لغزو إحدى القرى، يجب أن يحدث ما يلي:
 
@@ -1248,7 +1297,7 @@ tz_def('WWVILLAGEMSG', '<h1><b>قرى عجائب الدنيا</b></h1>
 
 مخططات البناء قابلة للغزو فور ظهورها في الخادم.
 
-سيظهر عد تنازلي داخل اللعبة يوضح الوقت الدقيق للإصدار، '.(5 / SPEED).' أيام قبل الإطلاق.');
+سيظهر عد تنازلي داخل اللعبة يوضح الوقت الدقيق للإصدار، '.rtrim(rtrim(number_format(5 / max((float) SPEED, 1), 6, '.', ''), '0'), '.').' أيام قبل الإطلاق.');
 
 //Building Plans
 tz_def('WILL_SPAWN_IN', 'سيظهر خلال');
@@ -1268,7 +1317,7 @@ tz_def('PLAN_INFO', '<h1><b>مخططات بناء عجيبة الدنيا</b></h
 
 في النهاية، سنرى ما إذا كانت قبائل نوفاتيرا الحرة قادرة مجددًا على التفوق بالحيلة على التتار والقضاء عليهم نهائيًا. لكن لا تكن غافلًا لتظن أن التتار سيتركونها دون قتال!
 
-<img src="/img/x.gif" class="WWBuildingPlansAnnouncement" title="'.PLAN.'" alt="'.PLAN.'">
+<img src="img/x.gif" class="WWBuildingPlansAnnouncement" title="'.PLAN.'" alt="'.PLAN.'">
 
 لسرقة مجموعة من مخططات البناء من التتار، يجب أن يحدث ما يلي:
 - يجب أن تهاجم القرية (وليس نهبًا!)
@@ -2284,7 +2333,8 @@ tz_def('TZ_KICK_ALL_MEMBERS', 'طرد كل الأعضاء');
 tz_def('TZ_KICK_PLAYER', 'طرد اللاعب:');
 tz_def('TZ_LAST_POST', 'آخر مشاركة');
 tz_def('TZ_LAST_RAID', 'آخر غارة');
-tz_def('TZ_LINKS', 'الروابط:');
+tz_def('TZ_LINKS', 'الروابط الخاصة :');
+tz_def('TZ_PRIVATE_LINKS', 'الروابط الخاصة :');
 tz_def('TZ_LINK_TO_THE_FORUM', 'رابط المنتدى');
 tz_def('TZ_LOG_IN', 'تسجيل الدخول');
 tz_def('TZ_LUMBER_25_5_GOLD', 'خشب +25% (5 ذهب)');
@@ -2679,6 +2729,16 @@ tz_def('MANUAL_INTRO', 'يمنحك هذا الدليل داخل اللعبة ف�
 tz_def('MANUAL_NEW_FEATURES_DESC', 'هذه ميزات جديدة لن تجدها في النسخة الأصلية من لعبة نوفاتيرا T3.6. هنا يمكنك التعرف على كل الميزات الجديدة بمزيد من التفصيل.');
 tz_def('MANUAL_FAQ', 'الأسئلة الشائعة لنوفاتيرا');
 tz_def('MANUAL_FAQ_DESC', 'يقدم هذا الدليل داخل اللعبة معلومات موجزة فقط. مزيد من المعلومات متوفر على');
+tz_def('MANUAL_TOP10_TITLE', 'إحصائيات أفضل 10');
+tz_def('MANUAL_TOP10_INTRO', 'تُعاد إحصائيات أفضل 10 كل أسبوع وتكون سارية من الاثنين 00:00 حتى الأحد 24:00.');
+tz_def('MANUAL_TOP10_CATEGORIES', 'الفئات');
+tz_def('MANUAL_TOP10_CLIMBER', 'المتسلق');
+tz_def('MANUAL_TOP10_CLIMBER_DESC', 'الترتيب في إحصائيات اللاعبين');
+tz_def('MANUAL_TOP10_ATT_DESC', 'نقاط الهجوم');
+tz_def('MANUAL_TOP10_DEF_DESC', 'نقاط الدفاع');
+tz_def('MANUAL_TOP10_ROBBER', 'اللص');
+tz_def('MANUAL_TOP10_ROBBER_DESC', 'الموارد المنهوبة');
+tz_def('MANUAL_TOP10_FOOTER', 'في نهاية كل أسبوع يُمنح أفضل عشرة لاعبين وسامًا. عند تعديل ملفك الشخصي يظهر رمز (مثل [#123]) في خانة الأوسمة ويمكنك إدراجه حيث تريد. أمثلة:');
 
 // ===== manual: building pages (PR-A) =====
 tz_def('CONSTRUCTION_TIME', "وقت البناء");
@@ -4341,6 +4401,15 @@ tz_def('ADM_EFFECT', 'التأثير');
 tz_def('ADM_OLD_OWNER', 'المالك السابق');
 tz_def('ADM_OLD_VILLAGE', 'القرية السابقة');
 tz_def('ADM_ARTIFACTS_OVERVIEW', '📊 نظرة عامة على القطع الأثرية');
+tz_def('ADM_NATARS_RESET_TITLE', 'إعادة تعيين التتار');
+tz_def('ADM_NATARS_RESET_DESC', 'يمسح قرى التتار والقطع الأثرية ويعيد العدّ من البداية. بعد انتهاء الوقت يظهر التتار من جديد على الخريطة تلقائياً.');
+tz_def('ADM_NATARS_RESET_BUTTON', 'إعادة تعيين التتار');
+tz_def('ADM_NATARS_RESET_CHECKBOX', 'أؤكد أنني أريد إعادة تعيين دورة التتار');
+tz_def('ADM_NATARS_RESET_CONFIRM', 'هل أنت متأكد؟ سيتم حذف قرى التتار وجميع القطع الأثرية وإعادة بدء العدّ.');
+tz_def('ADM_NATARS_RESET_SUCCESS', 'تمت إعادة تعيين التتار. العدّ يبدأ من الآن، وسيظهرون مجدداً بعد انتهاء الوقت.');
+tz_def('ADM_NATARS_RESET_CONFIRM_REQUIRED', 'يجب تأكيد إعادة التعيين عبر مربع الاختيار.');
+tz_def('ADM_NATARS_STATUS_SPAWNED', 'الحالة الحالية: التتار ظاهرون على الخريطة.');
+tz_def('ADM_NATARS_STATUS_COUNTDOWN', 'الحالة الحالية: العدّ جارٍ — الظهور المتوقع %s (متبقّي تقريباً %d يوم و %d ساعة).');
 tz_def('ADM_RESTORE', 'استعادة');
 tz_def('ADM_INTERACTIVE_WORLD_MAP_SEARCH_PLAYERS_VILLAGE', 'خريطة العالم التفاعلية – البحث عن اللاعبين والقرى والقطع الأثرية');
 tz_def('ADM_PLAYERS', 'اللاعبون');
@@ -4902,6 +4971,7 @@ tz_def('REG_AVATAR', 'أدخل اسم بطلك:');
 tz_def('REG_AVATAR_HINT', 'هذا هو اسم بطلك في عالم اللعبة.');
 
 tz_def('REG_CONFIRM', 'تأكيد');
+tz_def('REG_PLAY', 'ابدأ اللعب');
 tz_def('REG_BACK', 'رجوع');
 tz_def('REG_CHANGE', 'تغيير');
 
@@ -5045,6 +5115,24 @@ tz_def('TZ_MEDAL_BONUS_DEFAULT', 'مكافأة');
 tz_def('TZ_MEDAL_ARTEFACT_HOLDER', 'حائز على أثر');
 tz_def('TZ_MEDAL_WW_BUILDER', 'باني عجائب الدنيا');
 tz_def('TZ_MEDAL_WW_WINNER', 'الفائز بعجائب الدنيا');
+tz_def('WINNER_RPT_PAGE_TITLE', 'نهاية العالم');
+tz_def('WINNER_RPT_DEAR', 'اعزائنا لاعبي %s');
+tz_def('WINNER_RPT_INTRO', 'وبعد أيام طويلة من الجهد والتعب والعمل بشغف استطاع تحالف %1$s أن يبنوا معجزتهم التي نافسهم عليها بقية اللاعبين، حيث رصدوا لها الملايين من الموارد.');
+tz_def('WINNER_RPT_WINNER', 'نتيجة التنسيق الجيد والعمل الجماعي تمكن أخيراً العمال في %1$s من تشييد أروع مبنى في اللعبة وبهذا يستلم %2$s لقب الفائز في هذه العالم وجائزة %3$s ذهبية وسيسجل اسمه وتحالفه في لائحة ابطال %4$s%5$s.');
+tz_def('WINNER_RPT_WORLD_SUFFIX', 'للعالم %s');
+tz_def('WINNER_RPT_EMPIRE', 'نستطيع الآن أن نقول بأن %s هو الحاكم المطلق لأكبر امبراطورية في اللعبة.');
+tz_def('WINNER_RPT_ATTACKER', 'وقام %s بمهاجمة الأعداء وذبحهم أكثر من أي شخص أخر، لذلك يعتبر القائد الأقوى.');
+tz_def('WINNER_RPT_DEFENDER', 'أما %s فقد كان المدافع الأعظم فقد قام بذبح أعدائه المهاجمين وملأ الأرض حول قراه بدمهم.');
+tz_def('WINNER_RPT_HERO', 'وكان %s قد درب بطله وهاجم وقضى على الأعداء ويستحق أن نقول أن لديه بطل الأبطال.');
+tz_def('WINNER_RPT_THANKS', 'نحن فريق %s يجب ان نشكر كل من واصل اللعب حتى النهاية باخلاص.');
+tz_def('WINNER_RPT_FORWARD', 'إلى الأمام');
+tz_def('WINNER_RPT_MENU', 'تقرير النهاية');
+tz_def('WINNER_RPT_MSG_SUBJECT', 'تقرير نهاية العالم — هزيمة التتار');
+tz_def('ADM_WW_PRIZE_TITLE', 'جائزة الفائز بعجيبة الدنيا');
+tz_def('ADM_WW_PRIZE_DESC', 'المبلغ الظاهر في تقرير نهاية العالم والذي يُمنح لصاحب العجيبة. عند اكتمال المستوى 100 يُرسل التقرير كرسالة داخل اللعبة لجميع اللاعبين.');
+tz_def('ADM_WW_PRIZE_LABEL', 'قيمة الجائزة (ذهب)');
+tz_def('ADM_WW_PRIZE_SAVED', 'تم حفظ جائزة عجيبة الدنيا.');
+tz_def('ADM_WW_PRIZE_ERROR', 'تعذر حفظ قيمة الجائزة. تحقق من صلاحيات الكتابة على config.php.');
 tz_def('TZ_MEDAL_GREAT_STORE', 'المخزن الكبير');
 tz_def('TZ_MEDAL_WALL_MASTER', 'سيد الأسوار');
 tz_def('TZ_QUEST_PALACE_LABEL', 'القصر ');

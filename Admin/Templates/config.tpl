@@ -56,6 +56,20 @@ ob_start();
     <a href="admin.php?p=editServerSet" title="<?php echo EDIT_SERV_SETT ?>" class="edit-btn"><?php echo $editIcon; ?></a>
   </div>
   <table class="config-table">
+    <tr>
+      <td colspan="2" style="padding:8px 10px;background:#f4f8ef;border-bottom:1px solid #d7e3c7">
+        <a href="admin.php?p=portalWorlds" style="font-weight:bold;color:#3a6c00">
+          <?php echo defined('PORTAL_ADM_MENU') ? PORTAL_ADM_MENU : 'Portal Worlds'; ?>
+        </a>
+        <span style="color:#666;font-size:11px;margin-right:8px">
+          — <?php
+            echo defined('PORTAL_ADM_CONFIG_HINT')
+              ? PORTAL_ADM_CONFIG_HINT
+              : 'تفعيل/تعطيل عوالم قائمة التسجيل والدخول';
+          ?>
+        </span>
+      </td>
+    </tr>
     <tr><td class="b"><?php echo SERV_VARIABLE ?></td><td class="b"><?php echo SERV_VALUE ?></td></tr>
     <tr><td><?php echo CONF_SERV_NAME ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_NAME_TOOLTIP ?></span></em></td><td><?php echo SERVER_NAME;?></td></tr>
     <tr><td><?php echo CONF_SERV_STARTED ?> <em class="tooltip">?<span class="classic"><?php echo CONF_SERV_STARTED_TOOLTIP ?></span></em></td><td><?php echo ADM_DATE_LABEL.START_DATE." ".ADM_TIME_LABEL.START_TIME;?></td></tr>

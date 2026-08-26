@@ -255,13 +255,13 @@ if(NEW_FUNCTIONS_MHS_IMAGES){
 // METHOD CODED IN CONFIG
 // VETERAN & VETERAN 5 YEARS & VETERAN 10 YEARS IMAGES
 if(NEW_FUNCTIONS_MEDAL_3YEAR){
-	$profiel = preg_replace("/\[#g2300]/is",'<img src="'.$gpack.'img/t/Veteran_Medal.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 3 Years<br><br>Medal achieved for playing 3 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
+	$profiel = preg_replace("/\[#?g2300#?\]/is",'<img src="'.$gpack.'img/t/Veteran_Medal.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 3 Years<br><br>Medal achieved for playing 3 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
 }
 if(NEW_FUNCTIONS_MEDAL_5YEAR){
-	$profiel = preg_replace("/\[#g2301]/is",'<img src="'.$gpack.'img/t/5year_medal.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 5 Years<br><br>Medal achieved for playing 5 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
+	$profiel = preg_replace("/\[#?g2301#?\]/is",'<img src="'.$gpack.'img/t/5year_medal.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 5 Years<br><br>Medal achieved for playing 5 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
 }
 if(NEW_FUNCTIONS_MEDAL_10YEAR){
-	$profiel = preg_replace("/\[#g2302]/is",'<img src="'.$gpack.'img/t/10_year_medal.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 10 Years<br><br>Medal achieved for playing 10 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
+	$profiel = preg_replace("/\[#?g2302#?\]/is",'<img src="'.$gpack.'img/t/10_year_medal.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 10 Years<br><br>Medal achieved for playing 10 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
 }
 
 // NO NEED TO CODE THIS METHOD

@@ -201,6 +201,128 @@ if (isset($_POST['redeem_code']) && class_exists('GoldShop')) {
     $promoMsg = $rr[1];
 }
 
+// Player gold transfer (Plus tab: تحويل الذهب).
+$transferMsg = '';
+$transferOk = false;
+if (isset($_POST['transfer_gold']) && isset($session->uid)) {
+	$plusRtlMsg = function_exists('tz_is_rtl_lang') && tz_is_rtl_lang();
+	$csrfOk = isset($_POST['csrf'], $_SESSION['plus_csrf'])
+		&& hash_equals((string) $_SESSION['plus_csrf'], (string) $_POST['csrf']);
+	$confirmed = !empty($_POST['confirm_transfer']);
+	$toName = trim((string) ($_POST['to_username'] ?? ''));
+	$amount = (int) ($_POST['amount'] ?? 0);
+	$fromUid = (int) $session->uid;
+
+	if (!$csrfOk) {
+		$transferMsg = $plusRtlMsg ? 'طلب غير صالح. أعد المحاولة.' : 'Invalid request. Please try again.';
+	} elseif (!$confirmed) {
+		$transferMsg = $plusRtlMsg ? 'يجب تأكيد التحويل.' : 'You must confirm the transfer.';
+	} elseif ($amount <= 0) {
+		$transferMsg = $plusRtlMsg ? 'أدخل كمية صحيحة.' : 'Enter a valid amount.';
+	} elseif ($toName === '') {
+		$transferMsg = $plusRtlMsg ? 'أدخل اسم المستخدم المستلم.' : 'Enter the recipient username.';
+	} elseif (isset($session) && method_exists($session, 'sitterCan') && !$session->sitterCan(SITTER_PERM_GOLD)) {
+		$transferMsg = $plusRtlMsg ? 'الوصي غير مسموح له بتحويل الذهب.' : 'Sitters cannot transfer gold.';
+	} else {
+		$lastAt = (int) ($_SESSION['plus_transfer_at'] ?? 0);
+		if ($lastAt > 0 && (time() - $lastAt) < 5) {
+			$transferMsg = $plusRtlMsg ? 'انتظر قليلاً قبل تحويل آخر.' : 'Wait a moment before another transfer.';
+		} else {
+			$toUser = $database->getUserArray($toName, 0);
+			$toUid = is_array($toUser) ? (int) ($toUser['id'] ?? 0) : 0;
+			if ($toUid <= 0 || $toUid === $fromUid) {
+				$transferMsg = $plusRtlMsg
+					? 'المستلم غير موجود أو غير صالح.'
+					: 'Recipient not found or invalid.';
+			} elseif ($toUid <= 5) {
+				$transferMsg = $plusRtlMsg
+					? 'لا يمكن التحويل لحسابات النظام.'
+					: 'Cannot transfer to system accounts.';
+			} else {
+				$fromEmail = trim((string) ($session->userinfo['email'] ?? $session->email ?? ''));
+				$toEmail = trim((string) ($toUser['email'] ?? ''));
+				$usedCentral = false;
+
+				if (class_exists('CentralGold') && CentralGold::isConfigured()) {
+					list($ok, $msg) = CentralGold::transfer(
+						$fromEmail,
+						(string) $session->username,
+						$fromUid,
+						$toEmail,
+						(string) ($toUser['username'] ?? $toName),
+						$toUid,
+						$amount,
+						0,
+						'player transfer'
+					);
+					$usedCentral = true;
+					$transferOk = $ok;
+					if ($ok) {
+						$transferMsg = $plusRtlMsg
+							? ('تم تحويل ' . $amount . ' ذهب مدفوع إلى ' . $toName . '.')
+							: ('Transferred ' . $amount . ' paid gold to ' . $toName . '.');
+						$database->addGoldFinLog(
+							(int) ($village->wid ?? 0),
+							$fromUid,
+							'Gold transfer out',
+							-$amount,
+							'to ' . $toName
+						);
+						$database->addGoldFinLog(
+							0,
+							$toUid,
+							'Gold transfer in',
+							$amount,
+							'from ' . $session->username
+						);
+					} else {
+						$transferMsg = $plusRtlMsg
+							? ('تعذر التحويل: ' . $msg)
+							: ('Transfer failed: ' . $msg);
+					}
+				}
+
+				if (!$usedCentral) {
+					if (!$database->spendGold($fromUid, $amount, 'Gold transfer to ' . $toName)) {
+						$transferMsg = $plusRtlMsg
+							? 'لا يوجد ذهب كافٍ للتحويل.'
+							: 'Not enough gold to transfer.';
+					} else {
+						$database->modifyGold($toUid, $amount, 1);
+						$database->addGoldFinLog(
+							(int) ($village->wid ?? 0),
+							$fromUid,
+							'Gold transfer out',
+							-$amount,
+							'to ' . $toName
+						);
+						$database->addGoldFinLog(
+							0,
+							$toUid,
+							'Gold transfer in',
+							$amount,
+							'from ' . $session->username
+						);
+						if (isset($session->gold)) {
+							$session->gold -= $amount;
+							$_SESSION['gold'] = $session->gold;
+						}
+						$transferOk = true;
+						$transferMsg = $plusRtlMsg
+							? ('تم تحويل ' . $amount . ' ذهب إلى ' . $toName . '.')
+							: ('Transferred ' . $amount . ' gold to ' . $toName . '.');
+					}
+				}
+
+				if ($transferOk) {
+					$_SESSION['plus_transfer_at'] = time();
+					$_SESSION['plus_csrf'] = bin2hex(random_bytes(16));
+				}
+			}
+		}
+	}
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html <?php echo tz_html_dir_attrs(); ?>>
@@ -216,7 +338,7 @@ if (isset($_POST['redeem_code']) && class_exists('GoldShop')) {
 	            break;
 
 	        case '3':
-	            echo 'Gold';
+	            echo 'Activate Plus';
 	            break;
 
 	        case '4':
@@ -226,9 +348,21 @@ if (isset($_POST['redeem_code']) && class_exists('GoldShop')) {
 	        case '5':
 	            echo 'Earn Gold';
 	            break;
+
+	        case '16':
+	            echo 'Transfer Gold';
+	            break;
+
+	        case '17':
+	            echo 'Purchase Transactions';
+	            break;
+
+	        case '18':
+	            echo 'Troop Costs in Gold';
+	            break;
 	    }
 	} else {
-	    echo 'Tariffs';
+	    echo 'Buy Gold';
 	}
 	?></title>
 	<link rel="shortcut icon" href="favicon.ico"/>
@@ -304,41 +438,39 @@ if(isset($_GET['id'])){
 } 
 else $id = "";
 
-if(empty($id)) include ("Templates/Plus/1.tpl");
-
-if($id == 1){
-	include ("Templates/Plus/3.tpl");
+if ($id === '' || $id === '0' || $id === '1') {
+	include ("Templates/Plus/1.tpl");
 }
-if($id == 2){
+if ($id == 2) {
 	include ("Templates/Plus/2.tpl");
 }
-if($id == 3){
+if ($id == 3) {
 	include ("Templates/Plus/3.tpl");
 }
-if($id == 4){
+if ($id == 4) {
 	include ("Templates/Plus/4.tpl");
 }
-if(isset($_GET['mail']) && $id == 5){
+if (isset($_GET['mail']) && $id == 5) {
 	include ("Templates/Plus/invite.tpl");
-}else if($id == 5){
+} else if ($id == 5) {
 	include ("Templates/Plus/5.tpl");
 }
-if($id == 7){
+if ($id == 7) {
 	include ("Templates/Plus/7.tpl");
 }
-if($id == 8){
+if ($id == 8) {
 	include ("Templates/Plus/8.tpl");
 }
-if($id == 9){
+if ($id == 9) {
 	include ("Templates/Plus/9.tpl");
 }
-if($id == 10){
+if ($id == 10) {
 	include ("Templates/Plus/10.tpl");
 }
-if($id == 11){
+if ($id == 11) {
 	include ("Templates/Plus/11.tpl");
 }
-if($id == 12){
+if ($id == 12) {
 	include ("Templates/Plus/12.tpl");
 }
 /**
@@ -349,7 +481,7 @@ if($id == 12){
  * Verificam existenta inainte de includere; daca lipsesc, aratam pagina
  * obisnuita de functii Plus, ca jucatorul sa aiba unde merge.
  */
-if($id == 13 || $id == 14){
+if ($id == 13 || $id == 14) {
 	$plusExtraTpl = "Templates/Plus/" . (int) $id . ".tpl";
 
 	if (is_file($plusExtraTpl)) {
@@ -358,10 +490,19 @@ if($id == 13 || $id == 14){
 		include ("Templates/Plus/3.tpl");
 	}
 }
-if($id == 15){
+if ($id == 15) {
 	include ("Templates/Plus/15.tpl");
 }
-if($id > 15){
+if ($id == 16) {
+	include ("Templates/Plus/16.tpl");
+}
+if ($id == 17) {
+	include ("Templates/Plus/17.tpl");
+}
+if ($id == 18) {
+	include ("Templates/Plus/18.tpl");
+}
+if (is_numeric($id) && (int) $id > 18) {
 	include ("Templates/Plus/3.tpl");
 }
 ?>

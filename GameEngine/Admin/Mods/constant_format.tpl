@@ -102,6 +102,8 @@ define('HERO_RES_PER_POINT_ONE', %HERORESONE%);
 
 // ***** Name
 define("SERVER_NAME","%SERVERNAME%");
+define("SERVER_WORLD_NUMBER", "");
+define("WW_WINNER_GOLD_PRIZE", %WW_WINNER_GOLD_PRIZE%);
 
 // ***** Time zone added by ronix
 // Defines server time zone.
@@ -241,6 +243,8 @@ define("NATARS_UNITS",%NATARS_UNITS%);
 define("NATARS_SPAWN_TIME",%NATARS_SPAWN_TIME%); 
 define("NATARS_WW_SPAWN_TIME",%NATARS_WW_SPAWN_TIME%); 
 define("NATARS_WW_BUILDING_PLAN_SPAWN_TIME",%NATARS_WW_BUILDING_PLAN_SPAWN_TIME%);
+
+include_once __DIR__ . '/NatarsSchedule.php';
 
 // ***** Natars' World Wonder
 // Number of DAYS after the Building Plans appear before the Natars begin
@@ -442,8 +446,18 @@ define("SQL_PASS", "%SPASS%");
 // ***** Database Name
 define("SQL_DB", "%SDB%");
 
-// ***** Database - Table Prefix
-define("TB_PREFIX", "%PREFIX%");
+// Portal worlds may override the prefix via cookie (independent worlds on one DB).
+$__portalPrefix = null;
+if (is_file(__DIR__ . '/PortalWorlds.php')) {
+    require_once __DIR__ . '/PortalWorlds.php';
+    if (class_exists('PortalWorlds', false)) {
+        $__portalPrefix = PortalWorlds::bootstrapPrefixOverride();
+    }
+}
+define("TB_PREFIX", $__portalPrefix !== null && $__portalPrefix !== ''
+    ? $__portalPrefix
+    : "%PREFIX%");
+unset($__portalPrefix);
 
 // ***** Database type
 // 0 = MYSQL
@@ -646,11 +660,18 @@ if (!function_exists('tz_display_village_name')) {
 if (!function_exists('tz_rtl_stylesheet_tag')) {
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
-        if (!tz_is_rtl_lang($langCode)) {
-            return '';
+        $tag = '';
+
+        $globalDiskPath = dirname(__DIR__) . '/css/global.css';
+        if (is_file($globalDiskPath)) {
+            $globalHref = $relPath . 'css/global.css';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($globalHref, ENT_QUOTES) . '?g3" rel="stylesheet" type="text/css" />';
         }
 
-        $tag = '';
+        if (!tz_is_rtl_lang($langCode)) {
+            return $tag;
+        }
+
         $gp = defined('GP_LOCATE') ? GP_LOCATE : (defined('SERVER_GP') ? SERVER_GP : 'gpack/novaterra/');
         $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
         if (is_file($gpDiskPath)) {
@@ -661,7 +682,7 @@ if (!function_exists('tz_rtl_stylesheet_tag')) {
         $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
         if (is_file($rtlDiskPath)) {
             $rtlHref = $relPath . 'css/rtl.css';
-            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl" rel="stylesheet" type="text/css" />';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?rtl36" rel="stylesheet" type="text/css" />';
         }
 
         return $tag;

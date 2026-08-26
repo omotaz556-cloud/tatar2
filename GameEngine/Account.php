@@ -152,8 +152,23 @@ class Account {
         $form->addError("winner", 'The test server period has ended.');
     }
     if ($form->returnErrors() === 0 && class_exists('RegistrationGuard') && !RegistrationGuard::allowed($database->dblink, $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '')) {
-        $form->addError("winner", 'Registration limit reached for this IP/device.');
-        @mysqli_query($database->dblink, "INSERT INTO `" . TB_PREFIX . "admin_log` (user,ip,time,action) VALUES (0,'" . mysqli_real_escape_string($database->dblink, $_SERVER['REMOTE_ADDR'] ?? '') . "'," . time() . ",'Suspicious registration blocked by IP/device limit')");
+        $form->addError('winner', defined('REG_LIMIT_ERROR') ? REG_LIMIT_ERROR : '<li>Registration limit reached for this IP/device.</li>');
+        // admin_log schema is (id, user, log, time) — never (user,ip,time,action).
+        // A schema-mismatched INSERT throws under mysqli exceptions and turns a
+        // normal "limit reached" into HTTP 500 on anmelden.php.
+        $regIp = mysqli_real_escape_string($database->dblink, (string) ($_SERVER['REMOTE_ADDR'] ?? ''));
+        $regLog = mysqli_real_escape_string(
+            $database->dblink,
+            'Suspicious registration blocked by IP/device limit (IP: ' . $regIp . ')'
+        );
+        try {
+            @mysqli_query(
+                $database->dblink,
+                "INSERT INTO `" . TB_PREFIX . "admin_log` (`id`, `user`, `log`, `time`) VALUES (0, '0', '$regLog', " . time() . ")"
+            );
+        } catch (Throwable $e) {
+            // Logging must never break registration UX.
+        }
     }
     if ($form->returnErrors() > 0) {
         $form->addError("invt", $_POST['invited'] ?? '');
@@ -211,8 +226,8 @@ class Account {
                     $database->updateUserField($uid, 'access', ADMIN, 1);
                 }
 
-				setcookie("COOKUSR", rawurlencode($_POST['name']), time()+COOKIE_EXPIRE, COOKIE_PATH, '', false, true);
-				setcookie("COOKEMAIL", rawurlencode($_POST['email']), time()+COOKIE_EXPIRE, COOKIE_PATH, '', false, true);
+                setcookie("COOKUSR", rawurlencode($_POST['name']), time()+COOKIE_EXPIRE, COOKIE_PATH, '', false, true);
+                setcookie("COOKEMAIL", rawurlencode($_POST['email']), time()+COOKIE_EXPIRE, COOKIE_PATH, '', false, true);
 
                 $database->updateUserField(
                     $uid,
@@ -221,12 +236,31 @@ class Account {
                     1
                 );
 
-            $this->generateBase($_POST['kid'], $uid, $_POST['name']);
+                if (!$this->generateBase($_POST['kid'], $uid, $_POST['name'])) {
+                    $database->query('DELETE FROM ' . TB_PREFIX . 'users WHERE id = ' . (int) $uid);
+                    $form->addError('invt', $_POST['invited'] ?? '');
+                    $form->addError('winner', defined('REG_SPAWN_FAILED') ? REG_SPAWN_FAILED : '<li>Could not create starting village.</li>');
+                    $_SESSION['errorarray'] = $form->getErrors();
+                    $tmp = $_POST;
+                    unset($tmp['pw']);
+                    $_SESSION['valuearray'] = $tmp;
+                    header('Location: anmelden.php');
+                    exit;
+                }
 
-            header("Location: login.php");
+                header("Location: login.php");
+                exit;
+            }
+
+            $form->addError('invt', $_POST['invited'] ?? '');
+            $form->addError('winner', defined('REG_FAILED') ? REG_FAILED : '<li>Registration failed.</li>');
+            $_SESSION['errorarray'] = $form->getErrors();
+            $tmp = $_POST;
+            unset($tmp['pw']);
+            $_SESSION['valuearray'] = $tmp;
+            header('Location: anmelden.php');
             exit;
         }
-    }
 }
 
 	private function Activate() {
@@ -434,14 +468,12 @@ class Account {
 
 	function generateBase($kid, $uid, $username) {
 		global $database;
-    $message = new Message();
-    // Logica exactă din original
     if ($kid == 0) {
         $kid = rand(1, 4);
     } else {
-        $kid = $_POST['kid'];   // suprascrie parametrul cu valoarea din POST
+        $kid = (int) ($_POST['kid'] ?? $kid);
     }
-    $database->generateVillages(
+    $spawned = $database->generateVillages(
         [
             [
                 'wid'    => 0,
@@ -457,7 +489,15 @@ class Account {
         $uid,
         $username
     );
+
+    if ($spawned === false || $spawned === null || $spawned === 0 || $spawned === []) {
+        return false;
+    }
+
+    $message = new Message();
     $message->sendWelcome($uid, $username);
+
+    return true;
 }
 };
 $account = new Account;

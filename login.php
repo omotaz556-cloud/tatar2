@@ -62,10 +62,9 @@ $_SESSION[ 'csrf' ] = $key;
 	<script src="unx.js?f4b7h" type="text/javascript"></script>
 	<script src="new.js?0faab" type="text/javascript"></script>
 	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
+	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?en1" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE ?>novaterra.css?f4b7d" rel="stylesheet" type="text/css" />
-		<link href="<?php echo GP_LOCATE ?>lang/en/lang.css" rel="stylesheet" type="text/css" />
-	   	<?php echo tz_rtl_stylesheet_tag(); ?>
+	<?php echo tz_rtl_stylesheet_tag(); ?>
 </head>
 
 <body class="v35 ie ie7 pg-login" onload="initCounter()">
@@ -79,7 +78,11 @@ $_SESSION[ 'csrf' ] = $key;
 
 <div id="content"  class="login">
 
+<?php if (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) { ?>
+<h1 class="tz-login-title"><?php echo LOGIN; ?></h1>
+<?php } else { ?>
 <h1><img class="img_login" src="img/x.gif" alt="<?php echo htmlspecialchars(LOGIN, ENT_QUOTES, 'UTF-8'); ?>" /></h1>
+<?php } ?>
 
 <?php
 $time = time();
@@ -90,8 +93,12 @@ echo '<p><font color="red" size="6">'.NOT_OPENED_YET.'</font></p>' ;
 else
 {
 ?>
+<?php if (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) { ?>
+<p class="tz-login-cookies"><?php echo COOKIES; ?></p>
+<?php } else { ?>
 <h5><img class="img_u04" src="img/x.gif" alt="<?php echo htmlspecialchars(LOGIN, ENT_QUOTES, 'UTF-8'); ?>" /></h5>
 <p><?php echo COOKIES; ?></p>
+<?php } ?>
 <?php
 $stime = strtotime( date( 'm/d/Y H:i', strtotime(START_DATE . ' ' . START_TIME ) ) );
 
@@ -209,8 +216,7 @@ Element.implement({
 </table>
 
 <p class="btn">
-	<!--<input type="hidden" name="e1d9d0c" value="" />-->
-		<button value="login" name="s1"	onclick="xy();" id="btn_login" class="trav_buttons" alt="<?php echo htmlspecialchars(LOGIN, ENT_QUOTES, 'UTF-8'); ?>"	/> <?php echo LOGIN; ?> </button>
+		<button type="submit" value="login" name="s1" onclick="xy();" id="<?php echo (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) ? 'tz_btn_login' : 'btn_login'; ?>" class="trav_buttons<?php echo (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) ? ' tz-btn-login' : ''; ?>" title="<?php echo htmlspecialchars(LOGIN, ENT_QUOTES, 'UTF-8'); ?>"><?php echo (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) ? LOGIN : ''; ?></button>
 </p>
 
 </form>

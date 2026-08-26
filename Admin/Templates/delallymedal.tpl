@@ -19,7 +19,7 @@
 #################################################################################
 
 if($_SESSION['access'] < ADMIN) die(ACCESS_DENIED_ADMIN);
-include("../GameEngine/config.php");
+include_once("../GameEngine/config.php");
 $id = $_SESSION['id'];
 $sql = mysqli_fetch_array(mysqli_query($GLOBALS["link"], "SELECT Count(*) as Total FROM ".TB_PREFIX."allimedal"), MYSQLI_ASSOC);
 $nummedals = $sql['Total'];
@@ -47,9 +47,10 @@ $nummedals = $sql['Total'];
 		<?php
 			$sql = mysqli_fetch_array(mysqli_query($GLOBALS["link"], "SELECT Count(*) as Total FROM ".TB_PREFIX."allimedal"), MYSQLI_ASSOC);
 			$tot = $sql['Total'];
+			$week = 0;
 			$sql = mysqli_query($GLOBALS["link"], "SELECT week FROM ".TB_PREFIX."allimedal ORDER BY week DESC LIMIT 1");
 			if(mysqli_num_rows($sql) > 0){
-			$week = mysqli_result($sql, 0);
+			$week = (int) mysqli_result($sql, 0);
 			echo "<tr><td><center>$week</center></td><td><center>$tot</center></td></tr>";
 			}else{
 			echo "<tr><td><center>0</center></td><td><center>$tot</center></td></tr>";

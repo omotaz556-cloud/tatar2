@@ -36,7 +36,9 @@ $areSpawned = array(
 // ======================================================
 // PRECALCULARE TIMP (evităm strtotime în loop)
 // ======================================================
-$serverStart = strtotime(START_DATE);
+$serverStart = function_exists('tz_natars_timer_base')
+	? tz_natars_timer_base()
+	: strtotime(START_DATE);
 
 // lungime array (evităm count() repetat)
 $total = count($spawnTimeArray);
@@ -74,11 +76,13 @@ if (!empty($areSpawned[$i])) {
 if (!empty($areSpawned[$i])) {
     echo "Released";
 } else {
-    // secunde totale până la spawn
-    $interval = $spawnTimeArray[$i] * 86400;
-
-    // data finală
-    echo date('d.m.Y', $serverStart + $interval);
+    // Prefer shared helper (includes SPEED + admin Natars reset base).
+    if (function_exists('tz_natars_spawn_at')) {
+        echo date('d.m.Y', tz_natars_spawn_at((int) $spawnTimeArray[$i]));
+    } else {
+        $interval = $spawnTimeArray[$i] * 86400;
+        echo date('d.m.Y', $serverStart + $interval);
+    }
 }
 ?>
 </font></b>

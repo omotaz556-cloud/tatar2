@@ -391,24 +391,31 @@ function __construct() {
     }
 
     /**
-     * FIXED: winner condition bug (safe parentheses + logic)
+     * After a Wonder of the World reaches level 100:
+     * - block construction / gold club purchases
+     * - show the victory report once per session until acknowledged
      */
     function isWinner() {
         global $database;
 
+        if (!$database->isThereAWinner()) {
+            return;
+        }
+
         $requiredPage = basename($_SERVER['PHP_SELF']);
+        $idParam = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-        $idParam = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        if (in_array($requiredPage, ['winner.php', 'logout.php', 'login.php'], true)) {
+            return;
+        }
 
-        if (
-            $database->isThereAWinner() &&
-            (
-                in_array($requiredPage, ['build.php', 'plus1.php']) ||
-                (
-                    $requiredPage === 'plus.php' && $idParam >= 7
-                )
-            )
-        ) {
+        $blockPages = in_array($requiredPage, ['build.php', 'plus1.php'], true)
+            || ($requiredPage === 'plus.php' && $idParam >= 7 && $idParam <= 15);
+
+        $forceReport = empty($_SESSION['winner_ack'])
+            && in_array($requiredPage, ['dorf1.php', 'dorf2.php', 'dorf3.php'], true);
+
+        if ($blockPages || $forceReport) {
             header('Location: winner.php');
             exit;
         }
@@ -632,6 +639,18 @@ function __construct() {
         $this->sharedForums = $database->getSharedForums($this->uid, $this->alliance);
 
         $_SESSION['ok'] = $this->userarray['ok'];
+
+        // Player already dismissed the full-page system message this session.
+        // Keep it dismissed even if automation re-sets users.ok (legacy bug on
+        // portal worlds that announced before artifacts existed).
+        if (!empty($_SESSION['sysmsg_ack']) && (string) $_SESSION['ok'] === '1') {
+            $database->updateUserField($this->uid, 'ok', 0, 1);
+            $_SESSION['ok'] = '0';
+            $cacheKeyUser = 'cache_user_' . ($this->username ?? '');
+            if (isset($_SESSION[$cacheKeyUser]['data']) && is_array($_SESSION[$cacheKeyUser]['data'])) {
+                $_SESSION[$cacheKeyUser]['data']['ok'] = 0;
+            }
+        }
 
         if ($this->userarray['b1'] > $this->time) $this->bonus1 = 1;
         if ($this->userarray['b2'] > $this->time) $this->bonus2 = 1;

@@ -20,6 +20,14 @@
 #################################################################################
 
 $deletedArtifacts = $database->getDeletedArtifacts();
+
+$tzNatarsSpawnAt = function_exists('tz_natars_spawn_at')
+	? tz_natars_spawn_at((int) NATARS_SPAWN_TIME)
+	: (strtotime(START_DATE) + ((int) NATARS_SPAWN_TIME * 86400 / SPEED));
+$tzNatarsSpawned = (bool) $database->areArtifactsSpawned();
+$tzNatarsRemaining = max(0, $tzNatarsSpawnAt - time());
+$tzNatarsResetOk = isset($_GET['reset']) && (string) $_GET['reset'] === '1';
+$tzNatarsResetFail = isset($_GET['reset']) && (string) $_GET['reset'] === '0';
 ?>
 <style>
 .nat-wrap{max-width:1150px;margin:18px auto;font-family:Verdana;font-size:12px}
@@ -33,6 +41,8 @@ $deletedArtifacts = $database->getDeletedArtifacts();
 .nat-card input[type="number"],.nat-card input[type="text"],.nat-card select{padding:4px 6px;border:1px solid #bbb;border-radius:4px;font-size:12px}
 .nat-card button{background:#2c7be5;color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;font-size:12px}
 .nat-card button:hover{background:#1a68d1}
+.nat-card button.danger{background:#c0392b}
+.nat-card button.danger:hover{background:#a93226}
 .nat-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
 .nat-table th{background:#34495e;color:#fff;padding:6px;text-align:left;font-weight:normal}
 .nat-table td{padding:6px;border-bottom:1px solid #eee;text-align:center;color:#000000} /* MODIFICAT */
@@ -41,6 +51,11 @@ $deletedArtifacts = $database->getDeletedArtifacts();
 .nat-table td.icon img{width:20px;height:20px}
 .bon{color:#27ae60;font-weight:bold}
 .none{padding:20px;text-align:center;color:#777}
+.nat-alert{margin:0 0 14px;padding:10px 12px;border-radius:6px;font-size:12px}
+.nat-alert.ok{background:#e8f8ef;border:1px solid #27ae60;color:#1e8449}
+.nat-alert.err{background:#fdecea;border:1px solid #c0392b;color:#922b21}
+.nat-reset-note{margin:0 0 10px;line-height:1.5;color:#444}
+.nat-reset-meta{margin:8px 0 0;color:#666;font-size:11px}
 </style>
 
 <link href="../<?php echo GP_LOCATE;?>lang/en/lang.css?f4b7d" rel="stylesheet">
@@ -50,6 +65,69 @@ $deletedArtifacts = $database->getDeletedArtifacts();
   <div class="nat-head">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="#7f8c8d"><path d="M12 2L2 7v10l10 5 10-5V7z"/></svg>
     <h1><?php echo ADMIN_NATARS_MANAGEMENT; ?></h1>
+  </div>
+
+  <?php if ($tzNatarsResetOk) { ?>
+    <div class="nat-alert ok"><?php echo ADM_NATARS_RESET_SUCCESS; ?></div>
+  <?php } elseif ($tzNatarsResetFail) { ?>
+    <div class="nat-alert err"><?php echo ADM_NATARS_RESET_CONFIRM_REQUIRED; ?></div>
+  <?php } ?>
+
+  <?php if (isset($_GET['prize']) && (string) $_GET['prize'] === '1') { ?>
+    <div class="nat-alert ok"><?php echo defined('ADM_WW_PRIZE_SAVED') ? ADM_WW_PRIZE_SAVED : 'تم حفظ جائزة عجيبة الدنيا.'; ?></div>
+  <?php } elseif (isset($_GET['prize']) && (string) $_GET['prize'] === '0') { ?>
+    <div class="nat-alert err"><?php echo defined('ADM_WW_PRIZE_ERROR') ? ADM_WW_PRIZE_ERROR : 'تعذر حفظ قيمة الجائزة.'; ?></div>
+  <?php } ?>
+
+  <div class="nat-card" style="margin-bottom:14px">
+    <h2><?php echo defined('ADM_WW_PRIZE_TITLE') ? ADM_WW_PRIZE_TITLE : 'جائزة الفائز بعجيبة الدنيا'; ?></h2>
+    <div class="body">
+      <p class="nat-reset-note"><?php
+        echo defined('ADM_WW_PRIZE_DESC')
+            ? ADM_WW_PRIZE_DESC
+            : 'المبلغ الظاهر في تقرير نهاية العالم (الذهبي) والذي يُمنح لصاحب العجيبة. يُرسل التقرير كرسالة داخل اللعبة لجميع اللاعبين عند اكتمال المستوى 100.';
+      ?></p>
+      <form method="post" action="../Admin/admin.php?action=saveWwWinnerPrize" style="margin-top:12px">
+        <?php echo csrf_field(); ?>
+        <label style="display:inline-flex;align-items:center;gap:8px;color:#333">
+          <span><?php echo defined('ADM_WW_PRIZE_LABEL') ? ADM_WW_PRIZE_LABEL : 'قيمة الجائزة (ذهب)'; ?>:</span>
+          <input type="number" name="ww_winner_gold_prize" min="0" max="999999999" step="1"
+                 value="<?php echo (int) (defined('WW_WINNER_GOLD_PRIZE') ? WW_WINNER_GOLD_PRIZE : 50000); ?>"
+                 style="width:140px">
+        </label>
+        <button type="submit" style="margin-right:10px"><?php echo defined('ADM_SAVE') ? ADM_SAVE : (defined('SAVE') ? SAVE : 'حفظ'); ?></button>
+      </form>
+    </div>
+  </div>
+
+  <div class="nat-card" style="margin-bottom:14px">
+    <h2><?php echo ADM_NATARS_RESET_TITLE; ?></h2>
+    <div class="body">
+      <p class="nat-reset-note"><?php echo ADM_NATARS_RESET_DESC; ?></p>
+      <p class="nat-reset-meta">
+        <?php
+        if ($tzNatarsSpawned) {
+            echo ADM_NATARS_STATUS_SPAWNED;
+        } else {
+            echo sprintf(
+                ADM_NATARS_STATUS_COUNTDOWN,
+                date('d.m.Y H:i:s', $tzNatarsSpawnAt),
+                (int) floor($tzNatarsRemaining / 86400),
+                (int) floor(($tzNatarsRemaining % 86400) / 3600)
+            );
+        }
+        ?>
+      </p>
+      <form method="post" action="../Admin/admin.php?action=resetNatars" style="margin-top:12px"
+            onsubmit="return confirm('<?php echo htmlspecialchars(ADM_NATARS_RESET_CONFIRM, ENT_QUOTES, 'UTF-8'); ?>');">
+        <?php echo csrf_field(); ?>
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:10px;color:#333">
+          <input type="checkbox" name="confirm_reset" value="1" required>
+          <?php echo ADM_NATARS_RESET_CHECKBOX; ?>
+        </label>
+        <button type="submit" class="danger"><?php echo ADM_NATARS_RESET_BUTTON; ?></button>
+      </form>
+    </div>
   </div>
 
   <div class="nat-grid">

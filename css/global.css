@@ -1,4 +1,31 @@
-/* Apply the requested browser-like scale consistently to every page. */
+/* ---------------------------------------------------------------------
+ * Whole-page zoom (all languages): scales text, icons, map, and spacing
+ * uniformly to 132%, matching the Arabic in-game experience.
+ *
+ * Must live on <html>, not <body>, so #mid centering and the viewport
+ * stay aligned (same fix as css/rtl.css).
+ * --------------------------------------------------------------------- */
 html {
     zoom: 132% !important;
+}
+
+/* Portal / marketing pages keep 100% zoom. */
+html:has(body.indexPage),
+html:has(body.indexpage),
+html:has(body.contentPage),
+html:has(body.contentpage),
+html:has(body.manual),
+html:has(body.pg-manual) {
+    zoom: 1 !important;
+}
+
+@media screen and (max-width: 640px) {
+    html {
+        zoom: 1 !important;
+    }
+
+    body {
+        width: auto !important;
+        overflow-x: hidden;
+    }
 }

@@ -23,7 +23,9 @@
 /* =========================
    WORLD CONFIG SHORTCUT
 ========================= */
-$W = WORLD_MAX;
+$W = (isset($database) && method_exists($database, 'getWorldMax'))
+	? (int) $database->getWorldMax()
+	: (int) WORLD_MAX;
 
 /* =========================
    COORDINATE INPUT HANDLING
@@ -612,7 +614,7 @@ while ($donnees = mysqli_fetch_assoc($result2)) {
 						m_c.ad = [[<?php echo $map_js?>];
 						m_c.z = {"x":<?php echo $x ?>,"y":<?php echo $y ?>};
 						m_c.size = 13;
-						m_c.world_max = <?php echo WORLD_MAX; ?>;
+						m_c.world_max = <?php echo (int) $W; ?>;
 						var mdim = {"x":13,"y":13,"rad":6}
 						var mmode = 0;
 						function init_local(){map_init();}

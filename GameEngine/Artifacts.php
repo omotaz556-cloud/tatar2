@@ -282,48 +282,69 @@ class Artifacts
         // The spawn job can be retried after a timeout. Keep the fixed Natar
         // account idempotent so a retry cannot produce a duplicate-key error.
         $existingNatars = $database->query_return("SELECT id FROM " . TB_PREFIX . "users WHERE id = " . self::NATARS_UID . " LIMIT 1");
-        if ($existingNatars && !empty($existingNatars[0])) {
+        $natarsExists = ($existingNatars && !empty($existingNatars[0]));
+
+        if (!$natarsExists) {
+            //Register the Natars account, the Natars' password is the same as the MH's one
+            $password = $database->getUserField(5, 'password', 0);
+            $database->register(TRIBE5, $password, self::NATARS_EMAIL, self::NATARS_TRIBE, null, self::NATARS_UID, self::NATARS_DESC, self::NATARS_DESC2);
+            
+            //Convert from coordinates to village IDs
+            $possibleWids = $database->getVilWrefs(self::NATARS_CAPITAL_COORDINATES);
+            
+            //Check if the villages aren't already taken
+            $wid = $database->getFreeVillage($possibleWids);
+
+            //Generate the Natars' capital
+            //
+            // The capital starts with the World Wonder and the infrastructure defined
+            // in NATARS_CAPITAL_BUILDINGS. The data is passed in the same format used
+            // for World Wonder villages: [0] = column names, [1][] = values.
+            $capitalBuildings = [];
+            $capitalBuildings[0]   = array_keys(self::NATARS_CAPITAL_BUILDINGS);
+            $capitalBuildings[1][] = array_values(self::NATARS_CAPITAL_BUILDINGS);
+
+            // The capital army, using the same format as World Wonder villages:
+            // [0] = column names, [1][] = values.
+            $capitalUnits = [];
+            $capitalUnits[0]   = array_keys(self::NATARS_CAPITAL_UNITS);
+            $capitalUnits[1][] = array_values(self::NATARS_CAPITAL_UNITS);
+
+            $wid = $database->generateVillages(
+                [['wid' => $wid, 'mode' => 2, 'type' => 3, 'kid' => 0, 'capital' => 1, 'pop' => 1163, 'name' => null, 'natar' => 0]],
+                self::NATARS_UID,
+                TRIBE5,
+                $capitalUnits,
+                $capitalBuildings
+            );
+
+            //Scouts all players
+            $this->scoutAllPlayers($wid);
+        }
+
+        if ($database->areArtifactsSpawned()) {
             return;
         }
-        
-        //Register the Natars account, the Natars' password is the same as the MH's one
-        $password = $database->getUserField(5, 'password', 0);
-        $database->register(TRIBE5, $password, self::NATARS_EMAIL, self::NATARS_TRIBE, null, self::NATARS_UID, self::NATARS_DESC, self::NATARS_DESC2);
-        
-        //Convert from coordinates to village IDs
-        $possibleWids = $database->getVilWrefs(self::NATARS_CAPITAL_COORDINATES);
-        
-        //Check if the villages aren't already taken
-        $wid = $database->getFreeVillage($possibleWids);
 
-        //Generate the Natars' capital
-        //
-		// The capital starts with the World Wonder and the infrastructure defined
-		// in NATARS_CAPITAL_BUILDINGS. The data is passed in the same format used
-		// for World Wonder villages: [0] = column names, [1][] = values.
-        $capitalBuildings = [];
-        $capitalBuildings[0]   = array_keys(self::NATARS_CAPITAL_BUILDINGS);
-        $capitalBuildings[1][] = array_values(self::NATARS_CAPITAL_BUILDINGS);
+        // Portal worlds may already have a Tatars account + villages from
+        // provision, but no artefact rows. Retrying addArtifactVillages on a
+        // cramped map throws Duplicate entry on vdata and HTTP 500s every
+        // page (Automation → spawnNatars). Only attempt when Natars has no
+        // villages yet; otherwise leave artefacts for a manual/admin spawn.
+        if ($natarsExists) {
+            $owned = $database->query_return(
+                "SELECT COUNT(*) AS c FROM " . TB_PREFIX . "vdata WHERE owner = " . self::NATARS_UID
+            );
+            if (!empty($owned[0]['c']) && (int) $owned[0]['c'] > 0) {
+                return;
+            }
+        }
 
-		// The capital army, using the same format as World Wonder villages:
-		// [0] = column names, [1][] = values.
-        $capitalUnits = [];
-        $capitalUnits[0]   = array_keys(self::NATARS_CAPITAL_UNITS);
-        $capitalUnits[1][] = array_values(self::NATARS_CAPITAL_UNITS);
-
-        $wid = $database->generateVillages(
-            [['wid' => $wid, 'mode' => 2, 'type' => 3, 'kid' => 0, 'capital' => 1, 'pop' => 1163, 'name' => null, 'natar' => 0]],
-            self::NATARS_UID,
-            TRIBE5,
-            $capitalUnits,
-            $capitalBuildings
-        );
-
-        //Scouts all players
-        $this->scoutAllPlayers($wid);
-        
-        //Add artifacts
-        $this->addArtifactVillages(self::NATARS_ARTIFACTS);
+        try {
+            $this->addArtifactVillages(self::NATARS_ARTIFACTS);
+        } catch (Throwable $e) {
+            error_log('createNatars addArtifactVillages: ' . $e->getMessage());
+        }
     }
     
     /**

@@ -1,4 +1,4 @@
-<h1><img class="unit ugeb" src="img/x.gif" alt="" title="" /> Buildings (Resources)</h1>
+<h1><img class="unit ugeb" src="img/x.gif" alt="" title="" /> <?php echo BUILDINGS; ?> (<?php echo RESOURCES; ?>)</h1>
 <ul>
     <li><a href="manual.php?typ=4&amp;gid=1"><?php echo WOODCUTTER; ?></a></li>
     <li><a href="manual.php?typ=4&amp;gid=2"><?php echo CLAYPIT; ?></a></li>
@@ -15,6 +15,6 @@
 <map id="nav" name="nav">
     <area href="<?php echo NEW_FUNCTIONS_MANUAL_NATURENATARS ? "manual.php?typ=2&amp;s=5" : "manual.php?typ=2&amp;s=3"; ?>" title="<?php echo BACK; ?>" coords="0,0,45,18" shape="rect" alt="" />
     <area href="manual.php?s=1" title="<?php echo OVERVIEW; ?>" coords="46,0,70,18" shape="rect" alt="" />
-    <area href="manual.php?typ=3&amp;s=2" title="forward" coords="71,0,116,18" shape="rect" alt="" />
+    <area href="manual.php?typ=3&amp;s=2" title="<?php echo FORWARD; ?>" coords="71,0,116,18" shape="rect" alt="" />
 </map>
 <img usemap="#nav" src="img/x.gif" class="navi" alt="" />

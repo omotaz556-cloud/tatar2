@@ -148,42 +148,54 @@ trait DatabaseVillageQueries {
         @set_time_limit(0);
         $num_rows = $count = 0;
         $villages = [];
+        $wids = [];
         $time = time();
+        $worldMax = $this->getEffectiveWorldMax();
         
         while ($numberOfVillages > 0) {
             switch($mode){
                 case 0:
                     $daysPassedFromStart = ($time - strtotime(START_DATE) - strtotime(date('d.m.Y')) + strtotime(START_TIME)) / 86400;
 
-                    $radiusMin = min(round(pow(2 * ($daysPassedFromStart / 5 * SPEED), 2)), round(pow(WORLD_MAX * 0.8, 2)) + round(pow(WORLD_MAX * 0.8, 2)));
-                    $radiusMax = min(round(pow(4 * ($daysPassedFromStart / 5 * SPEED), 2)) + pow($count, 2), pow(WORLD_MAX, 2) + pow(WORLD_MAX, 2));
+                    $radiusMin = min(round(pow(2 * ($daysPassedFromStart / 5 * SPEED), 2)), round(pow($worldMax * 0.8, 2)) + round(pow($worldMax * 0.8, 2)));
+                    $radiusMax = min(round(pow(4 * ($daysPassedFromStart / 5 * SPEED), 2)) + pow($count, 2), pow($worldMax, 2) + pow($worldMax, 2));
                     break;
                     
                 case 1:
                 default:
                     $radiusMin = 1;
-                    $radiusMax = pow(WORLD_MAX, 2);
+                    $radiusMax = pow($worldMax, 2);
                     break;
                     
                 case 2: //Small artifacts & WW building plans
-                    $radiusMin = round(pow(WORLD_MAX * 0.50, 2));
-                    $radiusMax = round(pow(WORLD_MAX * 0.75, 2));
+                    $radiusMin = round(pow($worldMax * 0.50, 2));
+                    $radiusMax = round(pow($worldMax * 0.75, 2));
                     break;
                 
                 case 3: //Large artifacts
-                    $radiusMin = round(pow(WORLD_MAX * 0.35, 2));
-                    $radiusMax = round(pow(WORLD_MAX * 0.55, 2));
+                    $radiusMin = round(pow($worldMax * 0.35, 2));
+                    $radiusMax = round(pow($worldMax * 0.55, 2));
                     break;
                 
                 case 4: //Unique artifacts
-                    $radiusMin = round(pow(WORLD_MAX * 0.05, 2));
-                    $radiusMax = round(pow(WORLD_MAX * 0.25, 2));
+                    $radiusMin = round(pow($worldMax * 0.05, 2));
+                    $radiusMax = round(pow($worldMax * 0.25, 2));
                     break;
 
                 case 5: //WW villages
-                    $radiusMin = round(pow(WORLD_MAX * 0.8, 2));
-                    $radiusMax = round(pow(WORLD_MAX, 2));
+                    $radiusMin = round(pow($worldMax * 0.8, 2));
+                    $radiusMax = round(pow($worldMax, 2));
                     break;
+            }
+
+            // Allow a soft fallback ring when the ideal outer ring is empty
+            // (common on smaller portal-world maps or extreme SPEED caps).
+            if ($mode === 0 && $count > 0) {
+                $radiusMin = max(1, (int) round($radiusMin * 0.5));
+            }
+            if ($mode === 0 && $count > 3) {
+                $radiusMin = 1;
+                $radiusMax = pow($worldMax, 2) + pow($worldMax, 2);
             }
 
             // The four sectors must be mutually exclusive: any tile sitting on an
@@ -210,11 +222,13 @@ trait DatabaseVillageQueries {
             $result = mysqli_query($this->dblink, $q);
 
             //Prevent an infinite loop
-            $resultedRows = mysqli_num_rows($result);
-            if($resultedRows == 0 && $count >= WORLD_MAX * 2) break;
+            $resultedRows = $result ? mysqli_num_rows($result) : 0;
+            if($resultedRows == 0 && $count >= $worldMax * 2) break;
             
             //Fill the villages array
-            $villages = array_merge($villages, $this->mysqli_fetch_all($result));
+            if ($resultedRows > 0) {
+                $villages = array_merge($villages, $this->mysqli_fetch_all($result));
+            }
             
             $num_rows += $resultedRows;
             $numberOfVillages -= $resultedRows;
@@ -224,7 +238,48 @@ trait DatabaseVillageQueries {
 
         foreach($villages as $village) $wids[] = $village['id'];
 
+        if ($num_rows < 1 || empty($wids)) {
+            return [];
+        }
+
         return $num_rows == 1 ? $wids[0] : $wids;
+    }
+
+    /**
+     * Actual playable map radius for the current TB_PREFIX (may be smaller than WORLD_MAX
+     * for portal worlds that were provisioned with a reduced size).
+     */
+    public function getWorldMax(): int
+    {
+        return $this->getEffectiveWorldMax();
+    }
+
+    /**
+     * Actual playable map radius for the current TB_PREFIX (may be smaller than WORLD_MAX
+     * for portal worlds that were provisioned with a reduced size).
+     */
+    private function getEffectiveWorldMax(): int
+    {
+        static $cache = [];
+        $key = defined('TB_PREFIX') ? TB_PREFIX : 'default';
+        if (isset($cache[$key])) {
+            return $cache[$key];
+        }
+
+        $configured = defined('WORLD_MAX') ? max(1, (int) WORLD_MAX) : 100;
+        $detected = $configured;
+        $q = @mysqli_query($this->dblink, 'SELECT MAX(ABS(x)) AS mx, MAX(ABS(y)) AS my FROM ' . TB_PREFIX . 'wdata');
+        if ($q && ($row = mysqli_fetch_assoc($q))) {
+            $mx = (int) ($row['mx'] ?? 0);
+            $my = (int) ($row['my'] ?? 0);
+            $mapMax = max($mx, $my);
+            if ($mapMax > 0) {
+                $detected = min($configured, $mapMax);
+            }
+        }
+
+        $cache[$key] = max(1, $detected);
+        return $cache[$key];
     }
 
 	function setFieldTaken($id) {
@@ -296,7 +351,22 @@ trait DatabaseVillageQueries {
 		foreach($villageArrays as $village){
 		    
 		    //Check if the village wid isn't already set and assing one among the generated ones
-		    if($village['wid'] == 0) $village['wid'] = $wids[$village['mode']][$village['kid']][$i[$village['mode']][$village['kid']]++];
+		    if($village['wid'] == 0) {
+		        $modeKey = $village['mode'];
+		        $kidKey = $village['kid'];
+		        $slot = $i[$modeKey][$kidKey] ?? 0;
+		        if (
+		            empty($wids[$modeKey][$kidKey][$slot])
+		            || !is_numeric($wids[$modeKey][$kidKey][$slot])
+		        ) {
+		            return false;
+		        }
+		        $village['wid'] = $wids[$modeKey][$kidKey][$i[$modeKey][$kidKey]++];
+		    }
+		    
+		    if (empty($village['wid'])) {
+		        return false;
+		    }
 		    
 		    //Merge the wids into an unique array
 		    $takenWids[] = $village['wid'];
@@ -2320,7 +2390,8 @@ trait DatabaseVillageQueries {
     // no need to cache this method
 	function getArrayMemberVillage($uid) {
 	    list($uid) = $this->escape_input((int) $uid);
-		$q = 'SELECT a.wref, a.name, b.x, b.y from '.TB_PREFIX.'vdata AS a left join '.TB_PREFIX.'wdata AS b ON b.id = a.wref where owner = '.$uid.' ORDER BY name ASC';
+		/* Include capital so #vlist can show (عاصمة) like Greek SA / X-Tatar. */
+		$q = 'SELECT a.wref, a.name, a.capital, b.x, b.y from '.TB_PREFIX.'vdata AS a left join '.TB_PREFIX.'wdata AS b ON b.id = a.wref where owner = '.$uid.' ORDER BY name ASC';
 		$result = mysqli_query($this->dblink,$q);
 		$array = $this->mysqli_fetch_all($result);
 		return $array;

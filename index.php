@@ -52,6 +52,7 @@ else
 include_once "GameEngine/Database.php";
 require_once __DIR__ . "/GameEngine/Lang/loader.php";
 tz_load_language(LANG);
+require_once __DIR__ . "/GameEngine/PortalWorlds.php";
 
 AccessLogger::logRequest();
 ?>
@@ -61,9 +62,9 @@ AccessLogger::logRequest();
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title><?php echo SERVER_NAME; ?></title>
 	<link rel="shortcut icon" href="favicon.ico" />
-	<link rel="stylesheet" type="text/css" href="gpack/novaterra/main.css" />
+	<link rel="stylesheet" type="text/css" href="gpack/novaterra/main.css?pw7" />
 	<link rel="stylesheet" type="text/css" href="gpack/novaterra/flaggs.css" />
-	<link rel="stylesheet" type="text/css" href="gpack/novaterra/main_en.css" />
+	<link rel="stylesheet" type="text/css" href="gpack/novaterra/main_en.css?pw7" />
 	<meta name="content-language" content="<?php echo LANG; ?>" />
 	<meta http-equiv="imagetoolbar" content="no" />
 	<script src="mt-core.js" type="text/javascript"></script>
@@ -220,16 +221,13 @@ AccessLogger::logRequest();
 	<div id="login_layer" class="overlay">
 		<div class="mask closer"></div>
 		<div id="login_list" class="overlay_content">
-			<h2><?php echo CHOOSE; ?></h2>
+			<h2><?php echo defined('PORTAL_CHOOSE_LOGIN') ? PORTAL_CHOOSE_LOGIN : CHOOSE; ?></h2>
 			<a href="#" class="closer"><img class="dynamic_img" alt="Close" src="img/un/x.gif" /></a>
-			<ul class="world_list">
-				<li class="w_big c3" style="background-image:url('img/en/welten/en1_big.jpg');">
-					<a href="login.php"><img class="w_button" src="img/un/x.gif" alt="World" title="<?php echo $users; echo "&nbsp;"; echo PLAYERS; echo "&nbsp;|&nbsp;"; echo $active; echo "&nbsp;"; echo ACTIVE; echo "&nbsp;|&nbsp;"; echo $online; echo "&nbsp;"; echo ONLINE; ?>" /></a>
-					<div class="label_players c0"><?php echo PLAYERS; ?>:</div>
-					<div class="label_online c0"><?php echo ONLINE; ?>:</div>
-					<div class="players c1"><?php echo $users; ?></div>
-					<div class="online c1"><?php echo $online; ?></div>
-				</li>
+			<ul class="world_list tz-world-list">
+				<?php
+				$portalMode = 'login';
+				include __DIR__ . '/Templates/portal_world_list.tpl';
+				?>
 			</ul>
 			<div class="footer"></div>
 		</div>
@@ -237,16 +235,13 @@ AccessLogger::logRequest();
 	<div id="signup_layer" class="overlay">
 		<div class="mask closer"></div>
 		<div id="signup_list" class="overlay_content">
-			<h2><?php echo CHOOSE; ?></h2>
+			<h2><?php echo defined('PORTAL_CHOOSE_REGISTER') ? PORTAL_CHOOSE_REGISTER : CHOOSE; ?></h2>
 			<a href="#" class="closer"><img class="dynamic_img" alt="Close" src="img/un/x.gif" /></a>
-			<ul class="world_list">
-				<li class="w_big c4" style="background-image:url('img/en/welten/en1_big.jpg');">
-					<a href="anmelden.php"><img class="w_button" src="img/un/x.gif" alt="World" title="<?php echo $users; echo "&nbsp;"; echo PLAYERS; echo "&nbsp;|&nbsp;"; echo $active; echo "&nbsp;"; echo ACTIVE; echo "&nbsp;|&nbsp;"; echo $online; echo "&nbsp;"; echo ONLINE; ?>" /></a>
-					<div class="label_players c0"><?php echo PLAYERS; ?>:</div>
-					<div class="label_online c0"><?php echo ONLINE; ?>:</div>
-					<div class="players c1"><?php echo $users; ?></div>
-					<div class="online c1"><?php echo $online; ?></div>
-				</li>
+			<ul class="world_list tz-world-list">
+				<?php
+				$portalMode = 'register';
+				include __DIR__ . '/Templates/portal_world_list.tpl';
+				?>
 			</ul>
 			<div class="footer"></div>
 		</div>
@@ -299,6 +294,32 @@ AccessLogger::logRequest();
 	<?php
 	   }
 	?>
+		window.addEvent('domready', function() {
+			$$('.tz-world-timer').each(function(el) {
+				var remain = parseInt(el.get('data-remain'), 10);
+				if (isNaN(remain) || remain <= 0) {
+					return;
+				}
+				var format = function(sec) {
+					var h = Math.floor(sec / 3600);
+					var m = Math.floor((sec % 3600) / 60);
+					var s = sec % 60;
+					return h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+				};
+				var template = el.get('text');
+				var tick = function() {
+					if (remain < 0) {
+						remain = 0;
+					}
+					el.set('text', template.replace(/[\d]+:[\d]{2}:[\d]{2}/, format(remain)));
+					if (remain > 0) {
+						remain -= 1;
+					}
+				};
+				tick();
+				tick.periodical(1000);
+			});
+		});
 	</script>
 </body>
 </html>

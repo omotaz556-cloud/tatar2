@@ -26,6 +26,14 @@ if (!isset($aid)) {
     $aid = (int)$session->alliance;
 }
 
+if (!empty($session->uid)) {
+    include_once('GameEngine/ChatRead.php');
+    $tzChatScope = $isPublicChat
+        ? ChatRead::PUBLIC_SCOPE
+        : (string) ($aid > 0 ? $aid : ($session->alliance ?? 0));
+    ChatRead::markRead((int) $session->uid, $tzChatScope);
+}
+
 // -------------------------------------------------
 // LOAD ALLIANCE DATA
 // -------------------------------------------------

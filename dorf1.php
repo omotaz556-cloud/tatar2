@@ -30,10 +30,17 @@ AccessLogger::logRequest();
 if(isset($_GET['ok'])){
 	$database->updateUserField($session->uid,'ok', 0, 1);
 	$_SESSION['ok'] = '0';
+	// Persist dismissal for this browser session even if automation later
+	// re-sets users.ok (see spawnNatars + displaySystemMessage).
+	$_SESSION['sysmsg_ack'] = 1;
 	// Invalidate the 30s session user-cache (see Session::PopulateVar); otherwise
 	// it re-seeds $_SESSION['ok'] from the stale row and the welcome/maintenance
 	// redirect keeps firing for up to 30s after acknowledging.
-	unset($_SESSION['cache_user_' . ($_SESSION['username'] ?? '')]);
+	$cacheKeyUser = 'cache_user_' . ($_SESSION['username'] ?? '');
+	if (isset($_SESSION[$cacheKeyUser]['data']) && is_array($_SESSION[$cacheKeyUser]['data'])) {
+		$_SESSION[$cacheKeyUser]['data']['ok'] = 0;
+	}
+	unset($_SESSION[$cacheKeyUser]);
 }
 
 if(isset($_GET['newdid'])) {
@@ -86,7 +93,7 @@ if (
 	<script src="new2.js?0faab" type="text/javascript"></script>
 	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE; ?>lang/en/dorf1.css?rtlDorf1" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?e21d2" rel="stylesheet" type="text/css" />
+	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?en1" rel="stylesheet" type="text/css" />
 	<?php
 	// GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
 	// e permisa si valida, altfel pachetul serverului (vezi config.php).
@@ -98,7 +105,7 @@ if (
 	<link href='".GP_LOCATE."main.css?e21d2' rel='stylesheet' type='text/css' />
 	<link href='".GP_LOCATE."main_en.css?e21d2' rel='stylesheet' type='text/css' />
 	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
+	<link href='".GP_LOCATE."lang/en/lang.css?en1' rel='stylesheet' type='text/css' />";
 	?>
 	<script type="text/javascript">
 	window.addEvent('domready', start);
@@ -111,7 +118,11 @@ if (
 </head>
 
 
-<body class="v35 ie ie8 dorf1Page">
+<body class="v35 ie ie8 dorf1Page<?php
+	if (!empty($_SESSION['ok']) && (string) $_SESSION['ok'] === '1') {
+		echo ' announcementPage';
+	}
+?>">
 <div class="wrapper">
 <img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
 <div id="dynamic_header">
@@ -133,10 +144,16 @@ $timer = 1;
 include("Templates/movement.tpl");
 include("Templates/production.tpl");
 include("Templates/troops.tpl");
-
-if($building->NewBuilding) include("Templates/Building.tpl");
 ?>
 </div>
+<?php
+/* Build queue must sit BELOW map+production (clear:both), not inside
+ * #map_details — overflow:hidden on the details pane was clipping the
+ * gold-finish clock / button under RTL flex layout. */
+if ($building->NewBuilding) {
+	include("Templates/Building.tpl");
+}
+?>
 <?php
 /**
  * Structural fix (RTL only - see css/rtl.css for the full explanation).

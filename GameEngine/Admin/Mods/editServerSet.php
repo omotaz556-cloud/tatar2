@@ -206,6 +206,9 @@ $text = admin_config_template_contents(array(
 		$natarsWwDelay = isset($_POST['natars_ww_start_delay']) ? (int) $_POST['natars_ww_start_delay'] : 10;
 		if ($natarsWwDelay < 0 || $natarsWwDelay > 3650) { $natarsWwDelay = 10; }
 		tz_config_set($text, '%NATARS_WW_START_DELAY%', $natarsWwDelay);
+		$wwPrize = defined('WW_WINNER_GOLD_PRIZE') ? (int) WW_WINNER_GOLD_PRIZE : 50000;
+		if ($wwPrize < 0) { $wwPrize = 0; }
+		tz_config_set($text, '%WW_WINNER_GOLD_PRIZE%', $wwPrize);
 		tz_config_set($text, '%NATURE_REGTIME%', $_POST['nature_regtime'] ?? '');
 		tz_config_set($text, '%OASIS_WOOD_MULTIPLIER%', $_POST['oasis_wood_multiplier'] ?? '');
 		tz_config_set($text, '%OASIS_CLAY_MULTIPLIER%', $_POST['oasis_clay_multiplier'] ?? '');

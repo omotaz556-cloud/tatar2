@@ -30,7 +30,9 @@ $currentTime = time();
  * Server start timestamp
  * ---------------------------------------------------------
  */
-$startDate = strtotime(START_DATE);
+$startDate = function_exists('tz_natars_timer_base')
+	? tz_natars_timer_base()
+	: strtotime(START_DATE);
 
 /**
  * ---------------------------------------------------------
@@ -48,15 +50,21 @@ $displayWindow = 432000 / SPEED; // 5 days in seconds
 $spawnEvents = array(
 
     TZ_WILL_SPAWN_IN_ARTIFACTS => (
-        $startDate + (NATARS_SPAWN_TIME * 86400)
+        function_exists('tz_natars_spawn_at')
+			? tz_natars_spawn_at((int) NATARS_SPAWN_TIME)
+			: ($startDate + (NATARS_SPAWN_TIME * 86400))
     ) - $currentTime,
 
     TZ_WILL_SPAWN_IN_WW => (
-        $startDate + (NATARS_WW_SPAWN_TIME * 86400)
+        function_exists('tz_natars_spawn_at')
+			? tz_natars_spawn_at((int) NATARS_WW_SPAWN_TIME)
+			: ($startDate + (NATARS_WW_SPAWN_TIME * 86400))
     ) - $currentTime,
 
     TZ_WILL_SPAWN_IN_PLAN => (
-        $startDate + (NATARS_WW_BUILDING_PLAN_SPAWN_TIME * 86400)
+        function_exists('tz_natars_spawn_at')
+			? tz_natars_spawn_at((int) NATARS_WW_BUILDING_PLAN_SPAWN_TIME)
+			: ($startDate + (NATARS_WW_BUILDING_PLAN_SPAWN_TIME * 86400))
     ) - $currentTime
 );
 

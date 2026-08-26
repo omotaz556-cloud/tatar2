@@ -147,6 +147,7 @@ trait AutomationBuildQueue {
         //now can't be more than one winner if ww to level 100 is build by 2 users or more on same time
         if ($indi['level'] == 100) {
             $this->awardWorldWonderRewards((int) $indi['wid'], $wwOwner);
+            $this->broadcastWorldWonderVictoryReport((int) $indi['wid'], $wwOwner);
             mysqli_query($database->dblink,"TRUNCATE ".TB_PREFIX."bdata");
         }
 
@@ -206,13 +207,40 @@ trait AutomationBuildQueue {
 
         $alliance = $database->getAlliance($ownerAlliance, false);
         $leaderId = (int) ($alliance['leader'] ?? 0);
-        $this->grantWorldWonderGold($wid, $ownerId, 50000, 'World Wonder owner reward');
+        $ownerPrize = defined('WW_WINNER_GOLD_PRIZE') ? (int) WW_WINNER_GOLD_PRIZE : 50000;
+        if ($ownerPrize < 0) {
+            $ownerPrize = 0;
+        }
+        $this->grantWorldWonderGold($wid, $ownerId, $ownerPrize, 'World Wonder owner reward');
         if ($leaderId > 5) {
             $this->grantWorldWonderGold($wid, $leaderId, 30000, 'World Wonder alliance leader reward');
         }
         foreach ($eligibleMembers as $memberId) {
             $this->grantWorldWonderGold($wid, $memberId, 10000, 'World Wonder alliance member reward');
         }
+    }
+
+    /**
+     * Deliver the Arabic victory report to every player inbox (once).
+     */
+    private function broadcastWorldWonderVictoryReport($wid, $ownerId) {
+        global $database;
+
+        require_once dirname(__DIR__) . '/WinnerReport.php';
+
+        // Ensure Arabic/report strings exist when Automation runs without a web session.
+        if (!defined('WINNER_RPT_DEAR')) {
+            $langFile = dirname(__DIR__) . '/Lang/loader.php';
+            if (is_file($langFile)) {
+                require_once $langFile;
+                if (function_exists('tz_load_language')) {
+                    $lang = defined('LANG') ? LANG : (defined('SERVER_LANG') ? SERVER_LANG : 'ar');
+                    tz_load_language($lang);
+                }
+            }
+        }
+
+        tz_winner_report_broadcast_all($database, (int) $wid, (int) $ownerId);
     }
 
     private function grantWorldWonderGold($wid, $uid, $amount, $action) {

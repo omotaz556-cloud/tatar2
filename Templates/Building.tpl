@@ -7,33 +7,21 @@
 ##  Refactored by: Shadow Incremental Refactor 			                       ##
 ##  License:       Novaterra Project                                            ##
 ##  Copyright:     Novaterra (c) 2010-2025. All rights reserved.                ##
-##                                                                             ##
-##  Refactor notes:                                                            ##
-##  - păstrată logica originală 100%                                           ##
-##  - compatibil PHP 5.6+ / 7+                                                 ##
-##  - redus cod duplicat                                                       ##
-##  - output HTML mai sigur                                                    ##
-##  - comentarii adăugate                                                      ##
-##  - redirect securizat                                                       ##
-##                                                                             ##
 #################################################################################
 
-// Încarcă datele pentru clădire/construcții
 $building->loadBuilding();
 
-/**
- * Escape HTML compatibil PHP vechi
- * Previne probleme XSS pe output
- */
 if (!function_exists('safeHTML')) {
     function safeHTML($string)
     {
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
 }
-?>
 
-<?php if ($building->NewBuilding) { ?>
+if (!$building->NewBuilding) {
+    return;
+}
+?>
 
 <table cellpadding="1" cellspacing="1" id="building_contract">
 
@@ -41,39 +29,15 @@ if (!function_exists('safeHTML')) {
         <tr>
             <th colspan="4">
                 <?php echo BUILDING_UPGRADING; ?>
-
                 <?php
-                // Buton instant finish dacă jucătorul are minim 2 gold
-                if (isset($session->gold) && $session->gold >= 2) {
-
-                    /**
-                     * FEATURE: this table is included from 3 different
-                     * pages (build.php, dorf1.php, dorf2.php - see the
-                     * include() call sites), each with their own $_GET
-                     * context, so we can't rely on the current request's
-                     * ?id=. Build an absolute build.php URL from the first
-                     * queued job's field slot instead - same value the
-                     * "cancel" link's field column already resolves above.
-                     * The JS interceptor (new2.js bindPopupLinks) reads
-                     * data-field-id off this link the same way it does for
-                     * every other data-ajax-build link.
-                     */
-                    $finishFieldId = !empty($building->buildArray)
-                        ? (int) reset($building->buildArray)['field']
-                        : 1;
+                // Inline include so the finish control cannot be skipped by path issues.
+                $__gf = __DIR__ . DIRECTORY_SEPARATOR . 'Build' . DIRECTORY_SEPARATOR . 'gold_finish_button.tpl';
+                if (is_file($__gf)) {
+                    include $__gf;
+                } else {
+                    echo '<!-- gold_finish_button.tpl missing: ' . htmlspecialchars($__gf, ENT_QUOTES, 'UTF-8') . ' -->';
+                }
                 ?>
-                    <a href="build.php?id=<?php echo $finishFieldId; ?>&amp;buildingFinish=1"
-                       data-ajax-build="1"
-                       data-field-id="<?php echo $finishFieldId; ?>"
-                       onclick="return confirm('<?php echo FINISH_GOLD; ?>');"
-                       title="<?php echo FINISH_GOLD; ?>">
-
-                        <img class="clock"
-                             alt="<?php echo FINISH_GOLD; ?>"
-                             src="img/x.gif" />
-                    </a>
-                <?php } ?>
-
             </th>
         </tr>
     </thead>
@@ -81,38 +45,30 @@ if (!function_exists('safeHTML')) {
     <tbody>
 
     <?php
-    // Verifică dacă există array valid
     if (!empty($building->buildArray) && is_array($building->buildArray)) {
 
         foreach ($building->buildArray as $jobs) {
 
-            // Normalizează valorile pentru compatibilitate și siguranță
-            $jobId     = isset($jobs['id']) ? (int)$jobs['id'] : 0;
-            $fieldId   = isset($jobs['field']) ? (int)$jobs['field'] : 0;
-            $type      = isset($jobs['type']) ? (int)$jobs['type'] : 0;
-            $level     = isset($jobs['level']) ? (int)$jobs['level'] : 0;
-            $timestamp = isset($jobs['timestamp']) ? (int)$jobs['timestamp'] : time();
-            $master    = isset($jobs['master']) ? (int)$jobs['master'] : 0;
-            $loopcon   = isset($jobs['loopcon']) ? (int)$jobs['loopcon'] : 0;
+            $jobId     = isset($jobs['id']) ? (int) $jobs['id'] : 0;
+            $fieldId   = isset($jobs['field']) ? (int) $jobs['field'] : 0;
+            $type      = isset($jobs['type']) ? (int) $jobs['type'] : 0;
+            $level     = isset($jobs['level']) ? (int) $jobs['level'] : 0;
+            $timestamp = isset($jobs['timestamp']) ? (int) $jobs['timestamp'] : time();
+            $master    = isset($jobs['master']) ? (int) $jobs['master'] : 0;
+            $loopcon   = isset($jobs['loopcon']) ? (int) $jobs['loopcon'] : 0;
 
-            // Nume clădire procesat
             $buildingName = Building::procResType($type);
 
-            // Timer rămas
             $remainingTime = $timestamp - time();
-
-            // Evită timp negativ
             if ($remainingTime < 0) {
                 $remainingTime = 0;
             }
 
-            // Ora finalizării
             $finishTime = date('H:i', $timestamp);
     ?>
 
         <tr>
 
-            <!-- Buton cancel -->
             <td class="ico">
                 <a href="?d=<?php echo $jobId; ?>&amp;a=0&amp;c=<?php echo safeHTML($session->checker); ?>">
                     <img src="img/x.gif"
@@ -122,7 +78,6 @@ if (!function_exists('safeHTML')) {
                 </a>
             </td>
 
-            <!-- Informații clădire -->
             <td>
 
                 <?php if ($master == 0) { ?>
@@ -131,21 +86,20 @@ if (!function_exists('safeHTML')) {
                         <?php echo safeHTML($buildingName); ?>
                     </a>
 
-                    (<?php echo LEVEL.' '.$level; ?>)
+                    (<?php echo LEVEL . ' ' . $level; ?>)
 
                     <?php
-                    // Construcție în waiting loop
                     if ($loopcon == 1) {
                         echo WAITING_LOOP;
                     }
                     ?>
 
                 <?php } else { ?>
-					<a href="build.php?id=<?php echo $fieldId; ?>">
-                    <?php echo safeHTML($buildingName); ?>
-					</a>
+                    <a href="build.php?id=<?php echo $fieldId; ?>">
+                        <?php echo safeHTML($buildingName); ?>
+                    </a>
                     <span class="none">
-                        (<?php echo LEVEL.' '.$level.' ) ('.CONSTRUCTING_MASTER_BUILDER;?>)
+                        (<?php echo LEVEL . ' ' . $level . ' ) (' . CONSTRUCTING_MASTER_BUILDER; ?>)
                     </span>
 
                 <?php } ?>
@@ -154,7 +108,6 @@ if (!function_exists('safeHTML')) {
 
             <?php if ($master == 0) { ?>
 
-                <!-- Timer -->
                 <td>
                     <?php echo P_IN; ?>
                     <span id="timer<?php echo ++$session->timer; ?>">
@@ -163,14 +116,12 @@ if (!function_exists('safeHTML')) {
                     <?php echo TZ_HRS_2; ?>
                 </td>
 
-                <!-- Ora finalizare -->
                 <td>
-                    <?php echo DONE_AT.' '.$finishTime; ?>
+                    <?php echo DONE_AT . ' ' . $finishTime; ?>
                 </td>
 
             <?php } else { ?>
-			
-                <!-- Compatibil layout original -->
+
                 <td colspan="2">&nbsp;</td>
 
             <?php } ?>
@@ -186,37 +137,6 @@ if (!function_exists('safeHTML')) {
 
 </table>
 
-<!-- JS original păstrat -->
 <script type="text/javascript">
 var bld=[{"stufe":1,"gid":"1","aid":"3"}];
 </script>
-
-<?php
-} else {
-
-    /**
-     * Redirect securizat
-     * Evită folosirea directă a REQUEST_URI fără validare minimă
-     */
-
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        ? 'https://'
-        : 'http://';
-
-    $host = isset($_SERVER['HTTP_HOST'])
-        ? $_SERVER['HTTP_HOST']
-        : 'localhost';
-
-    $requestUri = isset($_SERVER['REQUEST_URI'])
-        ? $_SERVER['REQUEST_URI']
-        : '/';
-
-    // Elimină caractere invalide pentru header
-    $requestUri = str_replace(array("\r", "\n"), '', $requestUri);
-
-    $redirectUrl = $protocol . $host . $requestUri;
-
-    header('Location: ' . $redirectUrl);
-    exit;
-}
-?>

@@ -35,42 +35,6 @@
    the exact same order as before, byte-for-byte, so English is
    unaffected. See the comment in dorf1.php itself for the full diff. */
 
-/* ---------------------------------------------------------------------
- * Whole-page zoom for Arabic: scales EVERYTHING (text, icons, map,
- * spacing) uniformly to 150%, as if the player pressed Ctrl/Cmd "+"
- * twice in Chrome at 100% browser zoom.
- *
- * FIX: this must be set on <html>, not <body>. zoom on <body> resizes
- * body's rendered box (and everything inside it, including #mid) while
- * <html> - body's own containing block - stays unzoomed, so body's
- * width/centering math is computed in the ORIGINAL unzoomed frame and
- * only scaled afterwards, anchored at body's top-left corner. Anything
- * centered inside (like #mid, fixed with margin:0 auto elsewhere in
- * this file) ends up rendered well to the right of true center, and
- * often clipped past the right edge of the viewport entirely - which is
- * exactly what made every page look pushed to one side no matter what
- * width/margin was set on #mid itself: the distortion happens one level
- * up, at body, so no #mid-level fix could ever undo it.
- * Setting zoom on <html> instead scales the whole document AND its
- * effective viewport together, the same way real browser zoom (Ctrl/Cmd
- * "+") works - so #mid's centering math and what's actually visible on
- * screen agree, with nothing shifted off-axis or clipped.
- * The !important guard prevents a graphic pack from changing this value.
- * --------------------------------------------------------------------- */
-html[dir="rtl"] {
-    zoom: 132% !important;
-}
-
-/* Portal / marketing pages keep 100% zoom: html zoom mis-aligns
- * artwork.jpg against main_background_front.jpg and leaves white
- * gutters beside the hero. In-game pages keep the 132% zoom above. */
-html[dir="rtl"]:has(body.indexPage),
-html[dir="rtl"]:has(body.indexpage),
-html[dir="rtl"]:has(body.contentPage),
-html[dir="rtl"]:has(body.contentpage) {
-    zoom: 1 !important;
-}
-
 /* Map tile and oasis details should read as Arabic, not as an LTR table. */
 html[dir="rtl"] div#content.map h1,
 html[dir="rtl"] div#content.map div#map_details,
@@ -334,7 +298,7 @@ html[dir="rtl"] body.dorf1Page #mid {
     width: 980px !important;
     max-width: 980px !important;
     min-width: 980px !important;
-    left: -95px !important;
+    left: -90px !important;
     right: auto !important;
     transform: none !important;
     margin-top: 28px !important;
@@ -400,6 +364,15 @@ html[dir="rtl"] body.dorf1Page #side_navi {
     float: none !important;
     direction: rtl;
     unicode-bidi: isolate;
+    position: relative !important;
+    left: 12px !important;
+    right: auto !important;
+    background-color: transparent !important;
+    background-image: url("../gpack/novaterra_classic/images/shadow-a-rtl.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: left top !important;
+    overflow: visible !important;
+    z-index: 3;
 }
 
 /* plus.php / plus1.php — same HTML fix as dorf1: #side_info must stay
@@ -482,31 +455,45 @@ html[dir="rtl"] body.pg-plus1 #side_navi {
     unicode-bidi: isolate;
 }
 
-html[dir="rtl"] body.indexPage .world_list .w_big .label_players,
-html[dir="rtl"] body.indexPage .world_list .w_big .label_online {
-    left: auto;
-    right: 20px;
-    text-align: right;
-    width: 100px;
+html[dir="rtl"] body.indexPage .tz-world-badge {
+    left: 10px !important;
+    right: auto !important;
+    top: 3px !important;
+    position: absolute !important;
 }
 
-html[dir="rtl"] body.indexPage .world_list .w_big .players,
-html[dir="rtl"] body.indexPage .world_list .w_big .online {
-    left: auto;
-    right: 90px;
-    color: #000 !important;
-    text-align: center;
-    width: 30px;
-    z-index: 31;
+html[dir="rtl"] body.indexPage .tz-world-info {
+    right: 6px !important;
+    left: auto !important;
+    top: 5px !important;
+    bottom: 5px !important;
+    text-align: right;
+    direction: rtl;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: column;
 }
 
 html[dir="rtl"] body.indexPage #login_list h2,
 html[dir="rtl"] body.indexPage #signup_list h2 {
     max-width: none;
     position: relative;
-    left: -20px;
-    white-space: nowrap;
-    width: max-content;
+    text-align: center;
+    color: #222 !important;
+}
+
+html[dir="rtl"] body.indexPage #login_layer .overlay_content .closer,
+html[dir="rtl"] body.indexPage #signup_layer .overlay_content .closer {
+    left: 12px;
+    right: auto;
+}
+
+html[dir="rtl"] body.indexPage .world_list .w_big .label_players,
+html[dir="rtl"] body.indexPage .world_list .w_big .label_online {
+    left: auto;
+    right: 20px;
+    text-align: right;
+    width: 100px;
 }
 
 html[dir="rtl"] #side_info {
@@ -801,6 +788,7 @@ html[dir="rtl"] div#content.map {
  * the top nav icons, resource bar and the village map are not mirrored
  * or shoved off-screen by the inherited RTL direction.
  * --------------------------------------------------------------------- */
+
 html[dir="rtl"] #header,
 html[dir="rtl"] #mtop,
 html[dir="rtl"] #village_map_wrap,
@@ -927,10 +915,88 @@ html[dir="rtl"] #side_info {
     padding-right: 10px;
     text-align: right;
 }
-html[dir="rtl"] body.pg-anmelden .rw-name,
-html[dir="rtl"] body.pg-anmelden .rw-lines li {
-    text-align: left !important;
+
+/* Registration wizard (anmelden.php) — tribe panel uses LTR margins
+ * (margin-right:219px) to sit text beside the portrait on the right.
+ * Mirror for RTL: portrait left, text block right-aligned. */
+html[dir="rtl"] body.pg-anmelden #content.signup {
+    direction: rtl;
+    text-align: right;
+    overflow: visible;
 }
+
+html[dir="rtl"] body.pg-anmelden #regwiz {
+    max-width: 100%;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-panel {
+    overflow: hidden;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-name {
+    width: auto !important;
+    max-width: 56%;
+    margin: 45px 0 12px 44% !important;
+    text-align: right !important;
+    letter-spacing: 0;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-lines {
+    width: auto !important;
+    max-width: 56%;
+    margin: 0 0 0 44% !important;
+    padding: 0;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-lines li {
+    text-align: right !important;
+    padding: 3px 30px 3px 0 !important;
+    background-position: 100% 50% !important;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-portrait {
+    right: auto !important;
+    left: 0 !important;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-badge {
+    left: auto !important;
+    right: 50%;
+    margin-left: 0 !important;
+    margin-right: -72px;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-note {
+    padding: 9px 36px 9px 10px;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-note:before {
+    left: auto;
+    right: 10px;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-agree {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-agree input {
+    margin: 0 0 2px 5px;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-field label,
+html[dir="rtl"] body.pg-anmelden .rw-intro,
+html[dir="rtl"] body.pg-anmelden .rw-foot {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-anmelden .rw-field input.rw-text {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: plaintext;
+}
+
 html[dir="rtl"] #side_info h5,
 html[dir="rtl"] #side_info div.news {
     margin-left: 0;
@@ -1050,7 +1116,7 @@ html[dir="rtl"] body.dorf1Page div.village1 div#map_details {
     max-width: 229px !important;
     min-width: 0 !important;
     margin: 0 !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     box-sizing: border-box !important;
 }
 /* dorf1.php puts two empty <br>s at the top of #map_details; hide them
@@ -1151,9 +1217,6 @@ html[dir="rtl"] #content h1 {
 }
 
 @media screen and (max-width: 640px) {
-    html[dir="rtl"] {
-        zoom: 1 !important;
-    }
     html[dir="rtl"] body {
         width: auto !important;
         overflow-x: hidden;
@@ -1408,18 +1471,20 @@ html[dir="rtl"] #res table td.respill {
     white-space: nowrap;
 }
 html[dir="rtl"] #res table td.respill span {
-    background-color: #5cbf6a;
-    border-radius: 0;
+    /* Greek MaxB .Resbar b / X-Tatar .resone */
+    background-color: #54c571;
+    border-radius: 5px;
     box-sizing: border-box;
     color: #ffffff;
     display: inline-block;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 16px;
     margin: 0;
-    padding: 2px 8px;
-    text-align: right;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, .25);
+    min-width: 50px;
+    padding: 5px 4px;
+    text-align: center;
+    text-shadow: none;
     vertical-align: middle;
     width: max-content;
     white-space: nowrap;
@@ -1454,10 +1519,10 @@ html[dir="rtl"] #goldHeader {
     height: auto;
     max-height: 56px;
     min-height: 0;
-    padding: 2px 6px 2px 34px !important;
+    padding: 4px 10px 4px 34px !important;
     background: #ffffff !important;
     border: 1px solid #d1d5da;
-    border-radius: 0;
+    border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
     text-align: right;
     line-height: 1;
@@ -1467,20 +1532,20 @@ html[dir="rtl"] #goldHeader {
 }
 
 html[dir="rtl"] #goldHeader::before {
-    content: "\2713";
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     width: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #d4a24a !important;
-    font-size: 13px;
-    font-weight: 700;
+    display: block;
     border-right: 1px solid #d1d5da;
-    background: #ffffff;
+    /* Gray fills the whole left cell; checkmark stays small & centered. */
+    background-color: #f2f1ed;
+    background-image: url("../gpack/novaterra_classic/img/a/plus-active.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 11px 11px;
 }
 
 html[dir="rtl"] #goldHeader .tzCoinRow,
@@ -1786,22 +1851,109 @@ html[dir="rtl"] body.pg-dorf2 #side_navi {
     font-family: Tahoma, Arial, sans-serif;
 }
 
-html[dir="rtl"] body.pg-dorf2 #content.village2 {
-    font-size: 14px;
-    position: relative;
-    left: 0 !important;
-    font-weight: 400;
-}
-html[dir="rtl"] body.pg-dorf2 #content.village2 h1 {
-    left: auto;
-    right: 25px;
-    top: 10px;
-    text-align: right;
+/* dorf2.php — keep map edges + menu clear of each other.
+ * The old inline left:20px shoved #content into #side_navi and clipped
+ * the village map's right rim / shadow-a edge. */
+html[dir="rtl"] body.pg-dorf2 #mid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    direction: ltr !important;
+    unicode-bidi: isolate;
+    float: none !important;
+    width: 980px !important;
+    max-width: 980px !important;
+    min-width: 980px !important;
+    left: -90px !important;
+    right: auto !important;
+    transform: none !important;
+    margin-top: 28px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
 }
 
 html[dir="rtl"] body.pg-dorf2 #side_info {
+    order: 1 !important;
+    flex: 0 0 267px !important;
+    width: 267px !important;
+    max-width: 267px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    align-self: flex-start !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    background-color: transparent !important;
+    background-image: url("../gpack/novaterra_classic/images/shadow-b-rtl.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: right top !important;
+    overflow: visible !important;
+    z-index: 6;
     text-align: right;
     font-weight: 400;
+}
+
+html[dir="rtl"] body.pg-dorf2 #content.village2 {
+    order: 2 !important;
+    flex: 0 0 540px !important;
+    width: 540px !important;
+    max-width: 540px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    position: relative !important;
+    left: 0 !important;
+    right: auto !important;
+    top: auto !important;
+    overflow: visible !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    background: transparent !important;
+    box-sizing: border-box !important;
+    padding: 43px 6px 0 !important;
+    font-size: 14px;
+    font-weight: 400;
+    z-index: 1;
+}
+
+html[dir="rtl"] body.pg-dorf2 #content.village2 h1 {
+    left: auto !important;
+    right: 25px !important;
+    top: 10px !important;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-dorf2 #side_navi {
+    order: 3 !important;
+    flex: 0 0 155px !important;
+    width: 155px !important;
+    max-width: 155px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    margin-top: 120px !important;
+    float: none !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    /* Nudge menu slightly right so it clears the map rim; keep RTL shadow. */
+    position: relative !important;
+    left: 12px !important;
+    right: auto !important;
+    background-color: transparent !important;
+    background-image: url("../gpack/novaterra_classic/images/shadow-a-rtl.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: left top !important;
+    overflow: visible !important;
+    z-index: 3;
 }
 
 html[dir="rtl"] body.pg-dorf2 #content.village2 p,
@@ -2223,6 +2375,8 @@ html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def tr.hl 
 html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi {
     direction: rtl;
     width: 100%;
+    margin-top: 8px;
+    clear: both;
 }
 
 html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi div.search {
@@ -2234,3 +2388,1031 @@ html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi div.nav
     float: left;
     text-align: left;
 }
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi div.navi a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi div.navi a:hover {
+    filter: brightness(93%);
+    text-decoration: underline;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#search_navi input.text {
+    border: 1px solid #71d000;
+    margin: 0 4px;
+    padding: 1px 4px;
+}
+
+/* ---------------------------------------------------------------------
+ * Greek SA (MaxB) + X-Tatar polish — stats only.
+ * Typography, header gradients, shared table family, top10 gaps.
+ * Does not change ranking logic or LTR packs.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body.pg-statistics #content.statistics {
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics #textmenu {
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 4px 0 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics #textmenu a {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 13px;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics #textmenu a:hover {
+    filter: brightness(93%);
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics #textmenu a.selected {
+    background: #f3f3f3;
+    border: 1px solid #c0c0c0;
+    border-radius: 2px;
+    padding: 1px 6px;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadBar {
+    background: linear-gradient(0deg, hsl(0deg 0.1% 89%), #fff);
+    border: 1px solid #c0c0c0;
+    border-radius: 2px;
+    padding: 6px 8px;
+    min-height: 34px;
+    box-sizing: border-box;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics .statHeadTitle {
+    font-size: 14px;
+    font-weight: 900;
+}
+
+/* Shared ranking tables: player_off/def, villages, heroes, wonder, world */
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages,
+html[dir="rtl"] body.pg-statistics #content.statistics table#heroes,
+html[dir="rtl"] body.pg-statistics #content.statistics table#wonder,
+html[dir="rtl"] body.pg-statistics #content.statistics table.world,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 {
+    width: 100%;
+    direction: rtl;
+    border-collapse: collapse;
+    margin-top: 5px;
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 {
+    width: 246px !important;
+    max-width: 48% !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#heroes thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table#wonder thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table.world thead th,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 thead th {
+    background: linear-gradient(0deg, hsl(0deg 0.1% 89%), #fff);
+    font-weight: 900;
+    text-align: center;
+    border: 1px solid #c0c0c0;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#heroes thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#wonder thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table.world thead td,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 thead td {
+    background: #f3f3f3;
+    font-weight: 700;
+    text-align: center;
+    border: 1px solid #c0c0c0;
+    padding: 3px 4px !important;
+    color: #000;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off tbody td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def tbody td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages tbody td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#heroes tbody td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#wonder tbody td,
+html[dir="rtl"] body.pg-statistics #content.statistics table.world tbody td,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 tbody td {
+    border: 1px solid #c0c0c0;
+    padding: 2px 4px !important;
+    vertical-align: middle;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off td.pla a,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def td.pla a,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages td.vil a,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages td.pla a,
+html[dir="rtl"] body.pg-statistics #content.statistics table#heroes td.pla a,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 td.pla a,
+html[dir="rtl"] body.pg-statistics #content.statistics table.world a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages td.vil,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table#heroes td.pla,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 td.pla {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_off a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table#alliance_def a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table#heroes a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 a:hover,
+html[dir="rtl"] body.pg-statistics #content.statistics table.world a:hover {
+    filter: brightness(93%);
+    text-decoration: underline;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_off tr.hl td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#player_def tr.hl td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#villages tr.hl td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#heroes tr.hl td,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 tr.hl td,
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 tr.own td {
+    background-color: #f0fff0 !important;
+    border-top: 1px solid #71d000 !important;
+    border-bottom: 1px solid #71d000 !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.top10 {
+    margin-top: 10px !important;
+    margin-bottom: 8px !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#top10_offs,
+html[dir="rtl"] body.pg-statistics #content.statistics table#top10_climbers {
+    margin-left: 8px !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table#top10_defs,
+html[dir="rtl"] body.pg-statistics #content.statistics table#top10_raiders {
+    margin-right: 8px !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.world {
+    margin-bottom: 12px;
+    table-layout: fixed;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.world > thead > tr > th {
+    text-align: center;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.world > thead > tr > td {
+    text-align: center;
+    width: auto;
+}
+
+/* Label | value rows (Players / Server info): keep label beside value, no huge gap */
+html[dir="rtl"] body.pg-statistics #content.statistics table.world > tbody > tr > th {
+    text-align: right !important;
+    font-weight: 400 !important;
+    background: transparent !important;
+    width: 72% !important;
+    padding: 4px 10px !important;
+    border: 1px solid #c0c0c0;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.world > tbody > tr > td {
+    text-align: center !important;
+    font-weight: 700;
+    width: 28% !important;
+    white-space: nowrap;
+    padding: 4px 8px !important;
+    border: 1px solid #c0c0c0;
+}
+
+/* World overview: two equal metric columns */
+html[dir="rtl"] body.pg-statistics #content.statistics table#world_player > thead > tr > td,
+html[dir="rtl"] body.pg-statistics #content.statistics table#world_player > tbody > tr > td {
+    width: 50% !important;
+    text-align: center !important;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.medalResetBar {
+    width: 100%;
+    margin: 6px 0 10px;
+    border-collapse: collapse;
+    direction: rtl;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.medalResetBar td {
+    text-align: center !important;
+    padding: 6px 8px !important;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.medalResetBar #medalTimer {
+    display: inline-block;
+    direction: ltr;
+    unicode-bidi: isolate;
+    margin-right: 4px;
+    color: #1e8449;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.ps-head {
+    width: 100%;
+    margin-bottom: 10px;
+    border-collapse: collapse;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics table.ps-head th {
+    background: linear-gradient(0deg, hsl(0deg 0.1% 89%), #fff);
+    border: 1px solid #c0c0c0;
+    padding: 6px 8px !important;
+}
+
+/* Village ranking coords: never mirror (x|y) under RTL */
+html[dir="rtl"] body.pg-statistics #content.statistics td.aligned_coords {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: center !important;
+    white-space: nowrap;
+}
+
+html[dir="rtl"] body.pg-statistics #content.statistics td.aligned_coords span[dir="ltr"],
+html[dir="rtl"] body.pg-statistics #content.statistics td.aligned_coords div {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline;
+    float: none !important;
+}
+
+/* ---------------------------------------------------------------------
+ * Village pages (dorf1 / dorf2) — zip match like statistics:
+ *   structure = X-Tatar / TravianZ (#production, #troops, #vlist, maps)
+ *   visual tokens = Greek SA MaxB (#71d000, Tahoma, orange active name)
+ * Does NOT resize #village_map or field/building pixel positions.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body.dorf1Page #content.village1,
+html[dir="rtl"] body.pg-dorf2 #content.village2,
+html[dir="rtl"] body.dorf1Page #side_info,
+html[dir="rtl"] body.pg-dorf2 #side_info {
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] body.dorf1Page #content.village1 a,
+html[dir="rtl"] body.pg-dorf2 #content.village2 a {
+    color: #71d000;
+}
+
+html[dir="rtl"] body.dorf1Page #content.village1 a:hover,
+html[dir="rtl"] body.pg-dorf2 #content.village2 a:hover {
+    color: #5bb000;
+}
+
+html[dir="rtl"] body.dorf1Page table#production thead th,
+html[dir="rtl"] body.dorf1Page table#troops thead th {
+    font-weight: 700;
+    text-align: right !important;
+    background: transparent;
+}
+
+html[dir="rtl"] body.dorf1Page table#production td.num,
+html[dir="rtl"] body.dorf1Page table#troops td.num {
+    font-weight: 700;
+}
+
+/* #vlist — Greek MyVs / X-Tatar villages-list */
+html[dir="rtl"] #side_info table#vlist {
+    direction: rtl;
+    text-align: right;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] #side_info table#vlist thead td,
+html[dir="rtl"] #side_info table#vlist thead td a {
+    color: #000 !important;
+    font-weight: 700;
+    text-align: right;
+}
+
+html[dir="rtl"] #side_info table#vlist td.link a {
+    color: #71d000;
+    font-weight: 400;
+}
+
+html[dir="rtl"] #side_info table#vlist td.dot.hl ~ td.link a {
+    /* Greek .C_O / X-Tatar active village name */
+    color: orange !important;
+    font-weight: 700;
+}
+
+html[dir="rtl"] #side_info table#vlist td.link a:hover {
+    color: #5bb000;
+}
+
+html[dir="rtl"] #side_info table#vlist span.village-capital {
+    display: block;
+    color: #c0c0c0;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+html[dir="rtl"] #side_info table#vlist td.aligned_coords {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: left;
+    white-space: nowrap;
+}
+
+html[dir="rtl"] #side_info table#vlist td.aligned_coords span[dir="ltr"] {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline;
+    float: none !important;
+}
+
+html[dir="rtl"] body.pg-dorf2 #content.village2 h1 {
+    font-family: Tahoma, Arial, sans-serif;
+    font-weight: 700;
+}
+
+/* Gold finish on build queue — keep visible under RTL village layout */
+html[dir="rtl"] body.dorf1Page #content.village1 table#building_contract,
+html[dir="rtl"] body.pg-dorf2 #content.village2 table#building_contract,
+html[dir="rtl"] body.pg-build #content.build table#building_contract {
+    clear: both !important;
+    display: table !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 20;
+    overflow: visible !important;
+    margin: 8px 0 12px !important;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+html[dir="rtl"] a.building-gold-finish {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 3px;
+    margin: 0 8px !important;
+    padding: 2px 8px !important;
+    border: 1px solid #d2b35a !important;
+    background: #fff8d7 !important;
+    color: #8a5a00 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    line-height: 16px !important;
+    text-decoration: none !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 50 !important;
+    float: none !important;
+}
+
+html[dir="rtl"] a.building-gold-finish:hover {
+    background: #fff0a6 !important;
+    color: #8a5a00 !important;
+}
+
+html[dir="rtl"] a.building-gold-finish--off {
+    opacity: 0.75 !important;
+    border-color: #c0c0c0 !important;
+    background: #f3f3f3 !important;
+    color: #666 !important;
+}
+
+html[dir="rtl"] a.building-gold-finish img.clock,
+html[dir="rtl"] a.building-gold-finish img {
+    display: inline-block !important;
+    visibility: visible !important;
+    vertical-align: middle !important;
+}
+
+html[dir="rtl"] a.building-gold-finish img.clock {
+    width: 18px !important;
+    height: 12px !important;
+}
+
+html[dir="rtl"] a.building-gold-finish .building-gold-finish-label {
+    color: inherit !important;
+}
+
+html[dir="rtl"] #building_contract thead th {
+    overflow: visible !important;
+    white-space: normal !important;
+}
+
+/* ---------------------------------------------------------------------
+ * System announcement (Natars / WW villages / plans / artefacts).
+ *
+ * Keep the SAME three-column #mid / #header / #res / #ltime layout as a
+ * normal dorf1 page. Only style the announcement text panel + sprites.
+ * Previous announcement-only overrides (hide #side_info, re-position
+ * #ltime to top:42px, re-flex #mid) broke the header icons and left a
+ * huge empty column.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body.announcementPage #mid > br,
+html[dir="rtl"] body.dorf1Page.announcementPage #mid > br {
+    display: none !important;
+}
+
+html[dir="rtl"] body.dorf1Page.announcementPage #content.sysmsg,
+html[dir="rtl"] body.dorf1Page.announcementPage #content.announcement,
+html[dir="rtl"] body.announcementPage #content.sysmsg,
+html[dir="rtl"] body.announcementPage #content.announcement,
+html[dir="rtl"] #content.sysmsg,
+html[dir="rtl"] #content.announcement {
+    direction: rtl !important;
+    text-align: right !important;
+    unicode-bidi: isolate;
+    font-family: Tahoma, Arial, sans-serif;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box !important;
+    background: #fff !important;
+    padding: 6px 12px 20px !important;
+}
+
+html[dir="rtl"] #content.sysmsg h1,
+html[dir="rtl"] #content.announcement h1,
+html[dir="rtl"] #content.sysmsg h3,
+html[dir="rtl"] #content.announcement h3 {
+    text-align: right !important;
+    direction: rtl;
+    margin: 0 0 8px;
+}
+
+html[dir="rtl"] #content.sysmsg .announcement-hello,
+html[dir="rtl"] #content.announcement .announcement-hello {
+    color: #333;
+    font-weight: 700;
+}
+
+html[dir="rtl"] #content.sysmsg .announcement-body h1,
+html[dir="rtl"] #content.announcement .announcement-body h1,
+html[dir="rtl"] #content.announcement #sysmsg h1 {
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+    margin: 0 0 10px !important;
+    padding: 0 !important;
+    text-align: right !important;
+}
+
+html[dir="rtl"] #content.sysmsg #sysmsg,
+html[dir="rtl"] #content.announcement .announcement-body,
+html[dir="rtl"] #sysmsg {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    overflow-wrap: anywhere;
+    word-wrap: break-word;
+    direction: rtl;
+    text-align: right;
+    line-height: 1.7;
+}
+
+html[dir="rtl"] #content.sysmsg img.WWBuildingPlansAnnouncement,
+html[dir="rtl"] #content.announcement img.WWBuildingPlansAnnouncement {
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 551 / 168;
+    min-height: 140px !important;
+    margin: 12px auto !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+
+html[dir="rtl"] #sysmsg img.ArtefactsAnnouncement,
+html[dir="rtl"] #content.sysmsg img.ArtefactsAnnouncement,
+html[dir="rtl"] #content.announcement img.ArtefactsAnnouncement {
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 378 / 157;
+    min-height: 120px !important;
+    margin: 12px auto !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+
+html[dir="rtl"] #sysmsg img.WWVillagesAnnouncement,
+html[dir="rtl"] #content.sysmsg img.WWVillagesAnnouncement,
+html[dir="rtl"] #content.announcement img.WWVillagesAnnouncement {
+    display: block !important;
+    max-width: 196px !important;
+    width: 196px !important;
+    height: 324px !important;
+    margin: 12px auto !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+
+html[dir="rtl"] #content.sysmsg .announcement-actions,
+html[dir="rtl"] #content.announcement .announcement-actions {
+    clear: both;
+    text-align: right;
+}
+
+html[dir="rtl"] #content.sysmsg .announcement-actions a,
+html[dir="rtl"] #content.announcement .announcement-actions a {
+    color: #71d000;
+}
+
+/* Map village view: capital label under name */
+html[dir="rtl"] div.map div#dmain,
+html[dir="rtl"] #dmain {
+    direction: rtl;
+    text-align: right;
+    color: #c0c0c0;
+    font-size: 11px;
+}
+
+/* ---------------------------------------------------------------------
+ * Login page (login.php) — Arabic text instead of English title sprites.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body.pg-login #content.login {
+    direction: rtl;
+    text-align: right;
+    font-family: Tahoma, Arial, "Segoe UI", sans-serif;
+}
+
+html[dir="rtl"] body.pg-login h1.tz-login-title {
+    margin: 0 0 14px;
+    padding: 0;
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #7ba428;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-login h5.tz-login-subtitle {
+    margin: 0 0 8px;
+    padding: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #7ba428;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-login p.tz-login-cookies {
+    line-height: 1.7;
+    margin: 0 0 16px;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-login #login_form {
+    direction: rtl;
+    width: 100%;
+}
+
+html[dir="rtl"] body.pg-login #login_form th {
+    text-align: right;
+    padding-left: 12px;
+    padding-right: 0;
+    white-space: nowrap;
+}
+
+html[dir="rtl"] body.pg-login #login_form td {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-login #login_form td input.text {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: plaintext;
+}
+
+html[dir="rtl"] body.pg-login p.btn {
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-login p.btn button#tz_btn_login,
+html[dir="rtl"] body.pg-login button.trav_buttons.tz-btn-login {
+    display: inline-block;
+    min-width: 130px;
+    height: 32px;
+    padding: 0 22px;
+    border: 1px solid #5a8018 !important;
+    border-radius: 4px;
+    background: #9ec94a !important;
+    background-image: none !important;
+    color: #1f3308 !important;
+    -webkit-text-fill-color: #1f3308 !important;
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 30px;
+    cursor: pointer;
+    text-align: center;
+    text-indent: 0 !important;
+    text-shadow: none;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+html[dir="rtl"] body.pg-login p.btn button#tz_btn_login:hover,
+html[dir="rtl"] body.pg-login button.trav_buttons.tz-btn-login:hover {
+    background: #b5d85a !important;
+    background-image: none !important;
+    border-color: #6b961f !important;
+    color: #1f3308 !important;
+}
+
+html[dir="rtl"] body.pg-login p.btn button#tz_btn_login:active,
+html[dir="rtl"] body.pg-login button.trav_buttons.tz-btn-login:active {
+    background: #7fad2e !important;
+    background-image: none !important;
+    border-color: #4a6a12 !important;
+    color: #142206 !important;
+}
+
+html[dir="rtl"] body.pg-login p.error_box {
+    text-align: right;
+    direction: rtl;
+}
+
+/* ---------------------------------------------------------------------
+ * In-game manual popup (manual.php inside #ce iframe).
+ * Keep text RTL; reserve space for big unit / building images so
+ * descriptions never overlap artwork.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body.manual,
+html[dir="rtl"] body.pg-manual {
+    direction: rtl;
+    text-align: right;
+    margin: 8px 14px 8px 10px;
+    font-family: Tahoma, Arial, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+}
+
+html[dir="rtl"] body.manual h1,
+html[dir="rtl"] body.pg-manual h1 {
+    text-align: right;
+    padding-left: 0;
+    margin-left: 0;
+    clear: both;
+}
+
+html[dir="rtl"] body.manual ul,
+html[dir="rtl"] body.pg-manual ul,
+html[dir="rtl"] body.manual ol,
+html[dir="rtl"] body.pg-manual ol {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 8px;
+    padding: 0 22px 0 8px;
+    list-style-position: outside;
+}
+
+html[dir="rtl"] body.manual ul li,
+html[dir="rtl"] body.pg-manual ul li {
+    text-align: right;
+}
+
+/* Overview only: leave room for troops/buildings decoration images. */
+html[dir="rtl"] body.manual > p:first-of-type,
+html[dir="rtl"] body.pg-manual > p:first-of-type {
+    padding-left: 150px;
+    padding-right: 0;
+    text-align: right;
+}
+
+html[dir="rtl"] body.manual img.troops,
+html[dir="rtl"] body.pg-manual img.troops,
+html[dir="rtl"] body.manual img.buildings,
+html[dir="rtl"] body.pg-manual img.buildings {
+    right: auto !important;
+    left: 10px !important;
+}
+
+/*
+ * Unit detail pages: portrait is 150×120 and absolute-positioned.
+ * Compact CSS puts it at left:260px (LTR right side). In RTL the
+ * tables grow from the right and collide with that portrait — so
+ * park the art on the physical left and indent all text columns.
+ */
+html[dir="rtl"] body.manual img#big_unit,
+html[dir="rtl"] body.pg-manual img#big_unit {
+    left: 6px !important;
+    right: auto !important;
+    top: 88px !important;
+    z-index: 1;
+    pointer-events: none;
+}
+
+html[dir="rtl"] body.manual table#troop_info,
+html[dir="rtl"] body.pg-manual table#troop_info,
+html[dir="rtl"] body.manual table#troop_details,
+html[dir="rtl"] body.pg-manual table#troop_details {
+    margin: 6px 0 12px 165px !important;
+    max-width: calc(100% - 165px);
+    width: auto;
+    position: relative;
+    z-index: 2;
+}
+
+html[dir="rtl"] body.manual div#t_desc,
+html[dir="rtl"] body.pg-manual div#t_desc {
+    margin: 10px 0 8px 165px !important;
+    max-height: 150px;
+    overflow: auto;
+    text-align: right;
+    clear: none;
+    position: relative;
+    z-index: 2;
+}
+
+html[dir="rtl"] body.manual div#prereqs,
+html[dir="rtl"] body.pg-manual div#prereqs {
+    clear: both;
+    margin: 14px 0 0;
+    padding-left: 0;
+    text-align: right;
+    position: relative;
+    z-index: 2;
+}
+
+/* Building detail: float artwork left so Arabic text stays readable. */
+html[dir="rtl"] body.manual img.building,
+html[dir="rtl"] body.pg-manual img.building {
+    float: left !important;
+    margin: -10px 12px 12px 0 !important;
+    position: relative;
+    z-index: 1;
+}
+
+html[dir="rtl"] body.manual img.navi,
+html[dir="rtl"] body.pg-manual img.navi {
+    left: 50% !important;
+    margin-left: -58px;
+}
+
+html[dir="rtl"] body.manual ul.goldclub,
+html[dir="rtl"] body.pg-manual ul.goldclub {
+    padding-right: 25px;
+    padding-left: 0;
+}
+
+/* ---------------------------------------------------------------------
+ * Direct links box (#llist) — matches classic “الروابط الخاصة :”
+ * green link list under the side menu / side_info.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] #llist.tz-llist,
+html[dir="rtl"] #side_navi #llist.tz-llist,
+html[dir="rtl"] #side_info #llist.tz-llist {
+    display: block;
+    margin: 14px 0 8px;
+    padding: 0;
+    text-align: right;
+    direction: rtl;
+    clear: both;
+}
+
+html[dir="rtl"] #llist.tz-llist .tz-llist-head,
+html[dir="rtl"] #llist.tz-llist .tz-llist-head a {
+    display: block;
+    margin: 0 0 4px;
+    padding: 0;
+    color: #000 !important;
+    font-weight: bold;
+    font-size: 12px;
+    text-decoration: none;
+    text-align: right;
+}
+
+html[dir="rtl"] #llist.tz-llist .tz-llist-head a:hover {
+    text-decoration: underline;
+}
+
+html[dir="rtl"] #llist.tz-llist ul.tz-llist-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+html[dir="rtl"] #llist.tz-llist ul.tz-llist-items li {
+    margin: 0;
+    padding: 1px 0;
+    text-align: right;
+}
+
+html[dir="rtl"] #llist.tz-llist ul.tz-llist-items li a {
+    color: #71D000 !important;
+    font-size: 12px;
+    font-weight: normal;
+    text-decoration: none;
+    line-height: 1.35;
+}
+
+html[dir="rtl"] #llist.tz-llist ul.tz-llist-items li a:hover {
+    text-decoration: underline;
+}
+
+html[dir="rtl"] #llist.tz-llist img.external {
+    vertical-align: middle;
+    margin-right: 3px;
+}
+
+/* ---------------------------------------------------------------------
+ * WW victory report (winner.php).
+ * Header/#mtop/#res/#ltime: identical to spieler (second lang.css in
+ * winner.php restores 700px #mtop). Only style the report panel here.
+ * --------------------------------------------------------------------- */
+html[dir="rtl"] body.pg-winner #content,
+html[dir="rtl"] body.pg-winner #content.player,
+html[dir="rtl"] body.pg-winner #content.tz-winner-page {
+    order: 2 !important;
+    flex: 0 0 537px !important;
+    width: 537px !important;
+    max-width: 537px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    padding: 10px 12px 24px !important;
+    direction: rtl;
+    text-align: right;
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #222;
+    z-index: 1;
+    background: transparent !important;
+}
+
+html[dir="rtl"] body.pg-winner #side_info {
+    order: 1 !important;
+    flex: 0 0 257px !important;
+    width: 257px !important;
+    max-width: 257px !important;
+    margin: 0 !important;
+    float: none !important;
+    align-self: flex-start !important;
+    overflow: visible !important;
+    z-index: 6;
+    pointer-events: auto !important;
+}
+
+html[dir="rtl"] body.pg-winner #side_info a,
+html[dir="rtl"] body.pg-winner #side_info #vlist a {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 7;
+}
+
+html[dir="rtl"] body.pg-winner #side_navi {
+    order: 3 !important;
+    flex: 0 0 155px !important;
+    width: 155px !important;
+    max-width: 155px !important;
+    margin: 0 !important;
+    float: none !important;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-report {
+    position: relative;
+    border: 1px solid #9a9a9a;
+    background: #fff;
+    padding: 12px 14px 14px;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-title {
+    position: static !important;
+    display: block;
+    margin: 0 0 10px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    text-align: right;
+    line-height: 1.4;
+    background: none !important;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-report p {
+    margin: 0 0 9px;
+    text-align: right;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-ww {
+    float: right !important;
+    display: block !important;
+    width: 88px !important;
+    max-width: 88px !important;
+    height: auto !important;
+    max-height: 124px !important;
+    margin: 2px 0 8px 10px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    z-index: auto !important;
+    background: none !important;
+    background-image: none !important;
+    object-fit: contain;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-hl,
+html[dir="rtl"] body.pg-winner .tz-winner-hl a {
+    color: #71D000 !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-hl a:hover {
+    text-decoration: underline;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-thanks {
+    clear: both;
+    margin-top: 10px !important;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-continue {
+    text-align: center;
+    margin: 14px 0 0;
+    clear: both;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-continue a {
+    color: #71D000 !important;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-continue a:hover {
+    text-decoration: underline;
+}
+
+html[dir="rtl"] body.pg-winner .tz-winner-art {
+    display: none !important;
+}
+

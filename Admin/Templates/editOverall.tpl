@@ -59,7 +59,7 @@ if($id){
         <div class="icon">⚔️</div>
         <div>
             <h2><?php echo ADM_OVERALL_POINTS; ?><a href="admin.php?p=player&uid=<?php echo $user['id'];?>"><?php echo htmlspecialchars($user['username']);?></a></h2>
-            <div class="sub">UID: <?php echo $uid; ?> • Rank: #<?php echo (int)$user['rank']; ?></div>
+            <div class="sub">UID: <?php echo $uid; ?> • Rank: #<?php echo (int)($user['oldrank'] ?? 0); ?></div>
         </div>
     </div>
 

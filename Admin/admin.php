@@ -54,6 +54,8 @@ include_once("../GameEngine/RegBlock.php");
 include_once("../GameEngine/Heatmap.php");
 include_once("../GameEngine/GoldShop.php");
 include_once("../GameEngine/QuestConfig.php");
+include_once("../GameEngine/PortalWorlds.php");
+include_once("../GameEngine/FeatureFlags.php");
 
 // ─── SECURITY HELPERS ────────────────────────────────────────────────────────
 
@@ -116,6 +118,7 @@ function admin_validated_page(string $raw): string
         'heatmap',
         'goldShop', 'grantResources',
         'featureFlags',
+        'portalWorlds',
         'questEditor',
     ];
 
@@ -217,6 +220,12 @@ if ($page !== '') {
 
         case 'featureFlags':
             $subpage = ADMIN_FEATURE_FLAGS;
+            break;
+
+        case 'portalWorlds':
+            $subpage = defined('PORTAL_ADM_TITLE')
+                ? (PORTAL_ADM_TITLE . ' — ' . (defined('PORTAL_ADM_WORLDS') ? PORTAL_ADM_WORLDS : 'Worlds'))
+                : 'Portal Worlds';
             break;
 
         case 'questEditor':
@@ -574,8 +583,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_EDIT_TROOPS . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if ($village) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_EDIT_TROOPS . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                } else {
+                    $subpage = ADMIN_EDIT_TROOPS . $did . ' not found)';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_EDIT_TROOPS . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -585,8 +599,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_UPGRADE_TROOPS . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if ($village) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_UPGRADE_TROOPS . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                } else {
+                    $subpage = ADMIN_UPGRADE_TROOPS . $did . ' not found)';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_UPGRADE_TROOPS . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -596,8 +615,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_EDIT_VILLAGE . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if ($village) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_EDIT_VILLAGE . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                } else {
+                    $subpage = ADMIN_EDIT_VILLAGE . $did . ' not found)';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_EDIT_VILLAGE . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -638,8 +662,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_BUILD_LOG . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if ($village) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_BUILD_LOG . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                } else {
+                    $subpage = ADMIN_BUILD_LOG . $did . ' not found)';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_BUILD_LOG . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -649,8 +678,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_RESEARCH_LOG . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if ($village) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_RESEARCH_LOG . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                } else {
+                    $subpage = ADMIN_RESEARCH_LOG . $did . ' not found)';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_RESEARCH_LOG . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -949,6 +983,9 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                                 <li><a href="?p=heatmap"><font color="Red"><b><?php echo ADMIN_WORLD_MAP_HEATMAP; ?></b></font></a></li>
                                 <li><a href="?p=debug_log"><?php echo ADMIN_DEBUG_ERROR_LOG; ?></a></li>
                                 <li><a href="?p=config"><?php echo ADMIN_SERVER_SETTINGS; ?></a></li>
+                                <li><a href="?p=portalWorlds"><?php
+                                    echo defined('PORTAL_ADM_MENU') ? PORTAL_ADM_MENU : 'Portal Worlds';
+                                ?></a></li>
                                 <li><a href="?p=featureFlags"><?php echo ADMIN_FEATURE_FLAGS; ?></a></li>
                                 <li><a href="?p=maintenance"><?php echo ADMIN_SERVER_MAINTENANCE; ?></a></li>
                                 <li><a href="?p=resetServer"><?php echo ADMIN_SERVER_RESETTING; ?></a></li>

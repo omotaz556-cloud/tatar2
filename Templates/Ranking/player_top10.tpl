@@ -66,16 +66,24 @@
 
 <!-- ADDED: row with Week / Medal reset -->
 <?php if (defined('NEW_FUNCTIONS_MEDAL_RESET') && NEW_FUNCTIONS_MEDAL_RESET): ?>
-<table cellpadding="1" cellspacing="1" style="width:100%; margin:2px 0;">
+<?php
+    $medalDayLabel = defined('TZ_MEDAL_TIMER_DAY') ? TZ_MEDAL_TIMER_DAY : 'd';
+    $medalResetLabel = defined('TZ_MEDAL_RESET_IN') ? TZ_MEDAL_RESET_IN : 'Medal reset in:';
+?>
+<table cellpadding="1" cellspacing="1" class="medalResetBar">
     <tr>
-        <td style="text-align:center; padding:3px;">
-            <b>Week: <?php echo $week; ?></b> &nbsp;&nbsp; <b>Medal reset in:</b> <span id="medalTimer"><?php echo $days; ?>d <?php echo $timeLeft; ?></span>
+        <td>
+            <b><?php echo WEEK; ?>: <?php echo (int) $week; ?></b>
+            &nbsp;&nbsp;
+            <b><?php echo $medalResetLabel; ?></b>
+            <span id="medalTimer" dir="ltr"><?php echo (int) $days . $medalDayLabel . ' ' . $timeLeft; ?></span>
         </td>
     </tr>
 </table>
 <?php endif; ?>
 <script>
-var medalSeconds = <?php echo $left; ?>;
+var medalSeconds = <?php echo (int) $left; ?>;
+var medalDayLabel = <?php echo json_encode(defined('TZ_MEDAL_TIMER_DAY') ? TZ_MEDAL_TIMER_DAY : 'd', JSON_UNESCAPED_UNICODE); ?>;
 setInterval(function(){
     if(medalSeconds <= 0) return;
     medalSeconds--;
@@ -83,7 +91,8 @@ setInterval(function(){
     var h = String(Math.floor((medalSeconds%86400)/3600)).padStart(2,'0');
     var m = String(Math.floor((medalSeconds%3600)/60)).padStart(2,'0');
     var s = String(medalSeconds%60).padStart(2,'0');
-    document.getElementById('medalTimer').innerHTML = d+'d '+h+':'+m+':'+s;
+    var el = document.getElementById('medalTimer');
+    if (el) el.innerHTML = d + medalDayLabel + ' ' + h + ':' + m + ':' + s;
 },1000);
 </script>
 

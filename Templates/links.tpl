@@ -1,26 +1,9 @@
 <?php
 #################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
 ##  Filename       links.tpl                                                   ##
-##  Developed by:  Slim, Manuel Mannhardt 							           ##
-##  Refactored by: Shadow Incremental Refactor 			                       ##
-##  License:       Novaterra Project                                            ##
-##  Copyright:     Novaterra (c) 2010-2025. All rights reserved.                ##
-##                                                                             ##
-##  Refactor notes:                                                            ##
-##  - păstrată logica originală 100%                                           ##
-##  - compatibil PHP 5.6+ / 7+                                                 ##
-##  - redus cod duplicat                                                       ##
-##  - securizare output HTML                                                   ##
-##  - protecție basic URL                                                      ##
-##  - comentarii adăugate                                                      ##
-##                                                                             ##
+##  Player direct-links box (sidebar). Configured in spieler.php?s=2.          ##
 #################################################################################
 
-/**
- * Escape HTML compatibil PHP vechi
- */
 if (!function_exists('safeHTML')) {
     function safeHTML($string)
     {
@@ -28,139 +11,69 @@ if (!function_exists('safeHTML')) {
     }
 }
 
-/**
- * Verifică URL minim
- * Compatibil PHP vechi
- */
 if (!function_exists('safeLinkUrl')) {
     function safeLinkUrl($url)
     {
         $url = trim($url);
-
-        // Blochează javascript:
         if (stripos($url, 'javascript:') === 0) {
             return '#';
         }
-
         return $url;
     }
 }
 
-/**
- * Fetch links utilizator
- */
+if (!isset($database) || !isset($session) || !isset($session->uid)) {
+    return;
+}
+
 $query = $database->getLinks($session->uid);
+if (!$query || mysqli_num_rows($query) < 1) {
+    return;
+}
 
-/**
- * Verifică query valid
- */
-if ($query && mysqli_num_rows($query) > 0) {
-
-    /**
-     * Cache links
-     */
-    $links = array();
-
-    while ($data = mysqli_fetch_assoc($query)) {
-        $links[] = $data;
+$links = array();
+while ($data = mysqli_fetch_assoc($query)) {
+    $name = isset($data['name']) ? trim($data['name']) : '';
+    $url = isset($data['url']) ? trim($data['url']) : '';
+    if ($name === '' || $url === '') {
+        continue;
     }
+    $links[] = $data;
+}
+
+if (count($links) < 1) {
+    return;
+}
+
+$llistTitle = defined('TZ_PRIVATE_LINKS') ? TZ_PRIVATE_LINKS : (defined('TZ_LINKS') ? TZ_LINKS : 'الروابط الخاصة :');
 ?>
-
-<!-- ===================== PLAYER LINKS ===================== -->
-
-<table cellpadding="1" cellspacing="1">
-
-    <thead>
-
-        <tr>
-            <td colspan="3">
-                <a href="spieler.php?s=2"><?php echo TZ_LINKS; ?></a>
-            </td>
-        </tr>
-
-    </thead>
-
-    <tbody>
-
+<div id="llist" class="tz-llist">
+    <div class="tz-llist-head">
+        <a href="spieler.php?s=2"><?php echo safeHTML($llistTitle); ?></a>
+    </div>
+    <ul class="tz-llist-items">
 <?php
-/**
- * Render links
- */
 foreach ($links as $link) {
-
-    /**
-     * Normalizează date
-     */
-    $linkName = isset($link['name'])
-        ? $link['name']
-        : '';
-
-    $linkUrl = isset($link['url'])
-        ? $link['url']
-        : '';
-
-    /**
-     * Link extern
-     * URL terminat în *
-     */
+    $linkName = isset($link['name']) ? $link['name'] : '';
+    $linkUrl = isset($link['url']) ? $link['url'] : '';
     $isExternal = false;
 
     if (substr($linkUrl, -1) === '*') {
-
         $isExternal = true;
-
-        // Elimină *
         $linkUrl = substr($linkUrl, 0, -1);
     }
 
-    /**
-     * Securizare URL
-     */
     $linkUrl = safeLinkUrl($linkUrl);
-
-    /**
-     * Target extern
-     */
-    $target = '';
-
-    if ($isExternal) {
-        $target = ' target="_blank" rel="noopener noreferrer"';
-    }
-
-    /**
-     * Icon extern
-     */
-    $externalIcon = '';
-
-    if ($isExternal) {
-
-        $externalIcon = '<img src="gpack/novaterra_classic/img/a/external.gif"
-                              alt="External"
-                              title="External" />';
-    }
+    $target = $isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+    $externalIcon = $isExternal
+        ? ' <img src="gpack/novaterra_classic/img/a/external.gif" alt="" title="" class="external" />'
+        : '';
 ?>
-
-        <tr>
-
-            <td class="dot">●</td>
-
-            <td class="link">
-
-<?php
-echo '<a href="' . safeHTML($linkUrl) . '"' . $target . '>'
-    . safeHTML($linkName)
-    . $externalIcon
-    . '</a>';
-?>
-
-            </td>
-
-        </tr>
-
+        <li>
+            <a href="<?php echo safeHTML($linkUrl); ?>"<?php echo $target; ?>><?php
+                echo safeHTML($linkName) . $externalIcon;
+            ?></a>
+        </li>
 <?php } ?>
-
-    </tbody>
-
-</table>
-
-<?php } ?>
+    </ul>
+</div>

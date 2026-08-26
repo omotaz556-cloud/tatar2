@@ -225,15 +225,27 @@ foreach ($varmedal as $medal) {
 </tr>
 
 <?php if (NEW_FUNCTIONS_MEDAL_3YEAR): ?>
-<tr><td>veteran</td><td></td><td></td><td><a href="#" onclick="insertMedal('[#g2300]'); return false;">[#g2300]</a></td></tr>
+<tr>
+<td><?php echo htmlspecialchars(VETERAN_P . ' (3)', ENT_QUOTES, 'UTF-8'); ?></td>
+<td>غير متاح</td><td>غير متاح</td>
+<td><a href="#" title="[#g2300]" onclick="insertMedal('[#g2300]'); return false;"><img class="badge-option" src="<?php echo GP_LOCATE; ?>img/t/Veteran_Medal.jpg" alt="[#g2300]"></a></td>
+</tr>
 <?php endif; ?>
 
 <?php if (NEW_FUNCTIONS_MEDAL_5YEAR): ?>
-<tr><td>veteran_5a</td><td></td><td></td><td><a href="#" onclick="insertMedal('[#g2301]'); return false;">[#g2301]</a></td></tr>
+<tr>
+<td><?php echo htmlspecialchars(VETERAN_P . ' (5)', ENT_QUOTES, 'UTF-8'); ?></td>
+<td>غير متاح</td><td>غير متاح</td>
+<td><a href="#" title="[#g2301]" onclick="insertMedal('[#g2301]'); return false;"><img class="badge-option" src="<?php echo GP_LOCATE; ?>img/t/5year_medal.png" alt="[#g2301]"></a></td>
+</tr>
 <?php endif; ?>
 
 <?php if (NEW_FUNCTIONS_MEDAL_10YEAR): ?>
-<tr><td>veteran_10a</td><td></td><td></td><td><a href="#" onclick="insertMedal('[#g2302]'); return false;">[#g2302]</a></td></tr>
+<tr>
+<td><?php echo htmlspecialchars(VETERAN_P . ' (10)', ENT_QUOTES, 'UTF-8'); ?></td>
+<td>غير متاح</td><td>غير متاح</td>
+<td><a href="#" title="[#g2302]" onclick="insertMedal('[#g2302]'); return false;"><img class="badge-option" src="<?php echo GP_LOCATE; ?>img/t/10_year_medal.png" alt="[#g2302]"></a></td>
+</tr>
 <?php endif; ?>
 
 <?php
@@ -335,7 +347,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
                 <td>".TZ_MEDAL_ARTEFACT_HOLDER."</td>
                 <td></td>
                 <td></td>
-                <td><a href='#' onclick=\"insertMedal('[#ARTEFACT]'); return false;\">[#ARTEFACT]</a></td>
+                <td><a href='#' title='[#ARTEFACT]' onclick=\"insertMedal('[#ARTEFACT]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/gloriamedals/artifact.png' alt='[#ARTEFACT]'></a></td>
               </tr>";
     }
 
@@ -348,7 +360,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
                 <td>".TZ_MEDAL_WW_BUILDER."</td>
                 <td></td>
                 <td></td>
-                <td><a href='#' onclick=\"insertMedal('[#WWBUILDER]'); return false;\">[#WWBUILDER]</a></td>
+                <td><a href='#' title='[#WWBUILDER]' onclick=\"insertMedal('[#WWBUILDER]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/gloriamedals/ww_builder.png' alt='[#WWBUILDER]'></a></td>
               </tr>";
 
         $lvl = (int)$ww->fetch_assoc()['f99'];
@@ -357,7 +369,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
                     <td>".TZ_MEDAL_WW_WINNER."</td>
                     <td></td>
                     <td></td>
-                    <td><a href='#' onclick=\"insertMedal('[#WINNERWW]'); return false;\">[#WINNERWW]</a></td>
+                    <td><a href='#' title='[#WINNERWW]' onclick=\"insertMedal('[#WINNERWW]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/gloriamedals/ww_winner.png' alt='[#WINNERWW]'></a></td>
                   </tr>";
         }
     }
@@ -385,7 +397,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
                 <td>".TZ_MEDAL_GREAT_STORE."</td>
                 <td></td>
                 <td></td>
-                <td><a href='#' onclick=\"insertMedal('[#GREATSTORE]'); return false;\">[#GREATSTORE]</a></td>
+                <td><a href='#' title='[#GREATSTORE]' onclick=\"insertMedal('[#GREATSTORE]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/gloriamedals/greatstore.png' alt='[#GREATSTORE]'></a></td>
               </tr>";
     }
 	
@@ -407,7 +419,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
             <td>".TZ_MEDAL_WALL_MASTER."</td>
             <td></td>
             <td></td>
-            <td><a href='#' onclick=\"insertMedal('[#WALLMASTER]'); return false;\">[#WALLMASTER]</a></td>
+            <td><a href='#' title='[#WALLMASTER]' onclick=\"insertMedal('[#WALLMASTER]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/gloriamedals/wallmaster.png' alt='[#WALLMASTER]'></a></td>
           </tr>";
 	}
 
@@ -418,8 +430,39 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
                 <td>Hero 99+</td>
                 <td></td>
                 <td></td>
-                <td><a href='#' onclick=\"insertMedal('[#HERO100]'); return false;\">[#HERO100]</a></td>
+                <td><a href='#' title='[#HERO100]' onclick=\"insertMedal('[#HERO100]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/gloriamedals/hero.png' alt='[#HERO100]'></a></td>
               </tr>";
+    }
+}
+
+// Map BB-code keys -> image URLs for the profile description editor preview.
+$profileMedalIcons = [
+    '0' => GP_LOCATE . 'img/t/tn.gif',
+    'g2300' => GP_LOCATE . 'img/t/Veteran_Medal.jpg',
+    'g2301' => GP_LOCATE . 'img/t/5year_medal.png',
+    'g2302' => GP_LOCATE . 'img/t/10_year_medal.png',
+    'roman' => GP_LOCATE . 'img/t/roman.gif',
+    'teuton' => GP_LOCATE . 'img/t/teutons.gif',
+    'gaul' => GP_LOCATE . 'img/t/gauls.gif',
+    'multihunter' => GP_LOCATE . 'img/t/t6_1.png',
+    'mh' => GP_LOCATE . 'img/t/MH.png',
+    'team' => GP_LOCATE . 'img/t/team.png',
+    'shadow' => GP_LOCATE . 'img/t/shadow.png',
+    'event' => GP_LOCATE . 'img/t/t10_1.jpg',
+    'artefact' => GP_LOCATE . 'img/gloriamedals/artifact.png',
+    'wwbuilder' => GP_LOCATE . 'img/gloriamedals/ww_builder.png',
+    'winnerww' => GP_LOCATE . 'img/gloriamedals/ww_winner.png',
+    'greatstore' => GP_LOCATE . 'img/gloriamedals/greatstore.png',
+    'wallmaster' => GP_LOCATE . 'img/gloriamedals/wallmaster.png',
+    'hero100' => GP_LOCATE . 'img/gloriamedals/hero.png',
+];
+if (is_array($varmedal)) {
+    foreach ($varmedal as $medalIconRow) {
+        $mid = (string)($medalIconRow['id'] ?? '');
+        $mimg = preg_replace('/[^a-zA-Z0-9_.-]/', '', (string)($medalIconRow['img'] ?? ''));
+        if ($mid !== '' && $mimg !== '') {
+            $profileMedalIcons[$mid] = GP_LOCATE . 'img/t/' . $mimg . '.jpg';
+        }
     }
 }
 ?>
@@ -428,30 +471,55 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
 </p>
 
 <style>
-.profile-editor { min-height: 170px; padding: 4px; border: 1px solid #71d000; background: #fff; overflow: auto; white-space: pre-wrap; word-break: break-word; }
-.profile-editor img { width: 64px; height: 64px; object-fit: contain; margin: 0 5px; vertical-align: middle; }
-.badge-option { display: inline-block; width: 26px; height: 26px; object-fit: contain; vertical-align: middle; margin: 0 3px; }
+.profile-editor {
+    min-height: 170px;
+    padding: 4px;
+    border: 1px solid #71d000;
+    background: #fff;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+div.player .profile-editor img,
+.profile-editor img {
+    max-width: 48px !important;
+    max-height: 48px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin: 0 4px !important;
+    vertical-align: middle !important;
+}
+.badge-option {
+    display: inline-block;
+    max-width: 48px;
+    max-height: 28px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    vertical-align: middle;
+    margin: 0 3px;
+}
 .tbg td:last-child { white-space: nowrap; }
+.tbg td:last-child a { unicode-bidi: isolate; direction: ltr; }
 </style>
 
 <!-- JS -->
 <script>
+const profileMedalIcons = <?php echo json_encode($profileMedalIcons, JSON_UNESCAPED_SLASHES); ?>;
+
 function renderProfileEditor(textarea, editor) {
-    const badges = {
-        roman: 'img/t/roman.gif',
-        multihunter: 'img/t/t6_1.png',
-        mh: 'img/t/MH.png',
-        team: 'img/t/team.png'
-    };
     editor.innerHTML = '';
     const parts = textarea.value.split(/(\[(?:#?[a-z0-9_]+|[a-z0-9_]+#)\])/ig);
     parts.forEach(function (part) {
         const key = part.replace(/[\[\]#]/g, '').toLowerCase();
-        if (badges[key]) {
+        if (profileMedalIcons[key]) {
             const image = document.createElement('img');
-            image.src = '<?php echo GP_LOCATE; ?>' + badges[key];
+            image.src = profileMedalIcons[key];
             image.alt = part;
-            image.dataset.code = part;
+            image.dataset.code = '[#' + key + ']';
+            image.width = 48;
+            image.height = 48;
             editor.appendChild(image);
         } else {
             editor.appendChild(document.createTextNode(part));

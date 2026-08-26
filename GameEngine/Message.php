@@ -761,19 +761,22 @@ class Message
 	* internal timestamp.
 	*/
 
-	$worldStart = strtotime(
-    START_DATE . ' ' . START_TIME
-	);
+	$worldStart = function_exists('tz_natars_timer_base')
+		? tz_natars_timer_base()
+		: strtotime(START_DATE . ' ' . START_TIME);
 
     /*
      * Natars spawn
      *
-     * NATARS_SPAWN_TIME is stored in days.
+     * NATARS_SPAWN_TIME is stored in days. Prefer the shared helper so an
+     * admin Natars reset advances this schedule with the in-game countdown.
      */
     $natarsDate = $worldStart;
 
     if (defined('NATARS_SPAWN_TIME')) {
-        $natarsDate = $worldStart + ((int) NATARS_SPAWN_TIME * 86400);
+        $natarsDate = function_exists('tz_natars_spawn_at')
+			? tz_natars_spawn_at((int) NATARS_SPAWN_TIME)
+			: ($worldStart + ((int) NATARS_SPAWN_TIME * 86400));
     }
 
     /*
@@ -782,7 +785,9 @@ class Message
     $wwVillagesDate = $worldStart;
 
     if (defined('NATARS_WW_SPAWN_TIME')) {
-        $wwVillagesDate = $worldStart + ((int) NATARS_WW_SPAWN_TIME * 86400);
+        $wwVillagesDate = function_exists('tz_natars_spawn_at')
+			? tz_natars_spawn_at((int) NATARS_WW_SPAWN_TIME)
+			: ($worldStart + ((int) NATARS_WW_SPAWN_TIME * 86400));
     }
 
     /*
@@ -791,9 +796,9 @@ class Message
     $wwPlansDate = $worldStart;
 
     if (defined('NATARS_WW_BUILDING_PLAN_SPAWN_TIME')) {
-        $wwPlansDate = $worldStart + (
-            (int) NATARS_WW_BUILDING_PLAN_SPAWN_TIME * 86400
-        );
+        $wwPlansDate = function_exists('tz_natars_spawn_at')
+			? tz_natars_spawn_at((int) NATARS_WW_BUILDING_PLAN_SPAWN_TIME)
+			: ($worldStart + ((int) NATARS_WW_BUILDING_PLAN_SPAWN_TIME * 86400));
     }
 
 

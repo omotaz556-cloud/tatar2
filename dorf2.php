@@ -69,7 +69,7 @@ if (
 	<script src="mt-full.js?0faab" type="text/javascript"></script>
 	<script src="unx.js?f4b7h" type="text/javascript"></script>
 	<script src="new.js?0faab" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
+	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?en1" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
 	<?php
 	// GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
@@ -83,7 +83,7 @@ if (
 	<link href='".GP_LOCATE."main.css?e21d2' rel='stylesheet' type='text/css' />
 	<link href='".GP_LOCATE."main_en.css?e21d2' rel='stylesheet' type='text/css' />
 	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
+	<link href='".GP_LOCATE."lang/en/lang.css?en1' rel='stylesheet' type='text/css' />";
 	?>
 	<script type="text/javascript">
 
@@ -91,7 +91,6 @@ if (
 	</script>
 	<?php echo tz_rtl_stylesheet_tag(); ?>
 	<style type="text/css">
-		html[dir="rtl"] body.pg-dorf2 #content.village2 { left: 20px !important; }
 		html[dir="rtl"] body.pg-dorf2 #content.village2,
 		html[dir="rtl"] body.pg-dorf2 #side_info,
 		html[dir="rtl"] body.pg-dorf2 #side_navi { font-family: Tahoma, Arial, sans-serif; }

@@ -113,13 +113,24 @@ trait AutomationNatarsWW {
     	
     	//Check if Natars account is already created and if the time
     	//is come and we have to create Natars and spawn their artifacts
-        if($database->areArtifactsSpawned() || strtotime(START_DATE) + (NATARS_SPAWN_TIME * 86400 / SPEED) > time()) return;
+        if($database->areArtifactsSpawned() || tz_natars_spawn_at((int) NATARS_SPAWN_TIME) > time()) return;
     	
-    	//Create the Natars account and his capital
-    	$this->artifacts->createNatars();
+    	try {
+    		//Create the Natars account and his capital / artifacts
+    		$this->artifacts->createNatars();
+    	} catch (Throwable $e) {
+    		// Never take down dorf1/login with a spawn failure (portal maps, etc.)
+    		error_log('spawnNatars: ' . $e->getMessage());
+    		return;
+    	}
     	
-    	//Write the system message
-    	$database->displaySystemMessage(ARTEFACT);
+    	// Only announce when artifacts actually exist. createNatars() may
+    	// no-op (Natars row already present) or fail on small portal maps —
+    	// calling displaySystemMessage anyway re-sets users.ok=1 on every
+    	// automation tick and traps players in the announcement forever.
+    	if ($database->areArtifactsSpawned()) {
+    		$database->displaySystemMessage(ARTEFACT);
+    	}
     }
     
     /**
@@ -132,13 +143,14 @@ trait AutomationNatarsWW {
     	
     	//Check if Natars account has already been created, if WW villages have already been spawned
     	//and if it's the time to spawn them or not
-        if(!$database->areArtifactsSpawned() || $database->areWWVillagesSpawned() || strtotime(START_DATE) + (NATARS_WW_SPAWN_TIME * 86400 / SPEED) > time()) return;
+        if(!$database->areArtifactsSpawned() || $database->areWWVillagesSpawned() || tz_natars_spawn_at((int) NATARS_WW_SPAWN_TIME) > time()) return;
     	
     	//Create WW villages
     	$this->artifacts->createWWVillages();
 	    
-	    //Write the system message
-    	$database->displaySystemMessage(WWVILLAGEMSG);
+	    if ($database->areWWVillagesSpawned()) {
+    		$database->displaySystemMessage(WWVILLAGEMSG);
+    	}
     }
     
     /**
@@ -151,13 +163,14 @@ trait AutomationNatarsWW {
     	
     	//Check if Natars account is already spawned, if WW building plans have already been spawned
     	//and if it's the time to spawn them or not
-        if(!$database->areArtifactsSpawned() || $database->areArtifactsSpawned(true) || strtotime(START_DATE) + (NATARS_WW_BUILDING_PLAN_SPAWN_TIME * 86400 / SPEED) > time()) return;
+        if(!$database->areArtifactsSpawned() || $database->areArtifactsSpawned(true) || tz_natars_spawn_at((int) NATARS_WW_BUILDING_PLAN_SPAWN_TIME) > time()) return;
     	
     	//Create WW building plans
     	$this->artifacts->createWWBuildingPlans();
     	
-    	//Set the system message to contain the infos of the WW building plans
-    	$database->displaySystemMessage(PLAN_INFO);
+    	if ($database->areArtifactsSpawned(true)) {
+    		$database->displaySystemMessage(PLAN_INFO);
+    	}
     }
     
     /**

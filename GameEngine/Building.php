@@ -34,6 +34,10 @@
 #################################################################################
 
 
+if (!class_exists('FeatureFlags', false)) {
+    @include_once __DIR__ . '/FeatureFlags.php';
+}
+
 class Building {
 
     public $NewBuilding = false;

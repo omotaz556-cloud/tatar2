@@ -161,6 +161,9 @@ if (count($session->villages) > 0) {
             ? (int)$villageData['y']
             : 0;
 
+        $isCapital = !empty($villageData['capital'])
+            && (string) $villageData['capital'] !== '0';
+
         /**
          * Highlight current village
          */
@@ -204,6 +207,9 @@ if (count($session->villages) > 0) {
                 <a href="<?php echo htmlspecialchars($villageUrl, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php echo htmlspecialchars($villageName, ENT_QUOTES, 'UTF-8'); ?>
                 </a>
+                <?php if ($isCapital) { ?>
+                <span class="village-capital"><?php echo '(' . CAPITAL1 . ')'; ?></span>
+                <?php } ?>
             </td>
 
             <td class="aligned_coords"><span dir="ltr">(<?php echo $villageX; ?>|<?php echo $villageY; ?>)</span></td>

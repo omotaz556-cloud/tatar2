@@ -1,28 +1,22 @@
 <?php
-#################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Filename       news.tpl                                                    ##
-##  Developed by:  Dzoki                                                       ##
-##  Refactored by: Shadow Incremental Refactor 			                       ##
-##  License:       Novaterra Project                                            ##
-##  Copyright:     Novaterra (c) 2010-2026. All rights reserved.                ##
-##                                                                             ##
-##  Incremental Refactor Notes:                                                ##
-##  - Preserved original include-based structure                               ##
-##  - Added safe include guards                                                ##
-##  - Prevented warnings if files/constants are missing                        ##
-##                                                                             ##
-#################################################################################
-?>
-
-
-<?php
-/* Natars announcement: the deadline is calculated server-side from config. */
-$tzNatarsSpawnAt = strtotime(START_DATE) + ((int) NATARS_SPAWN_TIME * 86400 / SPEED);
+/**
+ * Natars announcement (sidebar): countdown until spawn, or "appeared" after.
+ * Dismissible via cookie (X button).
+ */
+$tzNatarsSpawnAt = function_exists('tz_natars_spawn_at')
+	? tz_natars_spawn_at((int) NATARS_SPAWN_TIME)
+	: (strtotime(START_DATE) + ((int) NATARS_SPAWN_TIME * 86400 / SPEED));
 $tzNatarsSpawned = method_exists($database, 'areArtifactsSpawned') && (bool) $database->areArtifactsSpawned();
 $tzNatarsRemaining = max(0, $tzNatarsSpawnAt - time());
+$tzNatarsDismissed = !empty($_COOKIE['tz_natars_ann_dismiss']);
+
+// Show countdown before spawn, or the "appeared" banner after (main world).
+// Portal worlds without artefacts still show countdown until remaining hits 0,
+// then the appeared banner (schedule reached even if spawn failed).
+$tzNatarsRevealed = $tzNatarsSpawned || $tzNatarsRemaining === 0;
+$tzShowNatarsAnnouncement = !$tzNatarsDismissed;
 ?>
+<?php if ($tzShowNatarsAnnouncement) { ?>
 <style type="text/css">
 .natars-announcement {
 	position: relative;
@@ -46,6 +40,25 @@ $tzNatarsRemaining = max(0, $tzNatarsSpawnAt - time());
 	content: "";
 	background: #d7a928;
 	animation: natars-sign-scan 2.8s linear infinite;
+}
+.natars-announcement-close {
+	position: absolute;
+	top: 4px;
+	left: 6px;
+	z-index: 2;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.75);
+	color: #7b4d00;
+	font: bold 14px/22px Arial, sans-serif;
+	cursor: pointer;
+}
+html[dir="rtl"] .natars-announcement-close {
+	left: auto;
+	right: 6px;
 }
 .natars-ribbon {
 	display: flex;
@@ -110,16 +123,14 @@ $tzNatarsRemaining = max(0, $tzNatarsSpawnAt - time());
 	from { opacity: 0; transform: translateY(5px); }
 	to { opacity: 1; transform: translateY(0); }
 }
-.natars-revealed strong {
-	display: block;
-}
 </style>
 <div id="natarsAnnouncement" class="news natars-announcement"
 	 data-spawn-at="<?php echo (int) $tzNatarsSpawnAt; ?>"
-	 data-server-now="<?php echo time(); ?>">
-<?php if ($tzNatarsSpawned || $tzNatarsRemaining === 0) { ?>
-	<div class="natars-revealed"><span>🏹</span><strong>لقد ظهر التتار!</strong></div>
-</div>
+	 data-server-now="<?php echo time(); ?>"
+	 data-revealed="<?php echo $tzNatarsRevealed ? '1' : '0'; ?>">
+	<button type="button" class="natars-announcement-close" id="natarsAnnClose" title="إخفاء" aria-label="إخفاء">&times;</button>
+<?php if ($tzNatarsRevealed) { ?>
+	<div class="natars-revealed"><span class="natars-ribbon-icon">🏹</span><strong>لقد ظهر التتار!</strong></div>
 <?php } else { ?>
 	<div class="natars-ribbon"><span class="natars-ribbon-icon">🏹</span><span>ظهور التتار خلال</span></div>
 	<div id="natarsCountdown" class="natars-countdown">
@@ -128,12 +139,25 @@ $tzNatarsRemaining = max(0, $tzNatarsSpawnAt - time());
 		<span><b id="natarsMinutes"><?php echo (int) floor(($tzNatarsRemaining % 3600) / 60); ?></b><small>دقيقة</small></span>
 		<span><b id="natarsSeconds"><?php echo (int) ($tzNatarsRemaining % 60); ?></b><small>ثانية</small></span>
 	</div>
+<?php } ?>
 </div>
 <script type="text/javascript">
 (function () {
 	var announcement = document.getElementById('natarsAnnouncement');
+	if (!announcement) return;
+
+	function dismiss() {
+		var maxAge = 60 * 60 * 24 * 30;
+		document.cookie = 'tz_natars_ann_dismiss=1;path=/;max-age=' + maxAge + ';SameSite=Lax';
+		if (announcement.parentNode) announcement.parentNode.removeChild(announcement);
+	}
+	var closeBtn = document.getElementById('natarsAnnClose');
+	if (closeBtn) closeBtn.onclick = dismiss;
+
+	if (announcement.getAttribute('data-revealed') === '1') return;
+
 	var countdown = document.getElementById('natarsCountdown');
-	if (!announcement || !countdown) return;
+	if (!countdown) return;
 
 	var spawnAt = parseInt(announcement.getAttribute('data-spawn-at'), 10);
 	var serverNow = parseInt(announcement.getAttribute('data-server-now'), 10);
@@ -143,7 +167,11 @@ $tzNatarsRemaining = max(0, $tzNatarsSpawnAt - time());
 		var elapsed = Math.floor(Date.now() / 1000) - clientStartedAt;
 		var remaining = Math.max(0, spawnAt - (serverNow + elapsed));
 		if (remaining <= 0) {
-			announcement.innerHTML = '<div class="natars-revealed"><span>🏹</span><strong>لقد ظهر التتار!</strong></div>';
+			announcement.setAttribute('data-revealed', '1');
+			announcement.innerHTML = '<button type="button" class="natars-announcement-close" id="natarsAnnClose" title="إخفاء" aria-label="إخفاء">&times;</button>'
+				+ '<div class="natars-revealed"><span class="natars-ribbon-icon">🏹</span><strong>لقد ظهر التتار!</strong></div>';
+			var btn = document.getElementById('natarsAnnClose');
+			if (btn) btn.onclick = dismiss;
 			return;
 		}
 

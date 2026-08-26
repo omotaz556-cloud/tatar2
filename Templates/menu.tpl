@@ -45,8 +45,13 @@ $isAdmin     = (isset($session->access) && $session->access == ADMIN);
 $isMH        = (isset($session->access) && $session->access == MULTIHUNTER);
 $userId      = isset($session->uid) ? (int)$session->uid : 0;
 $username    = isset($session->username) ? $session->username : '';
-$sessionOk   = (isset($_SESSION['ok']) && $_SESSION['ok'] == 1);
+$sessionOk   = (isset($_SESSION['ok']) && $_SESSION['ok'] == 1 && empty($_SESSION['sysmsg_ack']));
 $idUser      = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
+$tzChatUnread = 0;
+if ($isLoggedIn && $userId > 0) {
+    include_once('GameEngine/ChatRead.php');
+    $tzChatUnread = ChatRead::getSidebarUnreadCount($userId);
+}
 ?>
 <?php if ($isLoggedIn) { ?>
 <style type="text/css">
@@ -61,6 +66,8 @@ html.tz-stats-compact body #content.statistics table{font-size:11px !important;}
 html.tz-stats-compact body #content.statistics th,html.tz-stats-compact body #content.statistics td{padding:3px 5px !important;}
 html.tz-stats-classic body #content.statistics table{font-size:14px !important;}
 html.tz-stats-classic body #content.statistics th,html.tz-stats-classic body #content.statistics td{padding:9px 10px !important;line-height:1.5;}
+#side_navi .tz-chat-unread{display:inline-block;min-width:18px;height:18px;padding:0 6px;margin-inline-start:6px;border-radius:9px;background:#e53935;color:#fff !important;font-size:11px;font-weight:700;line-height:18px;text-align:center;vertical-align:middle;box-shadow:0 0 0 1px #fff,0 1px 3px rgba(0,0,0,.35);}
+#side_navi p a.tz-chat-link{position:relative;}
 </style>
 <script type="text/javascript">
 (function () {
@@ -99,6 +106,34 @@ html.tz-stats-classic body #content.statistics th,html.tz-stats-classic body #co
             }
         }, 1000);
     }
+})();
+(function () {
+    function applyChatUnread(count) {
+        var n = parseInt(count, 10) || 0;
+        var nav = document.getElementById('tzChatUnreadBadge');
+        var popup = document.getElementById('tzChatPopupBadge');
+        [nav, popup].forEach(function (el) {
+            if (!el) {
+                return;
+            }
+            if (n > 0) {
+                el.style.display = '';
+                el.textContent = String(n);
+                el.title = String(n);
+            } else {
+                el.style.display = 'none';
+                el.textContent = '0';
+            }
+        });
+    }
+    function pollChatUnread() {
+        fetch('chat_unread.php', { credentials: 'same-origin', cache: 'no-store' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) { applyChatUnread(data && data.count); })
+            .catch(function () {});
+    }
+    pollChatUnread();
+    setInterval(pollChatUnread, 15000);
 })();
 </script>
 <?php } ?>
@@ -212,15 +247,72 @@ html.tz-stats-classic body #content.statistics th,html.tz-stats-classic body #co
     </p>
 
 
-    <p>
-        <a href="#" onclick="document.getElementById('socialPopup').style.display='block'; return false;">الدردشة</a>
+    <p class="tz-chat-nav" id="tzChatNavWrap">
+        <a href="#" class="tz-chat-link" id="tzChatNavLink">
+            <?php echo defined('CHAT') ? CHAT : 'الدردشة'; ?><span class="tz-chat-unread" id="tzChatUnreadBadge" title="<?php echo (int) $tzChatUnread; ?>"<?php if ($tzChatUnread <= 0) { echo ' style="display:none"'; } ?>><?php echo (int) $tzChatUnread; ?></span>
+        </a>
+        <div id="socialPopup" class="tz-chat-popup" hidden>
+            <strong class="tz-chat-popup-title"><?php echo defined('CHAT') ? CHAT : 'الدردشة'; ?></strong>
+            <a class="tz-chat-popup-link" href="allianz.php?s=6&amp;public=1">الدردشة العامة<span class="tz-chat-unread" id="tzChatPopupBadge"<?php if ($tzChatUnread <= 0) { echo ' style="display:none"'; } ?>><?php echo (int) $tzChatUnread; ?></span></a>
+            <a class="tz-chat-popup-close" href="#" id="tzChatPopupClose">إغلاق</a>
+        </div>
     </p>
+    <style type="text/css">
+    #side_navi .tz-chat-nav{position:relative;z-index:30;}
+    #side_navi .tz-chat-popup{
+        position:absolute;
+        top:-4px;
+        width:190px;
+        padding:10px 12px;
+        background:#fff;
+        border:1px solid #b8c9d1;
+        box-shadow:0 3px 12px rgba(0,0,0,.25);
+        text-align:right;
+        direction:rtl;
+        z-index:10000;
+    }
+    #side_navi .tz-chat-popup[hidden]{display:none !important;}
+    #side_navi .tz-chat-popup-title{display:block;margin:0 0 8px;color:#28566a;font-weight:700;}
+    #side_navi .tz-chat-popup-link{display:block;padding:6px 0;color:#71d000;text-decoration:none;}
+    #side_navi .tz-chat-popup-link:hover{text-decoration:underline;}
+    #side_navi .tz-chat-popup-close{display:block;padding-top:8px;margin-top:4px;border-top:1px solid #e1e8eb;color:#71d000;text-decoration:none;}
+    #side_navi .tz-chat-popup-close:hover{text-decoration:underline;}
+    /* Sidebar is on the right in RTL → open popup toward the content (left). */
+    html[dir="rtl"] #side_navi .tz-chat-popup{right:100%;left:auto;margin-right:8px;margin-left:0;}
+    html[dir="ltr"] #side_navi .tz-chat-popup{left:100%;right:auto;margin-left:8px;margin-right:0;}
+    </style>
+    <script type="text/javascript">
+    (function () {
+        var link = document.getElementById('tzChatNavLink');
+        var popup = document.getElementById('socialPopup');
+        var closeBtn = document.getElementById('tzChatPopupClose');
+        if (!link || !popup) return;
 
-    <div id="socialPopup" style="display:none;position:fixed;z-index:10000;top:120px;right:20px;width:190px;padding:12px;background:#fff;border:1px solid #b8c9d1;box-shadow:0 3px 12px rgba(0,0,0,.25);text-align:right;">
-        <strong style="display:block;margin-bottom:8px;color:#28566a;">الدردشة</strong>
-        <a style="display:block;padding:6px 0;" href="allianz.php?s=6&amp;public=1">الدردشة العامة</a>
-        <a style="display:block;padding-top:8px;border-top:1px solid #e1e8eb;" href="#" onclick="document.getElementById('socialPopup').style.display='none'; return false;">إغلاق</a>
-    </div>
+        function openPopup(e) {
+            if (e) e.preventDefault();
+            popup.hidden = false;
+        }
+        function closePopup(e) {
+            if (e) e.preventDefault();
+            popup.hidden = true;
+        }
+
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            popup.hidden = !popup.hidden;
+        });
+        if (closeBtn) closeBtn.addEventListener('click', closePopup);
+        document.addEventListener('click', function (e) {
+            var wrap = document.getElementById('tzChatNavWrap');
+            if (!wrap || wrap.contains(e.target)) return;
+            popup.hidden = true;
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') popup.hidden = true;
+        });
+    })();
+    </script>
 	
 	<!-- Discord -->
 	<p>
@@ -278,11 +370,12 @@ html.tz-stats-classic body #content.statistics th,html.tz-stats-classic body #co
         <?php
         }
 
-        /**
-         * Optional external/custom links
-         */
-        if(defined('NEW_FUNCTIONS_DISPLAY_LINKS') && NEW_FUNCTIONS_DISPLAY_LINKS) {
-            include("Templates/links.tpl");
+        if (isset($database) && method_exists($database, 'isThereAWinner') && $database->isThereAWinner()) {
+        ?>
+            <a href="winner.php" style="color:#71D000;font-weight:bold;">
+                <?php echo defined('WINNER_RPT_MENU') ? WINNER_RPT_MENU : 'تقرير النهاية'; ?>
+            </a>
+        <?php
         }
 
         /**
@@ -303,6 +396,16 @@ html.tz-stats-classic body #content.statistics th,html.tz-stats-classic body #co
         ?>
 
     </p>
+
+    <?php
+    /**
+     * Direct links box in the side menu (outside <p> so markup stays valid).
+     * Toggle: NEW_FUNCTIONS_DISPLAY_LINKS — true = left menu, false = #side_info.
+     */
+    if (defined('NEW_FUNCTIONS_DISPLAY_LINKS') && NEW_FUNCTIONS_DISPLAY_LINKS) {
+        include("Templates/links.tpl");
+    }
+    ?>
 
     <?php
     /**
@@ -415,8 +518,16 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 if($sessionOk) {
 ?>
+<script type="text/javascript">
+/* Mark body so RTL CSS can isolate the announcement layout from dorf1 flex. */
+(function () {
+    if (document.body) {
+        document.body.className += (document.body.className ? ' ' : '') + 'announcementPage';
+    }
+})();
+</script>
 
-<div id="content" class="village1">
+<div id="content" class="sysmsg announcement">
 
     <h1>
         <?php echo ANNOUNCEMENT; ?>
@@ -424,13 +535,22 @@ if($sessionOk) {
 
     <br />
 
-    <h3>
-        Hi <?php echo $username; ?>,
+    <h3 class="announcement-hello">
+        <?php
+        $helloName = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+        if (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) {
+            echo 'مرحباً ' . $helloName . '،';
+        } else {
+            echo (defined('ADM_HELLO') ? ADM_HELLO : 'Hi') . ' ' . $helloName . ',';
+        }
+        ?>
     </h3>
 
-    <?php include("Templates/text.tpl"); ?>
+    <div id="sysmsg" class="announcement-body">
+        <?php include("Templates/text.tpl"); ?>
+    </div>
 
-    <div class="c1">
+    <div class="c1 announcement-actions">
 
         <br />
 
@@ -444,13 +564,12 @@ if($sessionOk) {
 
 </div>
 
-<br /><br /><br /><br />
-
 <div id="side_info">
 
     <?php
     /**
-     * Right-side widgets
+     * Right-side widgets — keep visible on announcement so the page uses
+     * the same three-column layout as a normal dorf1 view.
      */
     include("Templates/multivillage.tpl");
     include("Templates/quest.tpl");
@@ -463,7 +582,6 @@ if($sessionOk) {
         defined('NEW_FUNCTIONS_DISPLAY_LINKS')
         && !NEW_FUNCTIONS_DISPLAY_LINKS
     ) {
-        echo "<br><br><br><br>";
         include("Templates/links.tpl");
     }
     ?>
@@ -471,6 +589,7 @@ if($sessionOk) {
 </div>
 
 <div class="clear"></div>
+</div><!-- close #mid early (same as normal pages) so #stime is NOT position:absolute inside #mid -->
 
 <div class="footer-stopper"></div>
 
