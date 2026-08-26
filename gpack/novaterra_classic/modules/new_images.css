@@ -8,7 +8,7 @@ div#footer div#mfoot {background: transparent url(../images/footer_logo.gif) no-
 
 div#dynamic_header, 
 body.mod1 div#dynamic_header, 
-body.mod3 div#dynamic_header {background: transparent url(../images/artwork1-ltr.jpg) no-repeat center top;}
+body.mod3 div#dynamic_header {background: transparent url(../images/artwork1-ltr.jpg?ar14) no-repeat center top;}
 
 body.mod2 div#dynamic_header {background: transparent url(../images/artwork2-ltr.jpg) no-repeat center top;}
 

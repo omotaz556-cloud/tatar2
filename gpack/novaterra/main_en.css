@@ -64,8 +64,15 @@ body.indexPage #content .grit{width:830px;background:transparent none;}body.cont
 .screenshot_view img{border:1px solid #ccc;}#screenshot_layer .navi img{position:absolute;width:25px;height:25px;top:250px;}
 #screenshot_layer .next img{right:20px;}#screenshot_layer .prev img{left:20px;}#iframe_layer{display:none;}
 #iframe_layer .overlay_content{width:450px;margin-right:-225px;}#frame_box{margin:0 20px;}
-#iframe_layer h2{padding-bottom:15px;}#login_layer,#signup_layer{display:none;}#login_layer .overlay_content,#signup_layer .overlay_content{width:384px;margin-right:-192px;}
-#login_layer h2,#signup_layer h2{color:#71d000;}ul.world_list{padding:7px;margin:0;list-style:none;}
+#iframe_layer h2{padding-bottom:15px;}#login_layer,#signup_layer{display:none;}
+#login_layer .overlay_content,#signup_layer .overlay_content{width:400px;margin-right:-200px;background:#fff;border-radius:4px;box-shadow:0 8px 28px rgba(0,0,0,.45);border:1px solid #d7d7d7;padding:0 0 12px;}
+#login_layer h2,#signup_layer h2{color:#222;background:none;text-align:center;font-size:15px;padding:18px 40px 10px;border-bottom:1px dashed #c44;}
+#login_layer .footer,#signup_layer .footer{background:none;height:8px;}
+#login_layer .overlay_content .closer img,#signup_layer .overlay_content .closer img{right:auto;left:12px;top:12px;}
+ul.world_list,ul.tz-world-list{padding:12px 16px 4px;margin:0;list-style:none;max-height:420px;overflow-y:auto;}
+.tz-world-list li,li.tz-world-card{float:none;display:block;position:relative;margin:0 auto 8px;width:361px;height:64px;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.28);background:none;}
+.tz-world-list li img.tz-world-banner,li.tz-world-card img.tz-world-banner{position:relative !important;z-index:1 !important;width:361px;height:64px;}
+.tz-world-info{z-index:50 !important;color:#111 !important;}
 .world_list li{float:left;position:relative;margin:4px 5px;background-repeat:no-repeat;}
 .world_list li div{position:absolute;}.world_list li img{position:relative;z-index:30;}
 .world_list .w_small .players{top:5px;left:123px;}.world_list .w_small .online{top:22px;left:123px;}
@@ -82,9 +89,9 @@ body.socialPage #content .grit{width:930px;}body.socialPage a.buttonLink{display
 body.socialPage a.buttonLink:HOVER{color:white;}img{border:0;}img.dynamic_btn,img.dynamic_img{background-position:top;background-repeat:no-repeat;}
 img.over{background-position:bottom;}img.clicked{background-position:center;}body.indexPage{background:#fff url("images/main_background_front.jpg") repeat-x top;}
 body.contentPage{background:#fff url("images/main_background_content.jpg") repeat-x top;}
-body.indexPage #header{background:transparent url("images/artwork-ltr.jpg") no-repeat top center;}
+body.indexPage #header{background:transparent url("images/artwork-ltr.jpg?ar1") no-repeat top center;}
 #country_select{background:#fff url("images/country_background.jpg") repeat-x top;}
-.contentPage #navigation{background:url("images/logo_background-ltr.jpg") no-repeat top left;}
+.contentPage #navigation{background:url("images/logo_background-ltr.jpg?ar14") no-repeat top left;}
 #navigation .menu a:active{background:transparent url("images/nav_right.gif") no-repeat scroll top right;}
 #navigation .menu a:active span{background:transparent url("images/nav_left.gif") no-repeat scroll top left;}
 #navigation .menu a:hover{background:transparent url("images/nav-right.gif") no-repeat scroll bottom right;}
@@ -106,9 +113,9 @@ body.contentPage #content .grit{background:transparent url("images/content_backg
 #screenshot_layer h4{background:transparent url("images/screenshot_header.jpg") no-repeat top left;}
 #screenshot_layer .footer{background:transparent url("images/screenshot_footer.gif") no-repeat bottom left;}
 #screenshot_layer .next img{background-image:url("images/popup-right.gif");}#screenshot_layer .prev img{background-image:url("images/popup-left.gif");}
-#login_layer .overlay_content,#signup_layer .overlay_content{background:#fff url("images/gameworld_background.jpg") repeat-y top left;}
-#login_layer h2,#signup_layer h2{background:transparent url("images/gameworld_header.jpg") no-repeat top left;}
-#login_layer .footer,#signup_layer .footer{background:transparent url("images/gameworld_footer.jpg") no-repeat bottom left;}
+#login_layer .overlay_content,#signup_layer .overlay_content{background:#fff !important;}
+#login_layer h2,#signup_layer h2{background:none !important;}
+#login_layer .footer,#signup_layer .footer{background:none !important;}
 #iframe_layer h2{background:transparent url("images/anleitung_header.gif") no-repeat top left;}
 #iframe_layer .footer{background:transparent url("images/anleitung_footer.gif") no-repeat bottom left;}
 #iframe_layer .overlay_content{background:#fff url("images/anleitung_background.gif") repeat-y top left;}
