@@ -91,7 +91,7 @@ img.over{background-position:bottom;}img.clicked{background-position:center;}bod
 body.contentPage{background:#fff url("images/main_background_content.jpg") repeat-x top;}
 body.indexPage #header{background:transparent url("images/artwork-ltr.jpg?ar1") no-repeat top center;}
 #country_select{background:#fff url("images/country_background.jpg") repeat-x top;}
-.contentPage #navigation{background:url("images/logo_background-ltr.jpg?ar14") no-repeat top left;}
+.contentPage #navigation{background:url("images/logo_background-ltr.jpg?en1") no-repeat top left;}
 #navigation .menu a:active{background:transparent url("images/nav_right.gif") no-repeat scroll top right;}
 #navigation .menu a:active span{background:transparent url("images/nav_left.gif") no-repeat scroll top left;}
 #navigation .menu a:hover{background:transparent url("images/nav-right.gif") no-repeat scroll bottom right;}
