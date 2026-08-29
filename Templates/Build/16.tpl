@@ -35,7 +35,7 @@ if (!function_exists('rallyPointDisplayName')) {
 if (!function_exists('rallyPointDisplayDay')) {
     function rallyPointDisplayDay($day)
     {
-        return $day === 'today' ? 'اليوم' : $day;
+        return $day;
     }
 }
 ?>

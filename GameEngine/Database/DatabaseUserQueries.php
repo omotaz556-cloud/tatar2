@@ -570,9 +570,19 @@ trait DatabaseUserQueries {
 	 * @return array Returns the user array
 	 */
 
+	function clearUserArrayCache($uid, $username = '')
+	{
+		$uid = (int) $uid;
+		unset(self::$fieldsCache[$uid . '0'], self::$fieldsCache[$uid . '1']);
+		if ($username !== '') {
+			unset(self::$fieldsCache[$username . '0'], self::$fieldsCache[$username . '1']);
+		}
+		$this->clearQueryCache('userarray');
+		$this->clearQueryCache('getUser');
+	}
+
 	function getUserArray($ref, $mode, $use_cache = true) {
         list($ref, $mode) = $this->escape_input($ref, $mode);
-
         // first of all, check if we should be using cache and whether the field
         // required is already cached
         if ($use_cache && ($cachedValue = self::returnCachedContent(self::$fieldsCache, $ref.$mode)) && !is_null($cachedValue)) {

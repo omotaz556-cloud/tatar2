@@ -142,6 +142,11 @@ class Account {
         $form->addError("tribe", TRIBE_EMPTY);
     }
 
+    $regKid = isset($_POST['kid']) ? (int) $_POST['kid'] : 0;
+    if ($regKid < 0 || $regKid > 4) {
+        $form->addError('tribe', defined('REG_MAP_FULL') ? REG_MAP_FULL : TRIBE_EMPTY);
+    }
+
     // Agreement
     if (!isset($_POST['agb'])) {
         $form->addError("agree", AGREE_ERROR);
@@ -152,8 +157,17 @@ class Account {
         $form->addError("winner", 'The test server period has ended.');
     }
     if ($form->returnErrors() === 0 && class_exists('RegistrationGuard') && !RegistrationGuard::allowed($database->dblink, $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '')) {
-        $form->addError("winner", 'Registration limit reached for this IP/device.');
-        @mysqli_query($database->dblink, "INSERT INTO `" . TB_PREFIX . "admin_log` (user,ip,time,action) VALUES (0,'" . mysqli_real_escape_string($database->dblink, $_SERVER['REMOTE_ADDR'] ?? '') . "'," . time() . ",'Suspicious registration blocked by IP/device limit')");
+        $form->addError("winner", defined('REG_LIMIT_IP')
+            ? REG_LIMIT_IP
+            : 'Registration limit reached for this IP/device.');
+        $logMsg = mysqli_real_escape_string(
+            $database->dblink,
+            'Suspicious registration blocked by IP/device limit (IP: ' . ($_SERVER['REMOTE_ADDR'] ?? '') . ')'
+        );
+        @mysqli_query(
+            $database->dblink,
+            'INSERT INTO `' . TB_PREFIX . 'admin_log` (`user`, `log`, `time`) VALUES (0, \'' . $logMsg . '\', ' . time() . ')'
+        );
     }
     if ($form->returnErrors() > 0) {
         $form->addError("invt", $_POST['invited'] ?? '');
@@ -221,12 +235,24 @@ class Account {
                     1
                 );
 
-            $this->generateBase($_POST['kid'], $uid, $_POST['name']);
+                if ($this->generateBase((int) ($_POST['kid'] ?? 0), $uid, $_POST['name'])) {
+                    header("Location: login.php");
+                    exit;
+                }
 
-            header("Location: login.php");
-            exit;
+                @mysqli_query($database->dblink, 'DELETE FROM `' . TB_PREFIX . 'users` WHERE id=' . (int) $uid . ' LIMIT 1');
+
+                $form->addError('tribe', defined('REG_MAP_FULL')
+                    ? REG_MAP_FULL
+                    : '<li>تعذّر إنشاء قرية البداية. جرّب موقع عشوائي أو تواصل مع الإدارة.</li>');
+                $_SESSION['errorarray'] = $form->getErrors();
+                $tmp = $_POST;
+                unset($tmp['pw']);
+                $_SESSION['valuearray'] = $tmp;
+                header('Location: anmelden.php');
+                exit;
+            }
         }
-    }
 }
 
 	private function Activate() {
@@ -260,10 +286,10 @@ class Account {
 
             if ($uid) {
                 $database->unreg($dbarray['username']);
-                $this->generateBase($dbarray['location'], $uid, $dbarray['username']);
-                
-                header("Location: activate.php?e=2");
-                exit;
+                if ($this->generateBase((int) ($dbarray['location'] ?? 0), $uid, $dbarray['username'])) {
+                    header("Location: activate.php?e=2");
+                    exit;
+                }
             }
             // dacă register eșuează → comportamentul original (fără redirect)
             
@@ -435,29 +461,52 @@ class Account {
 	function generateBase($kid, $uid, $username) {
 		global $database;
     $message = new Message();
-    // Logica exactă din original
-    if ($kid == 0) {
+    $kid = (int) $kid;
+    if ($kid === 0) {
         $kid = rand(1, 4);
-    } else {
-        $kid = $_POST['kid'];   // suprascrie parametrul cu valoarea din POST
+    } elseif ($kid < 1 || $kid > 4) {
+        $kid = rand(1, 4);
     }
-    $database->generateVillages(
-        [
-            [
-                'wid'    => 0,
-                'mode'   => 0,
-                'type'   => 3,
-                'kid'    => $kid,
-                'capital'=> 1,
-                'pop'    => 2,
-                'name'   => null,
-                'natar'  => 0
-            ]
-        ],
-        $uid,
-        $username
-    );
-    $message->sendWelcome($uid, $username);
+
+    $spec = function ($sector, $mode) {
+        return [
+            'wid'     => 0,
+            'mode'    => $mode,
+            'type'    => 3,
+            'kid'     => (int) $sector,
+            'capital' => 1,
+            'pop'     => 2,
+            'name'    => null,
+            'natar'   => 0,
+        ];
+    };
+
+    $attempts = [
+        [$kid, 0],
+        [rand(1, 4), 0],
+        [rand(1, 4), 1],
+    ];
+
+    $wid = null;
+    foreach ($attempts as $attempt) {
+        list($tryKid, $tryMode) = $attempt;
+        $wid = $database->generateVillages([$spec($tryKid, $tryMode)], $uid, $username);
+        if (!empty($wid)) {
+            break;
+        }
+    }
+
+    if (empty($wid)) {
+        return false;
+    }
+
+    try {
+        $message->sendWelcome($uid, $username);
+    } catch (Throwable $e) {
+        // Welcome mail must not block account creation.
+    }
+
+    return true;
 }
 };
 $account = new Account;

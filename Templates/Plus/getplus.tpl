@@ -115,4 +115,3 @@ if(empty($_POST['plus'])) {
     echo '<br><div align="center"><font color="green" size="4"><b>Your status has been updated!</b></font></div>';
 }
 ?>
-</div>

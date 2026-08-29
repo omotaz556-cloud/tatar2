@@ -103,11 +103,11 @@ foreach ($classificationQueries as $classification => $query) {
 // =========================
 // MENU SWITCH (SELF vs SIT)
 // =========================
-if ($uid == $session->uid) {
+if ($uid == $session->uid && empty($GLOBALS['gkSpielerLiteralPage'])) {
     if ($session->sit == 0) {
-        include("menu.tpl");
+        include __DIR__ . '/menu.tpl';
     } else {
-        include("menu2.tpl");
+        include __DIR__ . '/menu2.tpl';
     }
 }
 ?>

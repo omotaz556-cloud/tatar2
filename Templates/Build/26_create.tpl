@@ -99,7 +99,7 @@ $trainList = $technology->getTrainingList($unitId);
                     <span id="timer<?php echo $timer;?>"><?php echo $generator->getTimeFormat($remainingTotal);?></span>
                 </td>
                 <td class="fin">
-                    <?php if ($time[0]!= "today") echo "on ".$time[0]." at "; echo $time[1];?> o'clock
+                    <?php if (!tz_mtime_is_today($time[0])) echo "on ".$time[0]." at "; echo $time[1];?> o'clock
                 </td>
             </tr>
             <tr class="next">

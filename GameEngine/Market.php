@@ -866,7 +866,7 @@ class Market
 
         $database->releaseMerchantLock($village->wid);
 
-        header('Location: build.php?id=' . $get['id']);
+        header('Location: build.php?id=' . $get['id'] . '&t=1');
         exit;
     }
 
@@ -1023,14 +1023,16 @@ class Market
 
         $newTotal = $m2[0] + $m2[1] + $m2[2] + $m2[3];
 
-        $currentTotal =
+        // Cast to int so !== does not reject equal totals (round() returns float)
+        $currentTotal = (int) (
             round($village->awood) +
             round($village->aclay) +
             round($village->airon) +
-            round($village->acrop);
+            round($village->acrop)
+        );
 
-        // Too many resources requested
-        if ($newTotal > $currentTotal) {
+        // Exact redistribution only — reject surplus OR shortfall (prevents gold drain + resource loss)
+        if ($newTotal !== $currentTotal) {
 
             header('Location: build.php?id=' . $post['id'] . '&t=3');
             exit;
@@ -1150,6 +1152,13 @@ class Market
         if (in_array($resType, ['w', 'c', 'i', 'r'], true)) {
             $map = ['w' => 'wood', 'c' => 'clay', 'i' => 'iron', 'r' => 'crop'];
             $add[$map[$resType]] = $totalUnits;
+        } elseif ($resType === 'each') {
+            // N units of every resource per gold spent (plus page / greek.sa style).
+            $perResource = $goldSpend * $unit;
+            $add['wood'] = $perResource;
+            $add['clay'] = $perResource;
+            $add['iron'] = $perResource;
+            $add['crop'] = $perResource;
         } else {
             // Even split across all four (remainder goes to wood so the
             // total granted always matches what was paid for).

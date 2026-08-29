@@ -136,7 +136,7 @@ function cycleMarker(moveid, el){
         <th><?= ARRIVAL?></th>
         <td colspan="<?= $colspan?>">
             <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($u['endtime']-time())?></span> ساعة</div>
-            <div class="at small"><?= $dt[0]!='today'? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?> <?= HRS?></div>
+            <div class="at small"><?= !tz_mtime_is_today($dt[0])? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?> <?= HRS?></div>
         </td>
     </tr></tbody>
 </table>
@@ -166,7 +166,7 @@ function cycleMarker(moveid, el){
     <?php endif;?>
     <tbody class="infos"><tr><th><?= ARRIVAL?></th><td colspan="<?= $colspan?>">
         <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($u['endtime']-time())?></span> ساعة</div>
-        <div class="at"><?= $dt[0]!='today'? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?></div>
+        <div class="at"><?= !tz_mtime_is_today($dt[0])? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?></div>
     </td></tr></tbody>
 </table>
 <?php endif; endforeach;?>
@@ -191,7 +191,7 @@ function cycleMarker(moveid, el){
     </tbody>
     <tbody class="infos"><tr><th><?= ARRIVAL?></th><td colspan="<?= $colspan?>">
         <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($m['endtime']-time())?></span> ساعة</div>
-        <div class="at"><?= $dt[0]!='today'? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?> <?= HRS?></div>
+        <div class="at"><?= !tz_mtime_is_today($dt[0])? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?> <?= HRS?></div>
     </td></tr></tbody>
 </table>
 <?php endforeach; endforeach;?>
@@ -210,7 +210,7 @@ function cycleMarker(moveid, el){
     </tbody>
     <tbody class="infos"><tr><th><?= ARRIVAL?></th><td colspan="10">
         <div class="in small"><span id="timer<?= $session->timer?>"><?= $generator->getTimeFormat($s['endtime']-time())?></span> ساعة</div>
-        <div class="at"><?= $dt[0]!='today'? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?></div>
+        <div class="at"><?= !tz_mtime_is_today($dt[0])? ON.' '.$dt[0].' ' : ''?><?= AT?> <?= $dt[1]?></div>
     </td></tr></tbody>
 </table>
 <?php endforeach;?>

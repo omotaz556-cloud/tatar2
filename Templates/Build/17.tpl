@@ -95,7 +95,7 @@ if (isset($_GET['z'])) {
     <a href="#" onClick="return Popup(17,4);" class="build_logo">
         <img class="building g17" src="img/x.gif" alt="<?php echo MARKETPLACE; ?>" title="<?php echo MARKETPLACE;?>" />
     </a>
-    <h1><?php echo MARKETPLACE;?> <span class="level"><?php echo LEVEL;?> <?php echo (int)$village->resarray['f'.$id];?></span></h1>
+    <h1><?php echo MARKETPLACE;?> <span class="level"><?php echo defined('BUILD_LEVEL_SHORT') ? BUILD_LEVEL_SHORT : LEVEL;?> <?php echo (int)$village->resarray['f'.$id];?></span></h1>
     <p class="build_desc"><?php echo MARKETPLACE_DESC;?></p>
 
     <?php include("17_menu.tpl");?>
@@ -189,27 +189,29 @@ if (isset($_GET['z'])) {
     <?php
     // --- erori ---
     $error = '';
-    if ($ft === 'check') {
+    if ($ft === 'check' || $ft === 'mk1') {
         if ($form->returnErrors() > 0) {
             $error = '<span class="error"><b>'.$form->getError("error").'</b></span>';
-        } elseif (!$checkexist) {
-            $error = '<span class="error"><b>'.NO_COORDINATES_SELECTED.'</b></span>';
-        } elseif ($getwref == $village->wid) {
-            $error = '<span class="error"><b>'.CANNOT_SEND_RESOURCES.'</b></span>';
-        } elseif (!$canRepeat) {
-            $error = '<span class="error"><b>'.INVALID_MERCHANTS_REPETITION.'</b></span>';
-        } elseif (!$validAccess) {
-            $error = '<span class="error"><b>'.BANNED_CANNOT_SEND_RESOURCES.'.</b></span>';
-        } elseif ($allres == 0) {
-            $error = '<span class="error"><b>'.RESOURCES_NO_SELECTED.'.</b></span>';
-        } elseif ($userVacation == 1) {
-            $error = '<span class="error"><b>Player is on vacation mode. You cannot send resources to him.</b></span>';
-        } elseif ($x === '' && $y === '' && $dname === '') {
-            $error = '<span class="error"><b>'.ENTER_COORDINATES.'.</b></span>';
-        } elseif ($allres > $maxTotalCarry) {
-            $error = '<span class="error"><b>'.TOO_FEW_MERCHANTS.'.</b></span>';
-        } elseif (!$hasResources) {
-            $error = '<span class="error"><b>'.NOT_ENOUGH_RESOURCES.'</b></span>';
+        } elseif ($ft === 'check') {
+            if (!$checkexist) {
+                $error = '<span class="error"><b>'.NO_COORDINATES_SELECTED.'</b></span>';
+            } elseif ($getwref == $village->wid) {
+                $error = '<span class="error"><b>'.CANNOT_SEND_RESOURCES.'</b></span>';
+            } elseif (!$canRepeat) {
+                $error = '<span class="error"><b>'.INVALID_MERCHANTS_REPETITION.'</b></span>';
+            } elseif (!$validAccess) {
+                $error = '<span class="error"><b>'.BANNED_CANNOT_SEND_RESOURCES.'.</b></span>';
+            } elseif ($allres == 0) {
+                $error = '<span class="error"><b>'.RESOURCES_NO_SELECTED.'.</b></span>';
+            } elseif ($userVacation == 1) {
+                $error = '<span class="error"><b>'.(defined('PLAYER_ON_VACATION') ? PLAYER_ON_VACATION : 'اللاعب في وضع الإجازة. لا يمكنك إرسال موارد له.').'</b></span>';
+            } elseif ($x === '' && $y === '' && $dname === '') {
+                $error = '<span class="error"><b>'.ENTER_COORDINATES.'.</b></span>';
+            } elseif ($allres > $maxTotalCarry) {
+                $error = '<span class="error"><b>'.TOO_FEW_MERCHANTS.'.</b></span>';
+            } elseif (!$hasResources) {
+                $error = '<span class="error"><b>'.NOT_ENOUGH_RESOURCES.'</b></span>';
+            }
         }
         echo $error;
     }
@@ -230,7 +232,7 @@ if (count($market->recieving) > 0) {
         echo '<tbody><tr><th>'.ARRIVAL_IN.'</th><td>';
         echo '<div class="in"><span id="timer'.(++$session->timer).'">'.$generator->getTimeFormat($recieve['endtime']-time()).'</span> h</div>';
         $datetime = $generator->procMtime($recieve['endtime']);
-        echo '<div class="at">'.($datetime[0]!= "today"? ON." ".$datetime[0]." " : "").AT." ".$datetime[1].'</div>';
+        echo '<div class="at">'.(!tz_mtime_is_today($datetime[0])? ON." ".$datetime[0]." " : "").AT." ".$datetime[1].'</div>';
         echo '</td></tr></tbody><tr class="res"><th>'.RESOURCES.'</th><td colspan="2"><span class="f10">';
         echo '<img class="r1" src="img/x.gif" alt="'.LUMBER.'" title="'.LUMBER.'" />'.$recieve['wood'].' | ';
         echo '<img class="r2" src="img/x.gif" alt="'.CLAY.'" title="'.CLAY.'" />'.$recieve['clay'].' | ';
@@ -251,7 +253,7 @@ if (count($market->sending) > 0) {
         echo '<tbody><tr><th>'.ARRIVAL_IN.'</th><td>';
         echo '<div class="in"><span id="timer'.(++$session->timer).'">'.$generator->getTimeFormat($send['endtime']-time()).'</span> h</div>';
         $datetime = $generator->procMtime($send['endtime']);
-        echo '<div class="at">'.($datetime[0]!= "today"? ON." ".$datetime[0]." " : "").AT." ".$datetime[1].'</div>';
+        echo '<div class="at">'.(!tz_mtime_is_today($datetime[0])? ON." ".$datetime[0]." " : "").AT." ".$datetime[1].'</div>';
         echo '</td></tr><tr class="res"><th>'.RESOURCES.'</th><td>';
         echo '<img class="r1" src="img/x.gif" alt="'.LUMBER.'" />'.$send['wood'].' | ';
         echo '<img class="r2" src="img/x.gif" alt="'.CLAY.'" />'.$send['clay'].' | ';
@@ -272,7 +274,7 @@ if (count($market->return) > 0) {
         echo '<tbody><tr><th>'.ARRIVAL_IN.'</th><td>';
         echo '<div class="in"><span id="timer'.(++$session->timer).'">'.$generator->getTimeFormat($return['endtime']-time()).'</span> h</div>';
         $datetime = $generator->procMtime($return['endtime']);
-        echo '<div class="at">'.($datetime[0]!= "today"? ON." ".$datetime[0]." " : "").AT." ".$datetime[1].'</div>';
+        echo '<div class="at">'.(!tz_mtime_is_today($datetime[0])? ON." ".$datetime[0]." " : "").AT." ".$datetime[1].'</div>';
         echo '</td></tr></tbody></table>';
     }
 }

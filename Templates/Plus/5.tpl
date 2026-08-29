@@ -62,4 +62,3 @@ $invited = $database->getInvitedUser($session->uid);
     <?php endif; ?>
     </tbody>
 </table>
-</div>

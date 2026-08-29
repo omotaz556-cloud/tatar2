@@ -77,46 +77,79 @@ if (!empty($_GET['t']) && (int)$_GET['t'] === 3 && !empty($_GET['f'])) {
     $queryBase .= 'f='.(int)$_GET['f'].'&amp;';
 }
 
+$gkRptGreek = !empty($GLOBALS['gkBerichteLiteralPage']);
+$gkRptTableClass = $gkRptGreek ? 'gk-rpt-overview' : 'row_table_data';
+
+$gkRptReadAllHref = 'berichte.php?readall=1';
+if ($t > 0) {
+    $gkRptReadAllHref .= '&amp;t=' . $t;
+}
+if ($t === 3 && !empty($_GET['f'])) {
+    $gkRptReadAllHref .= '&amp;f=' . (int) $_GET['f'];
+}
+$gkRptReadAllLabel = defined('TZ_MARK_ALL_READ') ? TZ_MARK_ALL_READ : 'اجعلها مقروءة';
+$gkRptReadOrPrefix = defined('TZ_RPT_MARK_ALL_READ_OR_PREFIX') ? TZ_RPT_MARK_ALL_READ_OR_PREFIX : 'أو';
+$gkRptReadAllLinkText = defined('TZ_RPT_MARK_ALL_READ_LINK') ? TZ_RPT_MARK_ALL_READ_LINK : 'إجعله مقروءة';
+
 ?>
 
 <form method="post" action="berichte.php" name="msg">
 
-<table cellpadding="1" cellspacing="1" id="overview" class="row_table_data">
+<table cellpadding="0" cellspacing="0" id="overview" class="<?php echo $gkRptTableClass; ?>">
+<?php if ($gkRptGreek) { ?>
+<colgroup>
+    <col class="gk-rpt-c-sel" />
+    <col class="gk-rpt-c-sub" />
+    <col class="gk-rpt-c-dat" />
+</colgroup>
+<?php } ?>
 
 <thead>
+<?php if ($gkRptGreek) { ?>
+<tr class="gk-rpt-title">
+    <th colspan="3"><?php echo REPORTS; ?></th>
+</tr>
+<tr class="gk-rpt-cols">
+    <th colspan="2" class="gk-rpt-h-sub"><?php echo SUBJECT; ?></th>
+    <th class="sent gk-rpt-h-dat"><?php echo DATE; ?></th>
+</tr>
+<?php } else { ?>
 <tr>
     <th colspan="2"><?php echo SUBJECT; ?>:</th>
     <th class="sent">
         <a href="berichte.php?o=1<?php
             echo (!empty($_GET['t']) ? '&amp;t='.(int)$_GET['t'] : '');
-            // pastram si filtrul de rezultat la sortare
             echo (!empty($_GET['t']) && (int)$_GET['t'] === 3 && !empty($_GET['f']))
                 ? '&amp;f='.(int)$_GET['f'] : '';
         ?>"><?php echo SENT; ?></a>
     </th>
 </tr>
+<?php } ?>
 </thead>
 
 <tfoot>
 <tr>
-
-<!-- ======================== SELECT ALL ======================== -->
-<th>
-
+<?php if ($gkRptGreek) { ?>
+<th class="gk-rpt-foot-sel">
 <?php if ($golds['plus'] > strtotime("NOW")) { ?>
     <input class="check" type="checkbox" id="s10" name="s10" onclick="Allmsg(this.form);" />
 <?php } ?>
-
+    <input type="submit" name="del_x" value="<?php echo DELETE; ?>" id="btn_delete" class="gk-rpt-del" />
 </th>
-
-<!-- ======================== ACTION BUTTONS ======================== -->
+<th class="gk-rpt-foot-mid">
+    <span class="gk-rpt-read-or"><?php echo htmlspecialchars($gkRptReadOrPrefix, ENT_QUOTES, 'UTF-8'); ?></span>
+    <a href="<?php echo $gkRptReadAllHref; ?>" class="gk-rpt-read-link"><?php echo htmlspecialchars($gkRptReadAllLinkText, ENT_QUOTES, 'UTF-8'); ?></a>
+</th>
+<?php } else { ?>
+<th>
+<?php if ($golds['plus'] > strtotime("NOW")) { ?>
+    <input class="check" type="checkbox" id="s10" name="s10" onclick="Allmsg(this.form);" />
+<?php } ?>
+</th>
 <th class="buttons">
-
     <input name="del" type="image" id="btn_delete" class="dynamic_img"
            src="img/x.gif" value="delete" alt="<?php echo DELETE; ?>" />
-
     <?php if ($session->plus) { ?>
-
         <?php if (isset($_GET['t']) && $_GET['t'] == 5) { ?>
             <input name="start" type="image" value="back" alt="<?php echo BACK; ?>"
                    id="btn_back" class="dynamic_img" src="img/x.gif" />
@@ -124,14 +157,10 @@ if (!empty($_GET['t']) && (int)$_GET['t'] === 3 && !empty($_GET['f'])) {
             <input name="archive" type="image" value="Archive" alt="<?php echo ARCHIVE; ?>"
                    id="btn_archiv" class="dynamic_img" src="img/x.gif" />
         <?php } ?>
-
     <?php } ?>
-
 </th>
-
-<!-- ======================== PAGINATION ======================== -->
+<?php } ?>
 <th class="navi">
-
 <?php
 $total = count($message->noticearray);
 
@@ -182,51 +211,42 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
 
         if ($type == 23) $type = 22;
 
+        $iconHtml = '';
+        if ($type >= 15 && $type <= 17) {
+            $iconType = $type - 11;
+            $iconHtml = '<img src="img/x.gif" class="iReport iReport'.$iconType.'" alt="'
+                .htmlspecialchars($noticeClass[$iconType], ENT_QUOTES, 'UTF-8').'" title="'
+                .htmlspecialchars($noticeClass[$iconType], ENT_QUOTES, 'UTF-8').'" />';
+        } elseif ($type >= 18 && $type <= 22) {
+            $iconHtml = '<img src="gpack/novaterra_classic/img/scouts/'.$type.'.gif" alt="'
+                .htmlspecialchars($noticeClass[$type], ENT_QUOTES, 'UTF-8').'" title="'
+                .htmlspecialchars($noticeClass[$type], ENT_QUOTES, 'UTF-8').'" />';
+        } elseif ($type == 24 || $type == 25) {
+            $iconType = ($type == 24) ? 8 : 3;
+            $iconHtml = '<img src="img/x.gif" class="iReport iReport'.$iconType.'" alt="'
+                .htmlspecialchars($noticeClass[$type], ENT_QUOTES, 'UTF-8').'" title="'
+                .htmlspecialchars($noticeClass[$type], ENT_QUOTES, 'UTF-8').'" />';
+        } else {
+            $iconHtml = '<img src="img/x.gif" class="iReport iReport'.$type.'" alt="'
+                .htmlspecialchars($noticeClass[$type], ENT_QUOTES, 'UTF-8').'" title="'
+                .htmlspecialchars($noticeClass[$type], ENT_QUOTES, 'UTF-8').'" />';
+        }
+
         echo "<tr>";
 
-        // checkbox
         echo "<td class=\"sel\">
                 <input class=\"check\" type=\"checkbox\" name=\"n".$name."\"
                 value=\"".$row['id']."\" />
               </td>";
 
         echo "<td class=\"sub\">";
-
-        // ================= ICON LOGIC =================
-        if ($type >= 15 && $type <= 17) {
-
-            $iconType = $type - 11;
-
-            echo "<img src=\"img/x.gif\" class=\"iReport iReport".$iconType."\"
-                   alt=\"".$noticeClass[$iconType]."\"
-                   title=\"".$noticeClass[$iconType]."\" />";
-
-        } elseif ($type >= 18 && $type <= 22) {
-
-            echo "<img src=\"gpack/novaterra_classic/img/scouts/".$type.".gif\"
-                   alt=\"".$noticeClass[$type]."\"
-                   title=\"".$noticeClass[$type]."\" />";
-
-        } elseif ($type == 24 || $type == 25) {
-
-            // Settler reports (issue #178): no dedicated gpack icon, reuse an existing one
-            $iconType = ($type == 24) ? 8 : 3;
-            echo "<img src=\"img/x.gif\" class=\"iReport iReport".$iconType."\"
-                   alt=\"".$noticeClass[$type]."\"
-                   title=\"".$noticeClass[$type]."\" />";
-
-        } else {
-
-            echo "<img src=\"img/x.gif\" class=\"iReport iReport".$type."\"
-                   alt=\"".$noticeClass[$type]."\"
-                   title=\"".$noticeClass[$type]."\" />";
+        if (!$gkRptGreek) {
+            echo $iconHtml;
         }
-
-        // ================= SUBJECT =================
         echo "<div>
                 <a href=\"berichte.php?id=".$row['id']."\">".tz_loc_topic($row['topic'])."</a>";
 
-        if ($row['viewed'] == 0) {
+        if (!$gkRptGreek && $row['viewed'] == 0) {
             echo " (new)";
         }
 
@@ -234,8 +254,14 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
 
         echo "</div></td>";
 
-        // ================= DATE =================
-        echo "<td class=\"dat\">".$date[0]." ".$date[1]."</td>";
+        if ($gkRptGreek) {
+            echo "<td class=\"dat\"><span class=\"gk-rpt-dat-cell\">"
+                ."<span class=\"gk-rpt-dt\">".$date[0]." ".$date[1]."</span>"
+                .$iconHtml
+                ."</span></td>";
+        } else {
+            echo "<td class=\"dat\">".$date[0]." ".$date[1]."</td>";
+        }
 
         echo "</tr>";
     }

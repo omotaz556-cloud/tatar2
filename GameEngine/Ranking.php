@@ -80,6 +80,7 @@
 			switch($get['id']) {
         case 1:
             $this->procRankArray();
+            $this->setStartByRank($session->uid, "userid");
         break;
         case 8:
             $this->procHeroRankArray();
@@ -131,6 +132,10 @@
             $this->procVRankArray();
             $this->setStartByRank($village->wid, "wref");
         break;
+        case 3:
+            $this->procUndefeatedRankArray();
+            $this->setStartByRank($session->uid, "userid");
+        break;
         case 4:
             $this->procARankArray();
             if($get['aid'] == 0) {
@@ -170,9 +175,14 @@
 				if(isset($post['ft'])) {
 					switch($post['ft']) {
 						case "r1":
+						case "r3":
 						case "r11":
 						case "r12":
 						case "r13":
+						case "r16":
+						case "r17":
+						case "r18":
+						case "r19":
 						case "r31":
 						case "r32":
 							if(isset($post['rank']) && $post['rank'] != "") {
@@ -193,12 +203,24 @@
 							}
 							break;
 						case "r2":
-						case "r8":
 							if(isset($post['rank']) && $post['rank'] != "") {
 								$this->getStart($post['rank']);
 							}
 							if(isset($post['name']) && $post['name'] != "") {
 								$this->getStart($this->searchRank(stripslashes($post['name']), "name"));
+							}
+							break;
+						case "r8":
+							if(isset($post['rank']) && $post['rank'] != "") {
+								$this->getStart($post['rank']);
+							}
+							if(isset($post['name']) && $post['name'] != "") {
+								$name = stripslashes($post['name']);
+								$found = $this->searchRank($name, "name");
+								if (!is_numeric($found)) {
+									$found = $this->searchRank($name, "owner");
+								}
+								$this->getStart($found);
 							}
 							break;
 					}
@@ -414,6 +436,29 @@
 				}
 				$this->finalizeRankArray($holder);
 			}
+
+	/**
+	 * Greek.sa undefeated-in-defense ranking (statistiken.php?id=3).
+	 */
+		public function procUndefeatedRankArray() {
+			global $database;
+			$holder = [];
+			$rows = $database->getUndefeatedDefRanking();
+			foreach ($rows as $row) {
+				$value = [];
+				$value['userid'] = (int) $row['userid'];
+				$value['id'] = (int) $row['userid'];
+				$value['username'] = $row['username'];
+				$value['alliance'] = (int) ($row['alliance'] ?? 0);
+				$value['allitag'] = (string) ($row['allitag'] ?? '');
+				$value['since'] = (int) ($row['since'] ?? 0);
+				$value['points'] = (int) ($row['points'] ?? 0);
+				$value['daily_gold'] = 1000;
+				$value['capital'] = (int) ($row['capital'] ?? 0);
+				$holder[] = $value;
+			}
+			$this->finalizeRankArray($holder);
+		}
 			
 	/*****************************************
 	Function to process V rank array
@@ -428,6 +473,9 @@
 					$value['x'] = $coor['x'];
 					$value['y'] = $coor['y'];
 					$value['user'] = $GLOBALS['db']->getUserField($value['owner'], "username", 0);
+					$aid = (int) $GLOBALS['db']->getUserField($value['owner'], 'alliance', 0);
+					$value['alliance'] = $aid;
+					$value['allitag'] = $aid ? (string) $GLOBALS['db']->getAllianceName($aid) : '';
 					$holder[] = $value;
 				}
 				/**

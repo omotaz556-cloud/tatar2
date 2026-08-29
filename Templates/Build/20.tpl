@@ -85,7 +85,7 @@ $trainlist = $technology->getTrainingList(2);
                     <td class="fin">
                         <?php
                         $time = $generator->procMTime($train['timestamp']);
-                        if ($time[0]!== "today") echo "on ".$time[0]." at ";
+                        if (!tz_mtime_is_today($time[0])) echo "on ".$time[0]." at ";
                         echo $time[1];
                       ?>
                     </td>

@@ -1,85 +1,40 @@
 <?php
 
 #################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Filename       : HEROSMANSION			                                   ##
-##  Type           : BUILDING TEMPLATE                                         ##
-## --------------------------------------------------------------------------- ##
-##  Refactored by  : Shadow                                                    ##
-##  Redesign by    : Shadow                                                    ##
-## --------------------------------------------------------------------------- ##
-##  Contact        : (see project maintainer)                                 ##
-##  Project        : Novaterra                                                  ##
-##  Test Server    : https://novaterra.example                                      ##
-##  GitHub         : https://github.com/omotaz556-cloud/tatar                   ##
-## --------------------------------------------------------------------------- ##
-##  License        : Novaterra Project                                          ##
-##  Copyright      : Novaterra (c) 2010-2026. All rights reserved.              ##
-## --------------------------------------------------------------------------- ##
+##  HEROSMANSION — Greek.sa layout (train + oasis summary + classic upgrade)   ##
 #################################################################################
 
         $hero_info = $units->Hero($session->uid);
         $heroes = $units->Hero($session->uid, 1);
-        $define['reset_level'] = 3; // Until which level you are able to reset your points
-		// NOTE: $define['reset_level'] doesn't seem to be used in any of the
-		// 37*.tpl files - the "3" threshold is hardcoded directly into 37_hero.tpl. Possible dead code
-		// in these files; I left it unchanged (it can be read
-		// in another part of the project that I don't see here).
+        $define['reset_level'] = 3;
 
-		// Explicit lookup instead of if/elseif chain - covers all 15
-		// possible hero types (5 per tribe x 3 tribes). Same behavior:
-		// if $hero_info['unit'] doesn't match any (which shouldn't
-		// happen), $name returns null instead of "undefined variable".
         $heroUnitNames = [
-            1  => U1,
-            2  => U2,
-            3  => U3,
-            5  => U5,
-            6  => U6,
-            11 => U11,
-            12 => U12,
-            13 => U13,
-            15 => U15,
-            16 => U16,
-            21 => U21,
-            22 => U22,
-            24 => U24,
-            25 => U25,
-            26 => U26,
-            51 => U51, 
-			53 => U53, 
-			54 => U54, 
-			55 => U55, 
-			56 => U56,
-            61 => U61, 
-			62 => U62, 
-			63 => U63, 
-			65 => U65, 
-			66 => U66,
-            71 => U71, 
-			72 => U72, 
-			73 => U73, 
-			75 => U75, 
-			76 => U76,
-            81 => U81, 
-			83 => U83, 
-			84 => U84, 
-			85 => U85, 
-			86 => U86,
+            1  => U1, 2 => U2, 3 => U3, 5 => U5, 6 => U6,
+            11 => U11, 12 => U12, 13 => U13, 15 => U15, 16 => U16,
+            21 => U21, 22 => U22, 24 => U24, 25 => U25, 26 => U26,
+            51 => U51, 53 => U53, 54 => U54, 55 => U55, 56 => U56,
+            61 => U61, 62 => U62, 63 => U63, 65 => U65, 66 => U66,
+            71 => U71, 72 => U72, 73 => U73, 75 => U75, 76 => U76,
+            81 => U81, 83 => U83, 84 => U84, 85 => U85, 86 => U86,
         ];
-      
+
+        $lvlLabel = defined('BUILD_LEVEL_SHORT') ? BUILD_LEVEL_SHORT : LEVEL;
+        $hmLevel = (int) $village->resarray['f' . $id];
+        // max oases = floor((level - 5) / 5) — same formula as DatabaseVillageQueries
+        $maxOasisNow = max(0, (int) floor(($hmLevel - 5) / 5));
+        $maxOasisNext = max(0, (int) floor((($hmLevel + 1) - 5) / 5));
+        $ownedOasis = (int) $database->VillageOasisCount($village->wid);
 ?>
 
 
  <div id="build" class="gid37">
         <a href="#" onclick="return Popup(37,4, 'gid');" class="build_logo"><img class="building g37" src="img/x.gif" alt="<?php echo HEROSMANSION; ?>" title="<?php echo HEROSMANSION; ?>"></a>
 
-        <h1><?php echo HEROSMANSION; ?> <span class="level"><?php echo LEVEL; ?> <?php echo $village->resarray['f' . $id]; ?></span></h1>
+        <h1><?php echo HEROSMANSION; ?> <span class="level"><?php echo $lvlLabel; ?> <?php echo $hmLevel; ?></span></h1>
 
         <p class="build_desc"><?php echo HEROSMANSION_DESC; ?></p>
 
-        
+
         <?php
         if ($hero_info) {
             $name  = $heroUnitNames[$hero_info['unit']] ?? null;
@@ -89,31 +44,17 @@
             $name1 = 'unknown';
         }
 
-		if(isset($_GET['land']) && $village->resarray['f' . $id] >= 1) {
-            // FIX: pagina de oaze pierdea meniul T4 - ramura asta e inaintea
-            // celei cu tab-uri si nu includea navigatia deloc.
-            if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4) {
-                $t4tab = 'land';
-                include_once("37_t4nav.tpl");
-            }
+		if(isset($_GET['land']) && $hmLevel >= 1) {
             include_once("37_land.tpl");
 		} else if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4
-            && $village->resarray['f' . $id] >= 1
+            && $hmLevel >= 1
             && isset($_GET['t4tab'])
             && in_array($_GET['t4tab'], ['items', 'adventures', 'auction'], true)) {
 
-            // T4 hero port (Phase 6): items / adventures / auction tabs.
-            // The classic hero flow below stays byte-identical when the
-            // feature flag is off or no tab is selected.
             $t4tab = $_GET['t4tab'];
-            include_once("37_t4nav.tpl");
             include_once("37_" . $t4tab . ".tpl");
 
-		} else if ($village->resarray['f' . $id] >= 1) {
-            if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4) {
-                $t4tab = 'hero';
-                include_once("37_t4nav.tpl");
-            }
+		} else if ($hmLevel >= 1) {
             $include_training = true;
             $include_revive = false;
             if (isset($heroes) && is_array($heroes) && count($heroes)) {
@@ -136,30 +77,24 @@
             if ($hero_info === false && $include_training) {
                 include_once("37_train.tpl");
             } else if(is_array($hero_info) && $hero_info['intraining'] == 1) {
-                // FIX: fara is_array(), cand eroul nu exista ($hero_info === false)
-                // si $include_training e false, ramura asta accesa false['intraining']
-                // -> "Trying to access array offset on false" la fiecare afisare.
-
 		    $timeleft = $generator->getTimeFormat($hero_info['trainingtime'] - time());
 		?>
 	<table id="distribution" cellpadding="1" cellspacing="1">
         <thead>
-            <tr>
-            <?php echo "<tr class='next'><th>".HERO_READY."<span id=timer".++$session->timer.">" . $timeleft . "</span></th></tr>"; ?>
+            <tr class="next">
+                <th><?php echo HERO_READY; ?><span id="timer<?php echo ++$session->timer; ?>"><?php echo $timeleft; ?></span></th>
             </tr>
         </thead>
-            
+        <tbody>
             <tr>
-			<?php
-				   echo "<tr>
-                <td class=\"desc\">
-					<div class=\"tit\">
-						<img class=\"unit u".$hero_info['unit']."\" src=\"img/x.gif\" alt=\"".$name."\" title=\"".$name."\" />
-						$name ($name1)
-					</div>"
-			?>
-			
+                <td class="desc">
+					<div class="tit">
+						<img class="unit u<?php echo (int) $hero_info['unit']; ?>" src="img/x.gif" alt="<?php echo htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8'); ?>" title="<?php echo htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8'); ?>" />
+						<?php echo htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8'); ?> (<?php echo htmlspecialchars((string) $name1, ENT_QUOTES, 'UTF-8'); ?>)
+					</div>
+                </td>
             </tr>
+        </tbody>
     </table>
 		<?php
 		}
@@ -167,7 +102,45 @@
         if($hero_info !== false AND $hero_info['dead'] == 0 AND $hero_info['trainingtime'] <= time() AND $hero_info['inrevive'] == 0 AND $hero_info['intraining'] == 0){
             include("37_hero.tpl");
         }
+
+        // Oasis summary — always on main mansion view (Greek.sa layout)
+        $oasisOwnedTxt = defined('OASIS_OWNED_OF')
+            ? sprintf(OASIS_OWNED_OF, $ownedOasis, $maxOasisNow)
+            : ('لقد استوليت على ' . $ownedOasis . ' من ' . $maxOasisNow . ' واحات وللمزيد طوّر المبنى');
+        $oasisExpandPop = defined('OASIS_EXPAND_POP') ? (int) OASIS_EXPAND_POP : 1020;
+        $oasisExpandPopFmt = number_format($oasisExpandPop);
+        $oasisRangeHint = defined('OASIS_RANGE_HINT')
+            ? sprintf(OASIS_RANGE_HINT, $oasisExpandPopFmt)
+            : ('لايمكن إحتلال واحات خارج المربع 7 x 7 وزيادة السكان إلى ' . $oasisExpandPopFmt . ' توسع المربع');
+        $oasisViewLink = defined('OASIS_VIEW_NEARBY') ? OASIS_VIEW_NEARBY : 'عرض الواحات القريبة منك التي يمكنك احتلالها';
+        $oasisMaxNow = defined('OASIS_MAX_NOW') ? OASIS_MAX_NOW : 'أكبر عدد الآن';
+        $oasisMaxNext = defined('OASIS_MAX_NEXT') ? OASIS_MAX_NEXT : 'أكبر عدد في المستوى';
+        $oasisUnit = defined('OASIS_UNIT_SING') ? OASIS_UNIT_SING : 'واحة';
+        ?>
+        <div class="gk-oasis-summary">
+            <p><?php echo htmlspecialchars($oasisOwnedTxt, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p class="gk-oasis-hint"><?php echo htmlspecialchars($oasisRangeHint, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p><a href="#gk-nearby-wrap" id="gk-nearby-toggle"><?php echo htmlspecialchars($oasisViewLink, ENT_QUOTES, 'UTF-8'); ?></a></p>
+            <div id="gk-nearby-wrap" class="gk-nearby-wrap" style="display:none;">
+                <?php include_once('37_nearby.tpl'); ?>
+            </div>
+            <p class="gk-oasis-max"><?php echo htmlspecialchars($oasisMaxNow, ENT_QUOTES, 'UTF-8'); ?>: <b><?php echo (int) $maxOasisNow; ?></b> <?php echo htmlspecialchars($oasisUnit, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p class="gk-oasis-max"><?php echo htmlspecialchars($oasisMaxNext, ENT_QUOTES, 'UTF-8'); ?> <?php echo (int) ($hmLevel + 1); ?>: <b><?php echo (int) $maxOasisNext; ?></b> <?php echo htmlspecialchars($oasisUnit, ENT_QUOTES, 'UTF-8'); ?></p>
+        </div>
+        <script type="text/javascript">
+        (function () {
+            var btn = document.getElementById('gk-nearby-toggle');
+            var box = document.getElementById('gk-nearby-wrap');
+            if (!btn || !box) { return; }
+            btn.onclick = function (e) {
+                if (e && e.preventDefault) { e.preventDefault(); }
+                box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+                return false;
+            };
+        })();
+        </script>
+        <?php
         }
         include ("upgrade.tpl"); ?>
-        
+
     </div>

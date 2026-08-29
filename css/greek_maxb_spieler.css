@@ -1,0 +1,3430 @@
+/**
+ * Player profile page — greek.sa / MaxB reference (1024 = 223 + 588 + 213).
+ */
+
+/* White page background (default Greek shell) */
+body.pg-gk.pg-spieler {
+    background: #ffffff !important;
+}
+
+html.pg-gk.pg-spieler {
+    background: #ffffff !important;
+}
+
+/* ---- 3-column shell ---- */
+body.pg-gk.pg-spieler table.gk-shell,
+body.pg-gk.pg-spieler table.gk-shell > tbody,
+body.pg-gk.pg-spieler table.gk-shell > tbody > tr {
+    display: table !important;
+    float: none !important;
+    width: 1024px !important;
+    max-width: 98% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0 !important;
+    border-spacing: 0 !important;
+    border-collapse: separate !important;
+    table-layout: fixed !important;
+    direction: ltr !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-spieler table.gk-shell > tbody {
+    display: table-row-group !important;
+}
+
+body.pg-gk.pg-spieler table.gk-shell > tbody > tr {
+    display: table-row !important;
+    width: 100% !important;
+}
+
+body.pg-gk.pg-spieler table.gk-shell > tbody > tr > td {
+    display: table-cell !important;
+    float: none !important;
+    position: static !important;
+    vertical-align: top !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-spieler table.gk-shell > tbody > tr > td.gk-td-left {
+    width: 223px !important;
+    min-width: 223px !important;
+    max-width: 223px !important;
+    padding: 0 8px 0 0 !important;
+}
+
+body.pg-gk.pg-spieler table.gk-shell > tbody > tr > td.gk-td-main {
+    width: 588px !important;
+    min-width: 588px !important;
+    max-width: 588px !important;
+    padding: 4px 14px 28px !important;
+    height: auto !important;
+    min-height: 480px !important;
+    background: #fff !important;
+    box-shadow:
+        -12px 0 20px -18px rgba(0, 0, 0, 0.12),
+        12px 0 20px -18px rgba(0, 0, 0, 0.12) !important;
+    overflow: visible !important;
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+/* RIGHT SIDEBAR — MaxB .RLisTa offset (left:10px, top:50px) */
+body.pg-gk.pg-spieler table.gk-shell > tbody > tr > td.gk-td-nav {
+    width: 213px !important;
+    min-width: 213px !important;
+    max-width: 213px !important;
+    padding: 70px 0 0 0 !important;
+    display: table-cell !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    text-align: right !important;
+    direction: rtl !important;
+    vertical-align: top !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-nav .gk-rlista {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 140px !important;
+    min-height: 200px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 13px !important;
+    line-height: 1.9 !important;
+    color: #000 !important;
+    position: relative !important;
+    float: left !important;
+    left: 10px !important;
+    top: 0 !important;
+    text-align: right !important;
+    z-index: 20 !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-nav .gk-rlista a {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 140px !important;
+    color: #000 !important;
+    font-size: 13px !important;
+    font-weight: 301 !important;
+    text-decoration: none !important;
+    text-align: right !important;
+    padding: 1px 0 !important;
+    border: 2px groove transparent !important;
+    border-width: 2px 0 !important;
+    float: none !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-nav .gk-rlista a:hover {
+    color: #71d000 !important;
+    border-color: #f9f9f9 !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-nav .gk-rlista .gk-rarr {
+    color: #000 !important;
+    font-size: 13px !important;
+    margin-left: 2px !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-nav .gk-rlista a:hover .gk-rarr {
+    color: #71d000 !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-nav .gk-rlista a.C_G.plus,
+body.pg-gk.pg-spieler .gk-td-nav .gk-rlista a.plus {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    margin-top: 8px !important;
+}
+
+/* Resbar — same placement/centering as dorf1 (above shell, centered) */
+body.pg-gk.pg-spieler > .gk-resbar {
+    width: 1000px !important;
+    max-width: 98% !important;
+    margin: 8px auto 2px !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    direction: rtl !important;
+    gap: 4px !important;
+    float: none !important;
+    position: static !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-spieler #topNavIcons a#n4 img {
+    background-position: 0 -121px !important;
+}
+
+/* Left column — Greek king portrait + village list (MaxB .divL / .MyVs) */
+body.pg-gk.pg-spieler .gk-td-left {
+    text-align: right;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-td-left .gk-char-portrait {
+    display: block !important;
+    margin: 0 auto 8px;
+    text-align: center;
+    min-height: 174px;
+}
+
+body.pg-gk.pg-spieler .gk-td-left .gk-char-portrait img {
+    display: block !important;
+    width: auto !important;
+    height: 174px !important;
+    max-width: 145px !important;
+    margin: 0 auto;
+    cursor: pointer;
+    border: 0;
+}
+
+body.pg-gk.pg-spieler .gk-td-left .gk-prof-side {
+    display: block !important;
+    text-align: right;
+    width: 90%;
+    max-width: 200px;
+    margin: 0 auto;
+    position: relative;
+    right: 20px;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    direction: rtl;
+    position: relative;
+    right: 0;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs th {
+    text-align: right;
+    padding: 2px 0;
+    font-weight: 301;
+    border: 0 !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs a.C_K {
+    color: #000;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs a.C_O {
+    color: #c88400;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs a.fl {
+    color: #a0a0a0;
+    font-size: 11px;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs th.gk-vcoords {
+    text-align: left;
+    direction: ltr;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs th.gk-vcoords b,
+body.pg-gk.pg-spieler .gk-td-left table.MyVs th.gk-vcoords bdi {
+    color: #71d000;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs p.Rs {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 12px;
+    margin: 0 1px;
+    background-repeat: no-repeat;
+    background-image: url(../gpack/novaterra/img/a/res2.gif);
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs p.Rs.x5 {
+    background-position: -84px 0;
+}
+
+body.pg-gk.pg-spieler .gk-td-left table.MyVs p.Rs.x6 {
+    background-position: -105px 0;
+}
+
+/* BP / table content */
+body.pg-gk.pg-spieler #BP {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler #BP .Bod {
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler #BP .PaNa {
+    font-size: 30px;
+    text-align: right;
+    width: 100%;
+    font-weight: 900;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    color: #000;
+    margin: 0 0 6px;
+    padding: 0;
+    line-height: 1.1;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP .BAR5 {
+    display: block;
+    text-align: right;
+    margin: 0 0 8px;
+    padding: 0;
+    direction: rtl;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+body.pg-gk.pg-spieler #BP .BAR5 .c-row {
+    display: block;
+    text-align: right;
+    line-height: 1.45;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP .BAR5 .c-row > a {
+    font-size: 13px;
+    font-weight: 400;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    color: #8cc63f;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler #BP .BAR5 .c-row > a.-cho {
+    border-bottom: 1px dashed #999;
+    padding-bottom: 1px;
+    color: #8cc63f;
+}
+
+body.pg-gk.pg-spieler #BP .BAR5 .c-row > a:not(:last-child)::after {
+    content: '|';
+    padding: 1px 4px;
+    color: #000;
+    font-weight: 200;
+    pointer-events: none;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S {
+    width: 100% !important;
+    float: none !important;
+    clear: both;
+    border-collapse: collapse;
+    margin: 0 0 10px;
+    font-size: 13px;
+    direction: rtl;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S th {
+    border: 1px solid #c9c9c9;
+    padding: 4px 7px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 301;
+    background: #fff;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S tr.gk-prof-cols th {
+    font-weight: 700;
+    background: #f5f5f5;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S tr.gk-prof-cols th.pla,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-ally):not(.gk-prof-hero):not(.gk-prof-gen) tr.gk-prof-cols th.al {
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S tbody tr:not(.gk-prof-head):not(.gk-prof-cols) th {
+    font-weight: 301;
+    background: #fff;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-gen) tbody tr:not(.gk-prof-head):not(.gk-prof-cols):nth-child(even) th {
+    background: #fafafa;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-ally):not(.gk-prof-hero):not(.gk-prof-gen) th.ra {
+    width: 42px;
+    text-align: center;
+}
+
+/* Alliance table — exact greek.sa reference (4 cols: # | التحالف | اللاعبون | النقاط) */
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally col.gk-prof-rank-col {
+    width: 28px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally col.gk-prof-al-col,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally col.gk-prof-players-col,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally col.gk-prof-points-col {
+    width: 32%;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th a,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th bdi,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tr.gk-prof-cols th {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    padding: 4px 6px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tr.gk-prof-cols th {
+    font-weight: 700 !important;
+    background: #f5f5f5 !important;
+    color: #000 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr:not(.gk-prof-head):not(.gk-prof-cols) th,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr:not(.gk-prof-head):not(.gk-prof-cols) th a,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr:not(.gk-prof-head):not(.gk-prof-cols) th bdi {
+    font-weight: 301 !important;
+    color: #333 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th.ra,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tr.gk-prof-cols th.ra {
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 32px !important;
+    padding: 4px 2px !important;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th.al,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th.pla,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th.po {
+    width: 32% !important;
+    color: #333;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr th.al a {
+    color: #71d000 !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: 301 !important;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally .staTit {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-search,
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-search input,
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-search button,
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-navi,
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-navi a {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 301;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th.none {
+    text-align: center !important;
+    color: #999 !important;
+    font-weight: 301 !important;
+    font-size: 13px;
+    padding: 10px 8px !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr.hl th {
+    background: #eaf8d0 !important;
+    border-color: #71d000 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr.hl th.ra.fc {
+    border-right: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr.hl th.po.lc {
+    border-left: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr.hl th:not(.ra):not(.po) {
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally .staLe {
+    flex: 0 0 96px;
+    width: 96px;
+    height: 1px;
+    visibility: hidden;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tr.gk-prof-head th {
+    padding: 6px 8px !important;
+    background: #efefef !important;
+}
+
+/* Heroes table — greek.sa reference (9 cols, 588px total) */
+body.pg-gk.pg-spieler #BP .gk-prof-hero-wrap {
+    width: 588px;
+    max-width: 100%;
+    margin: 0 auto 10px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.35;
+    table-layout: fixed;
+    width: 588px !important;
+    max-width: 100%;
+    margin: 0;
+    border: 1px solid #dcdcdc;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th {
+    border-color: #dcdcdc !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-rank-col {
+    width: 28px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-name-col {
+    width: 100px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-owner-col {
+    width: 86px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-lvl-col {
+    width: 54px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-xp-col {
+    width: 112px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-off-col,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-def-col {
+    width: 58px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-str-col {
+    width: 52px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-life-col {
+    width: 50px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th a,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th bdi {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    padding: 4px 5px !important;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    padding: 5px 3px !important;
+    vertical-align: middle;
+    overflow: visible;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.off,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.def,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.str {
+    font-size: 11px !important;
+    line-height: 1.15;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th {
+    font-weight: 700 !important;
+    background: linear-gradient(to bottom, #f2f2f2, #ececec) !important;
+    color: #000 !important;
+    line-height: 1.2;
+    white-space: normal;
+    word-break: normal;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr:not(.gk-prof-head):not(.gk-prof-cols) th.ra {
+    color: #2277bb !important;
+    font-weight: 301 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr:not(.gk-prof-head):not(.gk-prof-cols) th,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr:not(.gk-prof-head):not(.gk-prof-cols) th bdi {
+    font-weight: 301 !important;
+    color: #333 !important;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.ra,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.ra {
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    padding: 4px 2px !important;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.hero,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.hero {
+    width: 100px !important;
+    max-width: 100px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.ow,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.ow {
+    width: 86px !important;
+    max-width: 86px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.lev,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.lev {
+    width: 54px !important;
+    max-width: 54px !important;
+    min-width: 54px !important;
+    padding: 4px 2px !important;
+    white-space: normal;
+    overflow: visible;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.xp,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.xp {
+    width: 112px !important;
+    max-width: 112px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.off,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.off {
+    width: 58px !important;
+    max-width: 58px !important;
+    padding: 4px 2px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.def,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.def {
+    width: 58px !important;
+    max-width: 58px !important;
+    padding: 4px 2px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.str,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.str {
+    width: 52px !important;
+    max-width: 52px !important;
+    padding: 4px 2px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.life,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th.life {
+    width: 50px !important;
+    max-width: 50px !important;
+    padding: 4px 2px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.hero {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #333 !important;
+    font-weight: 301 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.ow a {
+    color: #55aa00 !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: 700 !important;
+    text-decoration: none;
+    display: inline;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.ow {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.hero img.unit {
+    vertical-align: middle;
+    margin-left: 2px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.off.gk-prof-zero,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.def.gk-prof-zero,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.str.gk-prof-zero {
+    color: #ccc !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.xp bdi {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.life.alive {
+    color: #55aa00 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.life.dead {
+    color: #cc0000 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero .staTit {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th.none {
+    text-align: center !important;
+    color: #999 !important;
+    font-weight: 301 !important;
+    font-size: 13px;
+    padding: 10px 8px !important;
+    background: #fff !important;
+    white-space: normal;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr.hl th {
+    background: #eaf8d0 !important;
+    border-color: #71d000 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr.hl th.ra.fc {
+    border-right: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr.hl th.life.lc {
+    border-left: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr.hl th:not(.ra):not(.life) {
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-head th {
+    padding: 6px 8px !important;
+    background: linear-gradient(to bottom, #f2f2f2, #ececec) !important;
+    border-color: #dcdcdc !important;
+}
+
+/* Natars countdown — greek.sa reference */
+body.pg-gk.pg-spieler #BP .gk-prof-natars {
+    width: 588px;
+    max-width: 100%;
+    min-height: 300px;
+    margin: 0 auto 10px;
+    padding: 56px 12px 64px;
+    box-sizing: border-box;
+    text-align: center;
+    background: transparent;
+    border: none;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-natars-lab {
+    margin: 0 0 22px;
+    padding: 0;
+    color: #9a9a9a;
+    font-size: 14px;
+    font-weight: 301;
+    line-height: 1.4;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-natars-clock {
+    margin: 0;
+    padding: 0;
+    color: #c2c2c2;
+    font-size: 44px;
+    font-weight: 301;
+    line-height: 1.1;
+    letter-spacing: 1px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    direction: ltr;
+    unicode-bidi: embed;
+}
+
+/* General stats — greek.sa literal (b4 fl + a b0, 588px) */
+body.pg-gk.pg-spieler #BP .gk-prof-general-wrap {
+    width: 588px;
+    max-width: 100%;
+    margin: 0 auto 10px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen {
+    width: 588px !important;
+    max-width: 100%;
+    margin: 0 0 10px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.35;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    direction: rtl;
+    float: none !important;
+    clear: both;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen th,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen th {
+    border: 1px solid #ccc;
+    padding: 4px 6px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 301;
+    color: #000;
+    background: #fff !important;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen tr.gk-prof-head th,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen tr.gk-prof-head th {
+    padding: 5px 6px !important;
+    background: linear-gradient(to bottom, #f2f2f2, #e6e6e6) !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+    font-size: 13px !important;
+    border-color: #ccc !important;
+    text-align: center !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen tr.gk-prof-cols th {
+    font-weight: 700 !important;
+    background: linear-gradient(to bottom, #f2f2f2, #e8e8e8) !important;
+    color: #000 !important;
+    font-size: 13px !important;
+    border-color: #ccc !important;
+    text-align: center !important;
+}
+
+/* مواعيد العالم — عمودان متساويان */
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-times col.gk-prof-gen-col-lab,
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-times col.gk-prof-gen-col-time {
+    width: 294px;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-times th.gk-prof-gen-lab {
+    width: 294px;
+    max-width: 294px;
+    font-weight: 700 !important;
+    text-align: center !important;
+    padding: 4px 8px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-times th.gk-prof-gen-time {
+    width: 294px;
+    max-width: 294px;
+    font-weight: 301 !important;
+    text-align: center !important;
+    padding: 4px 8px !important;
+    direction: rtl;
+    unicode-bidi: isolate;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-times th.gk-prof-gen-time bdi {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+/* معلومات العالم — تسمية عريضة | رقم ضيق × 2 */
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-info col.gk-prof-gen-col-lab {
+    width: 228px;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-info col.gk-prof-gen-col-num {
+    width: 66px;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-info th.gk-prof-gen-lab {
+    width: 228px;
+    max-width: 228px;
+    font-weight: 700 !important;
+    text-align: center !important;
+    padding: 4px 6px !important;
+    font-size: 13px !important;
+    line-height: 1.3;
+    white-space: normal;
+}
+
+body.pg-gk.pg-spieler #BP table.b4.fl.gk-prof-gen-info th.gk-prof-gen-num {
+    width: 66px;
+    max-width: 66px;
+    font-weight: 301 !important;
+    text-align: center !important;
+    padding: 4px 2px !important;
+}
+
+/* القبائل — ثلاثة أعمدة متساوية، خلفية بيضاء */
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes col.gk-prof-gen-col-tribe,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes col.gk-prof-gen-col-players,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes col.gk-prof-gen-col-pct {
+    width: 196px;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes tbody tr:not(.gk-prof-head):not(.gk-prof-cols) th {
+    background: #fff !important;
+    font-weight: 301 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes th.gk-prof-gen-tribe,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes tr.gk-prof-cols th:first-child {
+    width: 196px;
+    max-width: 196px;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes th.gk-prof-gen-tribe,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes th.gk-prof-gen-tribe a,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes th.gk-prof-gen-tribe a:link,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes th.gk-prof-gen-tribe a:visited {
+    font-weight: 301 !important;
+    color: #000 !important;
+    background: #fff !important;
+    text-decoration: none;
+    text-align: center !important;
+    padding: 4px 8px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes th.gk-prof-gen-tribe a:hover {
+    color: #000 !important;
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes th.gk-prof-gen-num,
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes tr.gk-prof-cols th:nth-child(2),
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen-tribes tr.gk-prof-cols th:nth-child(3) {
+    width: 196px;
+    max-width: 196px;
+    text-align: center !important;
+    padding: 4px 4px !important;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-gen-meta {
+    display: none;
+}
+
+/* World news — أهم أخبار العالم */
+body.pg-gk.pg-spieler #BP .gk-prof-news-wrap {
+    width: 588px;
+    max-width: 100%;
+    margin: 0 auto 10px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news {
+    width: 588px !important;
+    max-width: 100%;
+    margin: 0 0 6px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+    float: none !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th {
+    border: 1px solid #ccc;
+    padding: 4px 6px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 301;
+    color: #000;
+    background: #fff !important;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news tr.gk-prof-head th {
+    padding: 5px 8px !important;
+    background: linear-gradient(to bottom, #f2f2f2, #e6e6e6) !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    text-align: center !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news tr.gk-prof-cols th {
+    font-weight: 700 !important;
+    background: linear-gradient(to bottom, #f2f2f2, #e8e8e8) !important;
+    font-size: 13px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news col.gk-prof-news-col-since {
+    width: 56px;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news col.gk-prof-news-col-text {
+    width: 532px;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th.gk-prof-news-since {
+    width: 56px;
+    max-width: 56px;
+    white-space: nowrap;
+    font-weight: 301 !important;
+    padding: 4px 3px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th.gk-prof-news-text {
+    width: 532px;
+    max-width: 532px;
+    text-align: center !important;
+    font-weight: 301 !important;
+    padding: 5px 8px !important;
+    line-height: 1.5;
+    white-space: normal;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th.gk-prof-news-text a {
+    font-weight: 301;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th.gk-prof-news-text a[href*="spieler.php"] {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th.gk-prof-news-text a[href*="karte.php"] {
+    color: #006699 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th.gk-prof-news-text a:hover {
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th.gk-prof-news-text b {
+    font-weight: 700;
+    color: #000;
+}
+
+body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news th.gk-prof-news-empty {
+    color: #666;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-news-foot {
+    margin: 4px 2px 0;
+    padding: 0;
+    color: #c8860a;
+    font-size: 12px;
+    font-weight: 301;
+    text-align: right;
+    line-height: 1.4;
+}
+
+/* Legacy L6_S general block — keep for non-gk-prof-gen tables only */
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-gen {
+    width: 588px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-ally):not(.gk-prof-hero):not(.gk-prof-gen) th.pla {
+    width: 28%;
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-ally):not(.gk-prof-hero):not(.gk-prof-gen) th.al {
+    width: 22%;
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S th.vil,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S th.pop {
+    width: 10%;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S th.on {
+    width: 52px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S tr.gk-prof-head th {
+    padding: 6px 8px;
+    background: #efefef;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    direction: ltr;
+}
+
+body.pg-gk.pg-spieler #BP .staTit {
+    flex: 1 1 auto;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #000;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP .staRi,
+body.pg-gk.pg-spieler #BP .staLe {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 0 0 auto;
+}
+
+body.pg-gk.pg-spieler #BP .staRi img,
+body.pg-gk.pg-spieler #BP .staLe img {
+    width: 30px;
+    height: 30px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+body.pg-gk.pg-spieler #BP .staRi a:hover img,
+body.pg-gk.pg-spieler #BP .staLe a:hover img {
+    background-position: 0 bottom;
+}
+
+body.pg-gk.pg-spieler #BP .staRi img.btn_def {
+    background-image: url(../gpack/novaterra_classic/img/s/def.gif);
+}
+body.pg-gk.pg-spieler #BP .staRi img.btn_off {
+    background-image: url(../gpack/novaterra_classic/img/s/off.gif);
+}
+body.pg-gk.pg-spieler #BP .staRi img.btn_stats {
+    background-image: url(../gpack/novaterra_classic/img/s/stats.gif);
+}
+body.pg-gk.pg-spieler #BP .staRi img.btn_top10 {
+    background-image: url(../gpack/novaterra_classic/img/s/top10.gif);
+}
+body.pg-gk.pg-spieler #BP .staRi img.btn_top10.active {
+    background-position: 0 bottom;
+}
+body.pg-gk.pg-spieler #BP .staLe img.btn_v1 {
+    background-image: url(../gpack/novaterra_classic/img/s/v1.gif);
+}
+body.pg-gk.pg-spieler #BP .staLe img.btn_v2 {
+    background-image: url(../gpack/novaterra_classic/img/s/v2.gif);
+}
+body.pg-gk.pg-spieler #BP .staLe img.btn_v3 {
+    background-image: url(../gpack/novaterra_classic/img/s/v3.gif);
+}
+body.pg-gk.pg-spieler #BP .staLe img.btn_v6 {
+    background-image: url(../gpack/novaterra_classic/img/s/v6.gif);
+}
+body.pg-gk.pg-spieler #BP .staLe img.btn_v7 {
+    background-image: url(../gpack/novaterra_classic/img/s/v7.gif);
+}
+body.pg-gk.pg-spieler #BP .staLe img.btn_v8 {
+    background-image: url(../gpack/novaterra_classic/img/s/v8.gif);
+}
+body.pg-gk.pg-spieler #BP .staLe img.btn_v9 {
+    background-image: url(../gpack/novaterra_classic/img/s/v9.gif);
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-ally):not(.gk-prof-hero):not(.gk-prof-gen) tbody tr th.pla,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-ally):not(.gk-prof-hero):not(.gk-prof-gen) tbody tr th.pla a {
+    color: #71d000;
+    font-weight: 700;
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-ally):not(.gk-prof-hero):not(.gk-prof-gen) tbody tr th.al a {
+    color: #8a6d3b;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S tbody tr.hl th {
+    background: #eaf8d0 !important;
+    border-color: #71d000 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S tbody tr.hl th.ra.fc {
+    border-right: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S tbody tr.hl th.on.lc {
+    border-left: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S tbody tr.hl th:not(.ra):not(.on) {
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S .statMsgIcon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot {
+    width: 100% !important;
+    float: none !important;
+    border-collapse: collapse;
+    margin-top: 0;
+    direction: rtl;
+    font-size: 13px;
+    background: #fff !important;
+    border: 0 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot td {
+    vertical-align: middle;
+    padding: 6px 8px;
+    border: 0 !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-navi {
+    text-align: left;
+    color: #5b8fc7;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-navi a {
+    color: #5b8fc7 !important;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-search input.text {
+    width: 52px;
+    text-align: center;
+    margin: 0 4px;
+    border: 1px solid #71d000 !important;
+    background: #fff;
+    padding: 2px 4px;
+    height: 20px;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-search input.text.name {
+    width: 120px;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-search .OffSu {
+    background: linear-gradient(180deg, #f8f8f8 0%, #d4d4d4 100%) !important;
+    border: 1px solid #71d000 !important;
+    border-radius: 4px;
+    color: #333 !important;
+    font-weight: 301 !important;
+    padding: 2px 14px !important;
+    cursor: pointer;
+    min-height: 22px;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-err {
+    text-align: center;
+    color: #ff6f0f;
+    margin: 8px 0;
+}
+
+/* ---- Legacy ranking sub-pages (alliances, villages, heroes, top10, etc.) ---- */
+body.pg-gk.pg-spieler .gk-prof-legacy {
+    float: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    direction: rtl;
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-prof-legacy::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+body.pg-gk.pg-spieler .gk-prof-legacy center,
+body.pg-gk.pg-spieler .gk-prof-legacy p.error {
+    text-align: center;
+    color: #ff6f0f;
+    margin: 8px 0;
+    font-size: 13px;
+}
+
+/* Shared ranking table base (matches L6_S overview) */
+body.pg-gk.pg-spieler #BP table.row_table_data,
+body.pg-gk.pg-spieler #BP table#player,
+body.pg-gk.pg-spieler #BP table#alliance,
+body.pg-gk.pg-spieler #BP table#alliance_off,
+body.pg-gk.pg-spieler #BP table#alliance_def,
+body.pg-gk.pg-spieler #BP table#villages,
+body.pg-gk.pg-spieler #BP table#heroes,
+body.pg-gk.pg-spieler #BP table#player_off,
+body.pg-gk.pg-spieler #BP table#player_def {
+    width: 100% !important;
+    float: none !important;
+    clear: both;
+    border-collapse: collapse;
+    margin: 0 0 10px;
+    font-size: 13px;
+    direction: rtl;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data th,
+body.pg-gk.pg-spieler #BP table.row_table_data td,
+body.pg-gk.pg-spieler #BP table#player th,
+body.pg-gk.pg-spieler #BP table#player td,
+body.pg-gk.pg-spieler #BP table#alliance th,
+body.pg-gk.pg-spieler #BP table#alliance td,
+body.pg-gk.pg-spieler #BP table#alliance_off th,
+body.pg-gk.pg-spieler #BP table#alliance_off td,
+body.pg-gk.pg-spieler #BP table#alliance_def th,
+body.pg-gk.pg-spieler #BP table#alliance_def td,
+body.pg-gk.pg-spieler #BP table#villages th,
+body.pg-gk.pg-spieler #BP table#villages td,
+body.pg-gk.pg-spieler #BP table#heroes th,
+body.pg-gk.pg-spieler #BP table#heroes td,
+body.pg-gk.pg-spieler #BP table#player_off th,
+body.pg-gk.pg-spieler #BP table#player_off td,
+body.pg-gk.pg-spieler #BP table#player_def th,
+body.pg-gk.pg-spieler #BP table#player_def td {
+    border: 1px solid #c9c9c9;
+    padding: 4px 7px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 301;
+    background: #fff;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data thead > tr:first-child > th,
+body.pg-gk.pg-spieler #BP table#player thead > tr:first-child > th,
+body.pg-gk.pg-spieler #BP table#alliance thead > tr:first-child > th,
+body.pg-gk.pg-spieler #BP table#alliance_off thead > tr:first-child > th,
+body.pg-gk.pg-spieler #BP table#alliance_def thead > tr:first-child > th,
+body.pg-gk.pg-spieler #BP table#villages thead > tr:first-child > th,
+body.pg-gk.pg-spieler #BP table#heroes thead > tr:first-child > th,
+body.pg-gk.pg-spieler #BP table#player_off thead > tr:first-child > th,
+body.pg-gk.pg-spieler #BP table#player_def thead > tr:first-child > th {
+    padding: 6px 8px;
+    background: #efefef;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    position: relative;
+    min-height: 36px;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table.row_table_data thead > tr:nth-child(2) > th,
+body.pg-gk.pg-spieler #BP table#player thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table#alliance thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table#alliance_off thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table#alliance_def thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table#villages thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table#heroes thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table#player_off thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table#player_def thead > tr:nth-child(2) > td {
+    font-weight: 700;
+    background: #f5f5f5;
+    font-size: 12px;
+    color: #000;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data tbody tr:nth-child(even) td,
+body.pg-gk.pg-spieler #BP table#player tbody tr:nth-child(even) td,
+body.pg-gk.pg-spieler #BP table#alliance tbody tr:nth-child(even) td,
+body.pg-gk.pg-spieler #BP table#alliance_off tbody tr:nth-child(even) td,
+body.pg-gk.pg-spieler #BP table#alliance_def tbody tr:nth-child(even) td,
+body.pg-gk.pg-spieler #BP table#villages tbody tr:nth-child(even) td,
+body.pg-gk.pg-spieler #BP table#heroes tbody tr:nth-child(even) td,
+body.pg-gk.pg-spieler #BP table#player_off tbody tr:nth-child(even) td,
+body.pg-gk.pg-spieler #BP table#player_def tbody tr:nth-child(even) td {
+    background: #fafafa;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data td.pla,
+body.pg-gk.pg-spieler #BP table.row_table_data td.pla a,
+body.pg-gk.pg-spieler #BP table#player td.pla,
+body.pg-gk.pg-spieler #BP table#player td.pla a,
+body.pg-gk.pg-spieler #BP table#villages td.pla,
+body.pg-gk.pg-spieler #BP table#villages td.pla a,
+body.pg-gk.pg-spieler #BP table#heroes td.pla,
+body.pg-gk.pg-spieler #BP table#heroes td.pla a,
+body.pg-gk.pg-spieler #BP table#player_off td.pla,
+body.pg-gk.pg-spieler #BP table#player_off td.pla a,
+body.pg-gk.pg-spieler #BP table#player_def td.pla,
+body.pg-gk.pg-spieler #BP table#player_def td.pla a {
+    text-align: right;
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data td.al,
+body.pg-gk.pg-spieler #BP table.row_table_data td.al a,
+body.pg-gk.pg-spieler #BP table#player td.al,
+body.pg-gk.pg-spieler #BP table#player td.al a,
+body.pg-gk.pg-spieler #BP table#alliance td.al,
+body.pg-gk.pg-spieler #BP table#alliance td.al a,
+body.pg-gk.pg-spieler #BP table#alliance_off td.al,
+body.pg-gk.pg-spieler #BP table#alliance_off td.al a,
+body.pg-gk.pg-spieler #BP table#alliance_def td.al,
+body.pg-gk.pg-spieler #BP table#alliance_def td.al a,
+body.pg-gk.pg-spieler #BP table#villages td.al,
+body.pg-gk.pg-spieler #BP table#villages td.al a {
+    text-align: right;
+    color: #8a6d3b;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data td.ra,
+body.pg-gk.pg-spieler #BP table#player td.ra,
+body.pg-gk.pg-spieler #BP table#alliance td.ra,
+body.pg-gk.pg-spieler #BP table#alliance_off td.ra,
+body.pg-gk.pg-spieler #BP table#alliance_def td.ra,
+body.pg-gk.pg-spieler #BP table#villages td.ra,
+body.pg-gk.pg-spieler #BP table#heroes td.ra {
+    width: 42px;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data tr.hl td,
+body.pg-gk.pg-spieler #BP table#player tr.hl td,
+body.pg-gk.pg-spieler #BP table#alliance tr.hl td,
+body.pg-gk.pg-spieler #BP table#alliance_off tr.hl td,
+body.pg-gk.pg-spieler #BP table#alliance_def tr.hl td,
+body.pg-gk.pg-spieler #BP table#villages tr.hl td,
+body.pg-gk.pg-spieler #BP table#heroes tr.hl td,
+body.pg-gk.pg-spieler #BP table#player_off tr.hl td,
+body.pg-gk.pg-spieler #BP table#player_def tr.hl td {
+    background: #eaf8d0 !important;
+    border-color: #71d000 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.row_table_data tr.hl td.fc,
+body.pg-gk.pg-spieler #BP table#player tr.hl td.fc,
+body.pg-gk.pg-spieler #BP table#alliance tr.hl td.fc,
+body.pg-gk.pg-spieler #BP table#alliance_off tr.hl td.fc,
+body.pg-gk.pg-spieler #BP table#alliance_def tr.hl td.fc,
+body.pg-gk.pg-spieler #BP table#villages tr.hl td.fc,
+body.pg-gk.pg-spieler #BP table#heroes tr.hl td.fc {
+    border-right: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table#player tr.hl td.lc,
+body.pg-gk.pg-spieler #BP table#player tr.hl td.on.lc {
+    border-left: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP img.statMsgIcon,
+body.pg-gk.pg-spieler #BP svg.statMsgIcon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* statHeadBar — same layout as gk-prof-bar */
+body.pg-gk.pg-spieler #BP .statHeadBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    direction: ltr;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler #BP .statHeadTitle {
+    flex: 1 1 auto;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #000;
+    direction: rtl;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP .statHeadSpacer {
+    flex: 0 0 105px;
+    width: 105px;
+    height: 1px;
+    visibility: hidden;
+}
+
+body.pg-gk.pg-spieler #BP div#submenu,
+body.pg-gk.pg-spieler #BP div#submenu2,
+body.pg-gk.pg-spieler #BP .statHeadBar #submenu,
+body.pg-gk.pg-spieler #BP .statHeadBar #submenu2 {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    float: none !important;
+    display: flex !important;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 2px;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0;
+    overflow: visible;
+    z-index: auto;
+}
+
+body.pg-gk.pg-spieler #BP div#submenu img,
+body.pg-gk.pg-spieler #BP div#submenu2 img,
+body.pg-gk.pg-spieler #BP .statHeadBar #submenu img,
+body.pg-gk.pg-spieler #BP .statHeadBar #submenu2 img {
+    width: 30px;
+    height: 30px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    display: block;
+    float: none !important;
+    margin: 0 !important;
+}
+
+body.pg-gk.pg-spieler #BP div#submenu a:hover img,
+body.pg-gk.pg-spieler #BP div#submenu2 a:hover img,
+body.pg-gk.pg-spieler #BP .statHeadBar #submenu a:hover img,
+body.pg-gk.pg-spieler #BP .statHeadBar #submenu2 a:hover img {
+    background-position: 0 bottom;
+}
+
+body.pg-gk.pg-spieler #BP div#submenu img.btn_def,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_def {
+    background-image: url(../gpack/novaterra_classic/img/s/def.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu img.btn_off,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_off {
+    background-image: url(../gpack/novaterra_classic/img/s/off.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu img.btn_stats,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_stats {
+    background-image: url(../gpack/novaterra_classic/img/s/stats.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu img.btn_top10,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_top10 {
+    background-image: url(../gpack/novaterra_classic/img/s/top10.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu2 img.btn_v1,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_v1 {
+    background-image: url(../gpack/novaterra_classic/img/s/v1.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu2 img.btn_v2,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_v2 {
+    background-image: url(../gpack/novaterra_classic/img/s/v2.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu2 img.btn_v3,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_v3 {
+    background-image: url(../gpack/novaterra_classic/img/s/v3.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu2 img.btn_v6,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_v6 {
+    background-image: url(../gpack/novaterra_classic/img/s/v6.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu2 img.btn_v7,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_v7 {
+    background-image: url(../gpack/novaterra_classic/img/s/v7.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu2 img.btn_v8,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_v8 {
+    background-image: url(../gpack/novaterra_classic/img/s/v8.gif);
+}
+body.pg-gk.pg-spieler #BP div#submenu2 img.btn_v9,
+body.pg-gk.pg-spieler #BP .statHeadBar img.btn_v9 {
+    background-image: url(../gpack/novaterra_classic/img/s/v9.gif);
+}
+
+/* Top-10 pages — 2×2 grid (greek.sa literal) */
+body.pg-gk.pg-spieler #BP .gk-prof-top10-wrap {
+    width: 588px;
+    max-width: 100%;
+    margin: 0 auto 10px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-top10-head {
+    width: 588px !important;
+    max-width: 100%;
+    margin: 0 0 8px;
+    float: none !important;
+    clear: both;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-top10-head th {
+    border: 1px solid #c9c9c9;
+    padding: 6px 8px;
+    background: #efefef !important;
+}
+
+/* Top-10 medal countdown banner */
+body.pg-gk.pg-spieler #BP .gk-prof-top10-medal-banner {
+    width: 588px;
+    max-width: 100%;
+    margin: 10px auto 0;
+    padding: 0;
+    text-align: center;
+    color: #000;
+    font-size: 13px;
+    line-height: 1.5;
+    background: transparent;
+    border: none;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-top10-medal-line {
+    margin: 0;
+    padding: 2px 0;
+    color: #000;
+    background: transparent;
+    border: none;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-top10-medal-line.gk-prof-top10-medal-sub bdi {
+    font-weight: 700;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-top10-medal-line img.gold {
+    display: inline-block;
+    vertical-align: middle;
+    width: 12px;
+    height: 12px;
+    margin: 0 1px;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-top10-medal-clock {
+    display: inline;
+    font-weight: 700;
+    color: #000;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-top10-grid {
+    width: 588px;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+body.pg-gk.pg-spieler #BP .gk-prof-top10-clear {
+    clear: both;
+    height: 0;
+    overflow: hidden;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini {
+    width: 292px !important;
+    max-width: calc(50% - 2px) !important;
+    margin: 0 0 8px;
+    float: none !important;
+    clear: none !important;
+    table-layout: fixed;
+    font-size: 12px;
+    border-collapse: collapse;
+    border: 1px solid #c9c9c9;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini.gk-prof-top10-right {
+    float: right !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini.gk-prof-top10-left {
+    float: left !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini col.gk-prof-top10-col-rank {
+    width: 24px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini col.gk-prof-top10-col-po {
+    width: 54px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini col.gk-prof-top10-col-gold {
+    width: 28px;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini col.gk-prof-top10-col-pla {
+    width: auto;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th {
+    border: 1px solid #c9c9c9;
+    padding: 2px 4px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 301;
+    background: #fff;
+    color: #000;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tr.gk-prof-top10-title-row th {
+    background: #efefef !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    padding: 3px 4px !important;
+    text-align: center !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.gk-prof-top10-title {
+    text-align: center !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tr.gk-prof-cols th {
+    background: #f5f5f5 !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    padding: 2px 3px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tbody tr:not(.gk-prof-top10-title-row):not(.gk-prof-cols):not(.gk-prof-top10-spacer):not(.none):not(.gk-prof-empty-row):nth-child(even) th {
+    background: #fafafa;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.ra {
+    width: 24px;
+    max-width: 24px;
+    white-space: nowrap;
+    font-weight: 301;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.pla,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.pla a {
+    text-align: center !important;
+    color: #000;
+    font-weight: 301;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.pla a.top3 {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.pla.gk-prof-empty,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.po.gk-prof-empty,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.gold.gk-prof-empty {
+    color: #b0b0b0 !important;
+    font-weight: 301 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.po {
+    width: 54px;
+    max-width: 54px;
+    font-weight: 301;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini th.gold {
+    width: 28px;
+    max-width: 28px;
+    font-weight: 301;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tr.gk-prof-cols th.gold img.gold {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tbody tr.hl th {
+    background: #eaf8d0 !important;
+    border-color: #71d000 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tbody tr.hl th.ra.fc {
+    border-right: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tbody tr.hl th.gold.lc {
+    border-left: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tbody tr.hl th.pla {
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tbody tr.none th {
+    background: #efefef !important;
+    font-weight: 301;
+    color: #000;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tbody tr.none th.pla {
+    color: #b0b0b0 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini tr.gk-prof-top10-spacer th {
+    height: 3px;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    line-height: 0;
+}
+
+/* Legacy top10 fallback (non-greek mini tables) */
+body.pg-gk.pg-spieler #BP .top10PageHead {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 0 12px !important;
+    min-height: 36px;
+    clear: both;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 {
+    width: 246px !important;
+    max-width: calc(50% - 4px) !important;
+    box-sizing: border-box !important;
+    border-collapse: collapse;
+    margin: 0 0 8px;
+    font-size: 12px;
+    direction: rtl;
+    border: 1px solid #c9c9c9;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-top10-mini.top10,
+body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-top10-mini {
+    width: 292px !important;
+    max-width: calc(50% - 2px) !important;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 th,
+body.pg-gk.pg-spieler #BP table.top10 td {
+    border: 1px solid #c9c9c9;
+    padding: 3px 5px;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 thead > tr:first-child > th {
+    background: #efefef;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 thead > tr.gk-prof-top10-title-row > th {
+    text-align: center !important;
+    position: relative;
+    padding: 4px 22px !important;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 .gk-prof-top10-title {
+    display: inline-block;
+    text-align: center;
+    font-weight: 700;
+    color: #000;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 .gk-prof-top10-help {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    margin-top: -6px;
+    line-height: 0;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 thead > tr:nth-child(2) > td {
+    background: #f5f5f5;
+    font-weight: 700;
+    font-size: 11px;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 td.pla,
+body.pg-gk.pg-spieler #BP table.top10 td.pla a {
+    text-align: center;
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 td.ra {
+    text-align: center;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 td.val {
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 tr.own.hl td {
+    background: #eaf8d0 !important;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 tr.own.hl td.ra.fc {
+    border-right: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 tr.own.hl td.val.lc {
+    border-left: 2px solid #71d000;
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 tr.own.hl td.pla {
+    border-top: 2px solid #71d000;
+    border-bottom: 2px solid #71d000;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 td.empty {
+    height: 4px;
+    padding: 0;
+    border: none !important;
+    background: transparent !important;
+}
+
+body.pg-gk.pg-spieler #BP table.top10 img.help {
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+}
+
+body.pg-gk.pg-spieler #BP table#top10_offs,
+body.pg-gk.pg-spieler #BP table#top10_climbers {
+    float: right !important;
+    clear: none !important;
+}
+
+body.pg-gk.pg-spieler #BP table#top10_defs,
+body.pg-gk.pg-spieler #BP table#top10_raiders {
+    float: left !important;
+    clear: none !important;
+}
+
+/* General stats (table.world) */
+body.pg-gk.pg-spieler #BP table.world {
+    width: 100% !important;
+    float: none !important;
+    clear: both;
+    border-collapse: collapse;
+    margin: 0 0 12px;
+    font-size: 12px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP table.world th,
+body.pg-gk.pg-spieler #BP table.world td {
+    border: 1px solid #c9c9c9;
+    padding: 4px 7px;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+}
+
+body.pg-gk.pg-spieler #BP table.world thead > tr:first-child > th {
+    background: #efefef;
+    font-weight: 700;
+    font-size: 13px;
+    color: #000;
+}
+
+body.pg-gk.pg-spieler #BP table.world thead > tr:nth-child(2) > td,
+body.pg-gk.pg-spieler #BP table.world tbody > tr > th {
+    background: #f5f5f5;
+    font-weight: 700;
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler #BP table.world tbody tr:nth-child(even) td {
+    background: #fafafa;
+}
+
+body.pg-gk.pg-spieler #BP .tzms-wrap {
+    max-width: 100%;
+    margin-bottom: 12px;
+}
+
+/* Plus graphical stats */
+body.pg-gk.pg-spieler #BP table.ps-head,
+body.pg-gk.pg-spieler #BP table.ps-sum {
+    width: 100% !important;
+    float: none !important;
+    border-collapse: collapse;
+    margin: 0 0 10px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler #BP table.ps-head svg,
+body.pg-gk.pg-spieler #BP .gk-prof-legacy svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Hide legacy search footer when Greek footer is used */
+body.pg-gk.pg-spieler #BP table#search_navi {
+    display: none !important;
+}
+
+body.pg-gk.pg-spieler #BP table.gk-prof-foot {
+    display: table !important;
+}
+
+@media screen and (max-width: 1080px) {
+    body.pg-gk.pg-spieler table.gk-shell {
+        width: 98% !important;
+    }
+}
+
+/* ---- Player profile overview (Travian / greek.sa table chrome) ---- */
+html[dir="rtl"] body.pg-gk.pg-spieler,
+html[dir="rtl"] body.pg-gk.pg-spieler #BP,
+html[dir="rtl"] body.pg-gk.pg-spieler #BP .Bod,
+html[dir="rtl"] body.pg-gk.pg-spieler .gk-spieler-body {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    line-height: 16px !important;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-td-main #textmenu,
+body.pg-gk.pg-spieler .gk-spieler-body > h1 {
+    display: none !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body {
+    width: 100%;
+    max-width: 588px;
+    box-sizing: border-box;
+    padding: 0;
+    direction: rtl;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-num {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-variant-numeric: lining-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek {
+    width: 100% !important;
+    max-width: 588px;
+    border-collapse: separate !important;
+    border-spacing: 1px !important;
+    margin: 0 0 14px;
+    font-size: 13px;
+    line-height: 16px;
+    table-layout: fixed;
+    background: #c0c0c0 !important;
+    border: 0;
+    empty-cells: show;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview {
+    direction: ltr;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages {
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek {
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview col.gk-prof-col-desc,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview col.gk-prof-col-detail {
+    width: 50%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages col.gk-prof-col-nam {
+    width: 32%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages col.gk-prof-col-res,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages col.gk-prof-col-troops {
+    width: 9%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages col.gk-prof-col-hab,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages col.gk-prof-col-dist {
+    width: 10%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages col.gk-prof-col-coords {
+    width: 20%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview th,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview td,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages th,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek th,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek td {
+    border: 0 !important;
+    padding: 0;
+    vertical-align: middle;
+    background: #fff !important;
+    font-weight: 301;
+    line-height: 16px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview thead th {
+    background-image: url(../gpack/novaterra/img/a/c2.gif);
+    background-repeat: repeat;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview tr.gk-prof-user th {
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    padding: 4px 7px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview tr.gk-prof-cols th {
+    background-color: #f3f3f3 !important;
+    background-image: none !important;
+    font-weight: 700;
+    text-align: center;
+    padding: 4px 7px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview tr.gk-prof-main-row > td {
+    vertical-align: top;
+    padding: 0;
+    text-align: right;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview td.gk-prof-detail-cell {
+    width: 50%;
+    height: 156px;
+    min-height: 156px;
+    padding: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview td.gk-prof-desc-cell {
+    width: 50%;
+    min-height: 156px;
+    padding: 0 7px;
+    vertical-align: middle;
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1 {
+    padding: 0;
+    min-height: 120px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    text-align: right;
+}
+
+/* Inline medals in profile overview — same compact size as Travian (48px) */
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1 img,
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc2-inline img,
+body.pg-gk.pg-spieler .gk-spieler-body .desc1div.messages img {
+    display: inline-block;
+    width: auto;
+    height: 48px;
+    max-width: 48px;
+    max-height: 48px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin: 0 3px;
+    border: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    background: #fff !important;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table th,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td {
+    border: 0 !important;
+    border-bottom: 1px solid #c0c0c0 !important;
+    padding: 2px 7px;
+    background: #fff !important;
+    vertical-align: middle;
+    line-height: 16px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table th {
+    width: 50%;
+    font-weight: 700;
+    text-align: right !important;
+    white-space: nowrap;
+    color: #000;
+    border-left: 1px solid #c0c0c0 !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td {
+    width: 50%;
+    text-align: right !important;
+    color: #333;
+    font-weight: 301;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td.gk-prof-spacer {
+    height: 5px;
+    padding: 0 !important;
+    line-height: 0;
+    border-bottom: 0 !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td.gk-prof-edit-cell {
+    border-bottom: 0 !important;
+    text-align: right !important;
+    padding: 4px 7px 6px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td.gk-prof-edit-cell a {
+    color: #71d000;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td.gk-prof-edit-cell a:hover {
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td.gk-prof-desc2-cell {
+    border-bottom: 0 !important;
+    border-top: 0 !important;
+    text-align: right !important;
+    vertical-align: middle;
+    padding: 4px 7px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages thead th {
+    background-image: url(../gpack/novaterra/img/a/c2.gif);
+    background-repeat: repeat;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages tr.gk-prof-vil-title th {
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    padding: 4px 7px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages tr.gk-prof-vil-cols th {
+    background-color: #f3f3f3 !important;
+    background-image: none !important;
+    font-weight: 700;
+    text-align: center;
+    font-size: 12px;
+    padding: 3px 5px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages tbody td {
+    padding: 3px 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages th.gk-prof-col-nam,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td.nam {
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages img.gk-prof-res-ico {
+    width: 18px;
+    height: 12px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td.nam a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td.nam a:hover {
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages span.gk-prof-cap {
+    color: #a0a0a0;
+    font-size: 12px;
+    font-weight: 301;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td.gk-val-num {
+    text-align: right !important;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table td.gk-val-num .gk-num {
+    text-align: left;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td.gk-prof-coords a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+    direction: ltr;
+    display: inline-block;
+    unicode-bidi: isolate;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td.gk-prof-coords a:hover {
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages img.gk-prof-troop-ico {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td.gk-prof-dist {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler #BP .BAR5.BAR5-sub {
+    margin: -4px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ccc;
+}
+
+body.pg-gk.pg-spieler #BP .BAR5.BAR5-sub .c-row > a.-cho {
+    border-bottom: 1px solid #666;
+    padding-bottom: 2px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .settingsHub {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ---- Profile edit (s=1) ---- */
+body.pg-gk.pg-spieler .gk-spieler-body form.gk-prof-form {
+    margin: 0;
+    padding: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    margin: 0 0 12px;
+    font-size: 13px;
+    direction: rtl;
+    table-layout: fixed;
+    background: #fff;
+    border: 1px solid #c9c9c9;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit th,
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit td {
+    border: 1px solid #c9c9c9;
+    padding: 5px 8px;
+    vertical-align: top;
+    background: #fff;
+    font-weight: 301;
+    line-height: 1.45;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit tr.gk-prof-edit-user th {
+    background: linear-gradient(180deg, #f7f7f7 0%, #e6e6e6 100%);
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    padding: 7px 8px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit tr.gk-prof-edit-cols td {
+    background: #efefef;
+    font-weight: 700;
+    text-align: center;
+    width: 50%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit th {
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+    width: 28%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit td.desc1 {
+    width: 42%;
+    vertical-align: top;
+    padding: 6px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit td.desc2 {
+    padding: 6px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit input.text,
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit select.dropdown {
+    border: 1px solid #7cb044;
+    padding: 2px 4px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit input.text.day {
+    width: 32px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit input.text.year {
+    width: 48px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit select.dropdown {
+    min-width: 88px;
+    margin: 0 4px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit td.gend label {
+    margin-inline-end: 10px;
+    font-weight: 301;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit td.empty {
+    border: 0;
+    padding: 0;
+    height: 0;
+    line-height: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 0 0 14px;
+    font-size: 13px;
+    direction: rtl;
+    border: 1px solid #c9c9c9;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals td,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals th {
+    border: 1px solid #c9c9c9;
+    padding: 4px 8px;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals tr:first-child td.rbg,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals tr:first-child td {
+    background: linear-gradient(180deg, #f7f7f7 0%, #e6e6e6 100%);
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    padding: 6px 8px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals tr:nth-child(2) td {
+    background: #efefef;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals td:first-child {
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals td a {
+    color: #5fb000;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals td a:hover {
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .badge-option,
+body.pg-gk.pg-spieler .gk-spieler-body img.gk-medal-badge {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    max-width: 32px;
+    max-height: 32px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img.gk-medal-badge,
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img {
+    width: 48px;
+    height: 48px;
+    max-width: 48px;
+    max-height: 48px;
+    object-fit: contain;
+    margin: 0 4px;
+    vertical-align: middle;
+}
+
+/* ---- Profile edit — من نحن (s=1) ---- */
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-main td.gk-prof-detail-cell {
+    height: auto !important;
+    min-height: 220px;
+    padding: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-main td.gk-prof-desc-cell {
+    min-height: 220px;
+    padding: 6px 7px;
+    vertical-align: top;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-detail-stack {
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+    height: 100%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields {
+    flex: 0 0 auto;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields tr.gk-prof-edit-last-field th,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields tr.gk-prof-edit-last-field td {
+    border-bottom: 0 !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor {
+    min-height: 200px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #7cb058;
+    border-radius: 0;
+    background: #fff;
+    padding: 4px 6px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    text-align: right;
+    direction: rtl;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor-desc2 {
+    flex: 1 1 auto;
+    min-height: 72px;
+    margin: 6px 7px 7px;
+    width: auto;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin: 0 5px;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields th,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields td {
+    text-align: right !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields td.gend {
+    text-align: right !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields td.gend label {
+    margin-inline-end: 12px;
+    font-weight: 301;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields input.text {
+    border: 1px solid #7cb058;
+    padding: 2px 4px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields input.gk-prof-age-input {
+    width: 40px;
+    max-width: 48px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields input.gk-prof-country-input {
+    width: 100%;
+    max-width: 160px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil col.gk-prof-col-nam {
+    width: 42%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil col.gk-prof-col-hab {
+    width: 12%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil col.gk-prof-col-coords {
+    width: 26%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil col.gk-prof-col-dist {
+    width: 20%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil input.gk-prof-vil-input {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    border: 1px solid #7cb058;
+    padding: 2px 4px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    background: #fff;
+    box-sizing: border-box;
+    text-align: right;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-vil-nam-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    width: 100%;
+    padding: 0 4px;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil td.nam {
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil span.gk-prof-cap {
+    color: #a0a0a0;
+    font-size: 12px;
+    font-weight: 301;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil td.gk-prof-col-coords a {
+    color: #5fb000;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil td.gk-prof-col-coords a:hover {
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek tr.gk-medal-cols td,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek tr.gk-medal-cols th {
+    background-color: #f3f3f3 !important;
+    background-image: none !important;
+    font-weight: 700;
+    text-align: center;
+    font-size: 12px;
+    padding: 3px 5px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek tr:first-child td.rbg {
+    background-image: url(../gpack/novaterra/img/a/c2.gif);
+    background-repeat: repeat;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    padding: 4px 7px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek td.gk-medal-ico,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek td.gk-medal-add {
+    width: 48px;
+    min-width: 48px;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek td.gk-medal-add a.gk-medal-add-link {
+    display: inline-block;
+    line-height: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek td.gk-medal-add,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek th.gk-medal-add-h {
+    color: inherit;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek td.gk-medal-add a {
+    color: inherit;
+    font-weight: 301;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek tbody td:not(.gk-medal-ico):not(.gk-medal-add) {
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek tbody td:nth-child(2) {
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals.gk-prof-medals-greek {
+    border-collapse: separate !important;
+    border-spacing: 1px !important;
+    background: #c0c0c0 !important;
+    border: 0 !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals.gk-prof-medals-greek td,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals.gk-prof-medals-greek th {
+    border: 0 !important;
+    background: #fff !important;
+    padding: 3px 5px;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals.gk-prof-medals-greek tbody td {
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-prof-btn-wrap {
+    text-align: center;
+    margin: 8px 0 12px;
+    padding: 0;
+}
+
+html[dir="rtl"] body.pg-gk.pg-spieler #BP .Bod .gk-spieler-body p.gk-prof-btn-wrap button#btn_save.gk-prof-save,
+html[dir="rtl"] body.pg-gk.pg-spieler #BP .Bod .gk-spieler-body p.gk-prof-btn-wrap button.gk-prof-save.trav_buttons,
+body.pg-gk.pg-spieler .gk-spieler-body button.gk-prof-save,
+body.pg-gk.pg-spieler .gk-spieler-body button.gk-prof-ok {
+    display: inline-block !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 56px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 2px 22px 3px !important;
+    border: 1px solid #71d000 !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6) !important;
+    color: #000 !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 18px !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    vertical-align: middle !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-spieler #BP .Bod .gk-spieler-body p.gk-prof-btn-wrap button#btn_save.gk-prof-save:hover,
+html[dir="rtl"] body.pg-gk.pg-spieler #BP .Bod .gk-spieler-body p.gk-prof-btn-wrap button.gk-prof-save.trav_buttons:hover,
+body.pg-gk.pg-spieler .gk-spieler-body button.gk-prof-save:hover,
+body.pg-gk.pg-spieler .gk-spieler-body button.gk-prof-ok:hover {
+    border-color: #a6ac9f !important;
+    background: #fff !important;
+    background-image: linear-gradient(to bottom, #ffffff, #ececec) !important;
+    color: #000 !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-spieler #BP .Bod .gk-spieler-body p.gk-prof-btn-wrap button#btn_save.gk-prof-save:active,
+html[dir="rtl"] body.pg-gk.pg-spieler #BP .Bod .gk-spieler-body p.gk-prof-btn-wrap button.gk-prof-save.trav_buttons:active,
+body.pg-gk.pg-spieler .gk-spieler-body button.gk-prof-save:active,
+body.pg-gk.pg-spieler .gk-spieler-body button.gk-prof-ok:active {
+    border-color: #71d000 !important;
+    background: #fff !important;
+    background-image: none !important;
+    color: #000 !important;
+}
+
+/* ---- Membership / العضوية (s=3) ---- */
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table {
+    width: 100%;
+    max-width: 588px;
+    margin: 0 0 10px;
+    border-collapse: separate !important;
+    border-spacing: 1px !important;
+    background: #c0c0c0 !important;
+    direction: rtl;
+    border: 0;
+    empty-cells: show;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table th,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table td {
+    padding: 4px 7px;
+    background: #fff !important;
+    vertical-align: middle;
+    font-size: 13px;
+    line-height: 18px;
+    color: #000;
+    border: 0 !important;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table thead th {
+    background-color: #e8e4d8 !important;
+    background-image: url(../gpack/novaterra/img/a/c2.gif) !important;
+    background-repeat: repeat !important;
+    font-weight: 700;
+    text-align: center;
+    padding: 5px 7px;
+    color: #000;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table thead th.rbg {
+    font-size: 13px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table tr.gk-acc-cols th {
+    background-color: #ece9d8 !important;
+    background-image: url(../gpack/novaterra/img/a/c2.gif) !important;
+    background-repeat: repeat !important;
+    font-weight: 700;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table tbody th {
+    width: 42%;
+    font-weight: 700;
+    text-align: right;
+    white-space: normal;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table tbody td {
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table td.gk-acc-note {
+    font-size: 11px;
+    line-height: 16px;
+    color: #555;
+    text-align: right;
+    padding: 5px 8px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table td.gk-acc-check {
+    width: 48px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table input.text,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table input[type="password"] {
+    width: min(240px, 100%);
+    min-height: 22px;
+    padding: 2px 5px;
+    border: 1px solid #71d000;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table input.check {
+    margin: 0;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table img.gold,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-table img.gk-acc-gold-ico {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 2px;
+    vertical-align: -2px;
+    background-image: url(../gpack/novaterra/img/a/gold.gif);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-sitter-grid {
+    display: flex;
+    gap: 0;
+    padding: 6px 4px !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-sitter-col {
+    flex: 1 1 50%;
+    padding: 0 8px;
+    border-left: 1px solid #d8d8d8;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-sitter-col:first-child {
+    border-left: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-sitter-col-title {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-sitter-input {
+    width: 100% !important;
+    max-width: none;
+    margin-bottom: 6px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-sitter-name-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-sitter-name-row .del {
+    flex: 0 0 auto;
+    cursor: pointer;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-sitter-name-row .gk-acc-sitter-input {
+    flex: 1 1 auto;
+    margin-bottom: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body ul.gk-acc-sitter-perms {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body ul.gk-acc-sitter-perms li {
+    margin: 0 0 3px;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body ul.gk-acc-sitter-perms label {
+    font-weight: 400;
+    cursor: pointer;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-you-sit-list {
+    text-align: right;
+    padding: 4px 8px 8px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-you-sit-list a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-none {
+    color: #888;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-error {
+    margin: -4px 0 8px;
+    color: #b12b2b;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-save-row {
+    background: transparent;
+    border-spacing: 0;
+    margin-top: 4px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-save-row td {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-save-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-direction: row-reverse;
+    margin: 8px 0 0;
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-save-label {
+    font-weight: 700;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-acc-save-pw {
+    width: 140px !important;
+    min-width: 120px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-commands th a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-acc-commands th a:hover {
+    color: #71d000;
+}
+
+/* ---- Direct links / روابط مباشرة (s=2&dl=1) ---- */
+body.pg-gk.pg-spieler .gk-spieler-body form.gk-links-form {
+    width: 100%;
+    max-width: 588px;
+    margin: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table {
+    width: 100%;
+    max-width: 588px;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table thead th.rbg {
+    color: #000 !important;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table col.gk-links-col-idx {
+    width: 38px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table col.gk-links-col-name,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table col.gk-links-col-url {
+    width: calc((100% - 38px) / 2);
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table tr.gk-links-cols th,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table tr.gk-links-cols.gk-acc-cols th {
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    color: #000 !important;
+    padding: 5px 6px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table th.gk-links-idx,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table td.gk-links-idx {
+    width: 38px;
+    max-width: 38px;
+    text-align: center;
+    padding: 5px 3px !important;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table th.gk-links-idx {
+    font-size: 16px;
+    font-weight: 700;
+    color: #71d000 !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table td.gk-links-name,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table td.gk-links-url {
+    padding: 5px 5px !important;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table .gk-links-idx-inner {
+    position: relative;
+    display: inline-block;
+    width: 28px;
+    height: 22px;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table td.gk-links-idx .gk-links-del {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    left: -10px;
+    top: 50%;
+    margin-top: -6px;
+    line-height: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table tr:hover td.gk-links-idx .gk-links-del {
+    display: inline-block;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table td.gk-links-idx .gk-links-del .del {
+    width: 12px;
+    height: 12px;
+    background-position: -2px -2px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table input.gk-links-nr-input {
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    padding: 1px 0 !important;
+    text-align: center;
+    font-size: 13px;
+    line-height: 20px;
+    color: #000;
+    border: 1px solid #71d000 !important;
+    background: #fff !important;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table input.gk-links-input,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-links-table input.text.gk-links-input {
+    display: block;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    border: 1px solid #71d000 !important;
+    padding: 2px 5px !important;
+    min-height: 22px;
+    height: 22px;
+    font-size: 13px;
+    line-height: 20px;
+    color: #000;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-links-btn-wrap {
+    text-align: center;
+    margin: 10px 0 4px;
+    padding: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body button.gk-links-add-btn {
+    color: #000 !important;
+    font-weight: 700;
+}
+
+/* ---- Name reservation / حجز الاسم (s=3&nr=1) ---- */
+body.pg-gk.pg-spieler .gk-spieler-body .gk-name-reserve {
+    width: 100%;
+    padding: 32px 12px 24px;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-name-reserve-msg {
+    margin: 0 auto;
+    padding: 0 20px;
+    max-width: 540px;
+    color: #999;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+}
+
+/* ---- Options / خيارات (uid&hub=1) ---- */
+body.pg-gk.pg-spieler .gk-spieler-body form.gk-options-form {
+    width: 100%;
+    max-width: 588px;
+    margin: 0;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-options-table {
+    width: 100%;
+    max-width: 588px;
+    direction: rtl;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-options-table col.gk-opt-col-name {
+    width: 46%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-options-table col.gk-opt-col-values {
+    width: 54%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-options-table tr.gk-options-cols th {
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    color: #000;
+    padding: 5px 8px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-options-table tbody th.gk-opt-name {
+    width: 46%;
+    color: #000;
+    font-weight: 700;
+    text-align: center !important;
+    vertical-align: middle;
+    padding: 10px 8px !important;
+    line-height: 20px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-options-table td.gk-opt-values {
+    width: 54%;
+    text-align: right;
+    vertical-align: middle;
+    padding: 8px 14px 8px 10px !important;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-options-table td.gk-opt-values label {
+    display: inline-block;
+    margin: 0;
+    padding: 1px 0;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 20px;
+    color: #000;
+    cursor: pointer;
+    text-align: right;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-options-table td.gk-opt-values input.radio {
+    margin: 0 0 0 5px;
+    vertical-align: -2px;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-options-btn-wrap {
+    text-align: center;
+    margin: 10px 0 6px;
+    padding: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body button.gk-options-save-btn {
+    color: #000 !important;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-options-saved {
+    margin: 0 0 8px;
+    padding: 0;
+    color: #3d8e3d;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* ---- Accounts / الحسابات (feeding.php) ---- */
+body.pg-gk.pg-spieler .gk-spieler-body form.gk-accounts-form {
+    width: 100%;
+    max-width: 588px;
+    margin: 0 auto;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-acc-intro {
+    margin: 0 auto 14px;
+    padding: 0 8px;
+    max-width: 560px;
+    color: #000;
+    font-size: 13px;
+    line-height: 22px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-acc-flash {
+    margin: 0 auto 10px;
+    padding: 0 8px;
+    max-width: 560px;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-acc-flash.ok {
+    color: #3d8e3d;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-acc-flash.err {
+    color: #c00;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-acc-disabled {
+    margin: 0 auto 10px;
+    max-width: 560px;
+    color: #666;
+    font-size: 13px;
+    text-align: center;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table {
+    width: 100%;
+    max-width: 588px;
+    margin: 0 auto 8px;
+    direction: rtl;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table col.gk-acc-col-label {
+    width: 46%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table col.gk-acc-col-field {
+    width: 54%;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table tbody th {
+    width: 46%;
+    text-align: center !important;
+    vertical-align: middle;
+    font-weight: 700;
+    color: #000;
+    padding: 8px 6px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table tbody td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 6px 8px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table input.text {
+    width: min(240px, 100%);
+    min-height: 22px;
+    padding: 2px 5px;
+    border: 1px solid #71d000;
+    box-sizing: border-box;
+    background: #fff;
+    text-align: right;
+    direction: rtl;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table tr.gk-acc-link-row td {
+    text-align: center;
+    padding: 8px 6px 10px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table button.gk-acc-link-btn {
+    border: 0;
+    background: transparent;
+    color: #8cc63f;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table button.gk-acc-link-btn:hover {
+    color: #71d000;
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table button.gk-acc-link-btn:disabled {
+    color: #aaa;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body p.gk-acc-warning {
+    margin: 6px auto 0;
+    padding: 0 8px;
+    max-width: 560px;
+    color: #c00;
+    font-size: 13px;
+    line-height: 22px;
+    text-align: center;
+}

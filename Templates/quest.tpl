@@ -33,7 +33,12 @@ $_SESSION['qtyp'] = QTYPE;
 $userId   = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 $qst      = isset($_SESSION['qst']) ? (int)$_SESSION['qst'] : 0;
 $qstNew   = isset($_SESSION['qstnew']) ? (int)$_SESSION['qstnew'] : 0;
-$tribe    = isset($session->userinfo['tribe']) ? $session->userinfo['tribe'] : 0;
+$tribe = 1;
+if (isset($session->tribe) && (int) $session->tribe > 0) {
+    $tribe = (int) $session->tribe;
+} elseif (isset($session->userinfo['tribe']) && (int) $session->userinfo['tribe'] > 0) {
+    $tribe = (int) $session->userinfo['tribe'];
+}
 
 /**
  * ---------------------------------------------------------
@@ -49,6 +54,7 @@ $showQuest =
     );
 
 if ($showQuest) {
+    if (empty($GLOBALS['gkQuestPortraitExternal'])) {
 ?>
 
 <div id="anm" style="width:120px; height:140px; visibility:hidden;"></div>
@@ -78,6 +84,10 @@ if ($showQuest) {
     <?php } ?>
 
 </div>
+
+<?php
+    }
+?>
 
 <script type="text/javascript">
 <?php if ($qst == 0) { ?>

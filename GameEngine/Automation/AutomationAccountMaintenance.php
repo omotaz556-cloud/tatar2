@@ -135,6 +135,10 @@ trait AutomationAccountMaintenance {
                 WHERE
                     shown = 1 AND
                     `time` < (UNIX_TIMESTAMP() - (86400 * 8))");
+
+        if (method_exists($database, 'pruneWorldNews')) {
+            $database->pruneWorldNews();
+        }
     }
 
     private function procNewClimbers() {

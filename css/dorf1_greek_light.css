@@ -1,0 +1,38 @@
+/* Light Greek chrome on classic dorf1 — does NOT replace #mid layout */
+
+body.dorf1Page.pg-dorf1-light {
+    background: #fff !important;
+}
+
+body.dorf1Page.pg-dorf1-light .login-banner {
+    display: block;
+    width: 100%;
+    height: 110px;
+    background: #d9f0fb url("../img/login/banner.png") center top / 100% 110px no-repeat;
+}
+
+body.dorf1Page.pg-dorf1-light #cap font,
+body.dorf1Page.pg-dorf1-light span#cap {
+    color: #c00 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+}
+
+body.dorf1Page.pg-dorf1-light #content.village1 > h1 {
+    font-weight: 900;
+    font-size: 26px;
+}
+
+/* Green resource pills (RTL resbar already in identity_greek) */
+body.dorf1Page.pg-dorf1-light #res table.resbar-rtl td.respill,
+body.dorf1Page.pg-dorf1-light #res table.resbar-rtl td.rescap {
+    background: #54c571 !important;
+    border-radius: 5px !important;
+    color: #fff !important;
+}
+
+body.dorf1Page.pg-dorf1-light #side_navi a[href="plus.php"],
+body.dorf1Page.pg-dorf1-light #side_navi a[href*="plus.php"] {
+    color: #71d000 !important;
+    font-weight: 700;
+}

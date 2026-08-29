@@ -63,5 +63,3 @@ $cancel = rtrim(HOMEPAGE,'/'). '/plus.php?id=1&cancel=1';
     </tr>
     </tbody>
 </table>
-</div>
-</div>

@@ -1,0 +1,496 @@
+/* login_page.css — white page; sidebar OUTSIDE main card; full-bleed banner */
+
+html.pg-login,
+body.pg-login {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #000;
+    font-family: "Changa", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    min-height: 100%;
+}
+
+body.pg-login a {
+    color: #000;
+    text-decoration: none;
+}
+
+body.pg-login a:hover {
+    color: #666;
+}
+
+/* --- Full-bleed banner --- */
+.login-banner {
+    width: 100%;
+    height: 110px;
+    background-color: #d9f0fb;
+    background-image: url("../img/login/banner.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 100% 110px;
+}
+
+/* --- Grey status bar (full width) --- */
+.login-statusbar {
+    width: 100%;
+    background: linear-gradient(180deg, #f1f1f1 0%, #e6e6e6 45%, #ebebeb 100%);
+    border-bottom: 1px solid #cfcfcf;
+    min-height: 34px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.login-statusbar,
+.login-statusbar * {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.login-statusbar__inner {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 4px 12px 6px;
+    text-align: right;
+    direction: rtl;
+}
+
+.login-world {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #333;
+    font-size: 13px;
+}
+
+.login-moon {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 32%, #9ad4ff 0%, #3a8fe0 55%, #1f6bb8 100%);
+    box-shadow: inset -4px 0 0 0 #155a9c;
+    display: inline-block;
+    flex: 0 0 14px;
+}
+
+.login-world__chev {
+    font-size: 10px;
+    color: #555;
+}
+
+.login-now {
+    margin-top: 1px;
+    color: #222;
+    font-size: 13px;
+}
+
+/* --- Layout: sidebar OUTSIDE the white card --- */
+.login-layout {
+    direction: rtl;
+    width: 980px;
+    max-width: 98%;
+    margin: 22px auto 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 22px;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* Sidebar sits on the page (right), not inside the card */
+.login-side {
+    width: 140px;
+    flex: 0 0 140px;
+    text-align: right;
+    padding-top: 112px;
+    line-height: 1.95;
+    background: transparent;
+}
+
+.login-side a {
+    display: block;
+    color: #000;
+    font-size: 13px;
+}
+
+.login-side a.is-current {
+    font-weight: 700;
+}
+
+.login-side a.is-reg {
+    color: #e0a010;
+    font-weight: 700;
+}
+
+.login-side a.is-reg:hover {
+    color: #c48a00;
+}
+
+/* Column: title outside card + white card */
+.login-col {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.login-title {
+    margin: 0 0 14px;
+    padding: 0;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: center;
+    letter-spacing: 0;
+    font-family: "Changa", Tahoma, Arial, Helvetica, sans-serif;
+    background-image: repeating-linear-gradient(
+        180deg,
+        #1f1f1f 0px,
+        #1f1f1f 1px,
+        #6e6e6e 1px,
+        #6e6e6e 2px
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Only the form/stats block is the white container */
+.login-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    text-align: center;
+    background: #ffffff;
+    box-shadow: -16px 0 26px -20px rgba(0, 0, 0, 0.2), 16px 0 26px -20px rgba(0, 0, 0, 0.2);
+    padding: 18px 22px 150px;
+    box-sizing: border-box;
+}
+
+.login-help {
+    margin: 0 4px 16px;
+    text-align: center;
+    color: #333;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.login-alert {
+    color: #c00;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+table.login-box {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border: 1px dashed #c8c8c8;
+    background: #fff;
+    text-align: right;
+    font-size: 13px;
+}
+
+table.login-box td {
+    padding: 7px 10px;
+    vertical-align: middle;
+}
+
+table.login-box td.lbl {
+    width: 180px;
+    white-space: nowrap;
+}
+
+table.login-box input.fi {
+    width: 170px;
+    height: 22px;
+    border: 1px solid #777;
+    padding: 1px 4px;
+    font-size: 13px;
+    font-family: "Changa", Tahoma, Arial, sans-serif;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+table.login-box input.fi:focus {
+    outline: none;
+    border-color: #7db223;
+}
+
+.pw {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pw-eye {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    opacity: 0.55;
+}
+
+.pw-eye:hover {
+    opacity: 0.9;
+}
+
+.err {
+    display: block;
+    color: #c00;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.err-box {
+    margin: 12px auto;
+    padding: 8px 10px;
+    border: 1px solid #e0a0a0;
+    background: #fff8f8;
+    text-align: right;
+    font-size: 13px;
+}
+
+.err-box a {
+    color: #7db223;
+    font-weight: 700;
+}
+
+/* Button: light grey pill + bright green border (reference crop) */
+.login-btn {
+    display: inline-block;
+    margin: 12px auto 14px;
+    padding: 3px 26px 4px;
+    min-width: 0;
+    height: auto;
+    line-height: 1.4;
+    border: 1px solid #8edf27;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #f7f7f6 0%, #ececeb 48%, #dededd 100%);
+    color: #5a5a5a;
+    font-family: "Changa", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-shadow: 0 1px 0 #ffffff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.login-btn:hover {
+    background: linear-gradient(180deg, #ffffff 0%, #f0f0ef 48%, #e4e4e3 100%);
+    color: #444;
+}
+
+/* Stats: content-sized dashed box; label + value sit close (RTL) */
+table.login-stats {
+    width: auto !important;
+    max-width: 100%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px dashed #c8c8c8;
+    background: #fff;
+    direction: rtl;
+    table-layout: auto;
+}
+
+table.login-stats td {
+    padding: 4px 0;
+    vertical-align: middle;
+    white-space: nowrap;
+    background: transparent;
+    font-size: 13px;
+    color: #000;
+    font-weight: 400;
+}
+
+/* label */
+table.login-stats td:first-child {
+    width: auto !important;
+    text-align: right;
+    padding: 4px 16px 4px 10px;
+}
+
+/* value — tight against the label */
+table.login-stats td:last-child {
+    width: auto !important;
+    text-align: right;
+    padding: 4px 2px 4px 16px;
+    font-weight: 700;
+}
+
+table.login-stats b {
+    font-weight: 700;
+}
+
+@media (max-width: 700px) {
+    .login-banner {
+        height: 72px;
+        background-size: cover;
+    }
+
+    .login-layout {
+        flex-direction: column;
+        width: auto;
+        margin: 12px 8px 30px;
+    }
+
+    .login-side {
+        width: 100%;
+        flex: none;
+        text-align: center;
+        padding-top: 0;
+    }
+
+    .login-side a {
+        display: inline-block;
+        margin: 0 6px;
+    }
+
+    .login-main {
+        max-width: none;
+        box-shadow: none;
+        padding: 12px 8px;
+    }
+
+    .reg-soldier {
+        position: static;
+        display: block;
+        margin: 0 auto 8px;
+        height: 90px;
+    }
+
+    .reg-hero {
+        min-height: 0;
+    }
+}
+
+/* --- Registration (anmelden.php) --- */
+body.pg-register,
+body.pg-register input,
+body.pg-register button,
+body.pg-register label,
+body.pg-register th,
+body.pg-register td,
+body.pg-register .login-side a {
+    font-family: "Changa", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+body.pg-register .login-side,
+body.pg-login.pg-register .login-side {
+    padding-top: 210px;
+}
+
+.reg-hero {
+    position: relative;
+    width: 100%;
+    min-height: 130px;
+    margin: 0 0 10px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.reg-soldier {
+    position: absolute;
+    left: 8px;
+    top: 0;
+    height: 130px;
+    width: auto;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.reg-title-img {
+    display: block;
+    margin: 28px auto 0;
+    height: 52px;
+    width: auto;
+    max-width: 220px;
+}
+
+.reg-intro {
+    margin: 0 4px 14px;
+    text-align: center;
+    color: #000;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.reg-intro a {
+    color: #71d000;
+    font-weight: 700;
+}
+
+table.reg-box {
+    width: 100%;
+    margin: 0 auto 14px;
+    border-collapse: separate;
+    border: 2px dashed #c8c8c8;
+    background: #fff;
+    text-align: right;
+    font-size: 15px;
+    direction: rtl;
+}
+
+table.reg-box td {
+    padding: 7px 10px;
+    vertical-align: middle;
+}
+
+table.reg-box td.lbl {
+    width: 150px;
+    white-space: nowrap;
+}
+
+table.reg-box input.fi {
+    width: 190px;
+    height: 26px;
+    border: 1px solid #8edf27;
+    padding: 1px 4px;
+    font-size: 14px;
+    font-family: "Changa", Tahoma, Arial, sans-serif;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+table.reg-opts {
+    width: 100%;
+    margin: 0 auto 14px;
+    border-collapse: separate;
+    border: 2px dashed #c8c8c8;
+    background: #fff;
+    text-align: right;
+    font-size: 15px;
+    direction: rtl;
+}
+
+table.reg-opts th {
+    padding: 8px 10px 4px;
+    font-weight: 700;
+    color: #e0a010;
+    text-align: right;
+    vertical-align: top;
+}
+
+table.reg-opts td {
+    padding: 3px 10px;
+    text-align: right;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+table.reg-opts label {
+    cursor: pointer;
+    font-weight: 400;
+    color: #000;
+}
+
+.reg-age {
+    margin: 0;
+    color: #9a9a9a;
+    font-size: 18px;
+    font-weight: 400;
+}

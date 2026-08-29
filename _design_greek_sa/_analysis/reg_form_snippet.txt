@@ -1,0 +1,14 @@
+قبل التسجيل في العالم 6 يمكنك قراءة <a href="https://s6.greek.sa/m">الدليل</a> لمعرفة ميز وعيوب القبائل <br><br><form method="POST">
+<table class="log fl ">
+<tbody><tr><th>الاسم المستعار :</th><th><input name="Y[0]"></th></tr>
+<tr><th>البريد الالكتروني :</th><th><input type="Email" name="Y[1]"></th></tr>
+<tr><th>كلمة السر :</th><th><input name="Y[2]" type="password" autocomplete="new-password"></th></tr>
+</tbody></table><br><table class=" fl log0 tr diC">
+<tbody><tr class="C_O fh"><th class="S5">إختر قبيلة<br><br></th><th>موقع البداية<br><br></th><th></th></tr>
+<tr><th><label><input type="radio" name="X[0]" value="1" checked="">العرب</label></th><th colspan="2"><label><input type="radio" name="X[1]" value="0" checked="">عشوائي</label></th></tr>
+<tr><th><label><input type="radio" name="X[0]" value="2">الرومان</label></th><th><label><input type="radio" name="X[1]" value="1">شمال شرقي</label></th><th><label><input type="radio" name="X[1]" value="2">شمال غربي</label></th></tr>
+<tr><th><label><input type="radio" name="X[0]" value="3">الجرمان</label></th><th><label><input type="radio" name="X[1]" value="3">جنوب شرقي</label></th><th><label><input type="radio" name="X[1]" value="4">جنوب غربي</label></th></tr>
+<tr><th><label><input type="radio" name="X[0]" value="4">الأغريق</label></th><th colspan="2"></th></tr>
+
+</tbody></table><br><input type="Submit" class="SuLog" value=""></form><br><div class="F5 c_S">بدأ هذا العالم منذ 20 ساعة </div><br></div></div><div class="divL divRML ">  </div></div>
+		<d

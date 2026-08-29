@@ -1,41 +1,43 @@
 <?php
 #################################################################################
 ##  SAFE INCREMENTAL REFACTOR - Notes Module                                   ##
-##  Credits: cleaned structure, same logic preserved                           ##
-##  Compatibility: PHP 5.6+ / PHP 7+                                           ##
 #################################################################################
+
+$gkMsgGreek = !empty($GLOBALS['gkNachrichtenLiteralPage']);
+$gkMsgNotesTitle = defined('TZ_MSG_NOTES_TITLE') ? TZ_MSG_NOTES_TITLE : NOTES;
+
+if (!$gkMsgGreek) {
+    echo '<div id="content" class="messages">';
+    echo '<h1>' . MESSAGES . '</h1>';
+    include('menu.tpl');
+} else {
+    echo '<div class="gk-msg-panel gk-msg-notes">';
+    echo '<div class="gk-msg-panel-title">' . htmlspecialchars($gkMsgNotesTitle, ENT_QUOTES, 'UTF-8') . '</div>';
+    echo '<div class="gk-msg-panel-body">';
+}
 ?>
-
-<div id="content" class="messages">
-<h1><?php echo MESSAGES; ?></h1>
-
-<?php include("menu.tpl"); ?>
 
 <form method="post" action="nachrichten.php">
 
-<div id="block">
+<div id="block" class="<?php echo $gkMsgGreek ? 'gk-msg-notes-block' : ''; ?>">
 
-    <!-- ======================================================
-         FORM TYPE (UNCHANGED)
-    ======================================================= -->
     <input type="hidden" name="ft" value="m6" />
 
-    <!-- ======================================================
-         NOTE CONTENT (UNCHANGED OUTPUT)
-    ======================================================= -->
-    <textarea name="notizen" id="notice"><?php echo $message->note; ?></textarea>
+    <textarea name="notizen" id="notice" class="<?php echo $gkMsgGreek ? 'gk-msg-notes-area' : ''; ?>"><?php echo $message->note; ?></textarea>
 
-    <!-- ======================================================
-         SAVE BUTTON
-         (fix mic: atribut alt era invalid)
-    ======================================================= -->
     <p class="btn">
-        <button id="btn_save" name="s1" class="trav_buttons"><?php echo SAVE; ?></button>
-        <br />&nbsp;
+        <button id="btn_save" name="s1" class="<?php echo $gkMsgGreek ? 'gk-msg-del gk-msg-save' : 'trav_buttons'; ?>"><?php echo SAVE; ?></button>
+        <?php if (!$gkMsgGreek) { ?><br />&nbsp;<?php } ?>
     </p>
 
 </div>
 
 </form>
 
-</div>
+<?php
+if ($gkMsgGreek) {
+    echo '</div></div>';
+} else {
+    echo '</div>';
+}
+?>

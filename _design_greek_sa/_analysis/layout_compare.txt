@@ -1,0 +1,106 @@
+CSS=E:\الاعلانات\تعديلات\greek sa\الأحصائيات\أبطال\حرب الإغريق 6 - Greek War _ الإحصائيات_files\MaxB.css
+==== .nBody (2) ====
+.nBody,.pBody{margin:0 auto;display:table}
+.nBody{height:90%;min-width:1225px}
+==== .divR (6) ====
+.divRML,.log th,.login td,.prof .tx,table.Buld0 tr th{vertical-align:top}
+.divR.Wide,.divR.Wide2{width:213px}
+.divR{width:253px;background:url(i/Mp/shR.png) left 50px no-repeat}
+.divRML{float:right}
+.divRML{height:100%;min-height:500px;text-align:center}
+.divRML{margin-right:15px}
+==== .divM (3) ====
+.divM.Wide{width:688px}
+.divM.Wide2{width:788px}
+.divM{width:588px}
+==== .divL (4) ====
+.divL{text-align:right}
+.divL.Wide{width:323px}
+.divL.Wide2{width:223px}
+.divL{width:383px;background:url(i/Mp/shL.png) right 50px no-repeat;max-width:373px}
+==== .divRML (4) ====
+.divRML,.log th,.login td,.prof .tx,table.Buld0 tr th{vertical-align:top}
+.divRML{float:right}
+.divRML{height:100%;min-height:500px;text-align:center}
+.divRML{margin-right:15px}
+==== .Vs (6) ====
+.Vs a,.VsPh a{height:87px;width:70px;padding:0;margin:0;cursor:pointer}
+.Vs a,.VsPh,.VsPh a,.divRML{float:right}
+.VsPh{top:-79px;min-width:500px;display:inline-block;width:100%}
+.Vs{top:-78px;display:inline-block}
+.Vs{text-align:center}
+.Vs a{filter:none!important}
+==== .V1 (2) ====
+.V1{background:url(i/C/n1.png) no-repeat}
+.V1,.V2,.V3,.V4{background-size:70.2px 200px}
+==== .V2 (2) ====
+.V2{background:url(i/C/n2.png) no-repeat}
+.V2,.V3,.V4{background-size:70.2px 200px}
+==== .Resbar (5) ====
+.Resbar,.Vs{top:-78px;display:inline-block}
+.Resbar{text-align:right}
+.Resbar b,.resone{color:#fff;font-size:13px;margin:1px;display:inline-block;min-width:50px;padding:5px 4px;background:#54c571;border:none;border-radius:5px;text-align:center}
+.Resbar b.-x,.resone.-x{color:#e6fac6}
+.Resbar img{top:5px}
+==== .Bod (1) ====
+.Bod{top:-80px;padding:8px;width:calc(100% - 21px)}
+==== .PaNa (3) ====
+.PaNa{font-size:30px;text-align:right;width:100%;font-weight:900}
+.PaNa a,.inf,.infg{font-size:13px;font-weight:301}
+.PaNa,.tt,.vill3 tr th,label input[type=checkbox],label input[type=radio],table.tt tr th,table.ttT th{vertical-align:top}
+==== .RLisTa (6) ====
+.RLisTa a{color:#000;font-size:13px;font-weight:301!important;text-align:right;width:140px;display:inline-block;border:2px groove transparent;border-width:2px 0}
+.RLisTa{display:block;float:left;left:10px;top:50px;font-size:14px}
+.RLisTa.xPh{top:initial;left:initial;float:initial}
+.RLisTa a:hover{color:#71d000;border-color:#f9f9f9}
+.RLisTa a:hover X1,.green *{color:#71d000}
+.RLisTa X1{color:transparent}
+==== .MyVs (3) ====
+.MyVs table th,.allAIn,.prof,.seaP tr th,.tr,table.th1 tr:nth-child(n+3) th:first-child{text-align:right}
+.MyVs{right:20px;display:block;text-align:right}
+.MyVs table b{font-size:12px;font-weight:301}
+==== .heLR (1) ====
+.heLR{background:url(i/Mp/RL.png) repeat-x;width:100%}
+==== .head_greek (1) ====
+.head_greek{background:url(i/Mp/he_greek.png?p=4) center no-repeat;height:152px;min-width:1225px;width:100%}
+==== #BP (5) ====
+#BP .BAR5 .c-row .-cho,.ulds,div.bar .cho{border-bottom:1px dashed silver}
+#BP .BAR5 .c-row .c-chat,.c_g,.green,.moves .att40 td,.moves .att50 td,c_g,g{color:green}
+#BP .BAR5{display:flex;flex-direction:column;text-align:right;gap:10px;padding:10px 0}
+#BP .BAR5 .c-row>*{border:0 solid red}
+#BP .BAR5 .c-row>:not(:last-child):after{content:'|';padding:1px;color:#000;font-weight:200;pointer-events:none}
+==== .gold (4) ====
+.gold.x0,.gold.x1,.goldPh.x0,.goldPh.x1{display:table;height:23px;text-align:left;background:url(i/C/p.png) left repeat-y #fafaf9;padding:0 5px 0 40px}
+.gold.x0,.gold.x1{color:orange;font-weight:900;border:1px solid #e2e2e2;border-radius:5px;top:-40px}
+.goldPh.x0,.goldPh.x1{width:auto;color:orange;font-weight:900;float:left;border:1px solid #e2e2e2;border-radius:5px;top:38px}
+.gold.x1,.goldPh.x1{background-image:url(i/C/p1.png)}
+==== .NowT (1) ====
+.NowT{color:gray;top:-48px;left:-30px}
+
+#### vil1 HTML ####
+Vs :: <div class="Vs"> <a href="https://s6.greek.sa/vil1" class="V1 VA" title="حقول القرية"></a> <a href="https://s6.greek.sa/vil2" class="V2 VA" title="مباني القرية"></a> <a href="https://s6.greek.sa/map" class="V3 VA" title="الخريطة"></a> <a href="https://s6.greek.sa/stat" class="V4 VA" title="الإحصائيات"></a> <a href="https://s6.greek.sa/msg" class="V
+Resbar :: <div class="Resbar"><p class="R3 x0" title="مخزن"></p><b class="-x">40,000</b><p class="Rs x1" title="خشب"></p><b title="1600"><span id="_JS_1">762</span></b><p class="Rs x2" title="طين"></p><b title="1600"><span id="_JS_2">762</span></b><p class="Rs x3" title="حديد"></p><b title="1600"><span id="_JS_3">762</span></b><p class="R3 x1" title="مخزن حب
+PaNa :: <div class="PaNa"><bdi><span onclick="$(`form.-1`).show();$(this).hide();" style="font-size: inherit;color: inherit;">قرية test ✏️</span> <form class="-1" style="display:none;" method="POST"><input name="newVNa" value="قرية test" style="width: 38%;font-size: inherit;height: auto;margin-left: 10px;"><button class="TravB">تغيير الاسم</button></form> 
+VTy :: <div class="VTy" style="background:url(i/v/f1.png) no-repeat;"><a href="https://s6.greek.sa/build?Id=0" title="حقل قمح مستوى 0" class="FeldX Feld1 " onclick="StopRefresh()"></a><a href="https://s6.greek.sa/build?Id=1" title="" class="FeldX Feld2 " onclick="StopRefresh()"></a><a href="https://s6.greek.sa/build?Id=2" title="منجم حديد مستوى 0" class="
+Vill2 :: MISSING
+diL :: <div class="diL"><table class="prud"><tbody><tr><td colspan="3"><b>الإنتاج</b></td></tr><tr><td><i></i>الخشب:</td><td><b title="">1,600</b></td><td>لكل ساعة</td></tr><tr><td><i></i>الطين:</td><td><b title="">1,600</b></td><td>لكل ساعة</td></tr><tr><td><i></i>الحديد:</td><td><b title="">1,600</b></td><td>لكل ساعة</td></tr><tr><td><i></i>القمح:</td><
+MyVs :: <table class="MyVs"><tbody><tr><th colspan="2"><a href="https://s6.greek.sa/vil4" class="C_K">قائمة القرى</a></th></tr><tr><th><a class="C_O" href="https://s6.greek.sa/vil1"> قرية test</a><a class="fl"> (عاصمة) </a></th><th><a href="https://s6.greek.sa/build?Id=0&amp;t=1&amp;VId=2792"><p class="Rs x6" title="ارسال موارد"></p></a><a href="https://s6
+RLisTa :: <div class="RLisTa tl"><br> <a href="https://s6.greek.sa/index"><x1>◂</x1>الصفحة الرئيسية </a><br> <a onclick="showM()"><x1>◂</x1>الدليل السريع </a><br> <a href="https://s6.greek.sa/profile"><x1>◂</x1>بطاقة العضوية</a><br> <a href="https://s6.greek.sa/manual?t=4"><x1>◂</x1>شروحات للعبة</a><br><a href="https://s6.greek.sa/msg?t=4&amp;u=1"><x1>◂</x1>
+gold :: <a href="https://s6.greek.sa/plus" title="قائمة الذهب" class="gold x0"><p class="Rs x7" title="ذهب"></p>150</a> <span class="tr" style="width:90%;right:20px;display:block;"><img src="./حرب الإغريق 6 - Greek War _ حقول القرية_files/1_g.png" onclick="showG(0)" '="" style="width:145px"><br></span> <table class="MyVs"><tbody><tr><th colspan="2"><a href
+NowT :: <div class="NowT tr"><img src="./حرب الإغريق 6 - Greek War _ حقول القرية_files/_.png" class="daynight x1"><fx>()</fx> <a onclick="showIndexPanel(3,0)" class="c_gr" style="font-weight:301 !important">العالم 6 <b style="color:black">▽</b></a><br> .الآن :<b> <span id="_Clock">11:51:26</span></b></div> <div class="RLisTa tl"><br> <a href="https://s6.gr
+prud :: <table class="prud"><tbody><tr><td colspan="3"><b>الإنتاج</b></td></tr><tr><td><i></i>الخشب:</td><td><b title="">1,600</b></td><td>لكل ساعة</td></tr><tr><td><i></i>الطين:</td><td><b title="">1,600</b></td><td>لكل ساعة</td></tr><tr><td><i></i>الحديد:</td><td><b title="">1,600</b></td><td>لكل ساعة</td></tr><tr><td><i></i>القمح:</td><td><b title="">2,
+Trops :: <table class=" Trops"><tbody><tr><td colspan="2"><a class="offhref" href="https://s6.greek.sa/build?Id=34&amp;t=1&amp;u=1"><b>الوحدات</b></a></td></tr><tr><th colspan="99" class="NACT">لاشيء</th></tr></tbody></table></div></div></div><div class="divL divRML "> <a href="https://s6.greek.sa/plus" title="قائمة الذهب" class="gold x0"><p class="Rs x7" t
+
+#### vil2 HTML ####
+Vs :: <div class="Vs"> <a href="https://s6.greek.sa/vil1" class="V1 VA" title="حقول القرية"></a> <a href="https://s6.greek.sa/vil2" class="V2 VA" title="مباني القرية"></a> <a href="https://s6.greek.sa/map" class="V3 VA" title=""></a> <a href="https://s6.greek.sa/stat" class="V4 VA" title=""></a> <a href="https://s6.greek.sa/msg" class="V5 mp01" title="1 
+Resbar :: <div class="Resbar"><p class="R3 x0" title="مخزن"></p><b class="-x">40,000</b><p class="Rs x1" title="خشب"></p><b title="1600"><span id="_JS_1">792</span></b><p class="Rs x2" title="طين"></p><b title="1600"><span id="_JS_2">792</span></b><p class="Rs x3" title="حديد"></p><b title="1600"><span id="_JS_3">792</span></b><p class="R3 x1" title="مخزن حب
+PaNa :: <div class="PaNa"><bdi>قرية test</bdi> <a>(عاصمة)</a></div> <div class="heitt"> <div class="Vill2"><img style="left:-7px" src="./حرب الإغريق 6 - Greek War _ مباني القرية_files/b0.jpg" usemap="#V"> <map name="V"><area title="السور مستوى 0" href="https://s6.greek.sa/build?Id=39" shape="poly" coords="417,112,313,74,238,70,139,114,98,153,79,201,92,278,
+VTy :: MISSING
+Vill2 :: <div class="Vill2"><img style="left:-7px" src="./حرب الإغريق 6 - Greek War _ مباني القرية_files/b0.jpg" usemap="#V"> <map name="V"><area title="السور مستوى 0" href="https://s6.greek.sa/build?Id=39" shape="poly" coords="417,112,313,74,238,70,139,114,98,153,79,201,92,278,209,370,370,354,472,262,463,160,426,114,443,100,470,88,511,130,529,200,528,256,5
+diL :: MISSING
+MyVs :: <table class="MyVs"><tbody><tr><th colspan="2"><a href="https://s6.greek.sa/vil4" class="C_K">قائمة القرى</a></th></tr><tr><th><a class="C_O" href="https://s6.greek.sa/vil2"> قرية test</a><a class="fl"> (عاصمة) </a></th><th><a href="https://s6.greek.sa/build?Id=0&amp;t=1&amp;VId=2792"><p class="Rs x6" title="ارسال موارد"></p></a><a href="https://s6
+RLisTa :: <div class="RLisTa tl"><br> <a href="https://s6.greek.sa/index"><x1>◂</x1>الصفحة الرئيسية </a><br> <a onclick="showM()"><x1>◂</x1>الدليل السريع </a><br> <a href="https://s6.greek.sa/profile"><x1>◂</x1>بطاقة العضوية</a><br> <a href="https://s6.greek.sa/manual?t=4"><x1>◂</x1>شروحات للعبة</a><br><a href="https://s6.greek.sa/msg?t=4&amp;u=1"><x1>◂</x1>
+gold :: <a href="https://s6.greek.sa/plus" title="قائمة الذهب" class="gold x0"><p class="Rs x7" title="ذهب"></p>150</a> <span class="tr" style="width:90%;right:20px;display:block;"><img src="./حرب الإغريق 6 - Greek War _ مباني القرية_files/1_g.png" onclick="showG(0)" '="" style="width:145px"><br></span> <table class="MyVs"><tbody><tr><th colspan="2"><a hre
+NowT :: <div class="NowT tr"><img src="./حرب الإغريق 6 - Greek War _ مباني القرية_files/_.png" class="daynight x1"><fx>()</fx> <a onclick="showIndexPanel(3,0)" class="c_gr" style="font-weight:301 !important">العالم 6 <b style="color:black">▽</b></a><br> .الآن :<b> <span id="_Clock">11:52:31</span></b></div> <div class="RLisTa tl"><br> <a href="https://s6.g
+prud :: MISSING
+Trops :: MISSING

@@ -30,7 +30,7 @@ $invite = $database->getInvitedUser($session->uid);
 <h2><?php echo TZ_HOW_IS_IT_DONE; ?></h2>
 
 <h3><?php echo TZ_N_1_INVITE_YOUR_FRIENDS_VIA_EMAIL; ?></h3>
-<form action="plus.php?id=5&a=1" method="POST">
+<form action="plus.php?id=5&mail=1" method="POST">
     <p><input class="mail" name="mail" type="email" placeholder="<?php echo TZ_FRIEND_EMAIL_COM; ?>" required style="width:250px"></p>
     <p><?php echo TZ_OWN_TEXT; ?></p>
     <p><textarea name="text" rows="4" cols="40" style="width:350px">Hi,
@@ -39,6 +39,11 @@ Join me on <?= SERVER_NAME ?>! Use my link to register:
 <?= $refLink ?>
 
 See you in game!</textarea></p>
+    <?php if (!empty($inviteMsg)) { ?>
+    <p style="font-weight:bold;color:<?php echo !empty($inviteOk) ? '#2e7d32' : '#b3261e'; ?>;">
+        <?php echo htmlspecialchars($inviteMsg, ENT_QUOTES, 'UTF-8'); ?>
+    </p>
+    <?php } ?>
     <p><input type="submit" value="Send Invite"></p>
 </form>
 
@@ -74,4 +79,3 @@ See you in game!</textarea></p>
     <?php endif; ?>
     </tbody>
 </table>
-</div>

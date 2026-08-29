@@ -20,29 +20,29 @@
 
 $varmedal = $database->getProfileMedal($session->uid);
 
+$gkSpielerGreek = !empty($GLOBALS['gkSpielerGreek']);
+$gkHideClassicMenu = !empty($GLOBALS['gkSpielerLiteralPage'])
+    || (class_exists('GreekSpieler') && GreekSpieler::suppressClassicMenu());
+$gkEditClass = $gkSpielerGreek ? 'gk-prof-edit' : '';
+$gkMedalClass = $gkSpielerGreek ? 'tbg gk-prof-medals' : 'tbg';
+
+if (!$gkHideClassicMenu) {
+    echo '<h1>' . PLAYER_PROFILE . '</h1>';
+    include __DIR__ . '/menu.tpl';
+}
 ?>
- 
- 
-<!-- =========================
-     PAGE HEADER
-========================= -->
 
-<h1><?php echo PLAYER_PROFILE; ?></h1>
-<?php include("menu.tpl"); ?>
-
-
-
-<form action="spieler.php" method="POST">
+<form action="spieler.php" method="POST" class="<?php echo $gkSpielerGreek ? 'gk-prof-form' : ''; ?>">
 <input type="hidden" name="ft" value="p1" />
 <input type="hidden" name="id" value="<?php echo isset($id) ? (int)$id : 0; ?>" />
 
-<table cellpadding="1" cellspacing="1" id="edit">
+<table cellpadding="0" cellspacing="0" id="edit" class="<?php echo $gkEditClass; ?>">
 
 <thead>
-<tr>
+<tr class="gk-prof-edit-user">
     <th colspan="3"><?php echo PLAYER; ?> <?php echo htmlspecialchars($session->username, ENT_QUOTES, 'UTF-8'); ?></th>
 </tr>
-<tr>
+<tr class="gk-prof-edit-cols">
     <td colspan="2"><?php echo DETAIL; ?></td>
     <td><?php echo DESCRIPTION; ?></td>
 </tr>
@@ -161,274 +161,13 @@ maxlength="30" class="text">
 </tbody>
 </table>
 
-<!-- =========================
-     MEDALS TABLE
-========================= -->
 <p>
-<table cellspacing="1" cellpadding="2" class="tbg">
-
-<tr><td class="rbg" colspan="4"><?php echo MEDALS; ?></td></tr>
-
-<tr>
-<td><?php echo CATEGORY; ?></td>
-<td><?php echo RANK; ?></td>
-<td><?php echo WEEK; ?></td>
-<td><?php echo BB_CODE; ?></td>
-</tr>
-
-<?php
-// =========================
-// DYNAMIC MEDALS
-// =========================
-foreach ($varmedal as $medal) {
-
-    $titel = TZ_MEDAL_BONUS_DEFAULT;
-
-    switch ($medal['categorie']) {
-        case "1": $titel=TZ_MEDAL_ATTACKER_WEEK; break;
-        case "2": $titel=TZ_MEDAL_DEFENDER_WEEK; break;
-        case "3": $titel=TZ_MEDAL_POP_CLIMBER_WEEK; break;
-        case "4": $titel=TZ_MEDAL_ROBBER_WEEK; break;
-        case "5": $titel=TZ_MEDAL_TOP10_ATT_DEF; break;
-        case "6": $titel=TZ_MEDAL_TOP_ATTACK_STREAK." ".$medal['points']; break;
-        case "7": $titel=TZ_MEDAL_TOP_DEF_STREAK." ".$medal['points']; break;
-        case "8": $titel=TZ_MEDAL_TOP_POP_STREAK." ".$medal['points']; break;
-        case "9": $titel=TZ_MEDAL_TOP_ROB_STREAK." ".$medal['points']; break;
-        case "10": $titel=TZ_MEDAL_RANK_CLIMBER; break;
-        case "11": $titel=TZ_MEDAL_RANK_STREAK." ".$medal['points']; break;
-        case "12": $titel=TZ_MEDAL_TOP10_ATTACK; break;
-        case "13": $titel=TZ_MEDAL_TOP10_DEF; break;
-        case "14": $titel=TZ_MEDAL_TOP10_POP; break;
-        case "15": $titel=TZ_MEDAL_TOP10_ROB; break;
-        case "16": $titel=TZ_MEDAL_TOP10_RANK; break;
-    }
-
-    $medalImage = preg_replace('/[^a-zA-Z0-9_.-]/', '', (string)($medal['img'] ?? ''));
-    $medalImageUrl = $medalImage !== ''
-        ? GP_LOCATE . 'img/t/' . rawurlencode($medalImage) . '.jpg'
-        : '';
-    $medalPreview = $medalImageUrl !== ''
-        ? '<img class="badge-option" src="' . htmlspecialchars($medalImageUrl, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($titel, ENT_QUOTES, 'UTF-8') . '">'
-        : '';
-    echo "<tr>
-    <td>$titel</td>
-    <td>{$medal['plaats']}</td>
-    <td>{$medal['week']}</td>
-    <td><a href='#' title='إدراج الوسام' onclick=\"insertMedal('[#{$medal['id']}]'); return false;\">" . $medalPreview . "</a></td>
-    </tr>";
-}
-?>
-
-<tr>
-<td><?php echo BEGINPRO; ?></td><td>غير متاح</td><td>غير متاح</td>
-<td><a href="#" title="[#0]" onclick="insertMedal('[#0]'); return false;"><img class="badge-option" src="<?php echo GP_LOCATE; ?>img/t/tn.gif" alt="[#0]"></a></td>
-</tr>
-
-<?php if (NEW_FUNCTIONS_MEDAL_3YEAR): ?>
-<tr><td>veteran</td><td></td><td></td><td><a href="#" onclick="insertMedal('[#g2300]'); return false;">[#g2300]</a></td></tr>
-<?php endif; ?>
-
-<?php if (NEW_FUNCTIONS_MEDAL_5YEAR): ?>
-<tr><td>veteran_5a</td><td></td><td></td><td><a href="#" onclick="insertMedal('[#g2301]'); return false;">[#g2301]</a></td></tr>
-<?php endif; ?>
-
-<?php if (NEW_FUNCTIONS_MEDAL_10YEAR): ?>
-<tr><td>veteran_10a</td><td></td><td></td><td><a href="#" onclick="insertMedal('[#g2302]'); return false;">[#g2302]</a></td></tr>
-<?php endif; ?>
-
-<?php
-// =========================
-// TRIBE MEDALS
-// =========================
-
-$tribeMedals = [];
-
-if (defined('NEW_FUNCTIONS_TRIBE_IMAGES') && NEW_FUNCTIONS_TRIBE_IMAGES) {
-    $tribeMedals[1] = [TRIBE1, 'roman'];
-    $tribeMedals[2] = [TRIBE2, 'teuton'];
-    $tribeMedals[3] = [TRIBE3, 'gaul'];
-}
-
-if (defined('NEW_FUNCTION_TRIBE_HUNS') && NEW_FUNCTION_TRIBE_HUNS) {
-    $tribeMedals[6] = ['Huns', 'huns'];
-}
-
-if (defined('NEW_FUNCTION_TRIBE_EGIPTEANS') && NEW_FUNCTION_TRIBE_EGIPTEANS) {
-    $tribeMedals[7] = ['Egyptians', 'egyptians'];
-}
-
-if (defined('NEW_FUNCTION_TRIBE_SPARTANS') && NEW_FUNCTION_TRIBE_SPARTANS) {
-    $tribeMedals[8] = ['Spartans', 'spartans'];
-}
-
-if (defined('NEW_FUNCTION_TRIBE_VIKINGS') && NEW_FUNCTION_TRIBE_VIKINGS) {
-    $tribeMedals[9] = ['Vikings', 'vikings'];
-}
-
-$tribe = $session->userinfo['tribe'] ?? 0;
-
-if (isset($tribeMedals[$tribe])) {
-    [$name, $tag] = $tribeMedals[$tribe];
-    $badgeImage = ['roman' => 'roman.gif', 'teuton' => 'teutons.gif', 'gaul' => 'gauls.gif'][$tag] ?? 'roman.gif';
-
-    echo "<tr><td>القبيلة {$name}</td><td>غير متاح</td><td>غير متاح</td>
-    <td><a href='#' title='[#{$tag}]' onclick=\"insertMedal('[#{$tag}]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/{$badgeImage}' alt='[#{$tag}]'></a></td></tr>";
-}
-
-// =========================
-// MHS MEDALS
-// =========================
-if(defined('NEW_FUNCTIONS_MHS_IMAGES') && NEW_FUNCTIONS_MHS_IMAGES){
-
-    if(($session->userinfo['access'] ?? 0) == 9){
-
-        echo "<tr><td>".ADMIN1."</td><td>غير متاح</td><td>غير متاح</td>
-        <td><a href='#' title='[#MULTIHUNTER]' onclick=\"insertMedal('[#MULTIHUNTER]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/t6_1.png' alt='[#MULTIHUNTER]'></a></td></tr>";
-
-        echo "<tr><td>".ADMIN1."</td><td>غير متاح</td><td>غير متاح</td>
-        <td><a href='#' title='[#MH]' onclick=\"insertMedal('[#MH]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/MH.png' alt='[#MH]'></a></td></tr>";
-
-        echo "<tr><td>".ADMIN1."</td><td>غير متاح</td><td>غير متاح</td>
-        <td><a href='#' title='[#TEAM]' onclick=\"insertMedal('[#TEAM]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/team.png' alt='[#TEAM]'></a></td></tr>";
-
-    } elseif(($session->userinfo['access'] ?? 0) == 8){
-
-        echo "<tr><td>".MULTIH1."</td><td>غير متاح</td><td>غير متاح</td>
-        <td><a href='#' title='[#MULTIHUNTER]' onclick=\"insertMedal('[#MULTIHUNTER]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/t6_1.png' alt='[#MULTIHUNTER]'></a></td></tr>";
-
-        echo "<tr><td>".MULTIH1."</td><td>غير متاح</td><td>غير متاح</td>
-        <td><a href='#' title='[#MH]' onclick=\"insertMedal('[#MH]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/MH.png' alt='[#MH]'></a></td></tr>";
-
-        echo "<tr><td>".MULTIH1."</td><td>غير متاح</td><td>غير متاح</td>
-        <td><a href='#' title='[#TEAM]' onclick=\"insertMedal('[#TEAM]'); return false;\"><img class='badge-option' src='" . GP_LOCATE . "img/t/team.png' alt='[#TEAM]'></a></td></tr>";
-    }
-}
-
-// =========================
-// SHADOW SPECIAL
-// =========================
-if(($session->userinfo['username'] ?? '') == "Shadow"){
-
-    echo "<tr><td>Shadow</td><td></td><td></td>
-    <td><a href='#' onclick=\"insertMedal('[#SHADOW]'); return false;\">[#SHADOW]</a></td></tr>";
-
-    echo "<tr><td>Shadow</td><td></td><td></td>
-    <td><a href='#' onclick=\"insertMedal('[#MH]'); return false;\">[#MH]</a></td></tr>";
-
-    echo "<tr><td>Shadow</td><td></td><td></td>
-    <td><a href='#' onclick=\"insertMedal('[#TEAM]'); return false;\">[#TEAM]</a></td></tr>";
-
-    echo "<tr><td>Shadow</td><td></td><td></td>
-    <td><a href='#' onclick=\"insertMedal('[#EVENT]'); return false;\">[#EVENT]</a></td></tr>";
-}
-
-// =========================
-// SPECIAL MEDALS
-// =========================
-if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM){
-    $uid = (int)$session->uid;
-
-    // 1. Artefact - CORECTAT coloanele (4 td-uri)
-    $arte = $database->query("SELECT 1 FROM ".TB_PREFIX."artefacts WHERE owner = $uid LIMIT 1");
-    if($arte && $arte->num_rows > 0){
-        echo "<tr>
-                <td>".TZ_MEDAL_ARTEFACT_HOLDER."</td>
-                <td></td>
-                <td></td>
-                <td><a href='#' onclick=\"insertMedal('[#ARTEFACT]'); return false;\">[#ARTEFACT]</a></td>
-              </tr>";
-    }
-
-    // 2. WW - CORECTAT la f99 (la tine WW e in f99, nu f40)
-    $ww = $database->query("SELECT f.f99 FROM ".TB_PREFIX."vdata v
-        INNER JOIN ".TB_PREFIX."fdata f ON f.vref = v.wref
-        WHERE v.owner = $uid AND f.f99t = 40 AND f.f99 > 0 LIMIT 1");
-    if($ww && $ww->num_rows > 0){
-        echo "<tr>
-                <td>".TZ_MEDAL_WW_BUILDER."</td>
-                <td></td>
-                <td></td>
-                <td><a href='#' onclick=\"insertMedal('[#WWBUILDER]'); return false;\">[#WWBUILDER]</a></td>
-              </tr>";
-
-        $lvl = (int)$ww->fetch_assoc()['f99'];
-        if($lvl >= 100){
-            echo "<tr>
-                    <td>".TZ_MEDAL_WW_WINNER."</td>
-                    <td></td>
-                    <td></td>
-                    <td><a href='#' onclick=\"insertMedal('[#WINNERWW]'); return false;\">[#WINNERWW]</a></td>
-                  </tr>";
-        }
-    }
-
-    // 3. GREATSTORE - DOAR 38 si 39 nivel 20
-    $hasGreatStore = false;
-    $qgs = $database->query("SELECT f.* FROM ".TB_PREFIX."fdata f 
-                             JOIN ".TB_PREFIX."vdata v ON v.wref=f.vref 
-                             WHERE v.owner=$uid");
-    if($qgs){
-        while($f = $qgs->fetch_assoc()){
-            $hasWh = $hasGr = false;
-            for($i=1; $i<=99; $i++){
-                if(!isset($f["f{$i}t"])) continue;
-                $type = (int)$f["f{$i}t"];
-                $lvl  = (int)$f["f{$i}"];
-                if($type == 38 && $lvl == 20) $hasWh = true; // Great Warehouse
-                if($type == 39 && $lvl == 20) $hasGr = true; // Great Granary
-            }
-            if($hasWh && $hasGr){ $hasGreatStore = true; break; }
-        }
-    }
-    if($hasGreatStore){
-        echo "<tr>
-                <td>".TZ_MEDAL_GREAT_STORE."</td>
-                <td></td>
-                <td></td>
-                <td><a href='#' onclick=\"insertMedal('[#GREATSTORE]'); return false;\">[#GREATSTORE]</a></td>
-              </tr>";
-    }
-	
-	// 4. WALLMASTER - 5 sate cu zid 20 (31/32/33), fara f40/f99
-	
-	$wallCount = 0;
-	$qw = $database->query("SELECT f.f40, f.f40t FROM ".TB_PREFIX."fdata f 
-                        JOIN ".TB_PREFIX."vdata v ON v.wref=f.vref 
-                        WHERE v.owner=$uid");
-	if($qw){
-    while($r = $qw->fetch_assoc()){
-        if((int)$r['f40'] == 20 && in_array((int)$r['f40t'], [31,32,33,42,43,47,50])){
-            $wallCount++;
-        }
-    }
-	}
-	if($wallCount >= 3){
-    echo "<tr>
-            <td>".TZ_MEDAL_WALL_MASTER."</td>
-            <td></td>
-            <td></td>
-            <td><a href='#' onclick=\"insertMedal('[#WALLMASTER]'); return false;\">[#WALLMASTER]</a></td>
-          </tr>";
-	}
-
-	// 5. HERO100 - erou nivel 99+
-    $h100 = $database->query("SELECT 1 FROM ".TB_PREFIX."hero WHERE uid=$uid AND level>=99 LIMIT 1");
-    if($h100 && $h100->num_rows){
-        echo "<tr>
-                <td>Hero 99+</td>
-                <td></td>
-                <td></td>
-                <td><a href='#' onclick=\"insertMedal('[#HERO100]'); return false;\">[#HERO100]</a></td>
-              </tr>";
-    }
-}
-?>
-
-</table>
+<?php include __DIR__ . '/profile_medals_section.tpl'; ?>
 </p>
 
 <style>
 .profile-editor { min-height: 170px; padding: 4px; border: 1px solid #71d000; background: #fff; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor { min-height: 220px; border: 1px solid #7cb044; border-radius: 2px; padding: 6px; }
 .profile-editor img { width: 64px; height: 64px; object-fit: contain; margin: 0 5px; vertical-align: middle; }
 .badge-option { display: inline-block; width: 26px; height: 26px; object-fit: contain; vertical-align: middle; margin: 0 3px; }
 .tbg td:last-child { white-space: nowrap; }
@@ -459,14 +198,33 @@ function renderProfileEditor(textarea, editor) {
     });
 }
 
+function editorToBBCode(editor) {
+    let value = '';
+    function walk(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            value += node.textContent;
+            return;
+        }
+        if (node.nodeName === 'IMG' && node.dataset.code) {
+            value += node.dataset.code;
+            return;
+        }
+        if (node.nodeName === 'BR') {
+            value += '\n';
+            return;
+        }
+        if (node.childNodes && node.childNodes.length) {
+            node.childNodes.forEach(walk);
+        }
+    }
+    editor.childNodes.forEach(walk);
+    return value.substring(0, 3000);
+}
+
 function syncProfileEditor(editor) {
     const textarea = document.getElementById('desc_' + editor.dataset.source);
     if (!textarea) return;
-    let value = '';
-    editor.childNodes.forEach(function (node) {
-        value += node.nodeName === 'IMG' ? (node.dataset.code || '') : node.textContent;
-    });
-    textarea.value = value.substring(0, 3000);
+    textarea.value = editorToBBCode(editor);
 }
 
 function insertMedal(code) {
@@ -484,11 +242,27 @@ document.querySelectorAll('.profile-editor').forEach(function (editor) {
     renderProfileEditor(textarea, editor);
     editor.addEventListener('input', function () { syncProfileEditor(editor); });
 });
+
+(function () {
+    var form = document.querySelector('form');
+    if (!form) return;
+    form.addEventListener('submit', function () {
+        document.querySelectorAll('.profile-editor').forEach(function (editor) {
+            syncProfileEditor(editor);
+        });
+    });
+})();
 </script>
 
+<?php if ($gkSpielerGreek) { ?>
+<p class="btn gk-prof-btn-wrap">
+<button type="submit" name="s1" id="btn_ok" class="gk-prof-ok">OK</button>
+</p>
+<?php } else { ?>
 <p class="btn">
 <input type="image" name="s1" id="btn_ok"
 class="dynamic_img" src="img/x.gif" alt="OK">
 </p>
+<?php } ?>
 
 </form>

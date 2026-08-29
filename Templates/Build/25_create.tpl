@@ -64,7 +64,7 @@ $trainlist = $technology->getTrainingList(20);
             <tr>
                 <td class="desc"><img class="unit u<?php echo $train['unit'];?>" src="img/x.gif" alt="<?php echo $train['name'];?>"/><?php echo $train['amt'];?> <?php echo $train['name'];?></td>
                 <td class="dur"><span id="timer<?php echo $timer;?>"><?php echo $generator->getTimeFormat(($train['commence']+($train['eachtime']*$train['amt']))-time());?></span></td>
-                <td class="fin"><?php $time = $generator->procMTime($train['commence']+$train['amt']); if($time[0]!="today") echo "on ".$time[0]." at "; echo $time[1];?> o'clock</td>
+                <td class="fin"><?php $time = $generator->procMTime($train['commence']+$train['amt']); if(!tz_mtime_is_today($time[0])) echo "on ".$time[0]." at "; echo $time[1];?> o'clock</td>
             </tr>
             <tr class="next"><td colspan="3"><?php echo UNIT_FINISHED; ?> <span id="timer<?php echo --$timer;?>"><?php echo $generator->getTimeFormat(($train['commence']+$train['eachtime'])-time());?></span></td></tr>
             <?php $timer--; endforeach;?>

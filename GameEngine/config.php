@@ -266,6 +266,9 @@ define("OASIS_CROP_PRODUCTION",OASIS_CROP_MULTIPLIER*SPEED);
 
 // ***** Medal Interval check
 define("MEDALINTERVAL",604800);
+// Top-10 daily stats reset countdown (86400 = midnight each day; 0 = use MEDALINTERVAL)
+define("STAT_TOP10_RESET_INTERVAL", 86400);
+define("STAT_TOP10_GOLD_DIVISOR", 55897);
 // ***** Great Workshop
 define("GREAT_WKS",false);
 // ***** Tourn threshold
@@ -273,6 +276,11 @@ define("TS_THRESHOLD",20);
 
 // ***** Register open/close
 define("REG_OPEN",true);
+// Max new accounts per IP / browser fingerprint within REGISTRATION_LIMIT_WINDOW (seconds).
+// Local dev: raised so repeated test signups are not blocked.
+define("REGISTRATION_MAX_PER_IP", 50);
+define("REGISTRATION_MAX_PER_DEVICE", 50);
+define("REGISTRATION_LIMIT_WINDOW", 86400);
 
 // ***** Peace system
 // 0 = None
@@ -388,6 +396,9 @@ define("PLUS_PACKAGE_E_GOLD","2000");
 define("PLUS_TIME",604800);
 //+25% production lenght
 define("PLUS_PRODUCTION",604800);
+define("GOLD_RES_PURCHASE_ENABLED", true);
+define("GOLD_RES_UNIT", 20000);
+define("GOLD_RES_MIN_GOLD", 1);
 
 //////////////////////////////////
 //    **** LOG SETTINGS  ****   //
@@ -418,6 +429,13 @@ define("LOG_ILLEGAL",false);
 define("NEWSBOX1",false);
 define("NEWSBOX2",false);
 define("NEWSBOX3",false);
+
+//////////////////////////////////
+// ****  WORLD NEWS (stats)  **** //
+//////////////////////////////////
+// Minimum defender kills for an attack to appear on Statistics » News
+define("WORLD_NEWS_MIN_KILLS", 10000);
+define("WORLD_NEWS_MAX_ITEMS", 50);
 
 //////////////////////////////////
 //   ****  SQL SETTINGS  ****   //
@@ -643,6 +661,92 @@ if (!function_exists('tz_display_village_name')) {
         return $vname;
     }
 }
+
+if (!function_exists('tz_arabic_digits')) {
+    /**
+     * Convert Western digits to Eastern Arabic numerals (٠–٩).
+     */
+    function tz_arabic_digits($value)
+    {
+        static $map = null;
+        if ($map === null) {
+            $map = [
+                '0' => '٠', '1' => '١', '2' => '٢', '3' => '٣', '4' => '٤',
+                '5' => '٥', '6' => '٦', '7' => '٧', '8' => '٨', '9' => '٩',
+            ];
+        }
+
+        return strtr((string) $value, $map);
+    }
+}
+
+if (!function_exists('tz_localize_mtime_result')) {
+    /**
+     * Arabic display for Generator::procMtime() output.
+     *
+     * @param array|string $result
+     * @param int          $pref Same as procMtime (9 = time-only; left Western for JS clocks).
+     * @return array|string
+     */
+    function tz_localize_mtime_result($result, $pref = 3)
+    {
+        if (!function_exists('tz_is_rtl_lang') || !tz_is_rtl_lang()) {
+            return $result;
+        }
+
+        if ($pref == 9) {
+            return $result;
+        }
+
+        if (!is_array($result) || count($result) < 2) {
+            return $result;
+        }
+
+        $day = $result[0];
+        if ($day === 'today') {
+            $day = defined('TZ_DAY_TODAY') ? TZ_DAY_TODAY : 'اليوم';
+        } elseif ($day === 'yesterday') {
+            $day = defined('TZ_DAY_YESTERDAY') ? TZ_DAY_YESTERDAY : 'أمس';
+        } else {
+            $day = tz_arabic_digits($day);
+        }
+
+        $clock = tz_arabic_digits($result[1]);
+        $clock = str_replace(['AM', 'PM'], ['ص', 'م'], $clock);
+
+        return [$day, $clock];
+    }
+}
+
+if (!function_exists('tz_mtime_is_today')) {
+    function tz_mtime_is_today($dayPart)
+    {
+        if ($dayPart === 'today') {
+            return true;
+        }
+
+        return function_exists('tz_is_rtl_lang')
+            && tz_is_rtl_lang()
+            && $dayPart === (defined('TZ_DAY_TODAY') ? TZ_DAY_TODAY : 'اليوم');
+    }
+}
+
+if (!function_exists('tz_mtime_is_yesterday')) {
+    function tz_mtime_is_yesterday($dayPart)
+    {
+        if ($dayPart === 'yesterday') {
+            return true;
+        }
+
+        return function_exists('tz_is_rtl_lang')
+            && tz_is_rtl_lang()
+            && $dayPart === (defined('TZ_DAY_YESTERDAY') ? TZ_DAY_YESTERDAY : 'أمس');
+    }
+}
+
+require_once __DIR__ . '/GreekShell.php';
+require_once __DIR__ . '/UserDisplayPrefs.php';
+
 if (!function_exists('tz_rtl_stylesheet_tag')) {
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
         $langCode = $langCode ?? (defined('LANG') ? LANG : 'en');
@@ -655,7 +759,7 @@ if (!function_exists('tz_rtl_stylesheet_tag')) {
         $gpDiskPath = dirname(__DIR__) . '/' . $gp . 'lang/' . $langCode . '/lang.css';
         if (is_file($gpDiskPath)) {
             $gpHref = $relPath . $gp . 'lang/' . $langCode . '/lang.css';
-            $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl1" rel="stylesheet" type="text/css" />';
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($gpHref, ENT_QUOTES) . '?rtl5" rel="stylesheet" type="text/css" />';
         }
 
         $rtlDiskPath = dirname(__DIR__) . '/css/rtl.css';
@@ -663,6 +767,15 @@ if (!function_exists('tz_rtl_stylesheet_tag')) {
             $rtlHref = $relPath . 'css/rtl.css';
             $rtlVer = (int) @filemtime($rtlDiskPath);
             $tag .= "\n\t" . '<link href="' . htmlspecialchars($rtlHref, ENT_QUOTES) . '?v=' . $rtlVer . '" rel="stylesheet" type="text/css" />';
+        }
+
+        // Visual identity (greek.sa design tokens) on top of existing layout — not a skin swap.
+        $identityDiskPath = dirname(__DIR__) . '/css/identity_greek.css';
+        if (is_file($identityDiskPath)) {
+            $identityHref = $relPath . 'css/identity_greek.css';
+            $identityVer = (int) @filemtime($identityDiskPath);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($identityHref, ENT_QUOTES)
+                . '?v=' . $identityVer . '" rel="stylesheet" type="text/css" />';
         }
 
         return $tag;

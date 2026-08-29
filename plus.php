@@ -201,113 +201,387 @@ if (isset($_POST['redeem_code']) && class_exists('GoldShop')) {
     $promoMsg = $rr[1];
 }
 
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html <?php echo tz_html_dir_attrs(); ?>>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php
-	echo SERVER_NAME . ' &raquo; &raquo; &raquo; PLUS ';
+// Plus page: buy resources with account gold (N of each resource per 1 gold spent).
+$buyResMsg = '';
+$buyResOk  = false;
+if (isset($_POST['buy_gold_resources']) && isset($session->uid) && !empty($village)) {
+	$goldResPurchaseOn = !defined('GOLD_RES_PURCHASE_ENABLED') || GOLD_RES_PURCHASE_ENABLED;
 
-	if (!empty($_GET['id'])) {
-	    switch ($_GET['id']) {
-	        case '2':
-	            echo 'Advantages';
-	            break;
-
-	        case '3':
-	            echo 'Gold';
-	            break;
-
-	        case '4':
-	            echo 'FAQ';
-	            break;
-
-	        case '5':
-	            echo 'Earn Gold';
-	            break;
-	    }
-	} else {
-	    echo 'Tariffs';
+	$goldSpend = 0;
+	if (isset($_POST['goldamt'])) {
+		$goldSpend = (int) $_POST['goldamt'];
+	} elseif (isset($_POST['X']) && is_array($_POST['X']) && isset($_POST['X'][0])) {
+		$goldSpend = (int) $_POST['X'][0];
 	}
-	?></title>
-	<link rel="shortcut icon" href="favicon.ico"/>
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="pragma" content="no-cache" />
-	<meta http-equiv="expires" content="0" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<script src="mt-full.js?0faab" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
-	<script src="new.js?0faab" type="text/javascript"></script>
-	<?php
-	// Base game CSS: ALWAYS load the English/base files here, exactly like
-	// every other page (dorf1.php, dorf2.php, karte.php, build.php,
-	// berichte.php, nachrichten.php, allianz.php, spieler.php,
-	// statistiken.php, ...). Arabic/RTL is layered on top afterwards via the
-	// single shared tz_rtl_stylesheet_tag() call below - never by swapping
-	// out these base links.
-	//
-	// BUG FIXED: this page used to pick a per-language folder here
-	// ($__css_lang = "ar" whenever gpack/.../lang/ar/ exists) and load
-	// "lang/ar/lang.css" + "lang/ar/compact.css" instead of the English
-	// ones. The "ar" folder only ships a small RTL OVERRIDE stylesheet
-	// (lang.css) meant to sit on top of the English base - it has no
-	// compact.css of its own, so that second link 404'd and the entire
-	// base stylesheet (all of #content/#side_navi/#side_info's widths and
-	// floats, table styling, fonts, etc.) silently failed to load for
-	// Arabic players. It also skipped lang/en/lang.css, which is what
-	// @imports modules/new_layout_ltr.css (the #mid/#side_navi/#side_info
-	// column widths) - so the three-column layout had no widths to lay
-	// out against at all.
-	//
-	// That's why the layout looked broken for Arabic on this page only:
-	// #side_navi and #side_info floats were being set (by
-	// gpack/.../lang/ar/lang.css and by css/rtl.css) but had no base
-	// widths/columns to float within, so #side_info (menu.tpl's "hero"
-	// column - multivillage list, quest character image, news) wrapped
-	// onto its own line instead of sitting beside #content as the left
-	// column, which is also why the character image looked misplaced.
-	?>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<?php
-	// GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
-	// e permisa si valida, altfel pachetul serverului (vezi config.php).
-	echo "
-	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
-	?>
-	<script type="text/javascript">
 
-		window.addEvent('domready', start);
-	</script>
-	<?php // Arabic/RTL CSS (css/rtl.css, plus any per-gpack lang/ar/lang.css
-	// override) is loaded through the single shared tz_rtl_stylesheet_tag()
-	// mechanism below - see GameEngine/config.php - on top of the English
-	// base links above, exactly like every other game page. ?>
-	<?php echo tz_rtl_stylesheet_tag(); ?>
-</head>
+	$unit    = defined('GOLD_RES_UNIT') ? max(1, (int) GOLD_RES_UNIT) : 20000;
+	$minGold = defined('GOLD_RES_MIN_GOLD') ? max(1, (int) GOLD_RES_MIN_GOLD) : 1;
+	$maxGold = defined('GOLD_RES_MAX_GOLD') ? max(0, (int) GOLD_RES_MAX_GOLD) : 0;
+	$uid     = (int) $session->uid;
+	$wid     = (int) $village->wid;
 
+	if (!$goldResPurchaseOn) {
+		$buyResMsg = $plusRtlMsg ? GOLD_BUY_ERR_DISABLED : 'This feature is currently disabled.';
+	} elseif (method_exists($session, 'sitterCan') && !$session->sitterCan(SITTER_PERM_GOLD)) {
+		$buyResMsg = $plusRtlMsg
+			? (defined('SITTER_P_DENIED') ? SITTER_P_DENIED : 'لا تملك صلاحية إنفاق الذهب.')
+			: 'Your sitter permissions do not allow this action.';
+	} elseif ($maxGold > 0) {
+		$goldSpend = min($goldSpend, $maxGold);
+	}
+	if ($buyResMsg === '' && $goldSpend < $minGold) {
+		$buyResMsg = $plusRtlMsg ? GOLD_BUY_ERR_AMOUNT : 'Please enter a valid gold amount.';
+	} elseif ($buyResMsg === '') {
+		$wwvillage = $database->getResourceLevel($wid);
+		if (!empty($wwvillage['f99t']) && (int) $wwvillage['f99t'] === 40) {
+			$buyResMsg = $plusRtlMsg ? YOU_CAN_NAT_NPC_WW : 'Cannot buy resources in a WW village.';
+		} else {
+			// mode 0 = lookup by user id (mode 1 searches by username)
+			$userGold = (int) $database->getUserField($uid, 'gold', 0, false);
+			if ($userGold < $goldSpend) {
+				$buyResMsg = $plusRtlMsg ? GOLD_BUY_ERR_GOLD : 'Not enough gold.';
+			} else {
+			$perResource = $goldSpend * $unit;
+			$maxstore = (int) $village->maxstore;
+			$maxcrop  = (int) $village->maxcrop;
+			$current = [
+				'wood' => (int) round($village->awood),
+				'clay' => (int) round($village->aclay),
+				'iron' => (int) round($village->airon),
+				'crop' => (int) round($village->acrop),
+			];
+			$add = [
+				'wood' => max(0, min($perResource, $maxstore - $current['wood'])),
+				'clay' => max(0, min($perResource, $maxstore - $current['clay'])),
+				'iron' => max(0, min($perResource, $maxstore - $current['iron'])),
+				'crop' => max(0, min($perResource, $maxcrop - $current['crop'])),
+			];
 
-<body class="v35 ie ie8 pg-plus">
-<div class="wrapper">
-<img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
-<div id="dynamic_header">
-	</div>
-<?php include("Templates/header.tpl"); ?>
-<div id="mid">
-<?php include("Templates/menu.tpl"); ?>
-<?php
-if(isset($_GET['id'])){
+			if ($add['wood'] + $add['clay'] + $add['iron'] + $add['crop'] <= 0) {
+				$buyResMsg = $plusRtlMsg ? GOLD_BUY_ERR_FULL : 'Storage is full.';
+			} elseif (!$database->spendGold($uid, $goldSpend, 'Gold resource purchase (plus)')) {
+				$buyResMsg = $plusRtlMsg ? GOLD_BUY_ERR_GOLD : 'Not enough gold.';
+			} else {
+				$database->setVillageField(
+					$wid,
+					['wood', 'clay', 'iron', 'crop'],
+					[
+						$current['wood'] + $add['wood'],
+						$current['clay'] + $add['clay'],
+						$current['iron'] + $add['iron'],
+						$current['crop'] + $add['crop'],
+					]
+				);
+				$database->addGoldFinLog(
+					$wid,
+					$uid,
+					'Gold resource purchase',
+					-$goldSpend,
+					sprintf(
+						'wood +%d, clay +%d, iron +%d, crop +%d (each per %d gold)',
+						$add['wood'], $add['clay'], $add['iron'], $add['crop'], $unit
+					)
+				);
+				$session->gold = $userGold - $goldSpend;
+				$_SESSION['gold'] = $session->gold;
+				$village->awood = $current['wood'] + $add['wood'];
+				$village->aclay = $current['clay'] + $add['clay'];
+				$village->airon = $current['iron'] + $add['iron'];
+				$village->acrop = $current['crop'] + $add['crop'];
+				if (method_exists($database, 'clearUserCache')) {
+					$database->clearUserCache($uid);
+				}
+				$buyResOk = true;
+				$buyResMsg = $plusRtlMsg
+					? ('تم شراء الموارد: +' . number_format($add['wood']) . ' خشب، +' . number_format($add['clay'])
+						. ' طين، +' . number_format($add['iron']) . ' حديد، +' . number_format($add['crop']) . ' قمح.')
+					: ('Resources purchased: +' . $add['wood'] . ' wood, +' . $add['clay']
+						. ' clay, +' . $add['iron'] . ' iron, +' . $add['crop'] . ' crop.');
+			}
+			}
+		}
+	}
+}
+
+$transferMsg = '';
+$transferOk = false;
+$gkPostedPlayer = '';
+$gkPostedAmount = '';
+$gkPostedWorld = '';
+$gkTransferable = 0;
+
+$gkWorldKey = class_exists('CentralGold') ? CentralGold::worldKey() : (defined('SQL_DB') ? (string) SQL_DB : 'world');
+$gkWorldLabel = defined('SERVER_NAME') ? SERVER_NAME : 'Novaterra';
+$gkWorldOptions = array($gkWorldKey => $gkWorldLabel);
+
+if (!function_exists('gk_plus_transferable_gold')) {
+	function gk_plus_transferable_gold($database, $session)
+	{
+		if (!isset($session->uid) || !isset($database) || !is_object($database)) {
+			return 0;
+		}
+
+		$uid = (int) $session->uid;
+		$email = trim((string) ($session->userinfo['email'] ?? $session->email ?? ''));
+
+		if (class_exists('CentralGold') && CentralGold::isConfigured() && $email !== '') {
+			return max(0, (int) CentralGold::balance($email));
+		}
+
+		$res = mysqli_query(
+			$database->dblink,
+			'SELECT gold FROM ' . TB_PREFIX . 'users WHERE id = ' . $uid . ' LIMIT 1'
+		);
+		$row = $res ? mysqli_fetch_assoc($res) : null;
+
+		return $row ? max(0, (int) $row['gold']) : 0;
+	}
+}
+
+if (!function_exists('gk_plus_verify_user_password')) {
+	function gk_plus_verify_user_password($database, $username, $password)
+	{
+		if (!isset($database) || !is_object($database) || !method_exists($database, 'getUserArray')) {
+			return false;
+		}
+
+		$username = trim((string) $username);
+		$password = (string) $password;
+		if ($username === '' || $password === '') {
+			return false;
+		}
+
+		$user = $database->getUserArray($username, 0, false);
+		if (!is_array($user) || empty($user['password'])) {
+			return false;
+		}
+
+		$pwOk = password_verify($password, (string) $user['password']);
+		if (!$pwOk && empty($user['is_bcrypt'])) {
+			$pwOk = ((string) $user['password'] === md5($password));
+		}
+
+		return $pwOk;
+	}
+}
+
+if (isset($session->uid)) {
+	$gkTransferable = gk_plus_transferable_gold($database, $session);
+}
+
+if (isset($_POST['gk_gold_transfer']) && isset($session->uid)) {
+	$uid = (int) $session->uid;
+	$gkPostedPlayer = trim((string) ($_POST['gk_transfer_player'] ?? ''));
+	$gkPostedAmount = trim((string) ($_POST['gk_transfer_amount'] ?? ''));
+	$gkPostedWorld = trim((string) ($_POST['gk_transfer_world'] ?? $gkWorldKey));
+	$gkTransferPassword = (string) ($_POST['gk_transfer_password'] ?? '');
+	$amount = (int) preg_replace('/\D+/', '', $gkPostedAmount);
+
+	if (!gk_plus_verify_user_password($database, $session->username, $gkTransferPassword)) {
+		$transferMsg = $plusRtlMsg
+			? 'كلمة المرور غير صحيحة.'
+			: 'Incorrect password.';
+	} elseif ($gkPostedPlayer === '' || strcasecmp($gkPostedPlayer, $session->username) === 0) {
+		$transferMsg = $plusRtlMsg
+			? 'أدخل اسم لاعب صالح غير اسمك.'
+			: 'Enter a valid player name other than your own.';
+	} elseif ($amount <= 0) {
+		$transferMsg = $plusRtlMsg
+			? 'أدخل كمية ذهب صالحة.'
+			: 'Enter a valid gold amount.';
+	} elseif ($gkPostedWorld !== $gkWorldKey) {
+		$transferMsg = $plusRtlMsg
+			? 'يمكن التحويل داخل هذا العالم فقط حالياً.'
+			: 'Transfers are only supported on this world for now.';
+	} elseif ($amount > $gkTransferable) {
+		$transferMsg = $plusRtlMsg
+			? 'لا تملك ذهباً قابلاً للتحويل بهذه الكمية.'
+			: 'You do not have enough transferable gold.';
+	} else {
+		$targetUser = $database->getUserArray($gkPostedPlayer, 0, false);
+		if (!is_array($targetUser) || empty($targetUser['id'])) {
+			$transferMsg = $plusRtlMsg
+				? 'لا يوجد لاعب بهذا الاسم.'
+				: 'No player with that name exists.';
+		} elseif ((int) ($targetUser['access'] ?? 0) === (defined('BANNED') ? BANNED : 0)) {
+			$transferMsg = $plusRtlMsg
+				? 'لا يمكن التحويل إلى هذا اللاعب.'
+				: 'Cannot transfer gold to this player.';
+		} else {
+			$targetUid = (int) $targetUser['id'];
+			$fromEmail = trim((string) ($session->userinfo['email'] ?? $session->email ?? ''));
+			$toEmail = trim((string) ($targetUser['email'] ?? ''));
+			$usedCentral = false;
+			$transferDone = false;
+
+			if (class_exists('CentralGold') && CentralGold::isConfigured()) {
+				if ($fromEmail === '' || $toEmail === '' || strpos($fromEmail, '@') === false || strpos($toEmail, '@') === false) {
+					$transferMsg = $plusRtlMsg
+						? 'يجب أن يكون لدى كلا اللاعبين بريد إلكتروني صالح.'
+						: 'Both players must have a valid email address.';
+				} elseif (!CentralGold::isEmailVerified($fromEmail) || !CentralGold::isEmailVerified($toEmail)) {
+					$transferMsg = $plusRtlMsg
+						? 'يجب تأكيد البريد الإلكتروني لكلا اللاعبين قبل تحويل الذهب المدفوع.'
+						: 'Both email addresses must be verified before paid gold can be transferred.';
+				} else {
+					list($centralOk, $centralMsg) = CentralGold::transfer(
+						$fromEmail,
+						$session->username,
+						$uid,
+						$toEmail,
+						$targetUser['username'],
+						$targetUid,
+						$amount,
+						0,
+						'Player transfer on ' . $gkWorldLabel
+					);
+					if (!$centralOk) {
+						$transferMsg = $plusRtlMsg
+							? 'فشل التحويل: ' . $centralMsg
+							: ('Transfer failed: ' . $centralMsg);
+					} else {
+						$usedCentral = true;
+						$transferDone = true;
+					}
+				}
+			} else {
+				$transferDone = true;
+			}
+
+			if ($transferDone) {
+				mysqli_begin_transaction($database->dblink);
+
+				$senderOk = $database->spendGold($uid, $amount, 'Gold transfer to ' . $gkPostedPlayer);
+				$receiverOk = false;
+				if ($senderOk) {
+					$receiverOk = mysqli_query(
+						$database->dblink,
+						'UPDATE ' . TB_PREFIX . 'users SET gold = gold + ' . $amount
+							. ' WHERE id = ' . $targetUid . ' LIMIT 1'
+					) && mysqli_affected_rows($database->dblink) === 1;
+				}
+
+				if ($senderOk && $receiverOk) {
+					mysqli_commit($database->dblink);
+					if (method_exists($database, 'addGoldFinLog')) {
+						$database->addGoldFinLog(
+							0,
+							$uid,
+							'Gold transfer out',
+							-$amount,
+							'To ' . $gkPostedPlayer
+						);
+						$database->addGoldFinLog(
+							0,
+							$targetUid,
+							'Gold transfer in',
+							$amount,
+							'From ' . $session->username
+						);
+					}
+					if (method_exists($database, 'clearUserCache')) {
+						$database->clearUserCache($uid);
+						$database->clearUserCache($targetUid, $gkPostedPlayer);
+					}
+					if (isset($session->gold)) {
+						$session->gold = max(0, (int) $session->gold - $amount);
+						$_SESSION['gold'] = $session->gold;
+					}
+					$gkTransferable = gk_plus_transferable_gold($database, $session);
+					$transferOk = true;
+					$transferMsg = $plusRtlMsg
+						? ('تم تحويل ' . number_format($amount) . ' ذهب إلى ' . $gkPostedPlayer . '.')
+						: ('Transferred ' . $amount . ' gold to ' . $gkPostedPlayer . '.');
+					$gkPostedAmount = '';
+					$gkPostedPlayer = '';
+				} else {
+					mysqli_rollback($database->dblink);
+					if ($usedCentral && class_exists('CentralGold') && CentralGold::isConfigured() && $fromEmail !== '') {
+						CentralGold::credit(
+							$fromEmail,
+							$session->username,
+							$uid,
+							$amount,
+							'transfer_refund',
+							'Local transfer failed'
+						);
+					}
+					$transferMsg = $plusRtlMsg
+						? 'فشل التحويل. حاول مرة أخرى.'
+						: 'Transfer failed. Please try again.';
+				}
+			}
+		}
+	}
+}
+
+$gkShell = true;
+include_once('GameEngine/GreekPlus.php');
+$gkPlusCss = 'css/greek_maxb_plus.css';
+$gkPlusCssVer = is_file(__DIR__ . '/' . $gkPlusCss) ? (int) @filemtime(__DIR__ . '/' . $gkPlusCss) : time();
+$gkPageTitle = SERVER_NAME . ' &raquo; &raquo; &raquo; PLUS ';
+if (isset($_GET['id'])) {
+	switch ((int) $_GET['id']) {
+		case 2: $gkPageTitle .= 'Advantages'; break;
+		case 3: $gkPageTitle .= 'Gold'; break;
+		case 4: $gkPageTitle .= 'FAQ'; break;
+		case 5: $gkPageTitle .= 'Earn Gold'; break;
+		case 16: $gkPageTitle .= 'Gold Transfer'; break;
+		case 1:
+		default: $gkPageTitle .= 'Tariffs'; break;
+	}
+} else {
+	$gkPageTitle .= 'Tariffs';
+}
+tz_greek_shell_head($gkPageTitle, 'pg-plus', array(
+	'includeNew2Js' => false,
+	'extraCss' => array($gkPlusCss . '?v=' . $gkPlusCssVer),
+));
+tz_greek_shell_open('', array('contentWrap' => false));
+
+// Invite email: process BEFORE templates so invite.tpl can show feedback.
+$inviteMsg = '';
+$inviteOk = false;
+if (isset($_POST['mail']) && isset($session->uid)) {
+	$email = trim((string) $_POST['mail']);
+	$text = isset($_POST['text']) ? trim((string) $_POST['text']) : '';
+	if (
+		strpos($email, "\r") === false &&
+		strpos($email, "\n") === false &&
+		filter_var($email, FILTER_VALIDATE_EMAIL)
+	) {
+		$text = substr($text, 0, 2000);
+		$text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $text);
+		if (isset($mailer) && method_exists($mailer, 'sendInvite')) {
+			$mailer->sendInvite($email, $session->uid, $text);
+			$inviteOk = true;
+			$inviteMsg = $plusRtlMsg
+				? 'تم إرسال الدعوة بنجاح.'
+				: 'Invite sent successfully.';
+		}
+	} else {
+		$inviteMsg = $plusRtlMsg
+			? 'عنوان البريد غير صالح.'
+			: 'Invalid email address.';
+	}
+}
+
+if (isset($_GET['id'])) {
 	$id = preg_replace("/[^a-zA-Z0-9_-]/", "", $_GET['id']);
-} 
-else $id = "";
+} elseif (isset($_GET['s'])) {
+	// Not-enough-gold links use ?s=1 → open packages/shop.
+	$id = '1';
+} else {
+	$id = '';
+}
 
-if(empty($id)) include ("Templates/Plus/1.tpl");
+if ($id === '6') {
+	header('Location: plus.php?id=3');
+	exit;
+}
 
-if($id == 1){
-	include ("Templates/Plus/3.tpl");
+if ($id === '' || $id === '1') {
+	include('Templates/Plus/1.tpl');
 }
 if($id == 2){
 	include ("Templates/Plus/2.tpl");
@@ -322,6 +596,9 @@ if(isset($_GET['mail']) && $id == 5){
 	include ("Templates/Plus/invite.tpl");
 }else if($id == 5){
 	include ("Templates/Plus/5.tpl");
+}
+if($id == 16){
+	include ("Templates/Plus/16.tpl");
 }
 if($id == 7){
 	include ("Templates/Plus/7.tpl");
@@ -361,63 +638,10 @@ if($id == 13 || $id == 14){
 if($id == 15){
 	include ("Templates/Plus/15.tpl");
 }
-if($id > 15){
-	include ("Templates/Plus/3.tpl");
+if (is_numeric($id) && (int) $id > 16) {
+	include('Templates/Plus/3.tpl');
 }
 ?>
 <?php
-if (isset($_POST['mail'])) {
-
-	$email = trim($_POST['mail']);
-	$text = isset($_POST['text']) ? trim($_POST['text']) : '';
-
-	// Blocăm CRLF injection și validăm adresa
-	if (
-		strpos($email, "\r") === false &&
-		strpos($email, "\n") === false &&
-		filter_var($email, FILTER_VALIDATE_EMAIL)
-	) {
-		// Limităm dimensiunea și eliminăm caracterele de control
-		$text = substr($text, 0, 2000);
-		$text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $text);
-
-		$mailer->sendInvite($email, $session->uid, $text);
-	}
-}
-?>
-
-<br /><br /><br /><br /><div id="side_info">
-<?php
-include("Templates/multivillage.tpl");
-include("Templates/quest.tpl");
-include("Templates/news.tpl");
-if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
-	echo "<br><br><br><br>";
-	include("Templates/links.tpl");
-}
-?>
-</div>
-<div class="clear"></div>
-</div>
-<div class="footer-stopper"></div>
-<div class="clear"></div>
-
-<?php
-include("Templates/footer.tpl");
-include("Templates/res.tpl");
-?>
-<div id="stime">
-<div id="ltime">
-<div id="ltimeWrap">
-<?php echo CALCULATED_IN;?> <b><?php
-echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
-?></b> ms
-
-<br /><?php echo SERVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
-</div>
-	</div>
-</div>
-
-<div id="ce"></div>
-</body>
-</html>
+include __DIR__ . '/Templates/Plus/pmenu_close.tpl';
+tz_greek_shell_close(array('buildPopup' => false, 'timer' => $start_timer));

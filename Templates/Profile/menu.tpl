@@ -2,15 +2,24 @@
 
 #################################################################################
 ##  Filename       : menu.tpl                                                  ##
-##  Shown on edit tabs (s=1..5) — home link returns to the one-page hub.       ##
+##  Classic profile tabs (non-Greek / LTR only). Greek RTL uses BAR5 in        ##
+##  GameEngine/GreekSpieler.php — this file must stay empty on spieler RTL.   ##
 #################################################################################
 
-$menuUid = isset($_GET['uid']) ? (int)$_GET['uid'] : (int)$session->uid;
-$sParam = isset($_GET['s']) ? (int)$_GET['s'] : null;
+$menuUid = isset($_GET['uid']) ? (int) $_GET['uid'] : (int) $session->uid;
+$sParam = isset($_GET['s']) ? (int) $_GET['s'] : null;
 $onDetails = !empty($_GET['details']);
 
 $sitterView = isset($session) && is_object($session)
     && method_exists($session, 'isSitterSession') && $session->isSitterSession();
+
+if (!empty($GLOBALS['gkSpielerLiteralPage'])) {
+    return;
+}
+
+if (class_exists('GreekSpieler') && GreekSpieler::suppressClassicMenu()) {
+    return;
+}
 ?>
 
 <div id="textmenu">
@@ -21,11 +30,6 @@ $sitterView = isset($session) && is_object($session)
     </a>
 
 <?php if (!$sitterView) { ?>
-    |
-    <a href="spieler.php?uid=<?php echo (int) $session->uid; ?>&amp;details=1"
-       <?php echo $onDetails ? 'class="selected"' : ''; ?>>
-        <?php echo PLAYER_PROFILE; ?>
-    </a>
     |
     <a href="spieler.php?s=1"
        <?php echo ($sParam === 1) ? 'class="selected"' : ''; ?>>
@@ -47,14 +51,6 @@ $sitterView = isset($session) && is_object($session)
         <a href="spieler.php?s=5"
            <?php echo ($sParam === 5) ? 'class="selected"' : ''; ?>>
             <?php echo VACATION; ?>
-        </a>
-    <?php } ?>
-
-    <?php if (defined('GP_ENABLE') && GP_ENABLE) { ?>
-        |
-        <a href="spieler.php?s=4"
-           <?php echo ($sParam === 4) ? 'class="selected"' : ''; ?>>
-            <?php echo GRAPH_PACK; ?>
         </a>
     <?php } ?>
 <?php } ?>

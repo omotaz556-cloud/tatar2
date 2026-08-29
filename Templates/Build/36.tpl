@@ -117,7 +117,7 @@ $currentCap = $level > 0? (int)$bid36[$level]['attri'] * TRAPPER_CAPACITY : 0;
                         <?php echo $generator->getTimeFormat($train['eachtime'] * $train['amt']);?>
                     <?php endif;?>
                 </td>
-                <td class="fin"><?php $time = $generator->procMTime($train['timestamp']); if($time[0]!="today") echo "on ".$time[0]." at "; echo $time[1];?></td>
+                <td class="fin"><?php $time = $generator->procMTime($train['timestamp']); if(!tz_mtime_is_today($time[0])) echo "on ".$time[0]." at "; echo $time[1];?></td>
             </tr>
             <?php endforeach;?>
             <tr class="next"><td colspan="3"><?php echo UNIT_FINISHED;?> <span id="timer2"><?php echo $NextFinished;?></span></td></tr>

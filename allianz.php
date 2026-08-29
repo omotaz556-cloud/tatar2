@@ -72,147 +72,81 @@ if(isset($_GET['fid']) || isset($_GET['fid2'])){
 if(isset($_GET['aid']) || isset($_GET['fid']) || isset($_GET['fid2']) ||
 		$session->alliance > 0 || ($session->alliance == 0 && isset($_GET['s']) &&
 			($_GET['s'] == 2 || ($_GET['s'] == 6 && !empty($_GET['public']))))){
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html <?php echo tz_html_dir_attrs(); ?>>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php
-	echo SERVER_NAME.' &raquo; &raquo; &raquo; Alliance ';
-	
-	if(!empty($_GET['s'])){
-		switch($_GET['s']){
-			case '2' :
-				if($session->alliance == 0) echo 'المنتدى (بدون تحالف)';
-				else echo 'المنتدى ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
-				break;
-			
-			case '6' :
-				if (!empty($_GET['public'])) echo 'الدردشة العامة';
-				else echo 'الدردشة ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
-				break;
-			
-			case '3' :
-				echo 'الهجمات ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
-				break;
-			
-			case '4' :
-				echo 'الأخبار ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
-				break;
-			
-			case '5' :
-				echo 'الخيارات ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
-				break;
-		}
+$gkShell = true;
+$gkPageTitle = SERVER_NAME . ' &raquo; &raquo; &raquo; Alliance ';
+if (!empty($_GET['s'])) {
+	switch ($_GET['s']) {
+		case '2':
+			if ($session->alliance == 0) {
+				$gkPageTitle .= 'المنتدى (بدون تحالف)';
+			} else {
+				$gkPageTitle .= 'المنتدى (' . $alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'] . ')';
+			}
+			break;
+		case '6':
+			if (!empty($_GET['public'])) {
+				$gkPageTitle .= 'الدردشة العامة';
+			} else {
+				$gkPageTitle .= 'الدردشة (' . $alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'] . ')';
+			}
+			break;
+		case '3':
+			$gkPageTitle .= 'الهجمات (' . $alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'] . ')';
+			break;
+		case '4':
+			$gkPageTitle .= 'الأخبار (' . $alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'] . ')';
+			break;
+		case '5':
+			$gkPageTitle .= 'الخيارات (' . $alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'] . ')';
+			break;
 	}
-	else {
-		// Jucator fara alianta: allianceArray e gol, deci nu avem ce afisa.
-		echo isset($alliance->allianceArray['tag'], $alliance->allianceArray['name'])
-			? htmlspecialchars($alliance->allianceArray['tag'], ENT_QUOTES, 'UTF-8')
-			  . ' - '
-			  . htmlspecialchars($alliance->allianceArray['name'], ENT_QUOTES, 'UTF-8')
-			: '';
+} else {
+	$gkPageTitle .= isset($alliance->allianceArray['tag'], $alliance->allianceArray['name'])
+		? htmlspecialchars($alliance->allianceArray['tag'], ENT_QUOTES, 'UTF-8')
+		  . ' - '
+		  . htmlspecialchars($alliance->allianceArray['name'], ENT_QUOTES, 'UTF-8')
+		: '';
+}
+$gkMedalScripts = '
+function getMouseCoords(e) {
+	var coords = {};
+	if (!e) var e = window.event;
+	if (e.pageX || e.pageY) {
+		coords.x = e.pageX;
+		coords.y = e.pageY;
+	} else if (e.clientX || e.clientY) {
+		coords.x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+		coords.y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 	}
-
-?></title>
-	<link rel="shortcut icon" href="favicon.ico"/>
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="pragma" content="no-cache" />
-	<meta http-equiv="expires" content="0" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<script src="mt-full.js?0faab" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
-	<script src="new.js?0faab" type="text/javascript"></script>
-	<link href="<?php
-
-	   echo GP_LOCATE;
-
-?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-	<link href="<?php
-
-	   echo GP_LOCATE;
-
-?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<?php
-
-	   // GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
-	// e permisa si valida, altfel pachetul serverului (vezi config.php).
-	echo "
-	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
-
-?>
-	<script type="text/javascript">
-
-		window.addEvent('domready', start);
-				function getMouseCoords(e) {
-					var coords = {};
-					if (!e) var e = window.event;
-					if (e.pageX || e.pageY) 	{
-						coords.x = e.pageX;
-						coords.y = e.pageY;
-					}
-					else if (e.clientX || e.clientY) 	{
-						coords.x = e.clientX + document.body.scrollLeft
-							+ document.documentElement.scrollLeft;
-						coords.y = e.clientY + document.body.scrollTop
-							+ document.documentElement.scrollTop;
-					}
-					return coords;
-				}
-
-				function med_mouseMoveHandler(e, desc_string){
-					var coords = getMouseCoords(e);
-					med_showDescription(coords, desc_string);
-				}
-
-				function med_closeDescription(){
-					var layer = document.getElementById("medal_mouseover");
-					layer.className = "hide";
-				}
-
-				function init_local(){
-					med_init();
-				}
-
-				function med_init(){
-					layer = document.createElement("div");
-					layer.id = "medal_mouseover";
-					layer.className = "hide";
-					document.body.appendChild(layer);
-				}
-
-				function med_showDescription(coords, desc_string){
-					var layer = document.getElementById("medal_mouseover");
-					layer.style.top = (coords.y + 25)+ "px";
-					layer.style.left = (coords.x - 20) + "px";
-					layer.className = "";
-					layer.innerHTML = desc_string;
-				}
-	</script>
-	<?php echo tz_rtl_stylesheet_tag(); ?>
-</head>
-
-
-<body class="v35 ie ie8 pg-allianz">
-<div class="wrapper">
-<img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
-<div id="dynamic_header">
-	</div>
-<?php
-	   include ("Templates/header.tpl");
-
-?>
-<div id="mid">
-<?php
+	return coords;
+}
+function med_mouseMoveHandler(e, desc_string) {
+	var coords = getMouseCoords(e);
+	med_showDescription(coords, desc_string);
+}
+function med_closeDescription() {
+	var layer = document.getElementById("medal_mouseover");
+	layer.className = "hide";
+}
+function init_local() { med_init(); }
+function med_init() {
+	layer = document.createElement("div");
+	layer.id = "medal_mouseover";
+	layer.className = "hide";
+	document.body.appendChild(layer);
+}
+function med_showDescription(coords, desc_string) {
+	var layer = document.getElementById("medal_mouseover");
+	layer.style.top = (coords.y + 25) + "px";
+	layer.style.left = (coords.x - 20) + "px";
+	layer.className = "";
+	layer.innerHTML = desc_string;
+}';
+tz_greek_shell_head($gkPageTitle, 'pg-allianz', array('includeNew2Js' => false));
+$gkContentClass = (isset($_GET['s']) && $_GET['s'] == 2) ? 'forum' : 'alliance';
+tz_greek_shell_open($gkContentClass, array('contentWrap' => true));
 $userPermissions = $database->getAlliPermissions($session->uid, $session->alliance, 0);
-	include ("Templates/menu.tpl");
-	
-	if(isset($_GET['s']) && $_GET['s'] == 2) echo '<div id="content"  class="forum">';
-	else echo '<div id="content"  class="alliance">';
-	
-	if(isset($_GET['s'])){
+if(isset($_GET['s'])){
 		if($_GET['s'] != 5 || $session->sit == 0){
 			switch($_GET['s']){
 				case 2 :
@@ -324,58 +258,8 @@ $userPermissions = $database->getAlliPermissions($session->uid, $session->allian
 	}
 	else include("Templates/Alliance/overview.tpl");		
 ?>
-</div>
-<br /><br /><br /><br /><div id="side_info">
 <?php
-include("Templates/multivillage.tpl");
-include("Templates/quest.tpl");
-include("Templates/news.tpl");
-if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
-	echo "<br><br><br><br>";
-	include("Templates/links.tpl");
-}
-?>
-</div>
-<div class="clear"></div>
-</div>
-<div class="footer-stopper"></div>
-<div class="clear"></div>
-
-<?php
-include("Templates/footer.tpl");
-include("Templates/res.tpl");
-?>
-
-<div id="stime">
-<div id="ltime">
-<div id="ltimeWrap">
-<?php
-
-	   echo CALCULATED_IN;
-
-?> <b><?php
-
-	   echo round(($generator->pageLoadTimeEnd() - $start_timer) * 1000);
-
-?></b> ms
-
-<br /><?php
-
-	   echo SERVER_TIME;
-
-?> <span id="tp1" class="b"><?php
-
-	   echo date('H:i:s');
-
-?></span>
-</div>
-	</div>
-</div>
-
-<div id="ce"></div>
-</body>
-</html>
-<?php
+tz_greek_shell_close(array('buildPopup' => false, 'timer' => $start_timer, 'extraScripts' => $gkMedalScripts));
 }else{
 	header("Location: spieler.php?uid=".$session->uid);
 	exit;

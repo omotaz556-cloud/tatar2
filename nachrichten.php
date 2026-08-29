@@ -1,197 +1,301 @@
 <?php
+
 include_once("GameEngine/Generator.php");
+
 $start_timer = $generator->pageLoadTimeStart();
 
+
+
 #################################################################################
+
 ##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Filename       : nachrichten.php                  	                       ##
-##  Type           : In Game Reports Page                                      ##
-## --------------------------------------------------------------------------- ##
-##  Developed by   : Dzoki 						                               ##
-##  Refactored by  : Shadow                                                    ##
-##  Redesign by    : Shadow                                                    ##
-## --------------------------------------------------------------------------- ##
-##  Contact        : (see project maintainer)                                 ##
-##  Project        : Novaterra                                                  ##
-##  URLs:          : https://novaterra.example                                      ##
-##  GitHub         : https://github.com/omotaz556-cloud/tatar                   ##
-## --------------------------------------------------------------------------- ##
-##  License        : GPLv3 (derived from TravianZ; see project LICENSE)       ##
-##  Copyright      : Novaterra mods (c) 2010-2026; base engine (c) TravianZ authors (GPLv3). ##
-## --------------------------------------------------------------------------- ##
+
 #################################################################################
+
 
 
 use App\Utils\AccessLogger;
 
-include_once( "GameEngine/Village.php" );
+
+
+include_once("GameEngine/Village.php");
+
 AccessLogger::logRequest();
+
+
 
 $message->procMessage($_POST);
 
-if(isset($_GET['newdid'])){
+
+
+if (isset($_GET['newdid'])) {
+
 	$_SESSION['wid'] = $_GET['newdid'];
-	if(isset($_GET['t'])){
-		header("Location: ".$_SERVER['PHP_SELF']."?t=".$_GET['t']);
+
+	if (isset($_GET['t'])) {
+
+		header("Location: " . $_SERVER['PHP_SELF'] . "?t=" . $_GET['t']);
+
 		exit();
-	}else if($_GET['id'] != 0){
-		header("Location: ".$_SERVER['PHP_SELF']."?id=".$_GET['id']);
+
+	} elseif ($_GET['id'] != 0) {
+
+		header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $_GET['id']);
+
 		exit();
-	}else{
-		header("Location: ".$_SERVER['PHP_SELF']);
+
+	} else {
+
+		header("Location: " . $_SERVER['PHP_SELF']);
+
 		exit();
+
 	}
+
 }
 
-if(isset($_GET['delfriend']) && is_numeric($_GET['delfriend'])){
-	$friend = $database->getUserField($session->uid, "friend".$_GET['delfriend'], 0);
-	
-	for($i = 0; $i <= 19; $i++){
-		$friend1 = $database->getUserField($friend, "friend".$i, 0);
-		if($friend1 == $session->uid){
-			$database->deleteFriend($friend, "friend".$i);
+
+
+if (isset($_GET['delfriend']) && is_numeric($_GET['delfriend'])) {
+
+	$friend = $database->getUserField($session->uid, "friend" . $_GET['delfriend'], 0);
+
+
+
+	for ($i = 0; $i <= 19; $i++) {
+
+		$friend1 = $database->getUserField($friend, "friend" . $i, 0);
+
+		if ($friend1 == $session->uid) {
+
+			$database->deleteFriend($friend, "friend" . $i);
+
 		}
-		$friendwait1 = $database->getUserField($friend, "friend".$i."wait", 0);
-		if($friendwait1 == $session->uid){
-			$database->deleteFriend($friend, "friend".$i."wait");
+
+		$friendwait1 = $database->getUserField($friend, "friend" . $i . "wait", 0);
+
+		if ($friendwait1 == $session->uid) {
+
+			$database->deleteFriend($friend, "friend" . $i . "wait");
+
 		}
+
 		$database->checkFriends($friend);
+
 	}
-	
-	$database->deleteFriend($session->uid, "friend".$_GET['delfriend']);
-	$database->deleteFriend($session->uid, "friend".$_GET['delfriend']."wait");
+
+
+
+	$database->deleteFriend($session->uid, "friend" . $_GET['delfriend']);
+
+	$database->deleteFriend($session->uid, "friend" . $_GET['delfriend'] . "wait");
+
 	$database->checkFriends($session->uid);
-	header("Location: ".$_SERVER['PHP_SELF']."?t=1");
+
+	header("Location: " . $_SERVER['PHP_SELF'] . "?t=1");
+
 	exit();
+
 }
 
-if(isset($_GET['confirm']) && is_numeric($_GET['confirm'])){
+
+
+if (isset($_GET['confirm']) && is_numeric($_GET['confirm'])) {
+
 	$myid = $database->getUserArray($session->uid, 1);
-	$wait = $database->getUserArray($myid['friend'.$_GET['confirm'].'wait'], 1);
+
+	$wait = $database->getUserArray($myid['friend' . $_GET['confirm'] . 'wait'], 1);
+
 	$added = 0;
-	
-	for($i = 0; $i < 20; $i++){
-		$user = $database->getUserField($wait['id'], "friend".$i, 0);
-		if($user == $session->uid && $added == 0){
-			$database->addFriend($wait['id'], "friend".$i."wait", 0);
+
+
+
+	for ($i = 0; $i < 20; $i++) {
+
+		$user = $database->getUserField($wait['id'], "friend" . $i, 0);
+
+		if ($user == $session->uid && $added == 0) {
+
+			$database->addFriend($wait['id'], "friend" . $i . "wait", 0);
+
 			$added = 1;
+
 		}
+
 	}
-	
-	$database->addFriend($session->uid, "friend".$_GET['confirm'], $wait['id']);
-	$database->addFriend($session->uid, "friend".$_GET['confirm']."wait", 0);
-	header("Location: ".$_SERVER['PHP_SELF']."?t=1");
+
+
+
+	$database->addFriend($session->uid, "friend" . $_GET['confirm'], $wait['id']);
+
+	$database->addFriend($session->uid, "friend" . $_GET['confirm'] . "wait", 0);
+
+	header("Location: " . $_SERVER['PHP_SELF'] . "?t=1");
+
 	exit();
+
 }
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html <?php echo tz_html_dir_attrs(); ?>>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME ?> - Messages</title>
-   <link rel="shortcut icon" href="favicon.ico"/>
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="pragma" content="no-cache" />
-	<meta http-equiv="expires" content="0" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<meta name="X-UA-Compatible" content="IE=8" />
-	<script src="mt-full.js?f4b7d" type="text/javascript"></script>
-	<script src="unx.js?f4b7d" type="text/javascript"></script>
-	<script src="new.js?f4b7d" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<?php
-	// GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
-	// e permisa si valida, altfel pachetul serverului (vezi config.php).
-	echo "
-	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
-	?>
-	<script type="text/javascript">
-
-		window.addEvent('domready', start);
-	</script>
-	<?php echo tz_rtl_stylesheet_tag(); ?>
-</head>
 
 
-<body class="v35 ie ie8">
-<div class="wrapper">
-<img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
-<div id="dynamic_header">
-	</div>
-<?php include("Templates/header.tpl"); ?>
 
-<div id="mid">
-<?php include("Templates/menu.tpl");
-if(isset($_GET['id']) && (!isset($_GET['t']) || $_GET['t'] == '2a')) {
-	$message->loadMessage($_GET['id']);
-	include("Templates/Message/read.tpl");
-}
-else if(isset($_GET['t'])) {
-	switch($_GET['t']) {
-		case 1:
-		if(isset($_GET['id'])) {
-		    $id = preg_replace("/[^a-zA-Z0-9_-]/","",$_GET['id']);
-		}
-		include("Templates/Message/write.tpl");
-		break;
-		case 2:
-		include("Templates/Message/sent.tpl");
-		break;
-		case 3:
-		if($session->plus) {
-			include("Templates/Message/archive.tpl");
-		}
-		break;
-		case 4:
-		if($session->plus) {
-			$message->loadNotes();
-			include("Templates/Message/notes.tpl");
-		}
-		break;
-		default:
-		include("Templates/Message/inbox.tpl");
-		break;
+$gkNachrichtenRtl = function_exists('tz_is_rtl_lang') && tz_is_rtl_lang();
+
+$GLOBALS['gkNachrichtenLiteralPage'] = $gkNachrichtenRtl;
+
+
+
+if ($gkNachrichtenRtl && isset($_GET['readall']) && (int) $_GET['readall'] === 1) {
+
+	$database->markAllMessagesRead($session->uid);
+
+	$redir = 'nachrichten.php';
+
+	if (isset($_GET['t']) && (int) $_GET['t'] > 0) {
+
+		$redir .= '?t=' . (int) $_GET['t'];
+
 	}
+
+	header('Location: ' . $redir);
+
+	exit;
+
 }
-else {
+
+
+
+$gkShell = true;
+
+$GLOBALS['gkShell'] = true;
+
+include_once('GameEngine/GreekNachrichten.php');
+
+
+
+$gkMsgCss = 'css/greek_maxb_nachrichten.css';
+
+$gkMsgCssVer = is_file(__DIR__ . '/' . $gkMsgCss) ? (int) @filemtime(__DIR__ . '/' . $gkMsgCss) : time();
+
+$gkNachrichtenGreek = $gkNachrichtenRtl && class_exists('GreekNachrichten') && GreekNachrichten::isGreekNachrichtenUi();
+
+$gkMsgTab = isset($_GET['t']) ? (int) $_GET['t'] : 0;
+if (isset($_GET['id'])) {
+    if (isset($_GET['t']) && $_GET['t'] === '2a') {
+        $gkMsgTab = 2;
+    } elseif (!isset($_GET['t']) || $_GET['t'] === '0' || $_GET['t'] === '') {
+        $gkMsgTab = 0;
+    }
+}
+
+
+
+$gkHeadOpts = array('includeNew2Js' => false);
+
+if ($gkNachrichtenGreek) {
+
+	$gkHeadOpts['extraCss'] = array($gkMsgCss . '?v=' . $gkMsgCssVer);
+
+}
+
+
+
+$gkPageTitle = SERVER_NAME . ' - ' . (defined('MESSAGES') ? MESSAGES : 'Messages');
+
+tz_greek_shell_head($gkPageTitle, 'pg-nachrichten', $gkHeadOpts);
+
+
+
+if ($gkNachrichtenGreek) {
+
+	tz_greek_shell_open('', array('contentWrap' => false));
+
+	GreekNachrichten::menuOpen($gkMsgTab);
+
+	echo '<div class="messages gk-nachrichten-body">';
+
+} else {
+
+	tz_greek_shell_open('messages', array('contentWrap' => true));
+
+}
+
+
+
+if (isset($_GET['id']) && (!isset($_GET['t']) || $_GET['t'] == '2a')) {
+
+	$message->loadMessage($_GET['id']);
+
+	include("Templates/Message/read.tpl");
+
+} elseif (isset($_GET['t'])) {
+
+	switch ($_GET['t']) {
+
+		case 1:
+
+			if (isset($_GET['id'])) {
+
+				$id = preg_replace("/[^a-zA-Z0-9_-]/", "", $_GET['id']);
+
+			}
+
+			include("Templates/Message/write.tpl");
+
+			break;
+
+		case 2:
+
+			include("Templates/Message/sent.tpl");
+
+			break;
+
+		case 3:
+
+			if ($session->plus) {
+
+				include("Templates/Message/archive.tpl");
+
+			}
+
+			break;
+
+		case 4:
+
+			if ($session->plus) {
+
+				$message->loadNotes();
+
+				include("Templates/Message/notes.tpl");
+
+			}
+
+			break;
+
+		default:
+
+			include("Templates/Message/inbox.tpl");
+
+			break;
+
+	}
+
+} else {
+
 	include("Templates/Message/inbox.tpl");
-}
-			?>
 
-<br /><br /><br /><br /><div id="side_info">
-<?php
-include("Templates/multivillage.tpl");
-include("Templates/quest.tpl");
-include("Templates/news.tpl");
-if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
-	echo "<br><br><br><br>";
-	include("Templates/links.tpl");
 }
-?>
-</div>
-<div class="clear"></div>
-</div>
-<div class="footer-stopper"></div>
-<div class="clear"></div>
-<?php
-include("Templates/footer.tpl");
-include("Templates/res.tpl");
-?>
-<div id="stime">
-<div id="ltime">
-<div id="ltimeWrap">
-<?php echo CALCULATED_IN;?> <b><?php
-echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
-?></b> ms
 
-<br /><?php echo SERVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
-</div>
-	</div>
-</div>
-<div id="ce"></div>
-</body>
-</html>
+
+
+if ($gkNachrichtenGreek) {
+
+	echo '</div>';
+
+	GreekNachrichten::menuClose();
+
+}
+
+
+
+tz_greek_shell_close(array('buildPopup' => false, 'timer' => $start_timer));
+

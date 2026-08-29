@@ -56,5 +56,3 @@ $email = (defined('PAYPAL_EMAIL') && PAYPAL_EMAIL !== '@') ? PAYPAL_EMAIL : ADMI
     </tr>
     </tbody>
 </table>
-</div>
-</div>

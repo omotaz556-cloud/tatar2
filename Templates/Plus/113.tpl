@@ -55,4 +55,3 @@ $base = rtrim(HOMEPAGE,'/');
     </tr>
     </tbody>
 </table>
-</div></div>

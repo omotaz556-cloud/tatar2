@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 #################################################################################
 ##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
@@ -35,7 +35,7 @@ $edit = ($action === 'editRoute' && $routeid > 0 && $database->getTradeRouteUid(
     <a href="#" onClick="return Popup(17,4);" class="build_logo">
         <img class="building g17" src="img/x.gif" alt="<?php echo MARKETPLACE; ?>" title="<?php echo MARKETPLACE;?>" />
     </a>
-    <h1><?php echo MARKETPLACE;?> <span class="level"><?php echo LEVEL;?> <?php echo (int)$village->resarray['f'.$id];?></span></h1>
+    <h1><?php echo MARKETPLACE;?> <span class="level"><?php echo defined('BUILD_LEVEL_SHORT') ? BUILD_LEVEL_SHORT : LEVEL;?> <?php echo (int)$village->resarray['f'.$id];?></span></h1>
     <p class="build_desc"><?php echo MARKETPLACE_DESC;?></p>
 
     <?php include("17_menu.tpl");?>

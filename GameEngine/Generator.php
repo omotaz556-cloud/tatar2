@@ -248,7 +248,12 @@ class MyGenerator
 			$day = $dt->format($dateFmt);
 		}
 
-		return [$day, $new];
+		$result = [$day, $new];
+		if (function_exists('tz_localize_mtime_result')) {
+			return tz_localize_mtime_result($result, $pref);
+		}
+
+		return $result;
 	}
 
 	/**

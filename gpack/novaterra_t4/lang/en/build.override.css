@@ -1,31 +1,89 @@
 /* ============================================================
  * build.override.css - page-specific fix for build.php
- * Loaded LAST, scoped to body.pg-build so it cannot affect
- * any other page.
- *
- * Fix: with the TravianZ base style, the field description
- * paragraph (p.build_desc) was overlapping the h1 title and
- * the building icon on RTL builds. Force it to sit on its own
- * line below both, regardless of underlying compact.css values.
+ * Greek.sa header: centered title; icon left; description beside icon.
  * ============================================================ */
 
-body.pg-build div#build h1 {
+body.pg-build div#build:not(.gid0) {
+    position: relative !important;
+    padding-top: 12px !important;
+}
+
+body.pg-build div#build:not(.gid0) h1 {
     position: relative;
     z-index: 2;
-    margin-bottom: 8px;
+    margin: 0 0 14px !important;
+    padding: 0 !important;
+    text-align: right !important;
+    box-sizing: border-box;
+    direction: rtl;
 }
 
-body.pg-build div#build a.build_logo img {
-    top: 50px; /* matches original spacing under the title */
+body.pg-build div#build:not(.gid0) h1 span.level {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    color: inherit !important;
 }
 
-body.pg-build div#build p.build_desc {
+/* Icon under the title, on the left — description has matching left padding */
+body.pg-build div#build:not(.gid0) a.build_logo {
+    position: absolute !important;
+    top: 52px !important;
+    left: 0 !important;
+    right: auto !important;
+    float: none !important;
+    display: block !important;
+    width: 85px !important;
+    height: 110px !important;
+    margin: 0 !important;
+    z-index: 3;
+}
+
+body.pg-build div#build:not(.gid0) a.build_logo img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+body.pg-build div#build:not(.gid0) p.build_desc {
     display: block;
-    clear: both;
+    clear: none !important;
     position: relative;
     z-index: 1;
-    margin: 0 0 10px;
-    padding-top: 4px;
-    padding-right: 70px;
-    line-height: 1.5;
+    margin: 0 0 16px !important;
+    padding: 6px 0 0 95px !important;
+    min-height: 100px;
+    line-height: 1.55;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+/* gid0 new-building list */
+html[dir="rtl"] body.pg-build .gk-td-main #content,
+html[dir="rtl"] body.pg-build #content {
+    overflow: visible !important;
+    overflow-x: visible !important;
+}
+html[dir="rtl"] body.pg-build div#build.gid0 {
+    width: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+}
+html[dir="rtl"] body.pg-build div#build.gid0 table.new_building {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+html[dir="rtl"] body.pg-build div#build.gid0 table.new_building td.bimg {
+    width: 85px !important;
+    min-width: 85px !important;
+    padding-left: 6px !important;
+    padding-right: 10px !important;
+}
+html[dir="rtl"] body.pg-build div#build.gid0 table.new_building td.bimg img.building {
+    display: block !important;
+    width: 75px !important;
+    height: 100px !important;
 }

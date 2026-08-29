@@ -26,19 +26,68 @@ $woodProd = isset($village) ? $village->getProd("wood") : 0;
 $clayProd = isset($village) ? $village->getProd("clay") : 0;
 $ironProd = isset($village) ? $village->getProd("iron") : 0;
 $cropProd = isset($village) ? $village->getProd("crop") : 0;
+$gkProdCols = !empty($gkShell) ? 3 : 4;
 ?>
 
-<table id="production" cellpadding="1" cellspacing="1">
+<table id="production" cellpadding="1" cellspacing="1"<?php if (!empty($gkShell)) { echo ' class="gk-prud"'; } ?>>
+
+<?php if (!empty($gkShell)) { ?>
+    <colgroup>
+        <col class="gk-col-per" />
+        <col class="gk-col-num" />
+        <col class="gk-col-lbl" />
+    </colgroup>
+<?php } ?>
 
     <thead>
         <tr>
-            <th colspan="4">
-                <?php echo PRODUCTION; ?>:
+            <th colspan="<?php echo (int) $gkProdCols; ?>">
+                <?php echo PRODUCTION; ?><?php if (empty($gkShell)) { echo ':'; } ?>
             </th>
         </tr>
     </thead>
 
     <tbody>
+
+<?php if (!empty($gkShell)) { ?>
+
+        <!-- Wood -->
+        <tr>
+            <td class="per"><?php echo PER_HR; ?></td>
+            <td class="num"><b><?php echo $woodProd; ?></b></td>
+            <td class="res gk-prod-lbl">
+                <img class="r1" src="img/x.gif" alt="<?php echo GK_LUMBER; ?>" title="<?php echo GK_LUMBER; ?>" /><?php echo GK_LUMBER; ?>:
+            </td>
+        </tr>
+
+        <!-- Clay -->
+        <tr>
+            <td class="per"><?php echo PER_HR; ?></td>
+            <td class="num"><b><?php echo $clayProd; ?></b></td>
+            <td class="res gk-prod-lbl">
+                <img class="r2" src="img/x.gif" alt="<?php echo GK_CLAY; ?>" title="<?php echo GK_CLAY; ?>" /><?php echo GK_CLAY; ?>:
+            </td>
+        </tr>
+
+        <!-- Iron -->
+        <tr>
+            <td class="per"><?php echo PER_HR; ?></td>
+            <td class="num"><b><?php echo $ironProd; ?></b></td>
+            <td class="res gk-prod-lbl">
+                <img class="r3" src="img/x.gif" alt="<?php echo GK_IRON; ?>" title="<?php echo GK_IRON; ?>" /><?php echo GK_IRON; ?>:
+            </td>
+        </tr>
+
+        <!-- Crop -->
+        <tr>
+            <td class="per"><?php echo PER_HR; ?></td>
+            <td class="num"><b><?php echo $cropProd; ?></b></td>
+            <td class="res gk-prod-lbl">
+                <img class="r4" src="img/x.gif" alt="<?php echo GK_CROP; ?>" title="<?php echo GK_CROP; ?>" /><?php echo GK_CROP; ?>:
+            </td>
+        </tr>
+
+<?php } else { ?>
 
         <!-- Wood -->
         <tr>
@@ -115,6 +164,8 @@ $cropProd = isset($village) ? $village->getProd("crop") : 0;
                 <?php echo PER_HR; ?>
             </td>
         </tr>
+
+<?php } ?>
 
     </tbody>
 

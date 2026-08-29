@@ -163,91 +163,35 @@ if ($action === 'estimate') {
 $stats = getCounts($database->dblink, $WDATA, $CROP_TABLE);
 $worldLabel = worldSizeLabel();
 
+$gkShell = true;
+$gkPageTitle = SERVER_NAME . ' - ' . TZ_CB_PAGE_TITLE_SUFFIX;
+$gkCropBuilderStyle = '
+.cb-container{ max-width:980px;margin:0 auto;padding:0 12px; }
+.cb-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.cb-card{ background:#fff;border:1px solid #dcdde1;border-radius:12px;padding:14px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
+.cb-title{ font-size:20px;margin:0 0 8px 0; }
+.cb-muted{ color:#666;font-size:12px; }
+.cb-kpis{ display:flex; gap:16px; margin-top:8px; flex-wrap:wrap; }
+.cb-kpi{ background:#f7f9fb;border-radius:10px;padding:10px 12px; border:1px solid #e6ecf3; }
+.cb-actions form{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.cb-btn{ background:#2f7d32;color:#fff;border:none;border-radius:10px;padding:10px 14px;cursor:pointer; }
+.cb-btn.red{ background:#b23b3b; }
+.cb-btn.gray{ background:#5c6b7a; }
+.cb-input{ padding:8px 10px;border:1px solid #c9d3df;border-radius:10px;width:120px; }
+.cb-note{ background:#fff4cc;border:1px solid #f5d36b;border-radius:10px;padding:10px 12px;margin-top:8px; }
+.cb-notice{ background:#e8f6ff;border:1px solid #b3e0ff;color:#0b5380;border-radius:10px;padding:10px 12px;margin:12px 0; }
+@media (max-width: 900px){ .cb-grid{ grid-template-columns:1fr; } }
+pre#log { margin-top:14px; }';
+$gkCropBuilderScripts = '
+function smilie(text) { document.myform.message.value += text; }
+function toggleDisplay(e) {
+	element = document.getElementById(e).style;
+	element.display == "none" ? element.display = "block" : element.display = "none";
+}';
+tz_greek_shell_head($gkPageTitle, 'pg-build_croppers', array('includeNew2Js' => false, 'inlineStyle' => $gkCropBuilderStyle));
+tz_greek_shell_open('player', array('contentWrap' => true));
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html <?php echo tz_html_dir_attrs(); ?>>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME ?> - <?php echo TZ_CB_PAGE_TITLE_SUFFIX; ?></title>
-	<link rel="shortcut icon" href="favicon.ico"/>
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="pragma" content="no-cache" />
-	<meta http-equiv="expires" content="0" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
-	<script src="mt-full.js?0ac37" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
-	<script src="new.js?0ac37" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<?php
-	// GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
-	// e permisa si valida, altfel pachetul serverului (vezi config.php).
-	echo "
-	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
-	?>
-
-	<script language="javascript" type="text/javascript">
-	function smilie(text) {
-		document.myform.message.value += text;
-	}
-	</script>
-
-	<script language="javascript">
-	function toggleDisplay(e){
-		element = document.getElementById(e).style;
-		element.display == 'none' ? element.display = 'block' :
-		element.display='none';
-	}
-	</script>
-
-	<script type="text/javascript">
-
-		window.addEvent('domready', start);
-	</script>
-		<?php
-	// GP_LOCATE contine deja pachetul efectiv (vezi config.php).
-	echo "
-	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
-	?>
-	<script type="text/javascript">
-	window.addEvent('domready', start);
-	</script>
-    <style>
-        .cb-container{ max-width:980px;margin:0 auto;padding:0 12px; }
-        .cb-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-        .cb-card{ background:#fff;border:1px solid #dcdde1;border-radius:12px;padding:14px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
-        .cb-title{ font-size:20px;margin:0 0 8px 0; }
-        .cb-muted{ color:#666;font-size:12px; }
-        .cb-kpis{ display:flex; gap:16px; margin-top:8px; flex-wrap:wrap; }
-        .cb-kpi{ background:#f7f9fb;border-radius:10px;padding:10px 12px; border:1px solid #e6ecf3; }
-        .cb-actions form{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
-        .cb-btn{ background:#2f7d32;color:#fff;border:none;border-radius:10px;padding:10px 14px;cursor:pointer; }
-        .cb-btn.red{ background:#b23b3b; }
-        .cb-btn.gray{ background:#5c6b7a; }
-        .cb-input{ padding:8px 10px;border:1px solid #c9d3df;border-radius:10px;width:120px; }
-        .cb-note{ background:#fff4cc;border:1px solid #f5d36b;border-radius:10px;padding:10px 12px;margin-top:8px; }
-        .cb-notice{ background:#e8f6ff;border:1px solid #b3e0ff;color:#0b5380;border-radius:10px;padding:10px 12px;margin:12px 0; }
-        @media (max-width: 900px){ .cb-grid{ grid-template-columns:1fr; } }
-        pre#log { margin-top:14px; }
-    </style>
-	<?php echo tz_rtl_stylesheet_tag(); ?>
-</head>
-
-<body class="v35 ie ie8 pg-build_croppers">
-<div class="wrapper">
-    <img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
-    <div id="dynamic_header"></div>
-    <?php include("Templates/header.tpl"); ?>
-    <div id="mid">
-        <?php include("Templates/menu.tpl"); ?>
-
-        <!-- IMPORTANT: Use the normal game content style instead of "login" -->
-        <div id="content" class="player">
-            <div class="cb-container">
+        <div class="cb-container">
                 <h1 style="text-align:center;margin:12px 0 16px;"><?php echo TZ_CB_TITLE; ?></h1>
 
                 <?php if ($notice): ?>
@@ -344,35 +288,5 @@ if ($action === 'build' && $okCsrf) {
 ?>
             </div>
         </div>
-
-        <br /><br /><br /><br />
-        <div id="side_info">
-            <?php
-            include("Templates/multivillage.tpl");
-            include("Templates/quest.tpl");
-            include("Templates/news.tpl");
-            if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
-                echo "<br><br><br><br>";
-                include("Templates/links.tpl");
-            }
-            ?>
-        </div>
-        <div class="clear"></div>
-    </div>
-    <div class="footer-stopper"></div>
-    <div class="clear"></div>
-
-    <?php include("Templates/footer.tpl"); include("Templates/res.tpl"); ?>
-
-    <div id="stime">
-        <div id="ltime">
-            <div id="ltimeWrap">
-                <?php echo CALCULATED_IN;?> <b><?php echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000); ?></b> ms
-                <br /><?php echo SERVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
-            </div>
-        </div>
-    </div>
-    <div id="ce"></div>
-</div>
-</body>
-</html>
+<?php
+tz_greek_shell_close(array('buildPopup' => false, 'timer' => $start_timer, 'extraScripts' => $gkCropBuilderScripts));

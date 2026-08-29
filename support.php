@@ -34,32 +34,15 @@ if(isset($_GET['newdid'])) {
 	exit;
 }
 else $building->procBuild($_GET);
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html <?php echo tz_html_dir_attrs(); ?>>
-	<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME; ?> - Support Request</title>
-		<link rel="shortcut icon" href="favicon.ico"/>
-	<meta name="content-language" content="en" />
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<script src="mt-core.js?0faab" type="text/javascript"></script>
-	<script src="mt-more.js?0faab" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
-	<script src="new.js?0faab" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE ?>novaterra.css?f4b7d" rel="stylesheet" type="text/css" />
-		<link href="<?php echo GP_LOCATE ?>lang/en/lang.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript">
-function chkFormular () {
+$gkShell = true;
+$gkPageTitle = SERVER_NAME . ' - Support Request';
+$gkSupportFormScript = '
+function chkFormular() {
   if (document.Formular.Username.value == "") {
     alert("Enter your username!");
     document.Formular.Username.focus();
     return false;
-  }  
+  }
   if (document.Formular.Emailadress.value == "") {
     alert("Enter an emailadress!");
     document.Formular.Emailadress.focus();
@@ -80,21 +63,11 @@ function chkFormular () {
     document.Formular.Message.focus();
     return false;
   }
- 
-}
-</script>
-	   	<?php echo tz_rtl_stylesheet_tag(); ?>
-</head>
-
-<body class="v35 ie ie8 pg-support">
-<div class="wrapper">
-<img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
-<div id="dynamic_header">
-	</div>
-<?php include("Templates/header.tpl"); ?>
-<div id="mid">
-<?php include("Templates/menu.tpl"); ?>
-<?php include("Templates/support.tpl"); ?>
+}';
+tz_greek_shell_head($gkPageTitle, 'pg-support', array('includeNew2Js' => false));
+tz_greek_shell_open('', array('contentWrap' => false));
+include("Templates/support.tpl");
+?>
 <h1>Support</h1>
 <p>You can use the following form to submit your request to the Support.<br />Please take a bit of time to answer the form questions in as much detail as possible, so that we can answer your request quickly and in length. <br />Please note that without a valid email address, your request will not get processed.
 <br><br><b>Bug reports, login errors, general questions and feedback</b></p>
@@ -153,39 +126,5 @@ function chkFormular () {
         </div>		
 		</form>	
  
-</div>
-<br /><br /><br /><br /><div id="side_info">
 <?php
-include("Templates/multivillage.tpl");
-include("Templates/quest.tpl");
-include("Templates/news.tpl");
-if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
-	echo "<br><br><br><br>";
-	include("Templates/links.tpl");
-}
-?>
-</div>
-<div class="clear"></div>
-</div>
-<div class="footer-stopper"></div>
-<div class="clear"></div>
-
-<?php
-include("Templates/footer.tpl");
-include("Templates/res.tpl");
-?>
-<div id="stime">
-<div id="ltime">
-<div id="ltimeWrap">
-<?php echo CALCULATED_IN;?> <b><?php
-echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
-?></b> ms
-
-<br /><?php echo SERVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
-</div>
-	</div>
-</div>
-
-<div id="ce"></div>
-</body>
-</html>
+tz_greek_shell_close(array('buildPopup' => false, 'timer' => $start_timer, 'extraScripts' => $gkSupportFormScript));

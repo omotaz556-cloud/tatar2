@@ -132,10 +132,19 @@ class Message
                     $type = [10, 11, 12, 13];
                     break;
                 case 3:
-                    $type = [1, 2, 3, 4, 5, 6, 7];
+                    $type = [1, 2, 3];
                     break;
                 case 4:
-                    $type = [0, 18, 19, 20, 21, 24, 25];
+                    $type = [23];
+                    break;
+                case 6:
+                    $type = [4, 5, 6, 7];
+                    break;
+                case 7:
+                    $type = [0, 18, 19, 20, 21, 22];
+                    break;
+                case 8:
+                    $type = [24, 25, 26, 27];
                     break;
                 case 5:
                     if (!$session->plus) {

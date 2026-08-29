@@ -40,13 +40,15 @@ $plusRtl = function_exists('tz_is_rtl_lang') && tz_is_rtl_lang();
 $plusText = $plusRtl ? array(
     'remaining' => 'المتبقي', 'until' => 'حتى', 'seconds' => 'ثانية',
     'days' => 'أيام', 'hours' => 'ساعات', 'noGold' => 'لا تملك ذهبًا حاليًا.',
-    'functions' => 'ميزات بلس', 'ended' => 'انتهت ميزة بلس.',
+    'functions' => 'وظائف بلاس', 'ended' => 'انتهت ميزة بلس.',
+    'goldBalance' => 'انت تملك حاليا',
     'get' => 'احصل على بلس', 'code' => 'استبدل رمز ذهب',
     'enter' => 'أدخل الرمز', 'redeem' => 'استبدال'
 ) : array(
     'remaining' => 'Remaining', 'until' => 'until', 'seconds' => 'secs',
     'days' => 'Days', 'hours' => 'Hours', 'noGold' => "You currently don't own gold.",
     'functions' => 'Plus functions', 'ended' => 'Your PLUS advantage has ended.',
+    'goldBalance' => 'You currently have',
     'get' => 'Get PLUS', 'code' => 'Redeem a gold code',
     'enter' => 'Enter code', 'redeem' => 'Redeem'
 );
@@ -58,6 +60,13 @@ $plusRes = mysqli_query(
 
 $golds = $plusRes ? mysqli_fetch_assoc($plusRes) : null;
 
+if (!empty($buyResOk) && isset($session->gold)) {
+    if (!is_array($golds)) {
+        $golds = array();
+    }
+    $golds['gold'] = (int) $session->gold;
+}
+
 if (!$golds) {
     // Fara randul utilizatorului nu avem ce afisa. Nu aratam eroarea bazei de
     // date jucatorului; o lasam in log, unde ii e locul.
@@ -67,7 +76,15 @@ if (!$golds) {
     $golds = array('gold' => 0, 'plus' => 0, 'b1' => 0, 'b2' => 0, 'b3' => 0, 'b4' => 0, 'goldclub' => 0);
 }
 
+$GLOBALS['gkPlusLiteralPage'] = !empty($GLOBALS['gkShell']) && $plusRtl;
+
 include("Templates/Plus/pmenu.tpl");
+
+$gkPlusTable = class_exists('GreekPlus') && GreekPlus::isGreekPlusUi();
+$colDesc = $gkPlusTable ? 'الوصف' : DESCRIPTION;
+$colDur = $gkPlusTable ? 'المده' : DURATION;
+$colGold = GOLD;
+$colAct = $gkPlusTable ? 'فعل' : ACTION;
 
 $date2 = time();
 
@@ -152,21 +169,44 @@ $plusDuration  = (PLUS_PRODUCTION >= 86400)
     ? (PLUS_PRODUCTION / 86400) . ' ' . $plusText['days']
     : (PLUS_PRODUCTION / 3600) . ' ' . $plusText['hours'];
 
+$protectionOptions = $plusRtl ? array(
+    array('name' => 'الأولى', 'duration' => '24 ساعة', 'cost' => 5000),
+    array('name' => 'الثانية', 'duration' => '24 ساعة', 'cost' => 7000),
+    array('name' => 'الثالثة', 'duration' => '12 ساعة', 'cost' => 9000),
+    array('name' => 'الرابعة', 'duration' => '8 ساعات', 'cost' => 10500),
+    array('name' => 'الخامسة', 'duration' => '8 ساعات', 'cost' => 12500)
+) : array(
+    array('name' => 'First', 'duration' => '24 hours', 'cost' => 5000),
+    array('name' => 'Second', 'duration' => '24 hours', 'cost' => 7000),
+    array('name' => 'Third', 'duration' => '12 hours', 'cost' => 9000),
+    array('name' => 'Fourth', 'duration' => '8 hours', 'cost' => 10500),
+    array('name' => 'Fifth', 'duration' => '8 hours', 'cost' => 12500)
+);
+$protectionMsg = isset($protectionMsg) ? $protectionMsg : '';
+
+if ($gkPlusTable) {
+    GreekPlus::goldBalance((int) $golds['gold']);
+    include dirname(__DIR__) . '/Greek/plus_3_greek.tpl';
+    GreekPlus::menuClose();
+    return;
+}
+
 if ((int) $golds['gold'] === 0) {
-    echo '<p>' . $plusText['noGold'] . '</p>';
+    echo '<p class="gk-plus-balance">' . $plusText['noGold'] . '</p>';
 } else {
-    echo '<p>' . CURRENT_HAVE . ' <b>' . (int) $golds['gold'] . '</b> ' . GOLD . '</p>';
+    echo '<p class="gk-plus-balance">' . $plusText['goldBalance'] . ' <b>'
+        . number_format((int) $golds['gold']) . '</b> ' . GOLD . '</p>';
 }
 ?>
-<table class="plusFunctions" cellpadding="1" cellspacing="1">
+<table class="plusFunctions gk-plus-table" cellpadding="1" cellspacing="1">
     <thead>
         <tr><th colspan="5"><?php echo $plusText['functions']; ?></th></tr>
         <tr>
             <td></td>
-            <td><?php echo DESCRIPTION; ?></td>
-            <td><?php echo DURATION; ?></td>
-            <td><?php echo GOLD; ?></td>
-            <td><?php echo ACTION; ?></td>
+            <td><?php echo $colDesc; ?></td>
+            <td><?php echo $colDur; ?></td>
+            <td><?php echo $colGold; ?></td>
+            <td><?php echo $colAct; ?></td>
         </tr>
     </thead>
     <tbody>
@@ -258,98 +298,4 @@ if ((int) $golds['gold'] === 0) {
 </table>
 
 <?php
-$protectionOptions = $plusRtl ? array(
-    array('name' => 'الأولى', 'duration' => '24 ساعة', 'cost' => 5000),
-    array('name' => 'الثانية', 'duration' => '24 ساعة', 'cost' => 7000),
-    array('name' => 'الثالثة', 'duration' => '12 ساعة', 'cost' => 9000),
-    array('name' => 'الرابعة', 'duration' => '8 ساعات', 'cost' => 10500),
-    array('name' => 'الخامسة', 'duration' => '8 ساعات', 'cost' => 12500)
-) : array(
-    array('name' => 'First', 'duration' => '24 hours', 'cost' => 5000),
-    array('name' => 'Second', 'duration' => '24 hours', 'cost' => 7000),
-    array('name' => 'Third', 'duration' => '12 hours', 'cost' => 9000),
-    array('name' => 'Fourth', 'duration' => '8 hours', 'cost' => 10500),
-    array('name' => 'Fifth', 'duration' => '8 hours', 'cost' => 12500)
-);
-$protectionMsg = isset($protectionMsg) ? $protectionMsg : '';
 ?>
-<table class="plusFunctions" cellpadding="1" cellspacing="1">
-    <thead>
-        <tr><th colspan="5"><?php echo $plusRtl ? 'حماية اللاعب الجديد' : 'Beginner protection'; ?></th></tr>
-        <tr><td><?php echo $plusRtl ? 'الفرصة' : 'Opportunity'; ?></td><td><?php echo DESCRIPTION; ?></td><td><?php echo DURATION; ?></td><td><?php echo GOLD; ?></td><td><?php echo ACTION; ?></td></tr>
-    </thead>
-    <tbody>
-    <?php foreach ($protectionOptions as $index => $protection): ?>
-        <tr>
-            <td><?php echo htmlspecialchars($protection['name'], ENT_QUOTES, 'UTF-8'); ?></td>
-            <td class="desc"><?php echo $plusRtl ? 'تمديد حماية اللاعب الجديد' : 'Extend beginner protection'; ?></td>
-            <td><?php echo $protection['duration']; ?></td>
-            <td class="cost"><img src="img/x.gif" class="gold" /><?php echo number_format($protection['cost']); ?></td>
-            <td class="act">
-                <form method="post" action="plus.php?id=3" style="margin:0;">
-                    <button type="submit" name="buy_protection" value="<?php echo $index + 1; ?>"><?php echo $plusRtl ? 'تفعيل' : 'Activate'; ?></button>
-                </form>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
-<?php if ($protectionMsg !== ''): ?>
-<p style="font-weight:bold;color:<?php echo !empty($protectionOk) ? '#2e7d32' : '#b3261e'; ?>;">
-    <?php echo htmlspecialchars($protectionMsg, ENT_QUOTES, 'UTF-8'); ?>
-</p>
-<?php endif; ?>
-
-<?php
-// Gold shop: promo-code redemption box (sits between Plus function and Gold Club).
-if (class_exists('GoldShop')):
-    $__promoMsg = isset($promoMsg) ? $promoMsg : '';
-    $__promoOk  = isset($promoOk)  ? $promoOk  : false;
-    $__action   = htmlspecialchars($_SERVER['REQUEST_URI'] ?? 'plus.php?id=1', ENT_QUOTES, 'UTF-8');
-?>
-<table class="plusFunctions" cellpadding="1" cellspacing="1">
-    <thead><tr><th colspan="5"><?php echo $plusText['code']; ?></th></tr></thead>
-    <tbody>
-        <tr>
-            <td style="padding:10px 14px;">
-                <?php if ($__promoMsg !== ''): ?>
-                    <div style="margin-bottom:8px;font-weight:bold;color:<?php echo $__promoOk ? '#2e7d32' : '#b3261e'; ?>;"><?php echo htmlspecialchars($__promoMsg, ENT_QUOTES, 'UTF-8'); ?></div>
-                <?php endif; ?>
-                <form method="post" action="<?php echo $__action; ?>" style="display:flex;gap:8px;align-items:center;max-width:460px;">
-                    <input type="text" name="redeem_code" maxlength="64" placeholder="<?php echo $plusText['enter']; ?>" style="flex:1;padding:6px 8px;border:1px solid #b89968;border-radius:4px;text-transform:uppercase;" required>
-                    <input type="submit" value="<?php echo $plusText['redeem']; ?>" style="padding:6px 18px;background:#8a6d3b;color:#fff;border:0;border-radius:4px;cursor:pointer;font-weight:bold;">
-                </form>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<?php endif; ?>
-
-<table class="plusFunctions" cellpadding="1" cellspacing="1">
-    <thead>
-        <tr><th colspan="5"><?php echo TZ_NOVATERRA_GOLD_CLUB; ?></th></tr>
-        <tr>
-            <td></td>
-            <td><?php echo DESCRIPTION; ?></td>
-            <td><?php echo DURATION; ?></td>
-            <td><?php echo GOLD; ?></td>
-            <td><?php echo ACTION; ?></td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="man"><a href="#" onClick="return Popup(9,6);"><img class="help" src="img/x.gif" /></a></td>
-            <td class="desc"><b><?php echo GOLD_CLUB; ?></b></td>
-            <td class="dur"><?php echo FOR_GAME_SERVER; ?></td>
-            <td class="cost"><img src="img/x.gif" class="gold" />100</td>
-            <td class="act"><?php
-                if ((int) $golds['goldclub'] === 0) {
-                    echo plusActionCell($golds['gold'], 100, 0, 15, false);
-                } else {
-                    echo '<a href="plus.php?id=3"><span class="none">' . GOLD_ON . '</span></a>';
-                }
-            ?></td>
-        </tr>
-    </tbody>
-</table>
-</div>

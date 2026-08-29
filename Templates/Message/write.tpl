@@ -1,16 +1,20 @@
 <?php
 #################################################################################
 ##  SAFE INCREMENTAL REFACTOR - Write Messages                                 ##
-##  Credits: optimized structure, same logic preserved                         ##
-##  Compatibility: PHP 5.6+ / PHP 7+                                           ##
 #################################################################################
-?>
 
-<div id="content" class="messages">
-<h1><?php echo MESSAGES; ?></h1>
+$gkMsgGreek = !empty($GLOBALS['gkNachrichtenLiteralPage']);
+$gkMsgWriteTitle = defined('TZ_MSG_WRITE_TITLE') ? TZ_MSG_WRITE_TITLE : WRITE;
 
-<?php
-include("menu.tpl");
+if (!$gkMsgGreek) {
+    echo '<div id="content" class="messages">';
+    echo '<h1>' . MESSAGES . '</h1>';
+    include('menu.tpl');
+} else {
+    echo '<div class="gk-msg-panel gk-msg-compose">';
+    echo '<div class="gk-msg-panel-title">' . htmlspecialchars($gkMsgWriteTitle, ENT_QUOTES, 'UTF-8') . '</div>';
+    echo '<div class="gk-msg-panel-body">';
+}
 
 // ======================================================
 // USER DATA (single load)
@@ -52,14 +56,14 @@ function submitDefault(type,uid) {
 }
 </script>
 
-<div id="write_head" class="msg_head"></div>
-<div id="write_content" class="msg_content">
+<?php if (!$gkMsgGreek) { ?><div id="write_head" class="msg_head"></div><?php } ?>
+<div id="write_content" class="msg_content<?php echo $gkMsgGreek ? ' gk-msg-write-content' : ''; ?>">
 
 <form method="post" action="nachrichten.php" accept-charset="UTF-8" name="msg">
 <input type="hidden" name="c" value="3e9" />
 <input type="hidden" name="p" value="" />
 
-<img src="img/x.gif" id="label" class="send" alt="" />
+<?php if (!$gkMsgGreek) { ?><img src="img/x.gif" id="label" class="send" alt="" /><?php } ?>
 
 <div id="heading">
 
@@ -145,7 +149,7 @@ var bbEditor = new BBEditor("message");
 
 <p class="btn">
 <input type="hidden" name="ft" value="m2" />
-<button name="delmsg" id="btn_save" class="trav_buttons"
+<button name="delmsg" id="btn_save" class="<?php echo $gkMsgGreek ? 'gk-msg-del gk-msg-send' : 'trav_buttons'; ?>"
 onclick="this.disabled=true;this.form.submit();" tabindex="4"><?php echo SEND; ?></button>
 
 <?php
@@ -266,12 +270,21 @@ for ($i = 0; $i < 20; $i++) {
 </div>
 </div>
 
-<div id="write_foot" class="msg_foot"></div>
+<?php if (!$gkMsgGreek) { ?><div id="write_foot" class="msg_foot"></div><?php } ?>
 
+<?php if ($gkMsgGreek) { ?>
+<p class="gk-msg-warn"><?php echo TZ_WARNING; ?> <?php echo TZ_YOU_CAN_T_USE_THE_VALUES; ?> <b>[message]</b> <?php echo constant('OR'); ?> <b>[/message]</b></p>
+<?php } else { ?>
 <br />
-
 <span style="color: #DD0000">
 <b><?php echo TZ_WARNING; ?></b> <?php echo TZ_YOU_CAN_T_USE_THE_VALUES; ?> <b>[message]</b> <?php echo constant('OR'); ?> <b>[/message]</b>
 </span>
+<?php } ?>
 
-</div>
+<?php
+if ($gkMsgGreek) {
+    echo '</div></div>';
+} else {
+    echo '</div>';
+}
+?>

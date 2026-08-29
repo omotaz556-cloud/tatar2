@@ -1,0 +1,961 @@
+/* ============================================================
+ * greek_maxb_build.css — Market (17), Barracks (19), Hero Mansion (37)
+ * Loaded on build.php for Greek shell pages.
+ * ============================================================ */
+
+body.pg-gk.pg-build .gk-td-main #content.build,
+body.pg-gk.pg-build .gk-td-main #content {
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    text-align: right;
+    direction: rtl;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+/* Override compact.css div#build { width: 502px } so tables can fill the column */
+body.pg-gk.pg-build div#build.gid17,
+body.pg-gk.pg-build div#build.gid19,
+body.pg-gk.pg-build div#build.gid37 {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+body.pg-gk.pg-build .gk-td-main #content h1,
+body.pg-gk.pg-build div#build:not(.gid0) h1 {
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 900 !important;
+    text-align: right !important;
+    margin: 0 0 14px !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    color: #000 !important;
+    box-sizing: border-box;
+    direction: rtl;
+}
+
+body.pg-gk.pg-build div#build:not(.gid0) h1 span.level {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    color: inherit !important;
+}
+
+body.pg-gk.pg-build div#build:not(.gid0) a.build_logo {
+    position: absolute !important;
+    top: 52px !important;
+    left: 0 !important;
+    right: auto !important;
+    float: none !important;
+    display: block !important;
+    width: 85px !important;
+    height: 110px !important;
+    margin: 0 !important;
+    z-index: 3;
+}
+
+body.pg-gk.pg-build div#build:not(.gid0) a.build_logo img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+body.pg-gk.pg-build div#build:not(.gid0) p.build_desc {
+    clear: none !important;
+    position: relative;
+    z-index: 1;
+    margin: 0 0 16px !important;
+    padding: 6px 0 0 95px !important;
+    min-height: 100px;
+    line-height: 1.55;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #textmenu {
+    text-align: right;
+    margin: 0 0 12px;
+    font-size: 13px;
+}
+
+body.pg-gk.pg-build #textmenu a {
+    color: #71d000 !important;
+    font-weight: 301 !important;
+    text-decoration: none !important;
+    margin: 0 4px;
+}
+
+body.pg-gk.pg-build #textmenu a.selected {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-build #textmenu a:hover {
+    color: #5bb000 !important;
+}
+
+/* Market NPC — row-per-resource table */
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 0 12px;
+    border-collapse: collapse;
+    direction: rtl;
+    font-size: 13px;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc th,
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc td {
+    border: 1px solid #c9c9c9;
+    padding: 6px 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc thead th {
+    background: #efefef;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc td.res {
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc input.text {
+    width: 72px;
+    padding: 3px 4px;
+    border: 1px solid #71d000;
+    text-align: center;
+    direction: ltr;
+}
+
+body.pg-gk.pg-build #build.gid17 #submitButton a {
+    color: #71d000 !important;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-build #build.gid17 #submitButton a:hover {
+    color: #5bb000 !important;
+}
+
+/* Barracks train table — greek.sa reference */
+body.pg-gk.pg-build #build.gid19 table.build_details,
+body.pg-gk.pg-build #build.gid19 table.gk-train-table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    direction: rtl;
+    font-size: 13px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    margin: 0 0 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details th,
+body.pg-gk.pg-build #build.gid19 table.build_details td {
+    border: 1px solid #ccc !important;
+    padding: 3px 6px !important;
+    vertical-align: middle !important;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details thead td,
+body.pg-gk.pg-build #build.gid19 table.build_details thead th {
+    text-align: center !important;
+    font-weight: 700 !important;
+    font-size: 13px;
+    color: #000 !important;
+    padding: 4px 6px !important;
+    background: linear-gradient(to bottom, #fafafa 0%, #e8e8e8 100%) !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc {
+    width: 72% !important;
+    text-align: right !important;
+    background: #fff !important;
+    line-height: 16px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc div.tit {
+    margin: 0 0 1px !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    line-height: 16px !important;
+    text-align: right !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc div.tit img.unit {
+    float: none !important;
+    display: inline !important;
+    vertical-align: middle !important;
+    margin: 0 0 0 4px !important;
+    position: relative;
+    top: 2px;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc div.tit a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    display: inline !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc div.tit a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc div.tit span.info {
+    color: #000 !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc div.details {
+    padding: 0 22px 0 0 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    line-height: 16px !important;
+    color: #000 !important;
+    text-align: right !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc div.details img {
+    display: inline !important;
+    vertical-align: middle !important;
+    margin: 0 1px !important;
+    position: relative;
+    top: 1px;
+}
+
+/* Match greek.sa cost row: wood|clay|iron|crop|clock (hide upkeep icon) */
+body.pg-gk.pg-build #build.gid19 table.build_details td.desc div.details img.r5 {
+    display: none !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.val {
+    width: 14% !important;
+    text-align: center !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.max {
+    width: 14% !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.max a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    font-size: 13px !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details td.max a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details input.text,
+body.pg-gk.pg-build #build.gid19 input.text {
+    width: 44px !important;
+    border: 1px solid #71d000 !important;
+    padding: 3px 4px !important;
+    direction: ltr !important;
+    text-align: center !important;
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 13px !important;
+    box-sizing: border-box;
+    outline: none;
+}
+
+body.pg-gk.pg-build #build.gid19 table.build_details input.text:focus {
+    border-color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-actions {
+    text-align: center !important;
+    margin: 12px 0 16px !important;
+    direction: rtl;
+}
+
+body.pg-gk.pg-build #build.gid19 button.trav_buttons,
+body.pg-gk.pg-build #build.gid19 .trav_buttons,
+body.pg-gk.pg-build #build.gid19 .gk-train-btn {
+    display: inline-block !important;
+    background: #fff !important;
+    color: #71d000 !important;
+    border: 1px solid #71d000 !important;
+    border-radius: 999px !important;
+    padding: 5px 26px !important;
+    cursor: pointer !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    line-height: 1.3 !important;
+    box-shadow: none !important;
+}
+
+body.pg-gk.pg-build #build.gid19 button.trav_buttons:hover,
+body.pg-gk.pg-build #build.gid19 .gk-train-btn:hover {
+    color: #5bb000 !important;
+    border-color: #5bb000 !important;
+    background: #f7fff0 !important;
+}
+
+body.pg-gk.pg-build #build.gid19 table.under_progress {
+    width: 100%;
+    border-collapse: collapse;
+    direction: rtl;
+    font-size: 13px;
+    margin: 0 0 12px;
+}
+
+body.pg-gk.pg-build #build.gid19 table.under_progress th,
+body.pg-gk.pg-build #build.gid19 table.under_progress td {
+    border: 1px solid #c9c9c9;
+    padding: 6px 8px;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid19 table.under_progress thead td,
+body.pg-gk.pg-build #build.gid19 table.under_progress thead th {
+    background: linear-gradient(to bottom, #fafafa 0%, #e8e8e8 100%);
+    font-weight: 700;
+    text-align: center;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-empty {
+    margin: 8px 0 14px;
+    color: #888;
+}
+
+body.pg-gk.pg-build #build.gid19 .none {
+    color: #888;
+    font-style: normal;
+}
+
+/* Hero mansion tables (shared with barracks earlier — keep hero styles) */
+body.pg-gk.pg-build #build.gid37 table.build_details,
+body.pg-gk.pg-build #build.gid37 table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    direction: rtl;
+    font-size: 13px;
+    margin: 0 0 12px;
+}
+
+body.pg-gk.pg-build #build.gid37 table.build_details th,
+body.pg-gk.pg-build #build.gid37 table.build_details td,
+body.pg-gk.pg-build #build.gid37 table th,
+body.pg-gk.pg-build #build.gid37 table td {
+    border: 1px solid #c9c9c9;
+    padding: 6px 8px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-build #build.gid37 table.build_details thead td,
+body.pg-gk.pg-build #build.gid37 table thead th {
+    background: #efefef;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-build #build.gid37 input.text {
+    border: 1px solid #71d000;
+    padding: 3px 4px;
+    direction: ltr;
+    text-align: center;
+}
+
+body.pg-gk.pg-build #build.gid37 .t4h-up a,
+body.pg-gk.pg-build #build.gid37 table.build_details a {
+    color: #71d000;
+}
+
+body.pg-gk.pg-build #build.gid37 table#distribution {
+    width: 100%;
+    border-collapse: collapse;
+    direction: rtl;
+    font-size: 13px;
+    margin: 0 0 12px;
+}
+
+body.pg-gk.pg-build #build.gid37 table#distribution:not(.gk-hero-info) th,
+body.pg-gk.pg-build #build.gid37 table#distribution:not(.gk-hero-info) td {
+    border: 1px solid #c9c9c9;
+    padding: 6px 8px;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid37 .none {
+    color: #888;
+    font-style: normal;
+}
+
+/* Hero mansion — train table exact Greek.sa match */
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train {
+    width: 100%;
+    margin: 8px 0 14px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    direction: rtl;
+    font-size: 13px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train th,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td {
+    border: 1px solid #ccc !important;
+    padding: 4px 8px !important;
+    vertical-align: middle !important;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train thead tr:first-child th {
+    text-align: center !important;
+    font-weight: 700 !important;
+    font-size: 13px;
+    color: #000 !important;
+    padding: 5px 8px !important;
+    background: linear-gradient(to bottom, #fafafa 0%, #e8e8e8 100%) !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train thead tr:nth-child(2) td {
+    text-align: center !important;
+    font-weight: 700 !important;
+    font-size: 12px;
+    color: #000 !important;
+    padding: 4px 6px !important;
+    background: linear-gradient(to bottom, #fafafa 0%, #e8e8e8 100%) !important;
+}
+
+/* نوع البطل */
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.desc {
+    width: 71% !important;
+    text-align: right !important;
+    background: #fff !important;
+    line-height: 18px !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.desc div.tit {
+    margin: 0 0 2px !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    line-height: 18px !important;
+    text-align: right !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.desc div.tit img.unit {
+    float: none !important;
+    display: inline !important;
+    vertical-align: middle !important;
+    margin: 0 0 0 4px !important;
+    position: relative;
+    top: 2px;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.desc div.tit a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    display: inline !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.desc div.tit a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.desc div.tit span.info {
+    color: #000 !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.desc div.details {
+    padding: 0 22px 0 0 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    line-height: 18px !important;
+    color: #000 !important;
+    text-align: right !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.desc div.details img {
+    display: inline !important;
+    vertical-align: middle !important;
+    margin: 0 1px !important;
+    position: relative;
+    top: 1px;
+}
+
+/* النشاط — ~29% زي ترافيان الكلاسيك */
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train thead tr:nth-child(2) td:last-child,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.act {
+    width: 29% !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    background: #fff !important;
+    vertical-align: middle !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.act .none {
+    display: inline !important;
+    white-space: nowrap !important;
+    color: #999 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.act a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    font-size: 13px !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.act a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-train td.none {
+    text-align: center !important;
+    padding: 12px 10px !important;
+    color: #888 !important;
+}
+
+/* Oasis block under train table — match reference */
+body.pg-gk.pg-build #build.gid37 .gk-oasis-summary {
+    margin: 10px auto 16px;
+    text-align: center !important;
+    line-height: 1.7;
+    font-size: 13px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-oasis-summary p {
+    margin: 0 0 6px;
+    text-align: center !important;
+    width: 100%;
+    color: #000;
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-oasis-summary a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-oasis-summary a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-oasis-hint {
+    color: #666 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-oasis-summary p.gk-oasis-max {
+    text-align: center !important;
+}
+
+/* Hero info table — exact Greek.sa layout */
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info {
+    width: 100% !important;
+    max-width: 100%;
+    margin: 0 0 10px !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+    direction: rtl;
+    font-size: 13px !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    border: 1px solid #c0c0c0 !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info th,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info th,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info td {
+    border: 1px solid #c0c0c0 !important;
+    padding: 0 4px !important;
+    vertical-align: middle !important;
+    background: #fff !important;
+    line-height: 16px !important;
+    height: 18px !important;
+    max-height: 18px !important;
+    font-size: 12px !important;
+    box-sizing: border-box;
+}
+
+/* Header — exact match to Greek.sa reference (#fbf→#e8) */
+html.pg-gk body.pg-gk.pg-build #build.gid37 table.gk-hero-info thead th,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info thead th {
+    text-align: center !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    color: #000 !important;
+    padding: 3px 6px !important;
+    height: 22px !important;
+    max-height: none !important;
+    line-height: 16px !important;
+    border: 1px solid #c3c3c3 !important;
+    background: #f2f2f2 !important;
+    background-image: linear-gradient(to bottom, #fbfbfb 0%, #f2f2f2 45%, #e8e8e8 100%) !important;
+}
+
+/* XP row — gray #ddd cell with % | white Edit cell (left) */
+html.pg-gk body.pg-gk.pg-build #build.gid37 table.gk-hero-info tr.gk-hero-xp td.xp-cell,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info tr.gk-hero-xp td.xp-cell {
+    padding: 0 !important;
+    background: #dddddd !important;
+    background-image: none !important;
+    width: auto !important;
+    height: 22px !important;
+    max-height: none !important;
+    line-height: 22px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border: 1px solid #c3c3c3 !important;
+}
+
+html.pg-gk body.pg-gk.pg-build #build.gid37 table.gk-hero-info tr.gk-hero-xp td.edit-cell,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info tr.gk-hero-xp td.edit-cell {
+    width: 20% !important;
+    min-width: 70px !important;
+    text-align: center !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    padding: 0 4px !important;
+    height: 22px !important;
+    max-height: none !important;
+    line-height: 22px !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    border: 1px solid #c3c3c3 !important;
+}
+
+html.pg-gk body.pg-gk.pg-build #build.gid37 table.gk-hero-info a.gk-edit-link,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info a.gk-edit-link {
+    color: #1a2438 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 22px !important;
+    text-align: center !important;
+    background: none !important;
+    border: none !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    cursor: pointer;
+}
+
+html.pg-gk body.pg-gk.pg-build #build.gid37 table.gk-hero-info a.gk-edit-link:hover,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info a.gk-edit-link:hover {
+    color: #0000cc !important;
+    text-decoration: underline !important;
+}
+
+html.pg-gk body.pg-gk.pg-build #build.gid37 table.gk-hero-info .gk-xp-bar,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info .gk-xp-bar {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 22px !important;
+    border: none !important;
+    background: transparent !important;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+html.pg-gk body.pg-gk.pg-build #build.gid37 table.gk-hero-info .gk-xp-fill,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info .gk-xp-fill {
+    display: block;
+    height: 100%;
+    background: #c8c8c8;
+    min-width: 0;
+}
+
+html.pg-gk body.pg-gk.pg-build #build.gid37 table.gk-hero-info .gk-xp-txt,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info .gk-xp-txt {
+    position: absolute;
+    inset: 0;
+    text-align: center;
+    line-height: 22px !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #000 !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tbody th {
+    width: 50% !important;
+    font-weight: 400 !important;
+    font-size: 11px !important;
+    color: #000 !important;
+    background: #fff !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    line-height: 16px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td.val {
+    width: 30% !important;
+    text-align: center !important;
+    color: #000 !important;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td.val[colspan="2"] {
+    width: 50% !important;
+    text-align: center !important;
+    white-space: normal;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td.val.green,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td.val.green b {
+    color: #008000 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td.ctrl {
+    width: 20% !important;
+    text-align: center !important;
+    white-space: nowrap;
+    padding: 0 2px !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td.ctrl.points {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info input.gk-name-input,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info input.text.gk-name-input {
+    width: 70px !important;
+    max-width: 95%;
+    height: 14px !important;
+    padding: 0 2px !important;
+    border: 1px solid #71d000 !important;
+    text-align: center !important;
+    direction: ltr;
+    font-size: 11px !important;
+    line-height: 12px !important;
+    background: #fff !important;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info a.gk-unit-link {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info a.gk-unit-link:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td.val img.unit {
+    vertical-align: middle;
+    margin: 0 0 0 3px;
+    position: relative;
+    top: 0;
+    width: 12px !important;
+    height: 12px !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info td.ctrl.pm-cell {
+    padding: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    height: 18px !important;
+    max-height: 18px !important;
+    direction: ltr;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info button.gk-pm {
+    display: inline-block;
+    width: 50% !important;
+    height: 16px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 14px !important;
+    text-align: center;
+    font-size: 11px !important;
+    font-weight: 700;
+    color: #222;
+    background: #f5f5f5 !important;
+    border: none !important;
+    border-left: 1px solid #c8c8c8 !important;
+    cursor: pointer;
+    vertical-align: top;
+    border-radius: 0 !important;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info button.gk-pm.gk-minus {
+    border-left: none !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info button.gk-pm:hover {
+    background: #ebebeb !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info button.gk-pm:disabled {
+    opacity: 0.35;
+    cursor: default !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tr.gk-regen-row th,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tr.gk-regen-row td,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info tr.gk-regen-row th,
+body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info tr.gk-regen-row td {
+    background: #f5f5f5 !important;
+    background-image: none !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tr.gk-regen-row td.ctrl.pm-cell,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tr.gk-regen-row button.gk-pm {
+    background: #f5f5f5 !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tr.gk-sep th,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tr.gk-sep td {
+    border-top: 2px solid #999 !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tbody tr.gk-status td,
+body.pg-gk.pg-build #build.gid37 table.gk-hero-info tbody tr.gk-status th {
+    background: #fff !important;
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-hero-form {
+    text-align: center;
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-hero-save {
+    text-align: center !important;
+    margin: 12px auto 16px !important;
+    width: 100%;
+    max-width: 100%;
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-save-btn,
+body.pg-gk.pg-build #build.gid37 button.gk-save-btn {
+    min-width: 86px;
+    height: 28px;
+    padding: 4px 22px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    color: #000 !important;
+    cursor: pointer;
+    background: linear-gradient(to bottom, #fafafa 0%, #e8e8e8 100%) !important;
+    border: 1px solid #71d000 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 0 3px rgba(113, 208, 0, 0.55);
+}
+
+body.pg-gk.pg-build #build.gid37 .gk-nearby-wrap {
+    width: 100%;
+    margin: 8px 0 12px;
+    text-align: right !important;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases {
+    width: 100%;
+    border-collapse: collapse;
+    direction: rtl;
+    font-size: 12px;
+    margin: 0;
+    text-align: right;
+    background: #fff;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases th,
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases td {
+    border: 1px solid #c0c0c0;
+    padding: 5px 8px;
+    text-align: center;
+    vertical-align: middle;
+    color: #000;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases thead th,
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases thead td {
+    background: #efefef;
+    font-weight: 700;
+    color: #000;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases tbody tr:nth-child(even) td {
+    background: #f5f5f5;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases tbody tr:nth-child(odd) td {
+    background: #fff;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases td.coords a {
+    color: #71d000 !important;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases td.res {
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases td.sq,
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases td.sq bdi {
+    direction: ltr;
+    unicode-bidi: isolate;
+    white-space: nowrap;
+    color: #000;
+    font-weight: 301;
+}
+
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases td.none,
+body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases .none {
+    color: #888;
+}

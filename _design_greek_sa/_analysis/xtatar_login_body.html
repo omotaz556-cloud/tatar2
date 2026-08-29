@@ -1,0 +1,360 @@
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src='https://www.googletagmanager.com/ns.html?id=GTM-MFKMCMZ' height='0' width='0'
+      style='display:none;visibility:hidden'></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+<div class="auth-topbar">
+  <div class="auth-topbar__scene">
+    <div class="nav auth-topnav">
+      <a href="https://s1.x-tatar.com/">الرئيسية</a>
+      <a href="https://s1.x-tatar.com/login" class="is-on" rel="noopener">تسجيل الدخول</a>
+      <a href="https://s1.x-tatar.com/register" rel="noopener">تسجيل جديد</a>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+  <!-- HERO BANNER (compact) -->
+  <div class="hero">
+    <img src="./ساحة التتار 1 - Tatar Zone _ الدخول_files/bg-2.jpg" alt="ساحة التتار">
+    <div class="hero__overlay"></div>
+    <div class="hero__bottom">
+
+      <div class="hero__server">
+        <span class="hero__server-dot"></span>
+        سيرفر 1
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGO -->
+  <div class="auth-logo">
+    <img src="./ساحة التتار 1 - Tatar Zone _ الدخول_files/logo_new.png" alt="Tatar War - ساحة التتار">
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- CONDITIONAL: inline phone-link OTP (per-world device-cap world-join gate, no-phone account) -->
+    
+
+    <!-- PASSWORD RESET PAGE (when user clicks email link) -->
+    
+    <!-- NORMAL LOGIN FORM -->
+    <div class="legacy-login-shell">
+      <aside class="legacy-login-side">
+        <ul class="legacy-login-side__list">
+          <li><a href="https://s1.x-tatar.com/">الرئيسية</a></li>
+          <li><a href="https://s1.x-tatar.com/login" class="is-on" rel="noopener">الدخول</a></li>
+          <li><a href="https://s1.x-tatar.com/register" rel="noopener">سجل الآن</a></li>
+        </ul>
+      </aside>
+
+      <div class="legacy-login-main">
+        
+        <h1 class="legacy-login-main__title">الدخول إلى اللعبة</h1>
+        <h2 class="legacy-login-main__subtitle">الدخول إلى ساحة التتار 1</h2>
+        <p class="legacy-login-main__copy">
+          يمكنك الدخول بواسطة الاسم أو البريد الإلكتروني، وإذا تعدد مستخدمو هذا الحاسب يجب أن تضغط على تسجيل الخروج
+          في كل مرة تنتهي من اللعب وذلك حفاظاً على بياناتك.
+        </p>
+
+        <noscript>
+          <style>#letlog{display:none !important;}</style>
+          <div class="legacy-box legacy-box--error">
+            <h2 class="legacy-box__error">يجب تفعيل الجافا سكربت (JavaScript) في متصفحك لتسجيل الدخول، ثم أعد تحميل الصفحة.</h2>
+          </div>
+        </noscript>
+
+        <form action="https://s1.x-tatar.com/login" method="post" id="letlog" class="legacy-login-form">
+          <input type="hidden" name="dfp_hw" id="dfp_hw" value="4dc04fc50923b09ccc4a87be86bd0a1a66264d623b416cefd02f86139bc46072">
+          <input type="hidden" name="dfp_full" id="dfp_full" value="a766532c5b4f8e8ff706ab7f54c038969731e885bf2ab3f4e92bac246fa4dcf7">
+          
+
+          <div class="legacy-box legacy-box--form">
+            <div class="legacy-field-row legacy-field-row--mode">
+              <span class="legacy-field-row__label legacy-field-row__label--muted">طريقة الدخول:</span>
+              <div class="legacy-field-row__control">
+                <div class="ct-toggle legacy-login-mode" id="loginModeBar">
+                  <button type="button" class="ct-opt is-on" id="loginModeEmail" onclick="setLoginMode(&#39;email&#39;)" role="tab" aria-selected="true">اسم / بريد</button>
+                  <button type="button" class="ct-opt" id="loginModePhone" onclick="setLoginMode(&#39;phone&#39;)" role="tab" aria-selected="false">رقم الجوال</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="login-form">
+              <div id="loginEmailSection">
+                <div class="legacy-field-row">
+                  <label class="legacy-field-row__label" for="loginNameInput">اسم اللاعب أو الايميل:</label>
+                  <div class="legacy-field-row__control">
+                    <input class="fi" id="loginNameInput" name="name" type="text" value="" autocomplete="username">
+                  </div>
+                </div>
+              </div>
+
+              <div id="loginPhoneSection" style="display:none">
+                <div class="legacy-field-row">
+                  <label class="legacy-field-row__label" for="loginPhoneInput">رقم الجوال:</label>
+                  <div class="legacy-field-row__control">
+                    <div class="phone-row" id="loginPhoneRow">
+                      <div class="phone-row__prefix" id="loginPhonePrefix" onclick="toggleLoginPrefixSelect()" style="cursor:pointer;">
+                        <span id="loginPrefixDisplay">🇸🇦 +<span id="loginPrefixVal">966</span> ▾</span>
+                      </div>
+                      <input class="phone-row__input" id="loginPhoneInput" type="tel" placeholder="5XXXXXXXX" maxlength="12" dir="ltr" inputmode="tel" autocomplete="tel-national">
+                    </div>
+                    <div id="loginPrefixSelect" style="display:none; margin-top:6px;">
+                      <select class="fi" id="loginCountryCode" onchange="pickLoginPrefix(this.value)" aria-label="رمز الدولة" style="direction:ltr; text-align:left;">
+                        <option value="966">🇸🇦 +966 السعودية</option>
+                        <option value="971">🇦🇪 +971 الإمارات</option>
+                        <option value="973">🇧🇭 +973 البحرين</option>
+                        <option value="974">🇶🇦 +974 قطر</option>
+                        <option value="965">🇰🇼 +965 الكويت</option>
+                        <option value="968">🇴🇲 +968 عُمان</option>
+                        <option value="20">🇪🇬 +20 مصر</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <input type="hidden" id="name" value="">
+
+              <div class="legacy-field-row">
+                <label class="legacy-field-row__label" for="pass">كلمة المرور:</label>
+                <div class="legacy-field-row__control">
+                  <div class="fi-ico">
+                    <input class="fi" id="pass" name="password" type="password" autocomplete="current-password" required="">
+                    <button type="button" class="fi-ico__btn pw-eye" onclick="togPw(&#39;pass&#39;)">👁</button>
+                  </div>
+                </div>
+              </div>
+
+              
+
+              <div class="legacy-login-forgot">
+                <button type="button" class="legacy-link-btn" onclick="resetpass()">نسيت كلمة المرور؟</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="legacy-login-actions">
+            <button id="login" class="legacy-login-btn" type="submit">تسجيل الدخول</button>
+          </div>
+        </form>
+
+        
+
+        <div class="legacy-box legacy-box--support">
+          <h2 class="legacy-help-title">تواجه مشكلة ؟</h2>
+          <a class="legacy-link-btn" href="https://x-tatar.com/contact">اضغط هنا للتواصل معنا</a>
+        </div>
+
+        
+        <div class="legacy-box legacy-box--stats">
+          <div class="legacy-stats-grid">
+            <b>سرعة السيرفر:</b>
+            <p>عادي</p>
+            <b>عدد اللاعبين:</b>
+            <p>882 لاعب</p>
+            <b>نزول التحف:</b>
+            <p>تم نزول التحف</p>
+            <b>نزول التتار:</b>
+            <p>بعد 3 أيام </p>
+            <b>حالة المقاليع:</b>
+            <p>تعمل بكل وقت</p>
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    
+    
+
+  </div>
+
+  <!-- SERVER MODAL -->
+  <div class="modal" id="srvModal" onclick="if(!event.target.closest(&#39;.modal__sheet&#39;))closeSrvModal()">
+    <div class="modal__sheet">
+      <div class="modal__title">اختر السيرفر</div>
+      <div class="modal__sub">انضم للسيرفر الأنسب لك</div>
+      <div class="srv-list">
+        
+        <a href="https://s1.x-tatar.com/login" class="srv-row is-on">
+          <div class="srv-row__n">1</div>
+          <div class="srv-row__info">
+            <div class="srv-row__name">السيرفر 1</div>
+            <div class="srv-row__meta">بدأ منذ 2 اسبوع</div>
+          </div>
+          <div class="srv-row__cnt">882 لاعب</div>
+          <div class="srv-d on"></div>
+        </a>
+        
+        <a href="https://s3.x-tatar.com/login" class="srv-row ">
+          <div class="srv-row__n">3</div>
+          <div class="srv-row__info">
+            <div class="srv-row__name">السيرفر 3</div>
+            <div class="srv-row__meta">بدأ منذ 1 اسبوع</div>
+          </div>
+          <div class="srv-row__cnt">471 لاعب</div>
+          <div class="srv-d on"></div>
+        </a>
+        
+        <a href="https://s5.x-tatar.com/login" class="srv-row ">
+          <div class="srv-row__n">5</div>
+          <div class="srv-row__info">
+            <div class="srv-row__name">السيرفر 5</div>
+            <div class="srv-row__meta">بدأ منذ 3 اسبوع</div>
+          </div>
+          <div class="srv-row__cnt">1013 لاعب</div>
+          <div class="srv-d off"></div>
+        </a>
+        
+        <a href="https://s7.x-tatar.com/login" class="srv-row ">
+          <div class="srv-row__n">7</div>
+          <div class="srv-row__info">
+            <div class="srv-row__name">السيرفر 7</div>
+            <div class="srv-row__meta">بدأ منذ 1 اسبوع</div>
+          </div>
+          <div class="srv-row__cnt">683 لاعب</div>
+          <div class="srv-d on"></div>
+        </a>
+        
+        <a href="https://s9.x-tatar.com/login" class="srv-row ">
+          <div class="srv-row__n">9</div>
+          <div class="srv-row__info">
+            <div class="srv-row__name">السيرفر 9</div>
+            <div class="srv-row__meta">بدأ منذ 1 اسبوع</div>
+          </div>
+          <div class="srv-row__cnt">206 لاعب</div>
+          <div class="srv-d on"></div>
+        </a>
+        
+        <a href="https://s10.x-tatar.com/login" class="srv-row ">
+          <div class="srv-row__n">10</div>
+          <div class="srv-row__info">
+            <div class="srv-row__name">السيرفر 10</div>
+            <div class="srv-row__meta">بدأ منذ 1 اسبوع</div>
+          </div>
+          <div class="srv-row__cnt">390 لاعب</div>
+          <div class="srv-d on"></div>
+        </a>
+        
+      </div>
+      <button type="button" class="modal__btn" onclick="closeSrvModal()">إغلاق</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- PASSWORD RESET MODAL -->
+<div class="reset-overlay" id="resetOverlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="resetModalTitle" aria-describedby="resetStatus" onclick="if(event.target === this) closeResetModal()">
+  <div class="reset-modal" style="position:relative;" tabindex="-1">
+    <div class="reset-modal__head">
+      <button type="button" class="reset-modal__close" aria-label="إغلاق" onclick="event.preventDefault(); event.stopPropagation(); closeResetModal()">✕</button>
+      <h3 id="resetModalTitle">استعادة كلمة المرور</h3>
+      
+      <p>اختر طريقة الاستعادة</p>
+      <div class="reset-tabs" role="tablist" aria-label="طريقة استعادة كلمة المرور">
+        <button type="button" class="reset-tab is-on" id="resetEmailMode" role="tab" aria-selected="true" aria-controls="resetEmailSection" onclick="switchResetMode(&#39;email&#39;)">📧 بريد إلكتروني</button>
+        <button type="button" class="reset-tab" id="resetPhoneMode" role="tab" aria-selected="false" aria-controls="resetPhoneSection" onclick="switchResetMode(&#39;phone&#39;)">📱 رقم الجوال</button>
+      </div>
+      
+    </div>
+    <div class="reset-modal__body modal-body">
+      <!-- Email reset section -->
+      <div id="resetEmailSection" class="reset-step show" role="tabpanel" aria-labelledby="resetEmailMode">
+        <div class="fg">
+          <div class="fg__lbl"><label class="fg__lbl-txt" for="resetEmail">البريد الإلكتروني المسجل</label></div>
+          <input class="fi" id="resetEmail" type="email" placeholder="your@email.com" dir="ltr" autocomplete="email">
+        </div>
+        <button type="button" class="btn btn--gold" id="resetPassEmail" onclick="PasswordReset.submitEmail()">إرسال رابط الاستعادة</button>
+      </div>
+
+      <!-- Phone reset section (hidden entirely while WHATSAPP_OTP_ENABLED=false) -->
+      
+      <div id="resetPhoneSection" class="reset-step" role="tabpanel" aria-labelledby="resetPhoneMode" aria-hidden="true" style="display:none;">
+        <div class="fg">
+          <div class="fg__lbl"><label class="fg__lbl-txt" for="resetPhone">رقم الجوال</label></div>
+          <div style="display:flex; gap:8px;">
+            <select class="fi" id="resetCountryCode" dir="ltr" aria-label="رمز الدولة" style="width:100px; padding:8px;">
+              <option value="966">🇸🇦 +966</option>
+              <option value="971">🇦🇪 +971</option>
+              <option value="973">🇧🇭 +973</option>
+              <option value="974">🇶🇦 +974</option>
+              <option value="965">🇰🇼 +965</option>
+              <option value="968">🇴🇲 +968</option>
+              <option value="20">🇪🇬 +20</option>
+            </select>
+            <input class="fi" id="resetPhone" type="tel" placeholder="5XXXXXXXX" dir="ltr" inputmode="numeric" autocomplete="tel-national" style="flex:1;">
+          </div>
+        </div>
+        <div id="resetPhoneTurnstileWrap" style="margin-top:8px; max-width:100%; overflow:hidden;">
+          <div id="reset-phone-turnstile" aria-label="التحقق من أنك لست روبوت" data-sitekey="0x4AAAAAAAPQ4g8BPdHOVeR3"></div>
+        </div>
+        <span id="resetPassPhoneHint" class="sr-only">أكمل التحقق من أنك لست روبوت أولاً</span>
+        <button type="button" class="btn btn--gold" id="resetPassPhone" onclick="phoneResetStep1()" disabled="" aria-describedby="resetPassPhoneHint">إرسال رمز التحقق</button>
+
+        <!-- OTP step -->
+        <div id="phoneResetOtpSection" class="reset-step" aria-hidden="true" style="display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--line);">
+          <div class="fg">
+            <div class="fg__lbl"><label class="fg__lbl-txt" for="resetOtpCode">رمز التحقق</label></div>
+            <input class="fi" id="resetOtpCode" type="text" maxlength="6" placeholder="000000" dir="ltr" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <button type="button" class="btn btn--gold" id="verifyResetOtp" onclick="phoneResetStep2()" style="width:auto; padding:10px 24px;">تأكيد الرمز</button>
+            <span id="resetOtpTimer" style="font-size:13px; color:var(--ink-soft); font-weight:600;"></span>
+          </div>
+          <button type="button" id="resetOtpResend" style="display:none; margin-top:8px; background:none; border:none; color:var(--gold); font-weight:600; font-size:13px; cursor:pointer; padding:10px 0; min-height:44px;" onclick="phoneResetResend()">إعادة إرسال الرمز</button>
+        </div>
+
+        <!-- New password step -->
+        <div id="phoneResetPwSection" class="reset-step" aria-hidden="true" style="display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--line);">
+          <div class="fg">
+            <div class="fg__lbl"><label class="fg__lbl-txt" for="phoneNewPass">كلمة المرور الجديدة</label></div>
+            <div class="fi-ico">
+              <input class="fi" id="phoneNewPass" type="password" placeholder="أدخل كلمة المرور الجديدة" autocomplete="new-password" maxlength="72" aria-describedby="phoneResetPassRules">
+              <button type="button" class="fi-ico__btn pw-eye" aria-label="إظهار كلمة المرور" aria-pressed="false" onclick="togPw(&#39;phoneNewPass&#39;)">👁</button>
+            </div>
+          </div>
+          <div class="fg">
+            <div class="fg__lbl"><label class="fg__lbl-txt" for="phoneConfirmPass">تأكيد كلمة المرور</label></div>
+            <div class="fi-ico">
+              <input class="fi" id="phoneConfirmPass" type="password" placeholder="أعد إدخال كلمة المرور" autocomplete="new-password" maxlength="72" aria-describedby="phoneResetPassRules">
+              <button type="button" class="fi-ico__btn pw-eye" aria-label="إظهار كلمة المرور" aria-pressed="false" onclick="togPw(&#39;phoneConfirmPass&#39;)">👁</button>
+            </div>
+          </div>
+          <ol class="pw-rules" id="phoneResetPassRules" aria-label="متطلبات كلمة المرور">
+            <li class="pw-rule" data-phone-pw-rule="length"><span class="pw-rule__dot">✓</span><span>8 أحرف على الأقل وبحد أقصى 72 حرف</span></li>
+            <li class="pw-rule" data-phone-pw-rule="uppercase"><span class="pw-rule__dot">✓</span><span>حرف كبير واحد</span></li>
+            <li class="pw-rule" data-phone-pw-rule="lowercase"><span class="pw-rule__dot">✓</span><span>حرف صغير واحد</span></li>
+            <li class="pw-rule" data-phone-pw-rule="number"><span class="pw-rule__dot">✓</span><span>رقم واحد على الأقل</span></li>
+            <li class="pw-rule" data-phone-pw-rule="match"><span class="pw-rule__dot">✓</span><span>كلمتا المرور متطابقتان</span></li>
+          </ol>
+          <div class="pw-bars" id="phoneResetPwBars" aria-hidden="true">
+            <div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div>
+          </div>
+          <div id="phoneResetPassStrength" class="pw-strength-label">—</div>
+          <button type="button" class="btn btn--gold" id="setPhoneNewPass" onclick="phoneResetStep3()" disabled="" aria-describedby="phoneResetPassRules">تغيير كلمة المرور</button>
+        </div>
+        <div id="phoneResetDone" class="reset-step" aria-hidden="true" style="display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); text-align:center;">
+          <a class="btn btn--gold" href="https://s1.x-tatar.com/login" style="display:inline-flex; width:auto; min-width:160px;">تسجيل الدخول</a>
+        </div>
+      </div>
+      
+
+      <div class="reset-status" id="resetStatus" role="alert" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<!-- auth.js is self-contained (bundled vanilla $); no external jQuery dependency -->
+
+
+
+

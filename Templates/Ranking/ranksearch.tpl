@@ -14,6 +14,11 @@
 ##                                                                             ##
 #################################################################################
 
+if (class_exists('GreekStat') && GreekStat::isGreekStatUi()) {
+    include __DIR__ . '/../Greek/stat_search_greek.tpl';
+    return;
+}
+
 if(!isset($_GET['id'])){ $_GET['id']='1'; }
 ?>
 <table cellpadding="1" cellspacing="1" id="search_navi">

@@ -1,564 +1,463 @@
 <?php
 
 #################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Filename       : anmelden.php                      	                       ##
-##  Type           : In Game Registration Page (3 step wizard)                 ##
-## --------------------------------------------------------------------------- ##
-##  Developed by   : Dzoki 						                               ##
-##  Refactored by  : Shadow                                                    ##
-##  Redesign by    : Shadow                                                    ##
-## --------------------------------------------------------------------------- ##
-##  Contact        : (see project maintainer)                                 ##
-##  Project        : Novaterra                                                  ##
-##  URLs:          : https://novaterra.example                                      ##
-##  GitHub         : https://github.com/omotaz556-cloud/tatar                   ##
-## --------------------------------------------------------------------------- ##
-##  License        : GPLv3 (derived from TravianZ; see project LICENSE)       ##
-##  Copyright      : Novaterra mods (c) 2010-2026; base engine (c) TravianZ authors (GPLv3). ##
-## --------------------------------------------------------------------------- ##
+##  Filename       : anmelden.php
+##  Project        : Novaterra
+##  License        : GPLv3 (derived from TravianZ)
 #################################################################################
 
 use App\Utils\AccessLogger;
 
-if(!file_exists('var/installed') && @opendir('install')) {
-    header("Location: install/");
+if (!file_exists('var/installed') && @opendir('install')) {
+    header('Location: install/');
     exit;
 }
 
 include('GameEngine/Account.php');
 AccessLogger::logRequest();
 
-$invited=(isset($_GET['uid'])) ? filter_var($_GET['uid'], FILTER_SANITIZE_NUMBER_INT):$form->getError('invt');
+$invited = (isset($_GET['uid']))
+    ? filter_var($_GET['uid'], FILTER_SANITIZE_NUMBER_INT)
+    : $form->getError('invt');
 
-/*
- * ---------------------------------------------------------------------------
- *  Registration wizard data
- * ---------------------------------------------------------------------------
- *  Every label below can be overridden from the language files: if a constant
- *  with the given name exists it wins, otherwise the English fallback is used.
- *  No changes are required in lang/*.php for the page to work.
- */
 if (!function_exists('regText')) {
-    function regText($constant, $fallback) {
+    function regText($constant, $fallback)
+    {
         return defined($constant) ? constant($constant) : $fallback;
     }
 }
 
-/* id => tribe definition. The order of this array is the order of the cards. */
+function tz_reg_days_label($days)
+{
+    $days = (int) $days;
+    if ($days <= 0) {
+        return defined('LOGIN_DAY_ZERO') ? LOGIN_DAY_ZERO : 'اليوم';
+    }
+    if ($days === 1) {
+        return defined('LOGIN_DAY_ONE') ? LOGIN_DAY_ONE : 'يوم';
+    }
+    if ($days === 2) {
+        return defined('LOGIN_DAY_TWO') ? LOGIN_DAY_TWO : 'يومان';
+    }
+    if ($days >= 3 && $days <= 10) {
+        return $days . ' ' . (defined('LOGIN_DAYS_FEW') ? LOGIN_DAYS_FEW : 'أيام');
+    }
+    return $days . ' ' . (defined('LOGIN_DAY_ONE') ? LOGIN_DAY_ONE : 'يوم');
+}
+
+/* Enabled tribes only — no invented tribes (e.g. Arabs). */
 $regTribes = array(
-    3 => array( /* Gauls   */
-        'name'  => TRIBE3,
-        'flag'  => true,
-        'best'  => true,
-        'lines' => array(
-            regText('TRIBE3_L1', 'Low time requirements'),
-            regText('TRIBE3_L2', 'Loot protection and good defense'),
-            regText('TRIBE3_L3', 'Excellent, fast cavalry'),
-            regText('TRIBE3_L4', 'Well suited to new players'),
-        ),
+    1 => array(
+        'name' => regText('REG_TRIBE_ROMANS', 'الرومان'),
+        'flag' => true,
     ),
-    1 => array( /* Romans  */
-        'name'  => TRIBE1,
-        'flag'  => true,
-        'best'  => false,
-        'lines' => array(
-            regText('TRIBE1_L1', 'Moderate time requirements'),
-            regText('TRIBE1_L2', 'Can develop villages the fastest'),
-            regText('TRIBE1_L3', 'Very strong but expensive troops'),
-            regText('TRIBE1_L4', 'Hard to play for new players'),
-        ),
+    2 => array(
+        'name' => regText('REG_TRIBE_TEUTONS', 'الجرمان'),
+        'flag' => true,
     ),
-    2 => array( /* Teutons */
-        'name'  => TRIBE2,
-        'flag'  => true,
-        'best'  => false,
-        'lines' => array(
-            regText('TRIBE2_L1', 'High time requirements'),
-            regText('TRIBE2_L2', 'Good at looting in early game'),
-            regText('TRIBE2_L3', 'Strong, cheap infantry'),
-            regText('TRIBE2_L4', 'For aggressive players'),
-        ),
+    3 => array(
+        'name' => regText('REG_TRIBE_GAULS', 'الأغريق'),
+        'flag' => true,
     ),
-    7 => array( /* Egyptians */
-        'name'  => defined('TRIBE7') ? TRIBE7 : 'Egyptians',
-        'flag'  => (defined('NEW_FUNCTION_TRIBE_EGIPTEANS') && NEW_FUNCTION_TRIBE_EGIPTEANS),
-        'best'  => false,
-        'lines' => array(
-            regText('TRIBE7_L1', 'Low time requirements'),
-            regText('TRIBE7_L2', 'More resources available'),
-            regText('TRIBE7_L3', 'Excellent defensive units'),
-            regText('TRIBE7_L4', 'Well suited to new players'),
-        ),
+    7 => array(
+        'name' => defined('TRIBE7') ? TRIBE7 : 'Egyptians',
+        'flag' => (defined('NEW_FUNCTION_TRIBE_EGIPTEANS') && NEW_FUNCTION_TRIBE_EGIPTEANS),
     ),
-    6 => array( /* Huns */
-        'name'  => defined('TRIBE6') ? TRIBE6 : 'Huns',
-        'flag'  => (defined('NEW_FUNCTION_TRIBE_HUNS') && NEW_FUNCTION_TRIBE_HUNS),
-        'best'  => false,
-        'lines' => array(
-            regText('TRIBE6_L1', 'High time requirements'),
-            regText('TRIBE6_L2', 'Impressively strong cavalry'),
-            regText('TRIBE6_L3', 'Reliant on others for protection'),
-            regText('TRIBE6_L4', 'Not recommended for new players!'),
-        ),
+    6 => array(
+        'name' => defined('TRIBE6') ? TRIBE6 : 'Huns',
+        'flag' => (defined('NEW_FUNCTION_TRIBE_HUNS') && NEW_FUNCTION_TRIBE_HUNS),
     ),
-    8 => array( /* Spartans */
-        'name'  => defined('TRIBE8') ? TRIBE8 : 'Spartans',
-        'flag'  => (defined('NEW_FUNCTION_TRIBE_SPARTANS') && NEW_FUNCTION_TRIBE_SPARTANS),
-        'best'  => false,
-        'lines' => array(
-            regText('TRIBE8_L1', 'Moderate time requirements'),
-            regText('TRIBE8_L2', 'Efficient crop consumption'),
-            regText('TRIBE8_L3', 'Easier recovery from battles'),
-            regText('TRIBE8_L4', 'Recommended for active new players'),
-        ),
+    8 => array(
+        'name' => defined('TRIBE8') ? TRIBE8 : 'Spartans',
+        'flag' => (defined('NEW_FUNCTION_TRIBE_SPARTANS') && NEW_FUNCTION_TRIBE_SPARTANS),
     ),
-    9 => array( /* Vikings */
-        'name'  => defined('TRIBE9') ? TRIBE9 : 'Vikings',
-        'flag'  => (defined('NEW_FUNCTION_TRIBE_VIKINGS') && NEW_FUNCTION_TRIBE_VIKINGS),
-        'best'  => false,
-        'lines' => array(
-            regText('TRIBE9_L1', 'High time requirements'),
-            regText('TRIBE9_L2', 'Fearless raiders, strong offense'),
-            regText('TRIBE9_L3', 'Weak defense in the early game'),
-            regText('TRIBE9_L4', 'Not recommended for new players!'),
-        ),
+    9 => array(
+        'name' => defined('TRIBE9') ? TRIBE9 : 'Vikings',
+        'flag' => (defined('NEW_FUNCTION_TRIBE_VIKINGS') && NEW_FUNCTION_TRIBE_VIKINGS),
     ),
 );
 
-/* Drop every tribe that is disabled by the install feature flags. */
 foreach ($regTribes as $tribeId => $tribeData) {
     if (!$tribeData['flag']) {
         unset($regTribes[$tribeId]);
     }
 }
 
-/* Starting positions: 0 = random, 1 = NW (-|+), 2 = NE (+|+), 3 = SW (-|-), 4 = SE (+|-) */
+/* kid: 0=random, 1=NW, 2=NE, 3=SW, 4=SE (engine mapping) */
 $regQuadrants = array(
-    0 => array('name' => RANDOM, 'coords' => ''),
-    1 => array('name' => NW,     'coords' => '(-|+)'),
-    2 => array('name' => NE,     'coords' => '(+|+)'),
-    3 => array('name' => SW,     'coords' => '(-|-)'),
-    4 => array('name' => SE,     'coords' => '(+|-)'),
+    0 => regText('REG_POS_RANDOM', 'عشوائي'),
+    1 => regText('REG_POS_NW', 'شمال غربي'),
+    2 => regText('REG_POS_NE', 'شمال شرقي'),
+    3 => regText('REG_POS_SW', 'جنوب غربي'),
+    4 => regText('REG_POS_SE', 'جنوب شرقي'),
 );
 
-/* Values coming back from a failed POST (Account::Signup redirects here). */
-$regErrors  = ($form->returnErrors() > 0);
-$regTribe   = (int) $form->getValue('vid');
+$regTribe = (int) $form->getValue('vid');
 if (!isset($regTribes[$regTribe])) {
     reset($regTribes);
-    $regTribe = (int) key($regTribes);   // first card = Gauls (the recommended tribe)
+    $regTribe = (int) key($regTribes);
 }
 $regQuad = (int) $form->getValue('kid');
 if (!isset($regQuadrants[$regQuad])) {
     $regQuad = 0;
 }
-/* When the server rejected the form we jump straight back to the recap step. */
-$regStep = $regErrors ? 3 : 1;
+
+$time = time();
+$startTs = (int) COMMENCE;
+if ($startTs <= 0) {
+    $startTs = (int) strtotime(START_DATE . ' ' . START_TIME);
+}
+$ageSec = max(0, $time - $startTs);
+if ($ageSec < 86400) {
+    $hours = max(1, (int) floor($ageSec / 3600));
+    $worldAgeLabel = $hours . ' ' . regText('REG_HOUR', 'ساعة');
+} else {
+    $worldAgeLabel = tz_reg_days_label((int) floor($ageSec / 86400));
+}
+
+$serverLabel = defined('SERVER_NAME') ? SERVER_NAME : 'Novaterra';
+$speedLabel = defined('SPEED') ? (string) SPEED : '0';
+$clockNow = date('H:i:s');
+
+$nameVal = htmlspecialchars($form->getValue('name'), ENT_QUOTES, 'UTF-8');
+$emailVal = htmlspecialchars(stripslashes((string) $form->getValue('email')), ENT_QUOTES, 'UTF-8');
+
+$beforeRegister = defined('BEFORE_REGISTER')
+    ? BEFORE_REGISTER
+    : ('قبل التسجيل في ' . $serverLabel . ' يمكنك قراءة <a href="anleitung.php">الدليل</a> لمعرفة ميز وعيوب القبائل');
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html <?php echo tz_html_dir_attrs(); ?>>
+<html <?php echo tz_html_dir_attrs(); ?> class="pg-login">
 	<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME; ?> - Registration</title>
-		<link rel="shortcut icon" href="favicon.ico"/>
-	<meta name="content-language" content="en" />
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<script src="mt-core.js?0faab" type="text/javascript"></script>
-	<script src="mt-more.js?0faab" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
-	<script src="new.js?0faab" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE ?>novaterra.css?f4b7d" rel="stylesheet" type="text/css" />
-		<link href="<?php echo GP_LOCATE ?>lang/en/lang.css" rel="stylesheet" type="text/css" />
-
+    <title><?php echo SERVER_NAME; ?> - <?php echo regText('TZ_REGISTRATION', 'التسجيل'); ?></title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link href="css/login_page.css?v=<?php echo @filemtime(__DIR__ . '/css/login_page.css') ?: time(); ?>" rel="stylesheet" type="text/css" />
 <style type="text/css">
-/* ======================================================================== */
-/*  Registration wizard - fits inside the original #content.signup column    */
-/* ======================================================================== */
-#regwiz{position:relative;width:100%;max-width:520px;margin:0 auto 10px;text-align:left;
-        font-family:Arial,Helvetica,sans-serif;-webkit-box-sizing:border-box;box-sizing:border-box}
-html[dir="rtl"] #regwiz{text-align:right;}
-#regwiz *{-webkit-box-sizing:border-box;box-sizing:border-box}
-
-/* --- window chrome (sliced from the original artwork) ------------------- */
-.rw-hdr{position:relative;height:72px;background:url(img/reg/hdr_c.png) repeat-x left top;padding:26px 56px 0}
-.rw-hdr:before,.rw-hdr:after{content:'';position:absolute;top:0;width:48px;height:72px}
-.rw-hdr:before{left:0;background:url(img/reg/hdr_l.png) no-repeat left top}
-.rw-hdr:after{right:0;background:url(img/reg/hdr_r.png) no-repeat left top}
-.rw-hdr span{display:block;font:bold 19px/20px "Times New Roman",Georgia,serif;color:#f3ece1;
-             letter-spacing:.5px;text-shadow:1px 1px 1px rgba(60,45,25,.85)}
-.rw-body{position:relative;padding:12px 18px 6px;
-         background:url(img/reg/side_l.png) repeat-y left top,
-                    url(img/reg/side_r.png) repeat-y right top,
-                    url(img/reg/silhouettes.png) no-repeat center bottom,
-                    #f4efe5;
-         background-size:9px auto,9px auto,100% auto,auto}
-.rw-bot{position:relative;height:16px;background:url(img/reg/bot_c.png) repeat-x left top}
-.rw-bot:before,.rw-bot:after{content:'';position:absolute;top:0;width:48px;height:16px}
-.rw-bot:before{left:0;background:url(img/reg/bot_l.png) no-repeat left top}
-.rw-bot:after{right:0;background:url(img/reg/bot_r.png) no-repeat left top}
-
-.rw-step{display:none}
-.rw-step.on{display:block}
-.rw-intro{margin:2px 0 12px;font:bold 12px/17px Arial,Helvetica,sans-serif;color:#6a5c4a}
-
-/* --- step 1 : tribe cards ----------------------------------------------- */
-.rw-thumbs{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;
-           -webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;margin:0 0 16px;padding:0;list-style:none}
-.rw-thumb{position:relative;-webkit-box-flex:1;-ms-flex:1 1 44px;flex:1 1 44px;max-width:64px;margin:0 2px;
-          padding:2px;background:#f6f0e2;border:2px solid #a58e60;border-radius:3px;cursor:pointer;
-          box-shadow:inset 0 0 2px rgba(0,0,0,.15)}
-.rw-thumb img{display:block;width:100%;height:auto;border:0}
-.rw-thumb:hover{border-color:#c9ad72}
-.rw-thumb.sel{border-color:#5e8c2d;box-shadow:0 0 4px rgba(94,140,45,.65)}
-.rw-thumb.sel:before,.rw-thumb.sel:after{content:'';position:absolute;left:50%;width:0;height:0}
-.rw-thumb.sel:before{bottom:-16px;margin-left:-11px;border-left:11px solid transparent;
-                     border-right:11px solid transparent;border-bottom:14px solid #a58e60}
-.rw-thumb.sel:after{bottom:-13px;margin-left:-8px;border-left:8px solid transparent;
-                    border-right:8px solid transparent;border-bottom:10px solid #6fa03a}
-
-.rw-panel{position:relative;height:212px;padding:14px 16px;background:#eee4cc;border:1px solid #bfaf9c;
-          border-radius:4px;box-shadow:0 2px 3px rgba(0,0,0,.16);overflow:hidden}
-.rw-info{display:none}
-.rw-info.on{display:block}
-.rw-name{margin:45px 0 12px;font:bold 26px/26px "Times New Roman",Georgia,serif;color:#7c2f22;
-		 text-transform:uppercase;letter-spacing:1px;position:relative;z-index:2;width:220px;margin-right:219px;text-align:left}
-.rw-lines{margin:0 234px 0 0;padding:0;list-style:none;position:relative;z-index:2;width:220px}
-.rw-lines li{min-height:24px;padding:3px 0 3px 30px;font:bold 12px/18px Arial,Helvetica,sans-serif;color:#5b4a36;
-			 background-repeat:no-repeat;text-align:left;background-position:0 50%;background-size:20px auto}
-.rw-portrait{position:absolute;right:0;bottom:0;height:100%;width:auto;z-index:1;border:0}
-.rw-badge{position:absolute;top:-2px;left:50%;right:auto;width:150px;max-width:31%;margin-left:-72px;z-index:3;border:0}
-
-/* --- step 2 : starting position ----------------------------------------- */
-.rw-map{position:relative;width:340px;max-width:100%;margin:0 auto 4px}
-.rw-map img.rw-mapbg{display:block;width:100%;height:auto;border:0}
-.rw-q{position:absolute;cursor:pointer;border-radius:2px}
-.rw-q1{left:7.3%;top:7.9%;width:43.5%;height:43.6%}
-.rw-q2{left:51.1%;top:7.9%;width:44.2%;height:43.6%}
-.rw-q3{left:7.3%;top:51.8%;width:43.5%;height:42.9%}
-.rw-q4{left:51.1%;top:51.8%;width:44.2%;height:42.9%}
-.rw-q:hover{background:rgba(255,255,255,.22)}
-.rw-map.picked .rw-q{background:rgba(0,0,0,.075)}
-.rw-map.picked .rw-q:hover{background:rgba(0,0,0,.03)}
-.rw-map.picked .rw-q.sel{background:none;box-shadow:inset 0 0 0 2px rgba(95,140,45,.85)}
-.rw-rand{display:block;width:200px;margin:10px auto 0;padding:5px 0;text-align:center;cursor:pointer;
-         font:bold 12px Arial,Helvetica,sans-serif;color:#5b4a36;background:#eee4cc;border:1px solid #bfaf9c;
-         border-radius:3px}
-.rw-rand.sel{border-color:#5e8c2d;color:#3f5d1e;box-shadow:0 0 3px rgba(94,140,45,.5)}
-
-/* --- step 3 : recap ------------------------------------------------------ */
-.rw-cards{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;
-          justify-content:center;margin:4px 0 14px}
-.rw-card{position:relative;width:47%;margin:0 2.5%;padding:8px 8px 26px;background:#eee4cc;border:1px solid #bfaf9c;
-         border-radius:4px;box-shadow:0 2px 3px rgba(0,0,0,.16);text-align:center}
-.rw-card h3{margin:2px 0 6px;font:bold 20px/22px "Times New Roman",Georgia,serif;color:#7c2f22;
-            text-transform:uppercase;letter-spacing:1px}
-.rw-pic{height:172px;background-position:center bottom;background-repeat:no-repeat;background-size:cover;border-radius:2px}
-.rw-pic-tribe{background-size:auto 100%}
-.rw-change{position:absolute;left:0;bottom:6px;width:100%;text-align:center;cursor:pointer;
-           font:bold 12px Arial,Helvetica,sans-serif;color:#5c8a1f}
-.rw-change:hover{text-decoration:underline}
-.rw-field{margin:0 0 8px}
-.rw-field label{display:block;margin:0 0 3px;font:bold 12px Arial,Helvetica,sans-serif;color:#5b4a36}
-.rw-field input.rw-text{width:100%;height:32px;padding:0 8px;border:1px solid #b9ab93;border-radius:3px;
-                        background:#fff;font:14px Arial,Helvetica,sans-serif;color:#3f3628}
-.rw-field .error{display:block;font:bold 11px Arial;color:#c0392b}
-.rw-note{margin:8px 0 10px;padding:9px 10px 9px 36px;background:#dfe7f5;border:1px solid #b9c9e2;border-radius:3px;
-         font:12px/16px Arial,Helvetica,sans-serif;color:#3f4a5c;position:relative}
-.rw-note:before{content:'i';position:absolute;left:10px;top:50%;margin-top:-8px;width:16px;height:16px;
-                border-radius:8px;background:#3f6fb5;color:#fff;font:bold 11px/16px Georgia,serif;text-align:center}
-.rw-agree{margin:0 0 4px;font:bold 12px/16px Arial,Helvetica,sans-serif;color:#5b4a36}
-.rw-agree input{vertical-align:middle;margin:0 5px 2px 0}
-ul.rw-err{margin:0 0 6px;padding:0 0 0 16px;color:#c0392b;font:bold 12px/17px Arial}
-
-/* --- buttons ------------------------------------------------------------- */
-.rw-btn{display:block;width:260px;max-width:90%;height:49px;margin:14px auto 6px;padding:0;border:0;cursor:pointer;
-        background:url(img/reg/btn_green.png) no-repeat center center;background-size:100% 100%;
-        font:bold 17px/49px "Times New Roman",Georgia,serif;color:#fff;letter-spacing:.5px;
-        text-shadow:0 1px 2px rgba(0,0,0,.55)}
-.rw-btn:hover{-webkit-filter:brightness(1.08);filter:brightness(1.08)}
-.rw-back{display:block;margin:4px 0 0;font:bold 12px Arial;color:#5c8a1f;cursor:pointer}
-.rw-back:hover{text-decoration:underline}
-.rw-foot{margin:2px 0 0;text-align:center;font:11px Arial;color:#8a7a63}
+    body.pg-register,
+    body.pg-register input,
+    body.pg-register button,
+    body.pg-register label,
+    body.pg-register th,
+    body.pg-register td {
+        font-family: "Changa", Tahoma, Arial, Helvetica, sans-serif !important;
+    }
+    body.pg-register .login-statusbar,
+    body.pg-register .login-statusbar * {
+        font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    }
+    body.pg-register .login-side {
+        padding-top: 210px !important;
+    }
+    body.pg-register .login-col {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: 560px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    /* Title + soldier OUTSIDE the white card */
+    body.pg-register .reg-hero {
+        position: relative !important;
+        width: 100% !important;
+        min-height: 130px !important;
+        margin: 0 0 10px !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    body.pg-register .reg-soldier {
+        position: absolute !important;
+        left: 8px !important;
+        top: 0 !important;
+        height: 130px !important;
+        width: auto !important;
+        pointer-events: none !important;
+        z-index: 2 !important;
+    }
+    body.pg-register .reg-title-img {
+        display: block !important;
+        margin: 28px auto 0 !important;
+        height: 52px !important;
+        width: auto !important;
+        max-width: 220px !important;
+    }
+    body.pg-register .login-main {
+        width: 100% !important;
+        max-width: none !important;
+        background: #fff !important;
+        box-shadow: -16px 0 26px -20px rgba(0,0,0,.2), 16px 0 26px -20px rgba(0,0,0,.2) !important;
+        padding: 18px 22px 150px !important;
+        min-height: 0 !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+    body.pg-register .reg-intro {
+        margin: 0 4px 14px !important;
+        text-align: center !important;
+        color: #000 !important;
+        font-size: 15px !important;
+        font-weight: 400 !important;
+        line-height: 1.7 !important;
+    }
+    body.pg-register .reg-intro a {
+        color: #71d000 !important;
+        font-weight: 700 !important;
+    }
+    body.pg-register table.reg-box {
+        width: 100% !important;
+        margin: 0 auto 14px !important;
+        border-collapse: separate !important;
+        border: 2px dashed #c8c8c8 !important;
+        background: #fff !important;
+        text-align: right !important;
+        font-size: 15px !important;
+        direction: rtl !important;
+    }
+    body.pg-register table.reg-box td {
+        padding: 7px 10px !important;
+        vertical-align: middle !important;
+    }
+    body.pg-register table.reg-box td.lbl {
+        width: 150px !important;
+        white-space: nowrap !important;
+        font-weight: 400 !important;
+    }
+    body.pg-register table.reg-box input.fi {
+        width: 190px !important;
+        height: 26px !important;
+        border: 1px solid #8edf27 !important;
+        padding: 1px 4px !important;
+        font-size: 14px !important;
+        font-family: "Changa", Tahoma, Arial, sans-serif !important;
+        background: #fff !important;
+        box-sizing: border-box !important;
+    }
+    body.pg-register table.reg-opts {
+        width: 100% !important;
+        margin: 0 auto 14px !important;
+        border-collapse: separate !important;
+        border: 2px dashed #c8c8c8 !important;
+        background: #fff !important;
+        text-align: right !important;
+        font-size: 15px !important;
+        direction: rtl !important;
+    }
+    body.pg-register table.reg-opts th {
+        padding: 8px 10px 4px !important;
+        font-weight: 700 !important;
+        color: #e0a010 !important;
+        text-align: right !important;
+        vertical-align: top !important;
+    }
+    body.pg-register table.reg-opts td {
+        padding: 3px 10px !important;
+        text-align: right !important;
+        vertical-align: middle !important;
+        white-space: nowrap !important;
+    }
+    body.pg-register table.reg-opts label {
+        cursor: pointer !important;
+        font-weight: 400 !important;
+        color: #000 !important;
+    }
+    body.pg-register table.reg-opts td.reg-tribes label {
+        display: inline-block;
+        margin: 0 0 6px;
+        white-space: nowrap;
+    }
+    body.pg-register .login-btn {
+        display: inline-block !important;
+        margin: 4px auto 12px !important;
+        padding: 4px 28px 5px !important;
+        border: 1px solid #8edf27 !important;
+        border-radius: 999px !important;
+        background: linear-gradient(180deg, #f7f7f6 0%, #ececeb 48%, #dededd 100%) !important;
+        color: #5a5a5a !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        font-family: "Changa", Tahoma, Arial, sans-serif !important;
+        text-shadow: 0 1px 0 #fff !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.9) !important;
+        cursor: pointer !important;
+        height: auto !important;
+        min-width: 0 !important;
+        line-height: 1.4 !important;
+        float: none !important;
+    }
+    body.pg-register .reg-age {
+        margin: 0 !important;
+        color: #9a9a9a !important;
+        font-size: 18px !important;
+        font-weight: 400 !important;
+    }
+    body.pg-register .login-side a {
+        font-family: "Changa", Tahoma, Arial, sans-serif !important;
+        font-size: 15px !important;
+    }
+    body.pg-login.pg-register .login-side {
+        padding-top: 210px !important;
+    }
 </style>
-	   	<?php echo tz_rtl_stylesheet_tag(); ?>
 </head>
+<body class="pg-login pg-register">
 
-<body class="v35 ie ie7 pg-anmelden" onload="initCounter()">
+<div class="login-banner" role="img" aria-label="<?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?>"></div>
 
-<div class="wrapper">
-<div id="dynamic_header">
+<div class="login-statusbar">
+    <div class="login-statusbar__inner">
+        <div class="login-world">
+            <span class="login-moon" aria-hidden="true"></span>
+            <span><?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?> (<?php echo htmlspecialchars($speedLabel, ENT_QUOTES, 'UTF-8'); ?> م.ت)</span>
+            <span class="login-world__chev">▾</span>
+        </div>
+        <div class="login-now">
+            الآن : <span id="_Clock"><?php echo htmlspecialchars($clockNow, ENT_QUOTES, 'UTF-8'); ?></span>
+        </div>
+    </div>
 </div>
-<div id="header"></div>
-<div id="mid">
-<?php include("Templates/menu.tpl");
-if(REG_OPEN == true){ ?>
-<div id="content"  class="signup">
 
-<h1><img src="img/x.gif" class="anmelden" alt="register for the game" /></h1>
+<div class="login-layout">
+    <aside class="login-side">
+        <a href="index.php"><?php echo regText('HOME', 'الصفحة الرئيسية'); ?></a>
+        <a href="anleitung.php"><?php echo defined('LOGIN_QUICK_GUIDE') ? LOGIN_QUICK_GUIDE : 'الدليل السريع'; ?></a>
+        <a href="manual.php"><?php echo defined('LOGIN_GAME_GUIDE') ? LOGIN_GAME_GUIDE : 'شرح اللعبة'; ?></a>
+        <a href="login.php"><?php echo defined('LOGIN_MENU_ENTER') ? LOGIN_MENU_ENTER : 'دخول'; ?></a>
+        <a href="anmelden.php" class="is-reg is-current"><?php echo defined('LOGIN_MENU_REG') ? LOGIN_MENU_REG : 'سجل الآن'; ?></a>
+    </aside>
 
-<form name="snd" method="post" action="anmelden.php" id="regform">
-<input type="hidden" name="invited" value="<?php echo htmlspecialchars($invited, ENT_QUOTES, 'UTF-8'); ?>" />
-<input type="hidden" name="ft" value="a1" />
-<input type="hidden" name="vid" id="rw_vid" value="<?php echo (int) $regTribe; ?>" />
-<input type="hidden" name="kid" id="rw_kid" value="<?php echo (int) $regQuad; ?>" />
+    <div class="login-col">
 
-<div id="regwiz" data-step="<?php echo (int) $regStep; ?>">
-	<div class="rw-hdr"><span id="rw_title">&nbsp;</span></div>
-	<div class="rw-body">
-
-	<!-- =============== STEP 1 : tribe =============== -->
-	<div class="rw-step" id="rw_step1">
-		<p class="rw-intro"><?php echo regText('REG_TRIBE_INTRO', 'Great empires begin with important decisions! Are you an attacker who loves competition? Or is your time investment rather low? Are you a team player who enjoys building up a thriving economy to forge the anvil?'); ?></p>
-
-		<ul class="rw-thumbs">
-<?php foreach ($regTribes as $tribeId => $tribeData) { ?>
-			<li class="rw-thumb<?php echo ($tribeId == $regTribe) ? ' sel' : ''; ?>" data-vid="<?php echo (int) $tribeId; ?>" title="<?php echo htmlspecialchars($tribeData['name'], ENT_QUOTES, 'UTF-8'); ?>">
-				<img src="img/reg/thumb_v<?php echo (int) $tribeId; ?>.png" alt="<?php echo htmlspecialchars($tribeData['name'], ENT_QUOTES, 'UTF-8'); ?>" />
-			</li>
-<?php } ?>
-		</ul>
-
-		<div class="rw-panel">
-<?php foreach ($regTribes as $tribeId => $tribeData) { ?>
-			<div class="rw-info<?php echo ($tribeId == $regTribe) ? ' on' : ''; ?>" id="rw_info<?php echo (int) $tribeId; ?>">
-				<img class="rw-portrait" src="img/reg/portrait_v<?php echo (int) $tribeId; ?>.png" alt="" />
-<?php     if ($tribeData['best']) { ?>
-				<img class="rw-badge" src="img/reg/badge_new.png" alt="recommended for new players" />
-<?php     } ?>
-				<h2 class="rw-name"><?php echo htmlspecialchars($tribeData['name'], ENT_QUOTES, 'UTF-8'); ?></h2>
-				<ul class="rw-lines">
-<?php     foreach ($tribeData['lines'] as $line) { ?>
-					<li style="background-image:url(img/reg/bullet_v<?php echo (int) $tribeId; ?>.png)"><?php echo htmlspecialchars($line, ENT_QUOTES, 'UTF-8'); ?></li>
-<?php     } ?>
-				</ul>
+<?php if (REG_OPEN == true) { ?>
+        <div class="reg-hero">
+            <img class="reg-soldier" src="img/login/reg_soldier.png?v=3" alt="" />
+            <img class="reg-title-img" src="img/login/reg_title_clear.png?v=3" alt="<?php echo htmlspecialchars(regText('TZ_REGISTRATION', 'التسجيل'), ENT_QUOTES, 'UTF-8'); ?>" />
 			</div>
 <?php } ?>
-		</div>
 
-		<button type="button" class="rw-btn" id="rw_next1"><?php echo regText('REG_CONFIRM', 'Confirm'); ?></button>
-	</div>
+        <main class="login-main">
 
-	<!-- =============== STEP 2 : starting position =============== -->
-	<div class="rw-step" id="rw_step2">
-		<p class="rw-intro"><?php echo regText('REG_POS_INTRO', 'Where do you want to start building up your empire? Use the "recommended" area for the most ideal location. Or select the area where your friends are located and team up!'); ?></p>
+<?php if (REG_OPEN != true) { ?>
+            <p class="login-alert"><?php echo REGISTER_CLOSED; ?></p>
+<?php } else { ?>
 
-		<div class="rw-map<?php echo ($regQuad > 0) ? ' picked' : ''; ?>" id="rw_map">
-			<img class="rw-mapbg" src="img/reg/map.png" alt="world map" />
-<?php for ($k = 1; $k <= 4; $k++) { ?>
-			<div class="rw-q rw-q<?php echo $k; ?><?php echo ($regQuad == $k) ? ' sel' : ''; ?>" data-kid="<?php echo $k; ?>" title="<?php echo htmlspecialchars($regQuadrants[$k]['name'] . ' ' . $regQuadrants[$k]['coords'], ENT_QUOTES, 'UTF-8'); ?>"></div>
-<?php } ?>
-		</div>
+            <p class="reg-intro"><?php echo $beforeRegister; ?></p>
 
-		<div class="rw-rand<?php echo ($regQuad == 0) ? ' sel' : ''; ?>" id="rw_rand"><?php echo RANDOM; ?></div>
+            <?php
+            $errWinner = $form->getError('winner');
+            $errTribe = $form->getError('tribe');
+            $errAgree = $form->getError('agree');
+            if ($errWinner !== '' && $errWinner !== null) {
+                echo '<p class="err-box"><span class="err">' . $errWinner . '</span></p>';
+            }
+            if ($errTribe !== '' && $errTribe !== null) {
+                echo '<p class="err-box"><span class="err">' . $errTribe . '</span></p>';
+            }
+            if ($errAgree !== '' && $errAgree !== null) {
+                echo '<p class="err-box"><span class="err">' . $errAgree . '</span></p>';
+            }
+            ?>
 
-		<button type="button" class="rw-btn" id="rw_next2"><?php echo regText('REG_CONFIRM', 'Confirm'); ?></button>
-		<span class="rw-back" id="rw_back2">&laquo; <?php echo regText('REG_BACK', 'Back'); ?></span>
-	</div>
+            <form method="post" name="snd" action="anmelden.php" autocomplete="off">
+                <input type="hidden" name="ft" value="a1" />
+                <input type="hidden" name="invited" value="<?php echo htmlspecialchars((string) $invited, ENT_QUOTES, 'UTF-8'); ?>" />
+                <input type="hidden" name="agb" value="1" />
 
-	<!-- =============== STEP 3 : recap + account data =============== -->
-	<div class="rw-step" id="rw_step3">
-		<p class="rw-intro"><?php echo regText('REG_RECAP_INTRO', 'Confirm your choices, choose your avatar name, and start your adventure'); ?></p>
+                <table class="reg-box">
+                    <tr>
+                        <td class="lbl"><?php echo defined('NICKNAME') ? NICKNAME : 'الاسم المستعار'; ?> :</td>
+                        <td>
+                            <input class="fi" type="text" name="name" value="<?php echo $nameVal; ?>" maxlength="30" autocomplete="off" />
+                            <?php
+                            $errName = $form->getError('name');
+                            if ($errName !== '' && $errName !== null) {
+                                echo '<span class="err">' . $errName . '</span>';
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lbl"><?php echo regText('REG_EMAIL_LABEL', 'البريد الالكتروني'); ?> :</td>
+                        <td>
+                            <input class="fi" type="text" name="email" value="<?php echo $emailVal; ?>" maxlength="50" autocomplete="off" />
+                            <?php
+                            $errEmail = $form->getError('email');
+                            if ($errEmail !== '' && $errEmail !== null) {
+                                echo '<span class="err">' . $errEmail . '</span>';
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="lbl"><?php echo regText('REG_PW_LABEL', 'كلمة السر'); ?> :</td>
+                        <td>
+                            <input class="fi" type="password" name="pw" value="" maxlength="100" autocomplete="new-password" />
+                            <?php
+                            $errPw = $form->getError('pw');
+                            if ($errPw !== '' && $errPw !== null) {
+                                echo '<span class="err">' . $errPw . '</span>';
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                </table>
 
-		<div class="rw-cards">
-			<div class="rw-card">
-				<h3 id="rw_r_tribe">&nbsp;</h3>
-				<div class="rw-pic rw-pic-tribe" id="rw_r_tribepic"></div>
-				<span class="rw-change" data-goto="1"><?php echo regText('REG_CHANGE', 'Change'); ?></span>
-			</div>
-			<div class="rw-card">
-				<h3 id="rw_r_quad">&nbsp;</h3>
-				<div class="rw-pic" id="rw_r_quadpic"></div>
-				<span class="rw-change" data-goto="2"><?php echo regText('REG_CHANGE', 'Change'); ?></span>
-			</div>
-		</div>
-
-		<div class="rw-field">
-			<label for="rw_name"><?php echo regText('REG_AVATAR', 'Enter your avatar name:'); ?></label>
-			<input class="rw-text" type="text" id="rw_name" name="name" maxlength="30" value="<?php echo htmlspecialchars($form->getValue('name'), ENT_QUOTES, 'UTF-8'); ?>" />
-			<span class="error"><?php echo $form->getError('name'); ?></span>
-		</div>
-
-		<div class="rw-note"><?php echo regText('REG_AVATAR_HINT', 'This is your avatar name in the game world.'); ?></div>
-
-		<div class="rw-field">
-			<label for="rw_email"><?php echo EMAIL; ?></label>
-			<input class="rw-text" type="text" id="rw_email" name="email" value="<?php echo htmlspecialchars(stripslashes($form->getValue('email')), ENT_QUOTES, 'UTF-8'); ?>" />
-			<span class="error"><?php echo $form->getError('email'); ?></span>
-		</div>
-
-		<div class="rw-field">
-			<label for="rw_pw"><?php echo PASSWORD; ?></label>
-			<input class="rw-text" type="password" id="rw_pw" name="pw" maxlength="100" value="" />
-			<span class="error"><?php echo $form->getError('pw'); ?></span>
-		</div>
-
-		<ul class="rw-err">
+                <table class="reg-opts">
+                    <tr>
+                        <th><?php echo regText('REG_CHOOSE_TRIBE', 'إختر قبيلة'); ?><br /><br /></th>
+                        <th colspan="2"><?php echo regText('REG_START_POS', 'موقع البداية'); ?><br /><br /></th>
+                    </tr>
+                    <tr>
+                        <td rowspan="3" class="reg-tribes">
 <?php
-echo $form->getError('winner');
-echo $form->getError('tribe');
-echo $form->getError('agree');
+foreach ($regTribes as $tid => $tribeData) {
+    $checked = ((int) $tid === $regTribe) ? ' checked="checked"' : '';
+    $tname = htmlspecialchars($tribeData['name'], ENT_QUOTES, 'UTF-8');
+    echo '<label><input type="radio" name="vid" value="' . (int) $tid . '"' . $checked . ' />' . $tname . '</label><br />' . "\n";
+}
 ?>
-		</ul>
+                        </td>
+                        <td colspan="2">
+                            <label><input type="radio" name="kid" value="0"<?php echo $regQuad === 0 ? ' checked="checked"' : ''; ?> /><?php echo htmlspecialchars($regQuadrants[0], ENT_QUOTES, 'UTF-8'); ?></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label><input type="radio" name="kid" value="2"<?php echo $regQuad === 2 ? ' checked="checked"' : ''; ?> /><?php echo htmlspecialchars($regQuadrants[2], ENT_QUOTES, 'UTF-8'); ?></label></td>
+                        <td><label><input type="radio" name="kid" value="1"<?php echo $regQuad === 1 ? ' checked="checked"' : ''; ?> /><?php echo htmlspecialchars($regQuadrants[1], ENT_QUOTES, 'UTF-8'); ?></label></td>
+                    </tr>
+                    <tr>
+                        <td><label><input type="radio" name="kid" value="4"<?php echo $regQuad === 4 ? ' checked="checked"' : ''; ?> /><?php echo htmlspecialchars($regQuadrants[4], ENT_QUOTES, 'UTF-8'); ?></label></td>
+                        <td><label><input type="radio" name="kid" value="3"<?php echo $regQuad === 3 ? ' checked="checked"' : ''; ?> /><?php echo htmlspecialchars($regQuadrants[3], ENT_QUOTES, 'UTF-8'); ?></label></td>
+                    </tr>
+                </table>
 
-		<p class="rw-agree">
-			<input class="check" type="checkbox" name="agb" value="1" <?php echo $form->getRadio('agb',1); ?>/><?php echo ACCEPT_RULES; ?>
-		</p>
+                <button type="submit" name="s1" value="anmelden" class="login-btn"><?php echo defined('LOGIN_SUBMIT') ? LOGIN_SUBMIT : 'تسجيل الدخول'; ?></button>
+            </form>
 
-		<button type="submit" class="rw-btn" value="anmelden" name="s1" id="rw_submit"><?php echo regText('REG_PLAY', "Let's play"); ?></button>
-		<span class="rw-back" id="rw_back3">&laquo; <?php echo regText('REG_BACK', 'Back'); ?></span>
-	</div>
+            <p class="reg-age"><?php echo regText('REG_WORLD_STARTED', 'بدأ هذا العالم منذ'); ?> <?php echo htmlspecialchars($worldAgeLabel, ENT_QUOTES, 'UTF-8'); ?></p>
 
-	<p class="rw-foot"><?php echo ONE_PER_SERVER; ?></p>
-	</div>
-	<div class="rw-bot"></div>
+<?php } ?>
+        </main>
 </div>
-</form>
 </div>
 
 <script type="text/javascript">
-/* ------------------------------------------------------------------ */
-/*  Registration wizard - 3 steps, one single POST at the end          */
-/* ------------------------------------------------------------------ */
 (function () {
-	var TRIBES = <?php
-		$jsTribes = array();
-		foreach ($regTribes as $tribeId => $tribeData) {
-			$jsTribes[$tribeId] = $tribeData['name'];
-		}
-		echo json_encode($jsTribes);
-	?>;
-	var QUADS = <?php
-		$jsQuads = array();
-		foreach ($regQuadrants as $quadId => $quadData) {
-			$jsQuads[$quadId] = $quadData['name'];
-		}
-		echo json_encode($jsQuads);
-	?>;
-	var TITLES = <?php echo json_encode(array(
-		1 => regText('REG_STEP1_TITLE', 'Select your tribe'),
-		2 => regText('REG_STEP2_TITLE', 'Select Starting Position'),
-		3 => regText('REG_STEP3_TITLE', 'Confirm your selection'),
-	)); ?>;
-
-	var wiz = document.getElementById('regwiz');
-	if (!wiz) { return; }
-
-	var fVid   = document.getElementById('rw_vid'),
-	    fKid   = document.getElementById('rw_kid'),
-	    title  = document.getElementById('rw_title'),
-	    map    = document.getElementById('rw_map'),
-	    rand   = document.getElementById('rw_rand'),
-	    rTribe = document.getElementById('rw_r_tribe'),
-	    rQuad  = document.getElementById('rw_r_quad'),
-	    pTribe = document.getElementById('rw_r_tribepic'),
-	    pQuad  = document.getElementById('rw_r_quadpic'),
-	    step   = parseInt(wiz.getAttribute('data-step'), 10) || 1;
-
-	function showStep(n) {
-		step = n;
-		for (var i = 1; i <= 3; i++) {
-			var el = document.getElementById('rw_step' + i);
-			if (el) { el.className = 'rw-step' + (i === n ? ' on' : ''); }
-		}
-		title.innerHTML = TITLES[n];
-		if (n === 3) { refreshRecap(); }
-		if (window.scrollTo) { window.scrollTo(0, 0); }
-	}
-
-	function refreshRecap() {
-		var v = fVid.value, k = fKid.value;
-		rTribe.innerHTML = TRIBES[v] || '';
-		rQuad.innerHTML  = QUADS[k] || '';
-		pTribe.style.backgroundImage = 'url(img/reg/portrait_v' + v + '.png)';
-		pQuad.style.backgroundImage  = 'url(img/reg/quad_' + k + '.png)';
-	}
-
-	/* ---- step 1 : tribe cards ---- */
-	var thumbs = wiz.getElementsByClassName('rw-thumb');
-	for (var t = 0; t < thumbs.length; t++) {
-		thumbs[t].onclick = (function (node) {
-			return function () {
-				var vid = node.getAttribute('data-vid'), i;
-				fVid.value = vid;
-				for (i = 0; i < thumbs.length; i++) {
-					thumbs[i].className = 'rw-thumb' + (thumbs[i] === node ? ' sel' : '');
-				}
-				var infos = wiz.getElementsByClassName('rw-info');
-				for (i = 0; i < infos.length; i++) {
-					infos[i].className = 'rw-info' + (infos[i].id === 'rw_info' + vid ? ' on' : '');
-				}
-			};
-		})(thumbs[t]);
-	}
-
-	/* ---- step 2 : quadrants ---- */
-	var quads = wiz.getElementsByClassName('rw-q');
-	function markQuad(kid) {
-		fKid.value = kid;
-		for (var i = 0; i < quads.length; i++) {
-			var on = (quads[i].getAttribute('data-kid') === String(kid));
-			quads[i].className = 'rw-q rw-q' + quads[i].getAttribute('data-kid') + (on ? ' sel' : '');
-		}
-		map.className = 'rw-map' + (kid > 0 ? ' picked' : '');
-		rand.className = 'rw-rand' + (kid > 0 ? '' : ' sel');
-	}
-	for (var q = 0; q < quads.length; q++) {
-		quads[q].onclick = (function (node) {
-			return function () { markQuad(parseInt(node.getAttribute('data-kid'), 10)); };
-		})(quads[q]);
-	}
-	rand.onclick = function () { markQuad(0); };
-
-	/* ---- navigation ---- */
-	document.getElementById('rw_next1').onclick = function () { showStep(2); };
-	document.getElementById('rw_next2').onclick = function () { showStep(3); };
-	document.getElementById('rw_back2').onclick = function () { showStep(1); };
-	document.getElementById('rw_back3').onclick = function () { showStep(2); };
-
-	var changes = wiz.getElementsByClassName('rw-change');
-	for (var c = 0; c < changes.length; c++) {
-		changes[c].onclick = (function (node) {
-			return function () { showStep(parseInt(node.getAttribute('data-goto'), 10)); };
-		})(changes[c]);
-	}
-
-	showStep(step);
+    var clock = document.getElementById('_Clock');
+    if (clock) {
+        setInterval(function () {
+            var d = new Date();
+            function z(n) { return n < 10 ? '0' + n : '' + n; }
+            clock.textContent = z(d.getHours()) + ':' + z(d.getMinutes()) + ':' + z(d.getSeconds());
+        }, 1000);
+    }
 })();
 </script>
-<noscript>
-	<style type="text/css">.rw-step{display:block !important}</style>
-</noscript>
-
-<?php }else{ ?>
-<div id="content"  class="signup">
-
-<h1><img src="img/x.gif" class="anmelden" alt="register for the game" /></h1>
-<h5><img src="img/x.gif" class="img_u05" alt="registration"/></h5>
-
-<p><?php echo REGISTER_CLOSED; ?></p>
-</div>
-<?php } ?>
-<div id="side_info" class="outgame">
-<?php
-if(NEWSBOX1) { include("Templates/News/newsbox1.tpl"); }
-if(NEWSBOX2) { include("Templates/News/newsbox2.tpl"); }
-if(NEWSBOX3) { include("Templates/News/newsbox3.tpl"); }
-?>
-			</div>
-
-<div class="clear"></div>
-			</div>
-
-			<div class="footer-stopper outgame"></div>
-			<div class="clear"></div>
-
-<?php include("Templates/footer.tpl"); ?>
-<div id="ce"></div>
 </body>
 </html>

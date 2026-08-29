@@ -1,0 +1,85 @@
+==== \.login-box (0) ====
+==== \.login (27) ====
+.login-split{display:grid;direction:ltr;grid-template-columns:var(--login-aside-width) minmax(0,calc(var(--login-stage-width) - var(--login-aside-width)));min-height:552px;align-items:stretch}
+.login-split__main,body.auth-body--login .login-split__aside{direction:rtl;grid-row:1}
+.login-split__main{grid-column:2;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:34px 42px 30px}
+.login-split__aside{grid-column:1;display:flex;align-items:center;justify-content:center}
+.login-split__aside{background:linear-gradient(180deg,#eef2ea 0%,#e2e8dd 100%);border-inline-start:0;border-inline-end:1px solid rgb(170 181 163 / .45)}
+.login-split__main{background:linear-gradient(180deg,#ffffff 0%,#fcfcfa 100%)}
+==== #login (13) ====
+#login-form{display:block}
+#loginModeBar{margin:0 0 18px}
+#login-form{width:100%}
+#loginModeBar,body.auth-body.auth-body--register-classic #registerModeBar{width:244px;max-width:100%;display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:3px;direction:rtl;background:linear-gradient(to bottom,#f4f4f2,#ddddda);border:1px solid #cdcec8;border-radius:999px;box-shadow:inset 0 1px 0 rgb(255 255 255 / .92),0 1px 0 rgb(0 0 0 / .02)}
+#loginModeBar .ct-opt,body.auth-body.auth-body--register-classic #registerModeBar .ct-opt{min-height:27px;padding:0 9px;border:0;border-radius:999px;background:#fff0;box-shadow:none;color:#66655d;font-size:11px;font-weight:700;transition:background 0.18s ease,color 0.18s ease,box-shadow 0.18s ease,transform 0.18s ease}
+#loginModeBar .ct-opt.is-on,body.auth-body.auth-body--login-classic #loginModeBar .ct-opt.on,body.auth-body.auth-body--register-classic #registerModeBar .ct-opt.is-on,body.auth-body.auth-body--register-classic #registerModeBar .ct-opt.on{background:linear-gradient(to bottom,#ffffff,#f1f2ed);color:#4c5537;box-shadow:inset 0 0 0 1px #d8ddd0,0 1px 1px rgb(0 0 0 / .05)}
+==== \.auth (672) ====
+.auth-body--register-classic .page,body.auth-body--logout-classic .page{min-height:auto;justify-content:flex-start;align-items:flex-start;padding:20px 16px 40px}
+.auth-body--register-classic .content,body.auth-body--logout-classic .content{width:min(1040px, calc(100% - 32px));max-width:none;margin:8px auto 0}
+.auth-body--register-classic .legacy-login-shell,body.auth-body--logout-classic .legacy-login-shell{display:flex;flex-direction:row;justify-content:center;align-items:stretch;gap:10px}
+.auth-body--register-classic .legacy-login-side,body.auth-body--logout-classic .legacy-login-side{width:176px;min-height:auto;display:flex;flex-direction:column;align-self:stretch;justify-content:flex-start;padding-top:88px;background:#fff url(https://x-tatar.com/assets/newItems/imgs/shR.png) left 12px top 20px no-repeat}
+.auth-body--register-classic .legacy-login-side__list,body.auth-body--logout-classic .legacy-login-side__list{margin-top:0;padding:0 18px 0 28px;list-style:none;text-align:right;border:0;border-radius:0;background:none;box-shadow:none}
+.auth-body--register-classic .legacy-login-side__list li,body.auth-body--logout-classic .legacy-login-side__list li{margin-top:0}
+==== \.header (0) ====
+==== header (0) ====
+==== \.banner (0) ====
+==== \.logo (39) ====
+.logout-ok{width:86%;max-width:620px;margin:20px auto 0;padding:20px 22px 18px;background:#fff;border:1px dashed #d7d7d7;border-radius:0;box-shadow:none}
+.logout-ok__icon{width:58px;height:58px;margin:0 auto 14px;border:1px solid #8dbb46;border-radius:50%;display:grid;place-items:center;color:#5a8b19;background:linear-gradient(to bottom,#fdfef9,#edf5dc);font-size:26px}
+.logout-ok h1{margin-bottom:8px;color:#5f5f5f;font-size:28px}
+.logout-ok p{color:#222;font-size:15px}
+.logout-ok__note{max-width:420px;margin:8px auto 0;color:#666;font-size:13px;line-height:1.8}
+.logout-ok .btns{margin-top:16px}
+==== \.sidebar (0) ====
+==== \.nav (21) ====
+.nav{display:flex;width:100%;max-width:640px;margin:0 auto;position:relative;z-index:10;background:rgb(240 234 222 / .88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:2px solid rgb(180 150 90 / .2);border-bottom:none;border-radius:20px 20px 0 0;overflow:hidden;box-shadow:0 -4px 20px rgb(0 0 0 / .15),inset 0 0 0 1px rgb(255 255 255 / .1);gap:0}
+.nav+.content .card,.nav~.content .card{border-radius:0 0 20px 20px;border-top:none}
+.nav a{flex:1;text-align:center;padding:18px 12px;font-size:16px;font-weight:700;color:rgb(100 80 50 / .35);text-decoration:none;border-bottom:3px solid #fff0;margin-bottom:-2px;transition:all 0.2s;background:#fff0}
+.nav a:hover{color:rgb(100 80 50 / .6)}
+.nav a.on,.nav a.is-on{color:#1c1610;font-weight:900;border-bottom-color:#c8963e;background:rgb(255 255 255 / .15)}
+.nav a{font-size:14px;padding:15px 8px}
+==== \.stats (6) ====
+.stats-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 20px;box-shadow:0 3px 8px rgb(0 0 0 / .06)}
+.stats-card__title{font-size:13px;font-weight:700;color:var(--ink-mid);margin-bottom:10px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.stats-grid{grid-template-columns:1fr}
+.stats-card{background:var(--cream)}
+.stats-card,body.auth-body .srv-info,html[data-theme="dark"] body.auth-body .tc,html[data-theme="dark"] body.auth-body .sp,html[data-theme="dark"] body.auth-body .minimap__random,html[data-theme="dark"] body.auth-body .stats-card,html[data-theme="dark"] body.auth-body .srv-info{background:#fff;border-color:#ddd1be;box-shadow:none}
+==== \.btn (41) ====
+.btn,body.auth-body--register-classic #rs3 .btn{min-width:150px}
+.btn--ghost{background:linear-gradient(to bottom,#fdfdfd,#d9d9d9);border-color:#cfcfcf;color:#333}
+.btns{margin-top:16px}
+.btn--sm{width:auto;padding:8px 18px;font-size:13px}
+.btn--gold,.btn--green{margin-top:14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;border:none;border-radius:12px;font-family:"Tajawal",Tahoma,sans-serif;font-size:14px;font-weight:700;cursor:pointer;position:relative;overflow:hidden;transition:all 0.2s;text-align:center;text-decoration:none}
+==== body (675) ====
+body.auth-body--register-classic .page,body.auth-body--logout-classic .page{min-height:auto;justify-content:flex-start;align-items:flex-start;padding:20px 16px 40px}
+body.auth-body--register-classic .content,body.auth-body--logout-classic .content{width:min(1040px, calc(100% - 32px));max-width:none;margin:8px auto 0}
+body.auth-body--register-classic .legacy-login-shell,body.auth-body--logout-classic .legacy-login-shell{display:flex;flex-direction:row;justify-content:center;align-items:stretch;gap:10px}
+body.auth-body--register-classic .legacy-login-side,body.auth-body--logout-classic .legacy-login-side{width:176px;min-height:auto;display:flex;flex-direction:column;align-self:stretch;justify-content:flex-start;padding-top:88px;background:#fff url(https://x-tatar.com/assets/newItems/imgs/shR.png) left 12px top 20px no-repeat}
+body.auth-body--register-classic .legacy-login-side__list,body.auth-body--logout-classic .legacy-login-side__list{margin-top:0;padding:0 18px 0 28px;list-style:none;text-align:right;border:0;border-radius:0;background:none;box-shadow:none}
+body.auth-body--register-classic .legacy-login-side__list li,body.auth-body--logout-classic .legacy-login-side__list li{margin-top:0}
+==== \.container (0) ====
+==== \.wrapper (0) ====
+==== \.main (0) ====
+==== \.content (23) ====
+.content,body.auth-body--logout-classic .content{width:min(1040px, calc(100% - 32px));max-width:none;margin:8px auto 0}
+.content .card,.nav~.content .card{border-radius:0 0 20px 20px;border-top:none}
+.content{width:100%;max-width:640px;margin-inline:auto;padding:0;position:relative;z-index:5}
+.content,.nav,.card{max-width:100%}
+.content .card{border-radius:0 0 16px 16px}
+.content .card,body.auth-body .nav~.content .card{margin-top:18px;border-top:1px solid #d5c9b4;border-radius:14px}
+==== \.menu (0) ====
+==== \.world (0) ====
+==== \.clock (0) ====
+==== input (24) ====
+input{font-family:inherit}
+input{flex:1;padding:14px 18px;font-size:16px;font-family:"Tajawal",Tahoma,sans-serif;color:var(--ink);background:#fff0;border:none;outline:none;direction:ltr;text-align:left}
+input::placeholder{color:var(--ink-faint);font-weight:300}
+input{display:none}
+input{display:none}
+input{width:100%;text-align:center;letter-spacing:6px;font-size:22px;direction:ltr}
+==== button (1) ====
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+==== \.register (0) ====
+==== \.orange (0) ====

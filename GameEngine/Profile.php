@@ -96,6 +96,19 @@ class Profile {
 	private function updatePreferences($post) {
 		global $database, $session;
 
+        if (!empty($post['gk_links_only'])) {
+			$this->updateLinks($post);
+			$cacheKeyUser = 'cache_user_' . ($_SESSION['username'] ?? '');
+			unset($_SESSION[$cacheKeyUser]);
+			header('Location: spieler.php?s=2&dl=1');
+			exit;
+		}
+
+		if (!empty($post['gk_options_only'])) {
+			$this->updateGreekOptions($post);
+			exit;
+		}
+
 		// Checkbox preferences -> 0/1 (unchecked boxes are absent from POST).
 		$v1  = empty($post['v1'])  ? 0 : 1;
 		$v2  = empty($post['v2'])  ? 0 : 1;
@@ -195,6 +208,67 @@ class Profile {
 	}
 
 	/**
+	 * Greek options page (ft=p2 + gk_options_only): display prefs only.
+	 */
+	private function updateGreekOptions($post) {
+		global $database, $session;
+
+		$uid = (int) $session->uid;
+		$mobileMode = isset($post['mobile_mode']) ? (int) $post['mobile_mode'] : 0;
+		$timerRefresh = isset($post['timer_refresh']) ? (int) $post['timer_refresh'] : 0;
+		$invertColors = isset($post['invert_colors']) ? (int) $post['invert_colors'] : 0;
+		$statsFormat = isset($post['stats_format']) ? (int) $post['stats_format'] : 0;
+
+		if (!in_array($mobileMode, [0, 1, 2], true)) {
+			$mobileMode = 0;
+		}
+		$timerRefresh = $timerRefresh ? 1 : 0;
+		$invertColors = $invertColors ? 1 : 0;
+		if (!in_array($statsFormat, [0, 1, 2], true)) {
+			$statsFormat = 0;
+		}
+
+		foreach ([
+			'mobile_mode' => "TINYINT(1) NOT NULL DEFAULT '0'",
+			'timer_refresh' => "TINYINT(1) NOT NULL DEFAULT '0'",
+			'invert_colors' => "TINYINT(1) NOT NULL DEFAULT '0'",
+			'stats_format' => "TINYINT(1) NOT NULL DEFAULT '0'",
+		] as $column => $definition) {
+			$columnCheck = mysqli_query(
+				$database->dblink,
+				"SHOW COLUMNS FROM `" . TB_PREFIX . "users` LIKE '" . $column . "'"
+			);
+			if ($columnCheck && mysqli_num_rows($columnCheck) === 0) {
+				mysqli_query(
+					$database->dblink,
+					"ALTER TABLE `" . TB_PREFIX . "users` ADD COLUMN `" . $column . "` " . $definition
+				);
+			}
+		}
+
+		$database->query(
+			"UPDATE " . TB_PREFIX . "users SET " .
+			"mobile_mode=$mobileMode, timer_refresh=$timerRefresh, " .
+			"invert_colors=$invertColors, stats_format=$statsFormat " .
+			"WHERE id=$uid"
+		);
+
+		if (function_exists('tz_user_display_prefs_refresh_session')) {
+			tz_user_display_prefs_refresh_session($session, $database);
+		} else {
+			$cacheKeyUser = 'cache_user_' . ($_SESSION['username'] ?? '');
+			unset($_SESSION[$cacheKeyUser]);
+			$session->userinfo['mobile_mode'] = $mobileMode;
+			$session->userinfo['timer_refresh'] = $timerRefresh;
+			$session->userinfo['invert_colors'] = $invertColors;
+			$session->userinfo['stats_format'] = $statsFormat;
+		}
+
+		header('Location: spieler.php?uid=' . $uid . '&hub=1&saved=1');
+		exit;
+	}
+
+	/**
 	 * Direct links (ft=p2): add / update / delete the player's custom menu
 	 * links from the preferences form. This logic used to live in
 	 * Templates/Profile/preference.tpl, but since procProfile() now intercepts
@@ -249,10 +323,15 @@ class Profile {
         // name : without HTML, maximum 30 characters (as in the game)
         $name = mb_substr(strip_tags($name_raw), 0, 30);
 
-        // url: accepts only http/https, max 120 characters
+        // url: Greek direct-links page allows in-game relative URLs; classic prefs require http(s).
         $url = '';
-        if ($url_raw !== '' && preg_match('#^https?://#i', $url_raw)) {
-            $url = mb_substr($url_raw, 0, 120);
+        $gkLinksOnly = !empty($post['gk_links_only']);
+        if ($url_raw !== '' && stripos($url_raw, 'javascript:') !== 0) {
+            if ($gkLinksOnly) {
+                $url = mb_substr($url_raw, 0, 255);
+            } elseif (preg_match('#^https?://#i', $url_raw)) {
+                $url = mb_substr($url_raw, 0, 120);
+            }
         }
 
         // SQL: escape for SQL (keeping the current Novaterra style used in Novaterra)
@@ -545,12 +624,30 @@ class Profile {
 	private function updateAccount($post) {
 		global $database, $session, $form;
 
+		$gkMembership = !empty($post['gk_membership']);
+		$gkSaveOk = true;
+		if ($gkMembership) {
+			$savePw = trim($post['pw1'] ?? '');
+			if ($savePw === '') {
+				$gkSaveOk = false;
+				$msg = defined('TZ_GK_MEMBERSHIP_SAVE_PW_REQUIRED')
+					? TZ_GK_MEMBERSHIP_SAVE_PW_REQUIRED
+					: 'أدخل كلمة المرور الحالية للحفظ.';
+				$form->addError('save', $msg);
+			} elseif (!password_verify($savePw, $session->userinfo['password'])) {
+				$gkSaveOk = false;
+				$form->addError('save', LOGIN_PW_ERROR);
+			}
+		}
+
+		if (!$gkMembership || $gkSaveOk) {
+
 		// Password change
-		if (!empty($post['pw1']) && !empty($post['pw2']) && !empty($post['pw3'])) {
+		if (!empty($post['pw2']) && !empty($post['pw3'])) {
 
 			if ($post['pw2'] == $post['pw3']) {
 
-				if ($database->login($session->username, $post['pw1'])) {
+				if (!empty($post['pw1']) && $database->login($session->username, $post['pw1'])) {
 					$database->updateUserField(
 						$session->uid,
 						"password",
@@ -567,16 +664,18 @@ class Profile {
 		}
 
 		// Email change
-		if (!empty($post['email_alt']) && !empty($post['email_neu'])) {
-
-			if ($post['email_alt'] == $session->userinfo['email']) {
-				$database->updateUserField($session->uid, "email", $post['email_neu'], 1);
+		if (!empty($post['email_neu'])) {
+			$newEmail = trim($post['email_neu']);
+			if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+				$form->addError('email', defined('EMAIL_ERROR') ? EMAIL_ERROR : 'بريد إلكتروني غير صالح.');
+			} elseif (!empty($post['email_alt']) && $post['email_alt'] == $session->userinfo['email']) {
+				$database->updateUserField($session->uid, 'email', $newEmail, 1);
 			} else {
-				$form->addError("email", EMAIL_ERROR);
+				$form->addError('email', EMAIL_ERROR);
 			}
 		}
 
-		// Delete request cancel
+		// Delete account request
 		if (!empty($post['del_pw']) && !empty($post['del'])) {
 
 			if (password_verify($post['del_pw'], $session->userinfo['password'])) {
@@ -611,8 +710,94 @@ class Profile {
 			return $mask;
 		};
 
+		// Greek membership page: report filters + grouped sitter permissions.
+		if (!empty($post['gk_membership'])) {
+			$v5 = empty($post['v5']) ? 0 : 1;
+			$v6 = empty($post['v6']) ? 0 : 1;
+			$database->query(
+				'UPDATE ' . TB_PREFIX . 'users SET v5=' . (int) $v5 . ', v6=' . (int) $v6
+				. ' WHERE id=' . (int) $session->uid . ' LIMIT 1'
+			);
+
+			$gkGreekSitterMask = static function ($army, $gold) {
+				$mask = 0;
+				if ($army) {
+					$mask |= SITTER_PERM_ATTACK | SITTER_PERM_RAID | SITTER_PERM_REINF;
+				}
+				if ($gold) {
+					$mask |= SITTER_PERM_GOLD;
+				}
+				return $mask;
+			};
+
+			foreach (array(1 => 'sit1', 2 => 'sit2') as $slot => $key) {
+				if ((int) $session->userinfo[$key] === 0) {
+					continue;
+				}
+				if (empty($post['gk_perm' . $slot . '_sent'])) {
+					continue;
+				}
+				$database->updateUserField(
+					$session->uid,
+					$key . '_perm',
+					$gkGreekSitterMask(!empty($post['gk_army_' . $slot]), !empty($post['gk_gold_' . $slot])),
+					1
+				);
+			}
+
+			$gkAddSitter = static function ($name, $army, $gold) use ($database, $session, $form, $gkGreekSitterMask, &$sit1Filled, &$sit2Filled) {
+				$name = trim($name);
+				if ($name === '') {
+					return;
+				}
+				$sitid = (int) $database->getUserField($name, 'id', 1);
+				if ($sitid < 1) {
+					$form->addError('sit', SIT_ERROR);
+					return;
+				}
+				if ($sitid === (int) $session->uid) {
+					$form->addError('sit', SIT_ERROR);
+					return;
+				}
+				if ($sitid == $session->userinfo['sit1'] || $sitid == $session->userinfo['sit2']) {
+					$form->addError('sit', SIT_ERROR);
+					return;
+				}
+				$newPerm = $gkGreekSitterMask($army, $gold);
+				if (!$sit1Filled && (int) $session->userinfo['sit1'] === 0) {
+					$database->updateUserField($session->uid, 'sit1', $sitid, 1);
+					$database->updateUserField($session->uid, 'sit1_perm', $newPerm, 1);
+					$sit1Filled = true;
+				} elseif (!$sit2Filled && (int) $session->userinfo['sit2'] === 0) {
+					$database->updateUserField($session->uid, 'sit2', $sitid, 1);
+					$database->updateUserField($session->uid, 'sit2_perm', $newPerm, 1);
+					$sit2Filled = true;
+				} else {
+					$form->addError('sit', SIT_ERROR);
+				}
+			};
+
+			$sit1Filled = (int) $session->userinfo['sit1'] !== 0;
+			$sit2Filled = (int) $session->userinfo['sit2'] !== 0;
+
+			if (!empty($post['v1'])) {
+				$gkAddSitter(
+					trim($post['v1']),
+					!empty($post['gk_army_new_1']),
+					!empty($post['gk_gold_new_1'])
+				);
+			}
+			if (!empty($post['v2'])) {
+				$gkAddSitter(
+					trim($post['v2']),
+					!empty($post['gk_army_new_2']),
+					!empty($post['gk_gold_new_2'])
+				);
+			}
+		}
+
 		// Sitter assignment
-		if (!empty($post['v1'])) {
+		if (!empty($post['v1']) && empty($post['gk_membership'])) {
 
 			$sitid = $database->getUserField($post['v1'], "id", 1);
 
@@ -655,6 +840,10 @@ class Profile {
 
 			$field = 'perm' . $slot;
 
+			if (!empty($post['gk_membership'])) {
+				continue;
+			}
+
 			// slotul e afisat in formular doar cand e ocupat; daca butonul de
 			// salvare a fost apasat, campul exista chiar si gol (vezi hidden-ul
 			// din account.tpl)
@@ -669,6 +858,8 @@ class Profile {
 				1
 			);
 		}
+
+		} // !$gkMembership || $gkSaveOk
 
 		// Persist errors if any
 		if ($form->returnErrors() > 0) {

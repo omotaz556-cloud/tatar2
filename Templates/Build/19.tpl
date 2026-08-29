@@ -24,30 +24,45 @@ global $village, $building, $technology, $generator, $session, $id;
 $level = (int)$village->resarray['f'.$id];
 $canTrain = $building->getTypeLevel(19) > 0;
 $trainlist = $technology->getTrainingList(1);
+$lvlLabel = defined('BUILD_LEVEL_SHORT') ? BUILD_LEVEL_SHORT : LEVEL;
+$emptyTrainMsg = defined('AVAILABLE_ACADEMY') ? AVAILABLE_ACADEMY : 'لا توجد وحدات متاحة. ابحث في الأكاديمية';
 ?>
 <div id="build" class="gid19">
     <a href="#" onClick="return Popup(19,4);" class="build_logo">
         <img class="building g19" src="img/x.gif" alt="<?php echo BARRACKS; ?>" title="<?php echo BARRACKS;?>" />
     </a>
-    <h1><?php echo BARRACKS;?> <span class="level"><?php echo LEVEL;?> <?php echo $level;?></span></h1>
+    <h1><?php echo BARRACKS;?> <span class="level"><?php echo $lvlLabel;?> <?php echo $level;?></span></h1>
     <p class="build_desc"><?php echo BARRACKS_DESC;?></p>
 
-    <?php if ($canTrain):?>
+    <?php if ($canTrain):
+        ob_start();
+        include("19_train.tpl");
+        $barracksTrainRows = ob_get_clean();
+        $hasTrainableUnits = trim($barracksTrainRows) !== '';
+    ?>
+        <?php if ($hasTrainableUnits): ?>
         <form method="POST" name="snd" action="build.php">
             <input type="hidden" name="id" value="<?php echo (int)$id;?>" />
             <input type="hidden" name="ft" value="t1" />
-            <table cellpadding="1" cellspacing="1" class="build_details">
+            <table cellpadding="1" cellspacing="1" class="build_details gk-train-table">
                 <thead><tr>
                     <td><?php echo NAME;?></td>
                     <td><?php echo QUANTITY;?></td>
                     <td><?php echo MAX;?></td>
                 </tr></thead>
                 <tbody>
-                    <?php include("19_train.tpl");?>
+                    <?php echo $barracksTrainRows; ?>
                 </tbody>
             </table>
-            <p><button type="submit" id="btn_train" class="trav_buttons" name="s1" onclick="this.disabled=true;this.form.submit();"><?php echo TRAIN; ?></button><?php include("training_gold.tpl"); ?></p>
+            <p class="gk-train-actions">
+                <button type="submit" id="btn_train" class="trav_buttons gk-train-btn" name="s1" onclick="this.disabled=true;this.form.submit();"><?php echo TRAIN; ?></button>
+                <?php include("training_gold.tpl"); ?>
+            </p>
         </form>
+        <?php else: ?>
+            <p class="none gk-train-empty"><?php echo htmlspecialchars($emptyTrainMsg, ENT_QUOTES, 'UTF-8'); ?></p>
+            <?php include("training_gold.tpl"); ?>
+        <?php endif; ?>
     <?php else:?>
         <b><?php echo TRAINING_COMMENCE_BARRACKS;?></b><br />
     <?php endif;?>
@@ -86,7 +101,7 @@ $trainlist = $technology->getTrainingList(1);
                     <td class="fin">
                         <?php
                         $time = $generator->procMTime($train['timestamp']);
-                        if ($time[0]!== "today") echo "on ".$time[0]." at ";
+                        if (!tz_mtime_is_today($time[0])) echo "on ".$time[0]." at ";
                         echo $time[1];
                        ?>
                     </td>

@@ -74,7 +74,7 @@ if ($query && mysqli_num_rows($query) > 0) {
 
         <tr>
             <td colspan="3">
-                <a href="spieler.php?s=2"><?php echo TZ_LINKS; ?></a>
+                <a href="<?php echo !empty($GLOBALS['gkSpielerGreek']) ? 'spieler.php?s=2&amp;dl=1' : 'spieler.php?s=2'; ?>"><?php echo TZ_LINKS; ?></a>
             </td>
         </tr>
 

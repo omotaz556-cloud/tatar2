@@ -148,6 +148,7 @@ trait DatabaseVillageQueries {
         @set_time_limit(0);
         $num_rows = $count = 0;
         $villages = [];
+        $wids = [];
         $time = time();
         
         while ($numberOfVillages > 0) {
@@ -222,7 +223,13 @@ trait DatabaseVillageQueries {
             
         }
 
-        foreach($villages as $village) $wids[] = $village['id'];
+        foreach($villages as $village) {
+            $wids[] = $village['id'];
+        }
+
+        if ($num_rows === 0) {
+            return [];
+        }
 
         return $num_rows == 1 ? $wids[0] : $wids;
     }
@@ -239,6 +246,29 @@ trait DatabaseVillageQueries {
 
 		$q = "UPDATE " . TB_PREFIX . "wdata SET occupied = 1 WHERE id IN(". implode(', ', $id).")";
 		return mysqli_query($this->dblink,$q);
+	}
+
+	/**
+	 * Pick the next generated map tile id for a village batch.
+	 */
+	private function pickGeneratedWid(array &$wids, array &$i, $mode, $sector) {
+	    $sector = (int) $sector;
+	    if ($sector < 1 || $sector > 4) {
+	        $sector = rand(1, 4);
+	    }
+
+	    foreach (array_unique(array_merge([$sector], range(1, 4))) as $trySector) {
+	        if (!isset($i[$mode][$trySector])) {
+	            $i[$mode][$trySector] = 0;
+	        }
+	        $idx = (int) $i[$mode][$trySector];
+	        if (isset($wids[$mode][$trySector][$idx]) && (int) $wids[$mode][$trySector][$idx] > 0) {
+	            $i[$mode][$trySector] = $idx + 1;
+	            return (int) $wids[$mode][$trySector][$idx];
+	        }
+	    }
+
+	    return null;
 	}
 
 	/**
@@ -287,7 +317,13 @@ trait DatabaseVillageQueries {
 	            // wids strictly in array order, not matching their own kid — so
 	            // most ended up in the wrong quadrant. Keying by [mode][sector]
 	            // keeps each sector's wids separate.
-	            $wids[$mode][$sector] = !is_array($generatedWids) ? [$generatedWids] : $generatedWids;
+	            if (is_array($generatedWids)) {
+	                $wids[$mode][$sector] = $generatedWids;
+	            } elseif ($generatedWids !== null && $generatedWids !== '' && $generatedWids !== false) {
+	                $wids[$mode][$sector] = [$generatedWids];
+	            } else {
+	                $wids[$mode][$sector] = [];
+	            }
 	            if(empty($i[$mode][$sector])) $i[$mode][$sector] = 0;
 	        }
 	    }
@@ -295,8 +331,22 @@ trait DatabaseVillageQueries {
 	    //Create the villages
 		foreach($villageArrays as $village){
 		    
-		    //Check if the village wid isn't already set and assing one among the generated ones
-		    if($village['wid'] == 0) $village['wid'] = $wids[$village['mode']][$village['kid']][$i[$village['mode']][$village['kid']]++];
+		    //Check if the village wid isn't already set and assign one among the generated ones
+		    if($village['wid'] == 0) {
+		        $mode = $village['mode'];
+		        $sector = (int) $village['kid'];
+		        $pickedWid = $this->pickGeneratedWid($wids, $i, $mode, $sector);
+		        if ($pickedWid === null) {
+		            $fallback = $this->generateBase(rand(1, 4), 1, 1);
+		            if (!empty($fallback)) {
+		                $pickedWid = is_array($fallback) ? (int) $fallback[0] : (int) $fallback;
+		            }
+		        }
+		        if (empty($pickedWid)) {
+		            return false;
+		        }
+		        $village['wid'] = $pickedWid;
+		    }
 		    
 		    //Merge the wids into an unique array
 		    $takenWids[] = $village['wid'];

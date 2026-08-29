@@ -353,5 +353,3 @@ foreach ($troopChunks as $chunk):
 <?php endfor;?>
 </tbody>
 </table>
-<?php?>
-<table cellpadding="1" cellspacing="1" id="search_navi">

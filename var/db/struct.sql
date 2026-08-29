@@ -1030,6 +1030,23 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%general` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Table structure for table `%PREFIX%world_news`
+--
+
+CREATE TABLE IF NOT EXISTS `%PREFIX%world_news` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `attacker_uid` int(11) NOT NULL,
+ `attacker_name` varchar(40) NOT NULL,
+ `defender_wref` int(11) NOT NULL,
+ `defender_vname` varchar(100) NOT NULL,
+ `kills` int(11) NOT NULL DEFAULT 0,
+ `time` int(11) NOT NULL,
+ PRIMARY KEY (`id`),
+ KEY `time` (`time`),
+ KEY `kills` (`kills`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- Dumping data for table `%prefix%general`
 --
 

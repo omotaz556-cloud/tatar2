@@ -202,8 +202,15 @@ html:not([dir="rtl"]) .settingsHub .hubToggleKnob { right: auto; left: 2px; }
 html:not([dir="rtl"]) .settingsHub .hubToggle.is-on .hubToggleKnob { left: auto; right: 2px; }
 </style>
 
-<h1><?php echo PLAYER_PROFILE; ?></h1>
-<?php include("menu.tpl"); ?>
+<?php
+$gkSpielerGreek = !empty($GLOBALS['gkSpielerGreek']);
+$gkHideClassicMenu = !empty($GLOBALS['gkSpielerLiteralPage'])
+    || (class_exists('GreekSpieler') && GreekSpieler::suppressClassicMenu());
+if (!$gkHideClassicMenu) {
+    echo '<h1>' . PLAYER_PROFILE . '</h1>';
+    include __DIR__ . '/menu.tpl';
+}
+?>
 
 <div class="settingsHub">
 
@@ -232,7 +239,10 @@ html:not([dir="rtl"]) .settingsHub .hubToggle.is-on .hubToggleKnob { left: auto;
                 <div class="hubTitle"><?php echo PREF_NAME_RESERVATION; ?></div>
                 <div class="hubHint"><?php echo sprintf(PREF_NAME_SLOT, $heroCount, 2); ?></div>
             </div>
-            <div class="hubAction"><?php echo tzHubBtn($heroMansionLink, $manage); ?></div>
+            <div class="hubAction"><?php echo tzHubBtn(
+                !empty($GLOBALS['gkSpielerGreek']) ? 'spieler.php?s=3&nr=1' : $heroMansionLink,
+                $manage
+            ); ?></div>
         </div>
     </section>
 

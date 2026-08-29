@@ -1,5 +1,10 @@
 <style type="text/css">
-#build .build_logo img{position:absolute!important;top:32px!important;right:13px!important;}
+#build:not(.gid0){position:relative!important;}
+#build:not(.gid0) .build_logo{position:absolute!important;top:52px!important;left:0!important;right:auto!important;width:85px!important;height:110px!important;margin:0!important;float:none!important;}
+#build:not(.gid0) .build_logo img{position:absolute!important;top:0!important;left:0!important;right:auto!important;margin:0!important;display:block!important;}
+#build:not(.gid0) h1{text-align:right!important;padding:0!important;direction:rtl;}
+#build:not(.gid0) h1 span.level{font-size:inherit!important;font-weight:inherit!important;color:inherit!important;}
+#build:not(.gid0) p.build_desc{padding:6px 0 0 95px!important;min-height:100px;clear:none!important;}
 #build.gid19,#build.gid20,#build.gid21,#build.gid29,#build.gid30{font-size:13px;}
 #build.gid19 h1,#build.gid20 h1,#build.gid21 h1,#build.gid29 h1,#build.gid30 h1{font-size:24px;}
 #build.gid19 .build_desc,#build.gid20 .build_desc,#build.gid21 .build_desc,#build.gid29 .build_desc,#build.gid30 .build_desc{font-size:13px;}

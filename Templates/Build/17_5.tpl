@@ -62,14 +62,14 @@ $maxcrop  = max(0, (int) $village->maxcrop);
     <a href="#" onClick="return Popup(17,4);" class="build_logo">
         <img class="building g17" src="img/x.gif" alt="<?php echo MARKETPLACE;?>" title="<?php echo MARKETPLACE;?>" />
     </a>
-    <h1><?php echo MARKETPLACE;?> <span class="level"><?php echo LEVEL;?> <?php echo $level;?></span></h1>
+    <h1><?php echo MARKETPLACE;?> <span class="level"><?php echo defined('BUILD_LEVEL_SHORT') ? BUILD_LEVEL_SHORT : LEVEL;?> <?php echo $level;?></span></h1>
     <p class="build_desc"><?php echo MARKETPLACE_DESC;?></p>
 
     <?php include("17_menu.tpl");?>
 
     <?php if ($completed):?>
         <p><b><?php echo GOLD_BUY_COMPLETED;?>.</b></p>
-        <a href="javascript: history.go(-2)"><?php echo BACK_BUILDING;?></a>
+        <a href="build.php?id=<?php echo (int)$id; ?>&amp;t=5"><?php echo BACK_BUILDING;?></a>
 
     <?php elseif ($isWW):?>
         <br /><br /><?php echo YOU_CAN_NAT_NPC_WW;?>

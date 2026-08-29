@@ -32,6 +32,128 @@ function accountText($arabic, $english) {
     return $accountRtl ? $arabic : $english;
 }
 
+function accountTranslateAction($action) {
+    global $accountRtl;
+    if (!$accountRtl || $action === '') {
+        return $action;
+    }
+
+    static $map = array(
+        'Finish all constructions' => 'إنهاء جميع البناءات',
+        'Speed up troop training' => 'تسريع تدريب القوات',
+        'Gold resource purchase' => 'شراء موارد بالذهب',
+        'Gold transfer out' => 'تحويل ذهب صادر',
+        'Gold transfer in' => 'تحويل ذهب وارد',
+        'Buy Novaterra Plus' => 'شراء ميزة بلس',
+        'Use 100 gold for Gold Club' => 'استخدام 100 ذهب لنادي الذهب',
+        'Admin added Gold' => 'إضافة ذهب من الإدارة',
+        'Admin Gift' => 'هدية من الإدارة',
+        'Admin Gift (All)' => 'هدية جماعية من الإدارة',
+        'Registration bonus Gold' => 'مكافأة تسجيل ذهب',
+        'Biweekly medal reward' => 'مكافأة ميدالية نصف شهرية',
+        'World Wonder alliance leader reward' => 'مكافأة قائد تحالف أعجوبة العالم',
+        'World Wonder alliance member reward' => 'مكافأة عضو تحالف أعجوبة العالم',
+        'Gold promo code redemption' => 'استبدال رمز ذهب',
+        'Gold purchase completed' => 'اكتمال شراء الذهب',
+    );
+
+    if (isset($map[$action])) {
+        return $map[$action];
+    }
+
+    if (preg_match('/^Use (\d+) gold for \+25% (Lumber|Clay|Iron|Crop)$/i', $action, $m)) {
+        $resources = array(
+            'Lumber' => 'الخشب',
+            'Clay' => 'الطين',
+            'Iron' => 'الحديد',
+            'Crop' => 'المحاصيل',
+        );
+        $res = $resources[$m[2]] ?? $m[2];
+        return 'استخدام ' . $m[1] . ' ذهب لمكافأة ' . $res . ' +25%';
+    }
+
+    if (preg_match('/^Bought (.+) for (\d+) gold$/i', $action, $m)) {
+        return 'شراء ' . $m[1] . ' مقابل ' . $m[2] . ' ذهب';
+    }
+
+    return $action;
+}
+
+function accountTranslateDetails($details) {
+    global $accountRtl;
+    if (!$accountRtl || $details === '') {
+        return $details;
+    }
+
+    static $map = array(
+        'Gold Club activated' => 'تم تفعيل نادي الذهب',
+        'Buy Novaterra Plus' => 'شراء ميزة بلس',
+        'Finish construction and research with gold' => 'إنهاء البناء والأبحاث بالذهب',
+        'Speed up troop training with gold' => 'تسريع تدريب القوات بالذهب',
+        'World Wonder completed' => 'اكتمال أعجوبة العالم',
+        'Registration bonus' => 'مكافأة التسجيل',
+    );
+
+    if (isset($map[$details])) {
+        return $map[$details];
+    }
+
+    if (preg_match('/^\+25% Production: (Lumber|Clay|Iron|Crop)$/i', $details, $m)) {
+        $resources = array(
+            'Lumber' => 'الخشب',
+            'Clay' => 'الطين',
+            'Iron' => 'الحديد',
+            'Crop' => 'المحاصيل',
+        );
+        $res = $resources[$m[1]] ?? $m[1];
+        return 'إنتاج ' . $res . ' +25%';
+    }
+
+    if (preg_match('/^To (.+)$/i', $details, $m)) {
+        return 'إلى ' . $m[1];
+    }
+
+    if (preg_match('/^From (.+)$/i', $details, $m)) {
+        return 'من ' . $m[1];
+    }
+
+    if (preg_match('/^wood \+(\d+), clay \+(\d+), iron \+(\d+), crop \+(\d+)(?: \(each per (\d+) gold\))?$/i', $details, $m)) {
+        $line = 'خشب +' . $m[1] . '، طين +' . $m[2] . '، حديد +' . $m[3] . '، محاصيل +' . $m[4];
+        if (!empty($m[5])) {
+            $line .= ' (لكل ' . $m[5] . ' ذهب)';
+        }
+        return $line;
+    }
+
+    if (preg_match('/^Medal category: (.+), place: (.+)$/i', $details, $m)) {
+        return 'فئة الميدالية: ' . $m[1] . '، المركز: ' . $m[2];
+    }
+
+    if (preg_match('/^Mass gift by (.+)$/i', $details, $m)) {
+        return 'هدية جماعية من ' . $m[1];
+    }
+
+    if (preg_match('/^gift by (.+)$/i', $details, $m)) {
+        return 'هدية من ' . $m[1];
+    }
+
+    if (preg_match('/^by (.+)$/i', $details, $m)) {
+        return 'من ' . $m[1];
+    }
+
+    return $details;
+}
+
+function accountNormalizeGiftAction($action, $details) {
+    if (stripos($details, 'Mass gift') !== false) {
+        return 'Admin Gift (All)';
+    }
+    if (stripos($details, 'gift by') !== false) {
+        return 'Admin Gift';
+    }
+    return $action;
+}
+
 $packages = [
     199  => 60,
     499  => 120,
@@ -69,44 +191,22 @@ if (isset($packages[$amount]) && $amount > 0) {
     $transactionProcessed = true;
     $_SESSION['amount'] = 0;
 }
+$gkShell = true;
+include_once('GameEngine/GreekPlus.php');
+$gkPlusCss = 'css/greek_maxb_plus.css';
+$gkPlusCssVer = is_file(__DIR__ . '/' . $gkPlusCss) ? (int) @filemtime(__DIR__ . '/' . $gkPlusCss) : time();
+$gkPageTitle = SERVER_NAME . ' - ' . accountText('عمليات سابقة', 'Previous transactions');
+tz_greek_shell_head($gkPageTitle, 'pg-plus', array(
+    'includeNew2Js' => false,
+    'extraCss' => array($gkPlusCss . '?v=' . $gkPlusCssVer),
+));
+tz_greek_shell_open('', array('contentWrap' => false));
+include("Templates/Plus/pmenu.tpl");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html <?php echo tz_html_dir_attrs(); ?>>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo SERVER_NAME . ' - ' . accountText('كشف الحساب', 'Account transactions'); ?></title>
-    <link rel="shortcut icon" href="favicon.ico"/>
-    <meta http-equiv="cache-control" content="max-age=0" />
-    <meta http-equiv="pragma" content="no-cache" />
-    <meta http-equiv="expires" content="0" />
-    <meta http-equiv="imagetoolbar" content="no" />
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script src="mt-full.js?0faab" type="text/javascript"></script>
-    <script src="unx.js?f4b7h" type="text/javascript"></script>
-    <script src="new.js?0faab" type="text/javascript"></script>
-    <link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-    <link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-    <?php
-    // GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
-    // e permisa si valida, altfel pachetul serverului (vezi config.php).
-    echo '<link href="' . GP_LOCATE . 'novaterra.css?e21d2" rel="stylesheet" type="text/css" />';
-    echo '<link href="' . GP_LOCATE . 'lang/en/lang.css?e21d2" rel="stylesheet" type="text/css" />';
-    ?>
-    <script type="text/javascript">window.addEvent('domready', start);</script>
-	<?php echo tz_rtl_stylesheet_tag(); ?>
-</head>
-<body class="v35 pg-a2b2">
-<div class="wrapper">
-    <img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
-    <div id="dynamic_header"></div>
-    <?php include("Templates/header.tpl"); ?>
-    <div id="mid">
-        <?php include("Templates/menu.tpl"); ?>
-        <?php include("Templates/Plus/pmenu.tpl"); ?>
-
-        <h1><?php echo accountText('كشف الحساب', 'Account transactions'); ?></h1>
-        
-        <div id="products">
+<?php if (!class_exists('GreekPlus') || !GreekPlus::isGreekNav()) { ?>
+        <h1><?php echo accountText('عمليات سابقة', 'Previous transactions'); ?></h1>
+<?php } ?>
+        <div id="products" class="gk-plus-history">
             <?php if ($transactionProcessed) { ?>
                 <p><?php echo accountText('شكرًا لشرائك من ', 'Thank you for your purchase here at '); ?><?php echo SERVER_NAME; ?>.</p>
                 <p><?php echo accountText('فيما يلي سجل العملية، ويعرض رصيد حسابك قبل العملية وبعدها.', 'Below you see the entry record. Out of it, you can observe your old as well as your new account balance.'); ?></p>
@@ -180,13 +280,13 @@ if (isset($packages[$amount]) && $amount > 0) {
                 $totalRows = (int)mysqli_fetch_assoc($countRes)['c'];
                 $totalPages = max(1, ceil($totalRows / $perPage));
             ?>
-                <p><?php echo accountText('هنا يمكنك عرض كشف حسابك الحالي.', 'Here you can see your current account statement.'); ?></p>
+                <p><?php echo accountText('هنا يمكنك عرض سجل عمليات الذهب السابقة.', 'Here you can see your previous gold transactions.'); ?></p>
                 <p><?php echo accountText('الرصيد الحالي:', 'Current balance:'); ?> <img src="img/x.gif" class="gold" alt="<?php echo GOLD; ?>" /> <b><?php echo (int)$golds['gold']; ?></b>
                 &nbsp; | &nbsp; <?php echo accountText('إجمالي المستلم:', 'Total received:'); ?> <b style="color:#71D000;">+<?php echo $received; ?></b>
                 &nbsp; | &nbsp; <?php echo accountText('إجمالي المصروف:', 'Total spent:'); ?> <b style="color:#FF6F0F;">-<?php echo $spent; ?></b></p>
 
-                <!-- BARA CU ICONITE -->
-                <div style="background:#f0f0f0; border:1px solid #d0d0d0; padding:6px 8px; margin:10px 0; border-radius:3px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+                <!-- شريط التصفية -->
+                <div class="gk-plus-history-bar" style="background:#f0f0f0; border:1px solid #d0d0d0; padding:6px 8px; margin:10px 0; border-radius:3px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;">
                     <div style="display:flex; gap:10px; align-items:center;">
                         <a href="a2b2.php?f=all" style="text-decoration:none; padding:3px 8px; <?php if($f=='all') echo 'background:#fff; border:1px solid #aaa; border-radius:3px; font-weight:bold;'; ?>">
                             <img src="img/x.gif" class="gold" style="vertical-align:-2px;"> <?php echo accountText('الكل', 'All'); ?>
@@ -195,10 +295,10 @@ if (isset($packages[$amount]) && $amount > 0) {
                             <b style="font-size:15px;">+</b> <?php echo accountText('وارد', 'Incoming'); ?>
                         </a>
                         <a href="a2b2.php?f=out" style="text-decoration:none; padding:3px 8px; color:#D00000; <?php if($f=='out') echo 'background:#fff; border:1px solid #aaa; border-radius:3px; font-weight:bold;'; ?>">
-                            <b style="font-size:15px;">−</b> Outgoing
+                            <b style="font-size:15px;">−</b> <?php echo accountText('صادر', 'Outgoing'); ?>
                         </a>
                         <a href="a2b2.php?f=gift" style="text-decoration:none; padding:3px 8px; color:#0066cc; <?php if($f=='gift') echo 'background:#fff; border:1px solid #aaa; border-radius:3px; font-weight:bold;'; ?>">
-                            🎁 Gifts
+                            <?php echo accountText('🎁 هدايا', '🎁 Gifts'); ?>
                         </a>
                     </div>
                     <div>
@@ -246,13 +346,14 @@ if (isset($packages[$amount]) && $amount > 0) {
                 if(mysqli_num_rows($q) > 0){
                     while($r = mysqli_fetch_assoc($q)){
                         $date = date('d.m.Y H:i:s', $r['time']);
-                        $villageName = !empty($r['vname']) ? htmlspecialchars($r['vname'], ENT_QUOTES, 'UTF-8') : '-';
-                        $action = htmlspecialchars($r['action'], ENT_QUOTES, 'UTF-8');
-                        $details = htmlspecialchars(($r['details'] ?? ''), ENT_QUOTES, 'UTF-8');
+                        $villageName = !empty($r['vname'])
+                            ? htmlspecialchars($r['vname'], ENT_QUOTES, 'UTF-8')
+                            : accountText('—', '—');
+                        $rawAction = accountNormalizeGiftAction((string) $r['action'], (string) ($r['details'] ?? ''));
+                        $rawDetails = (string) ($r['details'] ?? '');
+                        $action = htmlspecialchars(accountTranslateAction($rawAction), ENT_QUOTES, 'UTF-8');
+                        $details = htmlspecialchars(accountTranslateDetails($rawDetails), ENT_QUOTES, 'UTF-8');
                         $gold = (int)$r['gold'];
-
-                        if(stripos($details,'Mass gift')!==false){ $action='Admin Gift (All)'; $details=str_replace('Mass gift by ','by ',$details); }
-                        elseif(stripos($details,'gift by')!==false){ $action='Admin Gift'; }
 
                         $color = $gold < 0 ? '#FF6F0F' : '#71D000';
                         $sign = $gold > 0 ? '+' : '';
@@ -260,8 +361,8 @@ if (isset($packages[$amount]) && $amount > 0) {
                         echo '<tr>';
                         echo '<td class="desc"><div style="text-align:center">'.$date.'</div></td>';
                         echo '<td class="desc"><div style="text-align:center">'.$villageName.'</div></td>';
-                        echo '<td class="desc"><div style="text-align:center"><b>'.$action.'</b></div></td>';
-                        echo '<td class="desc"><div style="text-align:center"><span style="color:#666;font-size:11px">'.$details.'</span></div></td>';
+                        echo '<td class="desc"><div style="text-align:right"><b>'.$action.'</b></div></td>';
+                        echo '<td class="desc"><div style="text-align:right"><span style="color:#666;font-size:11px">'.$details.'</span></div></td>';
                         echo '<td class="desc"><div style="text-align:center"><font color="'.$color.'"><b>'.$sign.$gold.'</b></font></div></td>';
                         echo '<td class="act"><div style="text-align:center">'.$balance.'</div></td>';
                         echo '</tr>';
@@ -279,37 +380,6 @@ if (isset($packages[$amount]) && $amount > 0) {
                 <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') && PAYPAL_EMAIL !== '@') ? PAYPAL_EMAIL : ADMIN_EMAIL; ?>"><?php echo accountText('عنوان الفوترة', 'our billing address'); ?></a>.</p>
             <?php } ?>
         </div>
-    </div>
-
-    <br /><br /><br /><br />
-    <div id="side_info">
-        <?php
-        include("Templates/multivillage.tpl");
-        include("Templates/quest.tpl");
-        include("Templates/news.tpl");
-        if (!NEW_FUNCTIONS_DISPLAY_LINKS) {
-            echo "<br><br><br><br>";
-            include("Templates/links.tpl");
-        }
-        ?>
-    </div>
-    <div class="clear"></div>
-</div>
-
-<div class="footer-stopper"></div>
-<div class="clear"></div>
 <?php
-include("Templates/footer.tpl");
-include("Templates/res.tpl");
-?>
-<div id="stime">
-    <div id="ltime">
-        <div id="ltimeWrap">
-            <?php echo CALCULATED_IN; ?> <b><?php echo round(($generator->pageLoadTimeEnd() - $start_timer) * 1000); ?></b> ms
-            <br /><?php echo SERVER_TIME; ?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
-        </div>
-    </div>
-</div>
-<div id="ce"></div>
-</body>
-</html>
+include __DIR__ . '/Templates/Plus/pmenu_close.tpl';
+tz_greek_shell_close(array('buildPopup' => false, 'timer' => $start_timer));

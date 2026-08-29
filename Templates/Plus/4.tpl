@@ -31,4 +31,3 @@ include("Templates/Plus/pmenu.tpl");
 
 <p class="f10 b"><?php echo TZ_DO_I_NEED_PLUS_TO_USE_OTHER_FEATUR; ?></p>
 <p><?php echo TZ_NO_EVERY_GOLD_FEATURE_WORKS_STANDA; ?></p>
-</div>

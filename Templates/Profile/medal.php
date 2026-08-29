@@ -28,6 +28,9 @@
 
 $profiel = preg_replace('/\[([a-z0-9_]+)#\]/i', '[#$1]', $profiel);
 
+$gkProfMedalCompact = !empty($GLOBALS['gkSpielerGreek']);
+$gkProfMedalImgClass = $gkProfMedalCompact ? ' class="gk-prof-medal-img"' : '';
+
 //de bird
 if($displayarray['protect'] > time()){
 $secondsDiff      = $displayarray['protect'] - time();
@@ -47,7 +50,8 @@ if (NEW_FUNCTIONS_TRIBE_IMAGES) {
 
     switch ($tribe) {
         case 1: // Romans
-            $replacement = '<img src="'.$gpack.'../../img/rpage/Roman1.jpg" border="0" '
+            $romanImg = $gkProfMedalCompact ? $gpack . 'img/t/roman.gif' : $gpack . '../../img/rpage/Roman1.jpg';
+            $replacement = '<img src="' . $romanImg . '" border="0"' . $gkProfMedalImgClass . ' '
                          . 'onmouseout="med_closeDescription()" '
                          . 'onmousemove="med_mouseMoveHandler(arguments[0],\''
                          . '<table><tr><td>The Romans : Because of its high level of social and technological development the Romans are masters at building and its coordination. Also, their troops are part of the elite in Novaterra. They are very balanced and useful in attacking and defending.</td></tr></table>'
@@ -56,7 +60,8 @@ if (NEW_FUNCTIONS_TRIBE_IMAGES) {
             break;
 
         case 2: // Teutons
-            $replacement = '<img src="'.$gpack.'../../img/rpage/Teuton1.jpg" border="0" '
+            $teutonImg = $gkProfMedalCompact ? $gpack . 'img/t/teutons.gif' : $gpack . '../../img/rpage/Teuton1.jpg';
+            $replacement = '<img src="' . $teutonImg . '" border="0"' . $gkProfMedalImgClass . ' '
                          . 'onmouseout="med_closeDescription()" '
                          . 'onmousemove="med_mouseMoveHandler(arguments[0],\''
                          . '<table><tr><td>The Teutons : The Teutons are the most aggressive tribe. Their troops are notorious and feared for their rage and frenzy when they attack. They move around as a plundering horde, not even afraid of death.</td></tr></table>'
@@ -65,7 +70,8 @@ if (NEW_FUNCTIONS_TRIBE_IMAGES) {
             break;
 
         case 3: // Gauls
-            $replacement = '<img src="'.$gpack.'../../img/rpage/Gaul1.jpg" border="0" '
+            $gaulImg = $gkProfMedalCompact ? $gpack . 'img/t/gauls.gif' : $gpack . '../../img/rpage/Gaul1.jpg';
+            $replacement = '<img src="' . $gaulImg . '" border="0"' . $gkProfMedalImgClass . ' '
                          . 'onmouseout="med_closeDescription()" '
                          . 'onmousemove="med_mouseMoveHandler(arguments[0],\''
                          . '<table><tr><td>The Gauls : The Gauls are the most peaceful of all three tribes in Novaterra. Their troops are trained for an excellent defence, but their ability to attack can still compete with the other two tribes. The Gauls are born riders and their horses are famous for their speed. This means that their riders can hit the enemy exactly where they can cause the most damage and swiftly take care of them.</td></tr></table>'

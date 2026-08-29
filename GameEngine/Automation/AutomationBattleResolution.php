@@ -2917,7 +2917,29 @@ trait AutomationBattleResolution {
                     $retDead = $retTraped = $retTroopsdead = [];
                     for ($i = 1; $i <= 11; $i++) { $retDead[$i] = ${'dead'.$i}; $retTraped[$i] = ${'traped'.$i}; $retTroopsdead[$i] = ${'troopsdead'.$i}; }
                     $this->finalizeReturnOrDeath($data, $from, $to, $owntribe, $type, $isoasis, $conqureby, $AttackArrivalTime, $targetally, $ownally, $data2, $data_fail, $chiefing_village, $DefenderWref, $AttackerWref, $steal, $retDead, $retTraped, $retTroopsdead, $totalsend_att, $totaldead_att, $totaltraped_att, $totalstolentaken);
-                    if($type == 3 || $type == 4) $database->addGeneralAttack($totalattackdead);
+                    if ($type == 3 || $type == 4) {
+                        $database->addGeneralAttack($totalattackdead);
+                        $minNewsKills = defined('WORLD_NEWS_MIN_KILLS') ? (int) WORLD_NEWS_MIN_KILLS : 10000;
+                        if ($totaldead_alldef >= $minNewsKills && !empty($from['owner']) && !empty($to['wref'])) {
+                            $attackerName = $database->getUserField($from['owner'], 'username', 0);
+                            if ($attackerName !== '' && $attackerName !== null) {
+                                $database->addWorldNews(
+                                    (int) $from['owner'],
+                                    (string) $attackerName,
+                                    (int) $to['wref'],
+                                    (string) $to['name'],
+                                    (int) $totaldead_alldef,
+                                    (int) $AttackArrivalTime
+                                );
+                            }
+                        }
+                        // Break undefeated-defense streak when defender loses troops.
+                        if (empty($scout) && empty($isoasis) && !empty($to['owner'])
+                            && (int) $to['owner'] > 5 && (int) $totaldead_alldef > 0
+                            && method_exists($database, 'breakUndefeatedDefense')) {
+                            $database->breakUndefeatedDefense((int) $to['owner'], (int) $AttackArrivalTime);
+                        }
+                    }
 
                     if (!isset($village_destroyed)) $village_destroyed = 0;
 

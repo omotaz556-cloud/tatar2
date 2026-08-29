@@ -105,74 +105,7 @@ if ($hour > 1759 || $hour < 500) {
 
     <div id="mtop">
 
-        <div id="topNavIcons">
-
-        <!-- Village overview -->
-        <a href="<?php echo $dorf1Link; ?>"
-           id="n1"
-           accesskey="1">
-
-            <img src="img/x.gif"
-                 title="<?php echo TZ_VILLAGE_OVERVIEW; ?>"
-                 alt="<?php echo TZ_VILLAGE_OVERVIEW; ?>" />
-        </a>
-
-        <!-- Village centre -->
-        <a href="<?php echo $dorf2Link; ?>"
-           id="n2"
-           accesskey="2">
-
-            <img src="img/x.gif"
-                 title="<?php echo VILLAGE_CENTER; ?>"
-                 alt="<?php echo VILLAGE_CENTER; ?>" />
-        </a>
-
-        <!-- Map -->
-        <a href="karte.php"
-           id="n3"
-           accesskey="3">
-
-            <img src="img/x.gif"
-                 title="<?php echo MAP; ?>"
-                 alt="<?php echo MAP; ?>" />
-        </a>
-
-        <!-- Statistics -->
-        <a href="statistiken.php"
-           id="n4"
-           accesskey="4">
-
-            <img src="img/x.gif"
-                 title="<?php echo STATISTICS; ?>"
-                 alt="<?php echo STATISTICS; ?>" />
-        </a>
-
-        <!-- Reports / Messages -->
-        <div id="n5" class="<?php echo safeHTML($class); ?>">
-
-            <!-- Reports -->
-            <a href="<?php echo $reportsLink; ?>"
-               accesskey="5">
-
-                <img src="img/x.gif"
-                     class="l"
-                     title="<?php echo REPORTS; ?>"
-                     alt="<?php echo REPORTS; ?>" />
-            </a>
-
-            <!-- Messages -->
-            <a href="nachrichten.php"
-               accesskey="6">
-
-                <img src="img/x.gif"
-                     class="r"
-                     title="<?php echo MESSAGES; ?>"
-                     alt="<?php echo MESSAGES; ?>" />
-            </a>
-
-        </div>
-
-        </div>
+        <?php include(dirname(__FILE__) . '/topnav_icons.tpl'); ?>
 
         <!-- ===================== HERO (CERCUL ROSU) ===================== -->
         <?php
@@ -361,15 +294,18 @@ if ($hour > 1759 || $hour < 500) {
         html[dir="rtl"] #topNavIcons > a#n2 { order: 4; }
         html[dir="rtl"] #topNavIcons > a#n1 { order: 5; }
 
-        
-            html[dir="rtl"] #topNavIcons > div#n5 {
-                transform: scaleX(-1) !important;
-                transform-origin: center center;
-            }
-            html[dir="rtl"] #topNavIcons > a#n1 img {
-                transform: scaleX(-1) !important;
-                transform-origin: center center;
-            }
+        html[dir="rtl"] #topNavIcons > a#n1 img,
+        html[dir="rtl"] #topNavIcons > a#n1:hover img {
+            transform: scaleX(-1) !important;
+            -webkit-transform: scaleX(-1) !important;
+            transform-origin: center center;
+        }
+
+        html[dir="rtl"] #topNavIcons > div#n5 {
+            transform: scaleX(-1) !important;
+            -webkit-transform: scaleX(-1) !important;
+            transform-origin: center center;
+        }
 
         .day_image {
             background-image:url("../gpack/novaterra_classic/img/l/day.gif");

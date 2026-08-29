@@ -167,94 +167,140 @@ if(isset($_GET['newdid'])){
 }
 else $building->procBuild($_GET);
 
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html <?php echo tz_html_dir_attrs(); ?>>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME ?></title>
-	<link rel="shortcut icon" href="favicon.ico"/>
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="pragma" content="no-cache" />
-	<meta http-equiv="expires" content="0" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<script src="mt-full.js?0faab" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
-	<script src="new.js?0faab" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<?php
-	// GP_LOCATE contine deja pachetul efectiv: alegerea jucatorului cand
-	// e permisa si valida, altfel pachetul serverului (vezi config.php).
-	echo "
-	<link href='".GP_LOCATE."novaterra.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
-	?>
-	<script type="text/javascript">
+$gkShell = true;
+$GLOBALS['gkShell'] = true;
 
-		window.addEvent('domready', start);
-	</script>
-	<?php echo tz_rtl_stylesheet_tag(); ?>
-</head>
+$gkSpielerRtl = function_exists('tz_is_rtl_lang') && tz_is_rtl_lang();
+$GLOBALS['gkSpielerLiteralPage'] = $gkSpielerRtl;
+if ($gkSpielerRtl) {
+    $GLOBALS['gkSpielerBarRendered'] = true;
+}
+include_once('GameEngine/GreekSpieler.php');
 
+$gkSpielerCss = 'css/greek_maxb_spieler.css';
+$gkSpielerCssVer = is_file(__DIR__ . '/' . $gkSpielerCss) ? (int) @filemtime(__DIR__ . '/' . $gkSpielerCss) : time();
+$gkSpielerGreek = $gkSpielerRtl && class_exists('GreekSpieler');
+$GLOBALS['gkSpielerGreek'] = $gkSpielerGreek;
+$GLOBALS['gkSpielerNameReserve'] = false;
 
-<body class="v35 ie ie8 pg-spieler">
-<div class="wrapper">
-<img style="filter:chroma();" src="img/x.gif" id="msfilter" alt="" />
-<div id="dynamic_header">
-	</div>
-<?php include("Templates/header.tpl"); ?>
-<div id="mid">
-<?php include("Templates/menu.tpl"); ?>
-<script type="text/javascript">
-				function getMouseCoords(e) {
-					var coords = {};
-					if (!e) var e = window.event;
-					if (e.pageX || e.pageY) 	{
-						coords.x = e.pageX;
-						coords.y = e.pageY;
-					}
-					else if (e.clientX || e.clientY) 	{
-						coords.x = e.clientX + document.body.scrollLeft
-							+ document.documentElement.scrollLeft;
-						coords.y = e.clientY + document.body.scrollTop
-							+ document.documentElement.scrollTop;
-					}
-					return coords;
-				}
+if ($gkSpielerGreek && isset($_GET['s']) && (int) $_GET['s'] === 2) {
+    if (isset($_GET['del']) && is_numeric($_GET['del'])
+        && !(method_exists($session, 'isSitterSession') && $session->isSitterSession())
+    ) {
+        $database->removeLinks((int) $_GET['del'], $session->uid);
+        header('Location: spieler.php?s=2&dl=1');
+        exit;
+    }
+    if (empty($_GET['dl'])) {
+        header('Location: spieler.php?s=2&dl=1');
+        exit;
+    }
+}
 
-				function med_mouseMoveHandler(e, desc_string){
-					var coords = getMouseCoords(e);
-					med_showDescription(coords, desc_string);
-				}
+$gkSpielerNameReserve = $gkSpielerGreek
+    && isset($_GET['s'])
+    && (int) $_GET['s'] === 3
+    && isset($_GET['nr'])
+    && (string) $_GET['nr'] !== ''
+    && (string) $_GET['nr'] !== '0';
+$GLOBALS['gkSpielerNameReserve'] = $gkSpielerNameReserve;
 
-				function med_closeDescription(){
-					var layer = document.getElementById("medal_mouseover");
-					layer.className = "hide";
-				}
+if ($gkSpielerGreek && isset($_GET['s']) && (int) $_GET['s'] === 3 && isset($_GET['nr']) && !$gkSpielerNameReserve) {
+    header('Location: spieler.php?s=3&nr=1');
+    exit;
+}
 
-				function init_local(){
-					med_init();
-				}
+$gkSpielerTab = 1;
+if (isset($_GET['s'])) {
+    $gkSpielerS = (int) $_GET['s'];
+    if ($gkSpielerS === 3) {
+        $gkSpielerTab = !empty($GLOBALS['gkSpielerNameReserve']) ? 5 : 3;
+    } elseif ($gkSpielerS === 2 && !empty($_GET['dl'])) {
+        $gkSpielerTab = 4;
+    } elseif ($gkSpielerS === 1) {
+        $gkSpielerTab = 2;
+    } elseif ($gkSpielerS === 2) {
+        $gkSpielerTab = !empty($_GET['dl']) ? 4 : 0;
+    } elseif (in_array($gkSpielerS, array(4, 5), true)) {
+        $gkSpielerTab = 6;
+    }
+} elseif (isset($_GET['uid'])) {
+    $gkViewUid = (int) preg_replace('/[^0-9]/', '', (string) $_GET['uid']);
+    if (!empty($_GET['hub']) && $gkViewUid === (int) $session->uid) {
+        $gkSpielerTab = 6;
+    } else {
+        $gkSpielerTab = 1;
+    }
+}
 
-				function med_init(){
-					layer = document.createElement("div");
-					layer.id = "medal_mouseover";
-					layer.className = "hide";
-					document.body.appendChild(layer);
-				}
+$gkPageTitle = SERVER_NAME;
+$gkMedalScripts = '
+function getMouseCoords(e) {
+	var coords = {};
+	if (!e) var e = window.event;
+	if (e.pageX || e.pageY) {
+		coords.x = e.pageX;
+		coords.y = e.pageY;
+	} else if (e.clientX || e.clientY) {
+		coords.x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+		coords.y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+	}
+	return coords;
+}
+function med_mouseMoveHandler(e, desc_string) {
+	var coords = getMouseCoords(e);
+	med_showDescription(coords, desc_string);
+}
+function med_closeDescription() {
+	var layer = document.getElementById("medal_mouseover");
+	layer.className = "hide";
+}
+function init_local() { med_init(); }
+function med_init() {
+	layer = document.createElement("div");
+	layer.id = "medal_mouseover";
+	layer.className = "hide";
+	document.body.appendChild(layer);
+}
+function med_showDescription(coords, desc_string) {
+	var layer = document.getElementById("medal_mouseover");
+	layer.style.top = (coords.y + 25) + "px";
+	layer.style.left = (coords.x - 20) + "px";
+	layer.className = "";
+	layer.innerHTML = desc_string;
+}';
+if ($gkSpielerGreek && isset($_GET['s'])) {
+    if ((int) $_GET['s'] === 2 && !empty($_GET['dl'])) {
+        $gkMedalScripts .= '
+document.addEventListener("DOMContentLoaded", function () {
+	var el = document.getElementById("links");
+	if (el) { el.scrollIntoView({ block: "start" }); }
+});';
+    }
+    if ((int) $_GET['s'] === 3 && !empty($_GET['nr'])) {
+        $gkMedalScripts .= '
+document.addEventListener("DOMContentLoaded", function () {
+	var el = document.getElementById("name_reservation");
+	if (el) { el.scrollIntoView({ block: "start" }); }
+});';
+    }
+}
+$gkHeadOpts = array('includeNew2Js' => false);
+if ($gkSpielerGreek) {
+    $gkHeadOpts['extraCss'] = array($gkSpielerCss . '?v=' . $gkSpielerCssVer);
+}
+tz_greek_shell_head($gkPageTitle, 'pg-spieler', $gkHeadOpts);
 
-				function med_showDescription(coords, desc_string){
-					var layer = document.getElementById("medal_mouseover");
-					layer.style.top = (coords.y + 25)+ "px";
-					layer.style.left = (coords.x - 20) + "px";
-					layer.className = "";
-					layer.innerHTML = desc_string;
-				}
-			   </script>
-		<div id="content"  class="player">
-<?php
+if ($gkSpielerGreek) {
+    $gkProfUid = isset($_GET['uid']) ? (int) preg_replace('/[^0-9]/', '', (string) $_GET['uid']) : (int) $session->uid;
+    if ($gkProfUid < 2) {
+        $gkProfUid = (int) $session->uid;
+    }
+    tz_greek_shell_open('', array('contentWrap' => false, 'resbarInMain' => false));
+    GreekSpieler::menuOpen($gkSpielerTab, $gkProfUid, isset($_GET['s']) ? (int) $_GET['s'] : 0);
+} else {
+    tz_greek_shell_open('player', array('contentWrap' => true));
+}
 if(isset($_GET['uid'])) {
 
     if($_GET['uid'] >= 2) {
@@ -274,12 +320,21 @@ if(isset($_GET['uid'])) {
             // Other players always see the classic overview.
             $viewingSelf = ((int) $user['id'] === (int) $session->uid);
             $wantDetails = !empty($_GET['details']);
-            if ($viewingSelf && !$wantDetails
+            $wantHub = !empty($_GET['hub']);
+            if ($gkSpielerGreek) {
+                if ($wantHub && $viewingSelf
+                    && !(method_exists($session, 'isSitterSession') && $session->isSitterSession())
+                ) {
+                    include('Templates/Greek/options_greek.tpl');
+                } else {
+                    include('Templates/Greek/spieler_overview_greek.tpl');
+                }
+            } elseif ($viewingSelf && !$wantDetails
                 && !(method_exists($session, 'isSitterSession') && $session->isSitterSession())
             ) {
-                include("Templates/Profile/settings_hub.tpl");
+                include('Templates/Profile/settings_hub.tpl');
             } else {
-                include("Templates/Profile/overview.tpl");
+                include('Templates/Profile/overview.tpl');
             }
 
         } else {
@@ -295,15 +350,29 @@ else if (isset($_GET['s'])) {
 
     if($_GET['s'] == 1) {
 
-        include("Templates/Profile/profile.tpl");
+        if ($gkSpielerGreek) {
+            include('Templates/Greek/spieler_edit_greek.tpl');
+        } else {
+            include('Templates/Profile/profile.tpl');
+        }
     }
 
     if($_GET['s'] == 2) {
-        include("Templates/Profile/preference.tpl");
+        if ($gkSpielerGreek && !empty($_GET['dl'])) {
+            include('Templates/Greek/links_greek.tpl');
+        } else {
+            include('Templates/Profile/preference.tpl');
+        }
     }
 
     if($_GET['s'] == 3) {
-        include("Templates/Profile/account.tpl");
+        if (!empty($GLOBALS['gkSpielerNameReserve'])) {
+            include('Templates/Greek/name_reserve_greek.tpl');
+        } elseif ($gkSpielerGreek) {
+            include('Templates/Greek/account_greek.tpl');
+        } else {
+            include('Templates/Profile/account.tpl');
+        }
     }
 
     if($_GET['s'] == 4) {
@@ -327,40 +396,8 @@ else if (isset($_GET['s'])) {
     }
 }
 ?>
-</div>
-
-<br /><br /><br /><br /><div id="side_info">
 <?php
-include("Templates/multivillage.tpl");
-include("Templates/quest.tpl");
-include("Templates/news.tpl");
-if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
-	echo "<br><br><br><br>";
-	include("Templates/links.tpl");
+if ($gkSpielerGreek) {
+    GreekSpieler::menuClose();
 }
-?>
- </div>
-<div class="clear"></div>
-</div>
-<div class="footer-stopper"></div>
-<div class="clear"></div>
-
-<?php
-include("Templates/footer.tpl");
-include("Templates/res.tpl");
-?>
-<div id="stime">
-<div id="ltime">
-<div id="ltimeWrap">
-<?php echo CALCULATED_IN;?> <b><?php
-echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
-?></b> ms
-
-<br /><?php echo SERVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
-</div>
-	</div>
-</div>
-
-<div id="ce"></div>
-</body>
-</html>
+tz_greek_shell_close(array('buildPopup' => false, 'timer' => $start_timer, 'extraScripts' => $gkMedalScripts));

@@ -1,0 +1,1308 @@
+/* ============================================================
+ * dorf1 greek shell — isolated from classic #mid float layout
+ * ============================================================ */
+
+html.pg-gk,
+body.pg-gk {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000 !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+}
+/* Beat rtl.css Segoe UI + compact Verdana on Greek shell pages */
+html.pg-gk[dir="rtl"] body.pg-gk,
+html.pg-gk[dir="rtl"] body.pg-gk .gk-head,
+html.pg-gk[dir="rtl"] body.pg-gk .gk-shell,
+html.pg-gk[dir="rtl"] body.pg-gk .gk-shell table,
+html.pg-gk[dir="rtl"] body.pg-gk .gk-shell td,
+html.pg-gk[dir="rtl"] body.pg-gk .gk-shell th,
+html.pg-gk[dir="rtl"] body.pg-gk .gk-resbar {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+}
+
+body.pg-gk a { color: #000; text-decoration: none; }
+body.pg-gk a:hover { color: #71d000; }
+
+/* Hide classic chrome — keep #topNavIcons (included via topnav_icons.tpl) */
+body.pg-gk #header,
+body.pg-gk #mid,
+body.pg-gk #side_navi,
+body.pg-gk #side_info,
+body.pg-gk #dynamic_header,
+body.pg-gk #stime,
+body.pg-gk .footer-stopper,
+body.pg-gk #msfilter,
+body.pg-gk .wrapper { display: none !important; }
+
+/* ---- Header zone (banner + bar + Vs overlay) ---- */
+.gk-head {
+    position: relative;
+    width: 100%;
+    z-index: 10;
+    margin-bottom: 6px;
+}
+
+/* ---- Banner ---- */
+.gk-banner {
+    width: 100%;
+    height: 110px;
+    background: #d9f0fb url("../img/login/banner.png") center top / 100% 110px no-repeat;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+/* ---- Top bar ---- */
+.gk-bar {
+    width: 100%;
+    height: 36px;
+    background: linear-gradient(180deg, #f8f8f8 0%, #ececec 100%);
+    border-top: 1px solid #d5d5d5;
+    border-bottom: 1px solid #b5b5b5;
+    position: relative;
+    z-index: 5;
+}
+.gk-bar-inner {
+    width: 1000px;
+    max-width: 98%;
+    height: 36px;
+    margin: 0 auto;
+    padding: 0 8px;
+    display: table;
+    table-layout: fixed;
+    direction: rtl;
+    box-sizing: border-box;
+    position: relative;
+}
+.gk-bar-world,
+.gk-bar-spacer,
+.gk-bar-gold {
+    display: table-cell;
+    vertical-align: middle;
+}
+.gk-bar-spacer {
+    width: auto;
+}
+.gk-bar-world {
+    width: 210px;
+    text-align: right;
+    white-space: nowrap;
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.25;
+    color: #555;
+}
+.gk-bar-world .gk-world-name { color: #444; }
+.gk-bar-world .gk-world-now {
+    display: block;
+    color: #666;
+}
+.gk-moon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 32%, #9ad4ff, #1f6bb8);
+    box-shadow: inset -4px 0 0 #155a9c;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+/* Vs nav — same gpack icons as dorf2 (#topNavIcons from header.tpl) */
+body.pg-gk .gk-head #mtop.gk-mtop {
+    position: absolute;
+    left: 50%;
+    top: 82px;
+    transform: translateX(-50%);
+    width: 350px;
+    height: 72px;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    z-index: 40;
+    background: transparent !important;
+    border: 0 !important;
+}
+body.pg-gk .gk-head #topNavIcons {
+    float: none !important;
+    display: flex !important;
+    flex-direction: row !important;
+    direction: ltr !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    width: 350px !important;
+    height: 72px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+}
+body.pg-gk .gk-head #topNavIcons > a,
+body.pg-gk .gk-head #topNavIcons > div#n5 {
+    float: none !important;
+    flex: 0 0 70px !important;
+    width: 70px !important;
+    height: 72px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+body.pg-gk .gk-head #topNavIcons > a#n1,
+body.pg-gk .gk-head #topNavIcons > a#n2,
+body.pg-gk .gk-head #topNavIcons > a#n3,
+body.pg-gk .gk-head #topNavIcons > a#n4 {
+    margin-left: -2px !important;
+}
+body.pg-gk .gk-head #topNavIcons > div#n5 { order: 1; }
+body.pg-gk .gk-head #topNavIcons > a#n4 { order: 2; }
+body.pg-gk .gk-head #topNavIcons > a#n3 { order: 3; }
+body.pg-gk .gk-head #topNavIcons > a#n2 { order: 4; }
+body.pg-gk .gk-head #topNavIcons > a#n1 { order: 5; }
+body.pg-gk .gk-head #topNavIcons a#n1 img,
+body.pg-gk .gk-head #topNavIcons a#n2 img,
+body.pg-gk .gk-head #topNavIcons a#n3 img,
+body.pg-gk .gk-head #topNavIcons a#n4 img {
+    width: 70px !important;
+    height: 67px !important;
+    display: block !important;
+    background-repeat: no-repeat !important;
+    background-position: 0 -21px !important;
+}
+body.pg-gk .gk-head #topNavIcons a#n1:hover img,
+body.pg-gk .gk-head #topNavIcons a#n2:hover img,
+body.pg-gk .gk-head #topNavIcons a#n3:hover img,
+body.pg-gk .gk-head #topNavIcons a#n4:hover img {
+    background-position: 0 -121px !important;
+}
+/* Village overview (n1, right end): mirror in place only. */
+body.pg-gk .gk-head #topNavIcons > a#n1 img,
+body.pg-gk .gk-head #topNavIcons > a#n1:hover img {
+    transform: scaleX(-1) !important;
+    -webkit-transform: scaleX(-1) !important;
+    transform-origin: center center;
+}
+/* Reports/messages (n5, left end): mirror in place only. */
+body.pg-gk .gk-head #topNavIcons > div#n5 {
+    transform: scaleX(-1) !important;
+    -webkit-transform: scaleX(-1) !important;
+    transform-origin: center center;
+}
+
+.gk-bar-gold {
+    width: auto;
+    min-width: 120px;
+    text-align: left;
+    direction: ltr;
+}
+.gk-bar-gold a.gk-gold {
+    display: inline-flex !important;
+    align-items: center;
+    height: 23px;
+    box-sizing: border-box;
+    border: 1px solid #e2e2e2 !important;
+    border-radius: 5px;
+    background: #fafaf9 !important;
+    padding: 0 5px 0 0 !important;
+    color: orange !important;
+    font-weight: 900 !important;
+    font-size: 13px !important;
+    line-height: 23px;
+    text-decoration: none !important;
+    white-space: nowrap;
+    vertical-align: middle;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+.gk-bar-gold a.gk-gold:hover {
+    opacity: 0.92;
+}
+.gk-bar-gold .gk-gold-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 100%;
+    flex: 0 0 28px;
+    margin: 0;
+    border-right: 1px solid #e2e2e2;
+    background: #f3f3f3;
+    color: #888;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1;
+    border-radius: 4px 0 0 4px;
+}
+.gk-bar-gold .gk-gold-val {
+    display: inline-block;
+    padding: 0 6px 0 8px;
+    color: orange !important;
+    font-weight: 900 !important;
+    font-size: 13px !important;
+    line-height: 23px;
+}
+.gk-bar-gold img.gold {
+    width: 18px !important;
+    height: 14px !important;
+    flex: 0 0 18px;
+    margin: 0 4px 0 0 !important;
+    display: inline-block !important;
+    vertical-align: middle;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+}
+
+/* ---- Resources: centered under Vs (greek .Resbar) ---- */
+.gk-resbar {
+    width: 1000px;
+    max-width: 98%;
+    margin: 4px auto 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: row;
+    direction: rtl;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 4px;
+    box-sizing: border-box;
+}
+.gk-resitem {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.gk-resitem img.r4 {
+    width: 18px !important;
+    height: 12px !important;
+    display: inline-block;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 0;
+    vertical-align: middle;
+    transform: scale(1.7);
+    transform-origin: center center;
+}
+.gk-resitem img.r1,
+.gk-resitem img.r2,
+.gk-resitem img.r3 {
+    width: 18px !important;
+    height: 12px !important;
+    display: inline-block;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 0;
+    vertical-align: middle;
+    transform: scale(1.35);
+    transform-origin: center center;
+}
+.gk-resitem img.g10Icon,
+.gk-resitem img.g11Icon {
+    width: 16px !important;
+    height: 16px !important;
+    display: inline-block;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 0;
+    vertical-align: middle;
+    background-size: 16px 16px !important;
+    background-repeat: no-repeat !important;
+    background-position: center bottom !important;
+    transform: scale(1.35);
+    transform-origin: center bottom;
+}
+.gk-resitem img.g11Icon {
+    transform: scale(1.7);
+}
+.gk-resitem b {
+    display: inline-block !important;
+    background: #54c571 !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    font-style: normal !important;
+    border-radius: 5px !important;
+    min-width: 0;
+    padding: 5px 3px !important;
+    margin: 0 !important;
+    text-align: center !important;
+    line-height: 16px;
+    vertical-align: middle;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .25);
+    box-sizing: border-box;
+}
+.gk-resitem b.gk-cap {
+    color: #e6fac6 !important;
+    min-width: 44px;
+}
+.gk-resitem b span {
+    color: inherit !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font: inherit !important;
+}
+
+/* kill classic #res if anything still injects it */
+body.pg-gk #res {
+    display: none !important;
+}
+
+/* ---- Main 3 columns (table) — no grey dividers ---- */
+.gk-shell {
+    width: 1000px;
+    max-width: 98%;
+    margin: 10px auto 40px;
+    border-collapse: separate !important;
+    border-spacing: 10px 0 !important;
+    direction: ltr;
+    table-layout: fixed;
+    background: transparent !important;
+    border: 0 !important;
+}
+.gk-shell,
+.gk-shell > tbody,
+.gk-shell > tbody > tr,
+.gk-inner,
+.gk-inner td {
+    border: 0 !important;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+.gk-shell > tbody > tr > td.gk-td-nav,
+.gk-shell > tbody > tr > td.gk-td-left {
+    background: transparent !important;
+    box-shadow: none !important;
+    /* Above map/imagemap overflow from the main column */
+    position: relative !important;
+    z-index: 50 !important;
+    pointer-events: auto !important;
+}
+.gk-shell > tbody > tr > td.gk-td-left {
+    padding-top: 8px !important;
+}
+.gk-shell > tbody > tr > td.gk-td-nav {
+    /* MaxB RLisTa top 50px + 20px */
+    padding-top: 70px !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+}
+.gk-shell > tbody > tr > td {
+    vertical-align: top;
+    padding: 0 !important;
+}
+.gk-shell > tbody > tr > td.gk-td-main {
+    background: #fff !important;
+    background-image: none !important;
+    padding: 10px 14px 28px !important;
+    min-height: 480px;
+    height: 480px;
+    /* Trap map z-index inside main so it cannot cover sidebars */
+    position: relative !important;
+    z-index: 1 !important;
+    box-shadow:
+        -16px 0 26px -20px rgba(0, 0, 0, 0.22),
+        16px 0 26px -20px rgba(0, 0, 0, 0.22);
+}
+.gk-td-nav {
+    width: 213px;
+    min-width: 213px;
+    max-width: 213px;
+    text-align: right;
+    direction: rtl;
+    vertical-align: top;
+    padding: 70px 0 0 0 !important;
+    overflow: visible !important;
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+}
+/* MaxB .RLisTa — sit near map edge (left:10px), leave white space on far right */
+.gk-rlista {
+    display: block !important;
+    width: 140px !important;
+    min-height: 200px;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-size: 13px !important;
+    line-height: 1.9 !important;
+    color: #000 !important;
+    position: relative !important;
+    float: left !important;
+    left: 10px !important;
+    top: 0 !important;
+    margin-top: 0 !important;
+    text-align: right !important;
+    z-index: 51;
+    pointer-events: auto !important;
+}
+.gk-rlista a {
+    display: inline-block !important;
+    width: 140px !important;
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    color: #000 !important;
+    font-weight: 301 !important;
+    font-size: 13px !important;
+    line-height: 1.9 !important;
+    text-decoration: none !important;
+    text-align: right !important;
+    padding: 1px 0 !important;
+    border: 2px groove transparent !important;
+    border-width: 2px 0 !important;
+    float: none !important;
+    position: relative;
+    z-index: 52;
+    pointer-events: auto !important;
+}
+.gk-rlista a:hover {
+    color: #71d000 !important;
+    border-color: #f9f9f9 !important;
+}
+/* MaxB X1 — arrow glyph present but invisible */
+.gk-rlista .gk-rarr {
+    color: transparent !important;
+    font-size: 13px;
+    margin-left: 2px;
+}
+.gk-rlista a:hover .gk-rarr {
+    color: transparent !important;
+}
+.gk-rlista a.C_G.plus,
+.gk-rlista a.plus {
+    color: #000 !important;
+    font-weight: 700 !important;
+    margin-top: 10px !important;
+}
+.gk-rlista a.C_G.plus:hover,
+.gk-rlista a.plus:hover {
+    color: #000 !important;
+}
+.gk-rlista a.plus g,
+.gk-rlista g {
+    color: #71d000 !important;
+    font-style: normal;
+}
+.gk-rlista a.plus o,
+.gk-rlista o {
+    color: #e0a010 !important;
+    font-style: normal;
+}
+.gk-rlista a b {
+    font-weight: 700;
+}
+.gk-td-main {
+    width: auto;
+    text-align: right;
+    direction: rtl;
+}
+.gk-td-left {
+    width: 160px;
+    min-width: 160px;
+    text-align: center;
+    direction: rtl;
+    position: relative;
+    z-index: 50;
+    vertical-align: top;
+    pointer-events: auto !important;
+}
+.gk-td-left a,
+.gk-td-left .gk-vlist a,
+.gk-td-left .gk-char-portrait,
+.gk-td-left .gk-char-portrait img {
+    position: relative;
+    z-index: 51;
+    pointer-events: auto !important;
+}
+.gk-td-left .gk-char-portrait {
+    min-height: 174px;
+}
+.gk-td-left .gk-char-portrait img,
+.gk-td-left #qge img {
+    width: auto;
+    height: 195px !important;
+    max-height: none;
+    display: block;
+    margin: 0 auto 8px;
+    cursor: pointer;
+    border: 0;
+}
+.gk-td-left .gk-char-portrait,
+.gk-td-left #qge,
+.gk-td-left #anm {
+    display: block;
+    margin: 0 auto;
+    width: auto;
+    text-align: center;
+}
+.gk-td-left #anm {
+    visibility: hidden;
+    height: 0 !important;
+    overflow: hidden;
+}
+.gk-vlist {
+    text-align: right;
+    direction: rtl;
+}
+.gk-vlist .ttl {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.gk-vlist a {
+    display: block;
+    color: #71d000 !important;
+    font-size: 12px;
+    line-height: 1.55;
+    text-decoration: none;
+    font-weight: 301;
+}
+.gk-vlist a.C_O,
+.gk-vlist a.is-active {
+    color: #B58900 !important;
+    font-weight: 700;
+}
+.gk-vlist a .fl {
+    color: #a0a0a0 !important;
+    font-size: 11px;
+    font-weight: 301;
+}
+.gk-vlist a span[dir="ltr"] {
+    color: #71d000;
+}
+.gk-vlist a.C_O span[dir="ltr"] {
+    color: #333;
+}
+
+.gk-h1 {
+    margin: 0 0 10px;
+    font-size: 28px;
+    font-weight: 900;
+    text-align: right !important;
+    display: block;
+    width: 100%;
+    direction: rtl !important;
+    box-sizing: border-box;
+}
+.gk-h1 .cap {
+    color: #a0a0a0;
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0 8px 0 0;
+}
+.gk-vname-wrap {
+    display: block;
+    width: 100%;
+    text-align: right !important;
+    direction: rtl !important;
+}
+.gk-vname {
+    font: inherit;
+    color: inherit;
+}
+.gk-vname-editable {
+    cursor: pointer;
+}
+.gk-vname-form {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: inherit;
+    font-weight: inherit;
+    vertical-align: baseline;
+}
+.gk-vname-form input[type="text"] {
+    width: 38%;
+    min-width: 120px;
+    max-width: 220px;
+    font: inherit;
+    font-size: inherit;
+    height: auto;
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+.gk-vname-btn {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border: 1px solid #71d000;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #fdfdfd, #e8e8e8);
+    color: #222;
+    cursor: pointer;
+}
+.gk-vname-btn:hover {
+    opacity: 0.85;
+}
+
+.gk-inner {
+    width: auto;
+    display: inline-table;
+    border-collapse: separate;
+    border-spacing: 10px 0;
+    direction: ltr; /* stats beside map; pair sits on the right via .gk-td-main */
+    margin: 0;
+}
+.gk-inner td {
+    vertical-align: top;
+}
+.gk-stats {
+    width: auto;
+    min-width: 0;
+    max-width: 240px;
+    text-align: right;
+    direction: rtl;
+}
+.gk-mapcell {
+    width: 300px;
+}
+
+/* Force classic map metrics without #mid */
+body.pg-gk .village1 {
+    width: 300px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    position: relative !important;
+    overflow: visible !important;
+}
+body.pg-gk .village1 #village_map {
+    float: none !important;
+    position: relative !important;
+    width: 300px !important;
+    height: 264px !important;
+    margin: 0 !important;
+    display: block !important;
+    background-repeat: no-repeat !important;
+}
+body.pg-gk .village1 img#resfeld {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 300px !important;
+    height: 264px !important;
+    z-index: 20 !important;
+}
+
+body.pg-gk #production,
+body.pg-gk #troops,
+body.pg-gk #movements {
+    width: auto !important;
+    max-width: 100%;
+    float: none !important;
+    margin: 0 0 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    border-collapse: collapse !important;
+    direction: rtl !important;
+    table-layout: auto !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    color: #000 !important;
+}
+body.pg-gk #production.gk-prud {
+    direction: ltr !important;
+    table-layout: fixed !important;
+    width: 220px !important;
+    max-width: 220px !important;
+}
+body.pg-gk #production.gk-prud col.gk-col-lbl {
+    width: 98px !important;
+}
+body.pg-gk #production.gk-prud col.gk-col-num {
+    width: 40px !important;
+}
+body.pg-gk #production.gk-prud col.gk-col-per {
+    width: 82px !important;
+}
+body.pg-gk #production.gk-prud td.gk-prod-lbl {
+    width: 98px !important;
+    font-weight: 400 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    text-align: right !important;
+    direction: rtl !important;
+}
+body.pg-gk #production.gk-prud td.gk-prod-lbl img {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin: 0 !important;
+    position: relative !important;
+    top: -1px !important;
+}
+body.pg-gk #production.gk-prud td.num {
+    width: 40px !important;
+    font-weight: 700 !important;
+    padding: 0 !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+}
+body.pg-gk #production.gk-prud td.per {
+    width: 82px !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    letter-spacing: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    color: #000 !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+}
+body.pg-gk #production.gk-prud thead th {
+    text-align: right !important;
+    direction: rtl !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    font-style: normal !important;
+}
+body.pg-gk #production.gk-prud tbody td,
+body.pg-gk #troops thead th,
+body.pg-gk #troops tbody td {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+}
+body.pg-gk #troops thead th {
+    font-weight: 700 !important;
+}
+body.pg-gk #troops td.arabic-text {
+    font-weight: 400 !important;
+    color: #b0b0b0 !important;
+}
+body.pg-gk #troops {
+    margin-top: 14px !important;
+}
+body.pg-gk #production thead th,
+body.pg-gk #troops thead th {
+    text-align: right !important;
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    font-style: normal !important;
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 0 6px !important;
+}
+body.pg-gk #production tbody td,
+body.pg-gk #troops tbody td {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    text-align: right !important;
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    line-height: 1.45 !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+}
+body.pg-gk #production.gk-prud tbody td {
+    display: table-cell !important;
+}
+body.pg-gk #production td.ico,
+body.pg-gk #troops td.ico {
+    width: 16px !important;
+    padding: 0 !important;
+    padding-inline-end: 2px !important;
+    vertical-align: middle !important;
+}
+body.pg-gk #production td.ico img {
+    display: block !important;
+    margin: 0 !important;
+}
+body.pg-gk #production td.res {
+    width: 1% !important;
+    font-weight: 400 !important;
+    padding: 0 !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+}
+body.pg-gk #production td.num,
+body.pg-gk #troops td.num {
+    width: 1% !important;
+    font-weight: 700 !important;
+    padding: 0 !important;
+    padding-inline-start: 18px !important;
+    padding-inline-end: 0 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+}
+body.pg-gk #production td.per {
+    width: 1% !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    letter-spacing: 0 !important;
+    padding: 0 !important;
+    padding-inline-start: 10px !important;
+    text-align: right !important;
+    color: #000 !important;
+    white-space: nowrap !important;
+}
+body.pg-gk #troops td.un {
+    width: 1% !important;
+    font-weight: 700 !important;
+    padding: 0 !important;
+}
+body.pg-gk #troops td.arabic-text {
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    color: #b8b8b8 !important;
+    text-align: right !important;
+    padding: 2px 0 0 !important;
+}
+
+body.pg-gk #map_details {
+    float: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+}
+
+/* ---- Shared shell overrides (all pg-gk pages) ---- */
+body.pg-gk #res {
+    display: none !important;
+}
+body.pg-gk .gk-resbar {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+    width: 1000px !important;
+    max-width: 98% !important;
+    margin: 8px auto 0 !important;
+    float: none !important;
+    position: static !important;
+}
+body.pg-gk .gk-resitem b.gk-cap {
+    min-width: 44px !important;
+    color: #e6fac6 !important;
+}
+body.pg-gk .gk-shell > tbody > tr > td.gk-td-main {
+    background: #fff !important;
+    padding: 10px 14px 28px !important;
+    min-height: 480px !important;
+    text-align: right !important;
+    direction: rtl !important;
+    position: relative !important;
+    z-index: 1 !important;
+    box-shadow:
+        -16px 0 26px -20px rgba(0, 0, 0, 0.22),
+        16px 0 26px -20px rgba(0, 0, 0, 0.22);
+}
+body.pg-gk .gk-shell > tbody > tr > td.gk-td-nav,
+body.pg-gk .gk-shell > tbody > tr > td.gk-td-left {
+    position: relative !important;
+    z-index: 50 !important;
+    pointer-events: auto !important;
+}
+body.pg-gk .gk-shell > tbody > tr > td.gk-td-nav {
+    padding-top: 70px !important;
+}
+body.pg-gk .gk-td-nav .gk-rlista {
+    top: 0 !important;
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+}
+body.pg-gk .gk-td-nav .gk-rlista a {
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 301 !important;
+}
+body.pg-gk #buildPopup[style*="display: none"],
+body.pg-gk #buildPopup[style*="display:none"] {
+    pointer-events: none !important;
+}
+body.pg-gk.pg-dorf1 .gk-h1,
+body.pg-gk.pg-dorf2 .gk-h1,
+body.pg-gk.pg-dorf1 .gk-h1.PaNa,
+body.pg-gk.pg-dorf2 .gk-h1.PaNa {
+    text-align: right !important;
+    direction: rtl !important;
+}
+body.pg-gk.pg-dorf1 .gk-h1 .gk-vname-wrap,
+body.pg-gk.pg-dorf2 .gk-h1 .gk-vname-wrap,
+body.pg-gk.pg-dorf1 .gk-h1 .gk-vname,
+body.pg-gk.pg-dorf2 .gk-h1 .gk-vname {
+    text-align: right !important;
+    direction: rtl !important;
+}
+/* dorf1/dorf2 — MaxB .Bod + .PaNa (stable flow, reference spacing) */
+body.pg-gk.pg-dorf1 > .gk-resbar,
+body.pg-gk.pg-dorf2 > .gk-resbar {
+    position: static !important;
+    top: auto !important;
+    margin: 6px auto 12px !important;
+    padding: 0 !important;
+}
+body.pg-gk.pg-dorf1 > table.gk-shell,
+body.pg-gk.pg-dorf2 > table.gk-shell {
+    margin-top: 0 !important;
+}
+body.pg-gk.pg-dorf1 .gk-shell > tbody > tr > td.gk-td-main,
+body.pg-gk.pg-dorf2 .gk-shell > tbody > tr > td.gk-td-main {
+    padding-top: 4px !important;
+    /* Keep overflow visible for title/tools, but stacking context stays (z-index:1) */
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+body.pg-gk.pg-dorf1 .gk-td-main,
+body.pg-gk.pg-dorf2 .gk-td-main {
+    text-align: right !important;
+    direction: rtl !important;
+}
+body.pg-gk.pg-dorf1 .gk-td-main > .gk-bod,
+body.pg-gk.pg-dorf2 .gk-td-main > .gk-bod {
+    position: relative;
+    top: 0;
+    padding: 0 8px 8px;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    direction: rtl;
+    text-align: right;
+}
+body.pg-gk.pg-dorf1 .gk-bod .PaNa,
+body.pg-gk.pg-dorf2 .gk-bod .PaNa {
+    font-size: 30px;
+    text-align: right;
+    width: 100%;
+    font-weight: 900;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #000;
+    margin: 0 0 4px;
+    padding: 0;
+    line-height: 1.1;
+    vertical-align: top;
+    display: block;
+    direction: rtl;
+    box-sizing: border-box;
+}
+body.pg-gk.pg-dorf1 .gk-bod .PaNa bdi,
+body.pg-gk.pg-dorf2 .gk-bod .PaNa bdi,
+body.pg-gk.pg-dorf1 .gk-bod .PaNa .gk-vname,
+body.pg-gk.pg-dorf2 .gk-bod .PaNa .gk-vname,
+body.pg-gk.pg-dorf1 .gk-bod .PaNa .gk-vname-editable,
+body.pg-gk.pg-dorf2 .gk-bod .PaNa .gk-vname-editable {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    direction: rtl;
+}
+/* Title capital (عاصمة) — muted gray like greek.sa reference */
+body.pg-gk.pg-dorf1 .gk-bod .PaNa a.gk-cap,
+body.pg-gk.pg-dorf2 .gk-bod .PaNa a.gk-cap,
+body.pg-gk .gk-bod .PaNa a.gk-cap {
+    font-size: 13px;
+    font-weight: 301;
+    color: #a0a0a0;
+    text-decoration: none;
+    cursor: default;
+}
+body.pg-gk.pg-dorf1 .gk-bod .PaNa a.gk-cap:hover,
+body.pg-gk.pg-dorf2 .gk-bod .PaNa a.gk-cap:hover,
+body.pg-gk .gk-bod .PaNa a.gk-cap:hover {
+    color: #a0a0a0;
+}
+
+/* Village list capital label (عاصمة) */
+body.pg-gk .gk-td-left table.MyVs a.fl,
+body.pg-gk .gk-td-left span.fl,
+body.pg-gk .gk-td-left span.gk-cap {
+    color: #a0a0a0 !important;
+    font-size: 11px;
+    font-weight: 301;
+    text-decoration: none;
+}
+body.pg-gk.pg-dorf1 .gk-bod > .gk-inner {
+    display: inline-table !important;
+    width: auto !important;
+    margin: 0 !important;
+    margin-inline-start: auto !important;
+    margin-inline-end: 0 !important;
+    direction: ltr !important;
+    vertical-align: top !important;
+}
+body.pg-gk.pg-dorf1 .gk-stats {
+    display: table-cell !important;
+    vertical-align: top !important;
+}
+body.pg-gk.pg-dorf1 .gk-mapcell {
+    width: 300px !important;
+    max-width: 300px !important;
+    vertical-align: top !important;
+}
+body.pg-gk.pg-dorf1 .gk-shell > tbody > tr > td.gk-td-main {
+    height: auto !important;
+    min-height: 480px !important;
+}
+body.pg-gk:not(.pg-dorf1) .gk-shell > tbody > tr > td.gk-td-main {
+    height: auto !important;
+}
+
+/* MaxB content pages (stat/plus): no white column card — content sits on page bg */
+body.pg-gk.pg-statistics .gk-shell > tbody > tr > td.gk-td-main,
+body.pg-gk.pg-plus .gk-shell > tbody > tr > td.gk-td-main {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Popup host: fixed + high z-index must not steal sidebar clicks when empty */
+body.pg-gk #ce {
+    display: block !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: visible !important;
+}
+body.pg-gk #ce:not(:empty) {
+    width: auto !important;
+    height: auto !important;
+}
+body.pg-gk #ce > * {
+    pointer-events: auto !important;
+}
+
+/* Classic #content inside Greek main column */
+body.pg-gk .gk-td-main #content {
+    float: none !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    text-align: right;
+    direction: rtl;
+}
+body.pg-gk .gk-td-main #content h1 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 900 !important;
+    text-align: right !important;
+    margin: 0 0 10px !important;
+    line-height: 1.2 !important;
+}
+body.pg-gk .gk-td-main #textmenu {
+    text-align: right;
+    margin-bottom: 8px;
+}
+body.pg-gk .gk-td-main #textmenu a {
+    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+}
+body.pg-gk.pg-build .gk-td-main #textmenu a.selected,
+html[dir="rtl"] body.pg-gk.pg-build #textmenu a.selected {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+/* spieler.php — hide legacy profile tab row (عضوية اللاعب / الحزمة الرسومية) */
+body.pg-gk.pg-spieler .gk-td-main #textmenu,
+body.pg-gk.pg-spieler .gk-spieler-body > h1,
+body.pg-gk.pg-spieler #content.player #textmenu,
+body.pg-gk.pg-spieler #content.player > h1 {
+    display: none !important;
+}
+
+/* dorf2 village center — map centered; clip hit-layers so they never cover sidebars */
+body.pg-gk.pg-dorf2 .gk-bod > .village2,
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap {
+    float: none !important;
+    width: 540px !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    direction: ltr !important;
+    unicode-bidi: isolate;
+    box-sizing: border-box !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+body.pg-gk.pg-dorf2 .gk-bod .village2 #village_map,
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap #village_map {
+    float: none !important;
+    position: relative !important;
+    width: 540px !important;
+    max-width: 100% !important;
+    height: 448px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    overflow: hidden !important;
+    background-repeat: no-repeat !important;
+    direction: ltr !important;
+    unicode-bidi: isolate;
+}
+/* Classic gpack omits position on map1/map2 — pin overlays to the map box */
+body.pg-gk.pg-dorf2 .gk-bod .village2 img.map1,
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap img.map1 {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 540px !important;
+    height: 448px !important;
+    max-width: 100% !important;
+    z-index: 98 !important;
+}
+body.pg-gk.pg-dorf2 .gk-bod .village2 img.map2,
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap img.map2 {
+    position: absolute !important;
+    left: 63px !important;
+    top: 40px !important;
+    width: 422px !important;
+    height: 339px !important;
+    z-index: 99 !important;
+}
+body.pg-gk.pg-dorf2 .gk-bod .village2 #levels:not(.on),
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap #levels:not(.on) {
+    pointer-events: none !important;
+}
+body.pg-gk.pg-dorf2 .gk-bod .village2 h1,
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap h1 {
+    display: none !important;
+}
+/* dorf1: keep field map from painting over side columns */
+body.pg-gk.pg-dorf1 .gk-mapcell .village1,
+body.pg-gk.pg-dorf1 .gk-bod .village1 {
+    overflow: hidden !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Map page */
+body.pg-gk.pg-map .gk-td-main #content.map {
+    width: auto !important;
+    max-width: 100% !important;
+}
+
+/* dorf1 field overview inner layout */
+body.pg-gk .gk-shell td,
+body.pg-gk .gk-inner td {
+    border: 0 !important;
+}
+body.pg-gk .gk-inner {
+    display: inline-table !important;
+    width: auto !important;
+    margin: 0 !important;
+}
+body.pg-gk .village1 {
+    width: 300px !important;
+    padding: 0 !important;
+    float: none !important;
+}
+
+/* dorf1 / dorf2 village title — after generic .gk-inner reset */
+html[dir="rtl"] body.pg-gk.pg-dorf1 .gk-bod .PaNa,
+html[dir="rtl"] body.pg-gk.pg-dorf2 .gk-bod .PaNa {
+    text-align: right !important;
+    direction: rtl !important;
+}
+html[dir="rtl"] body.pg-gk.pg-dorf1 .gk-bod > .gk-inner {
+    display: inline-table !important;
+    margin: 0 !important;
+    margin-inline-start: auto !important;
+    margin-inline-end: 0 !important;
+}
+
+/* build.php gid0 — new-building list icons clip on the left in RTL */
+body.pg-gk.pg-build .gk-shell > tbody > tr > td.gk-td-main {
+    overflow: visible !important;
+}
+body.pg-gk.pg-build .gk-td-main #content {
+    overflow: visible !important;
+    overflow-x: visible !important;
+}
+body.pg-gk.pg-build div#build.gid0 {
+    width: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+}
+body.pg-gk.pg-build div#build.gid0 table.new_building {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+body.pg-gk.pg-build div#build.gid0 table.new_building td.bimg {
+    width: 85px !important;
+    min-width: 85px !important;
+    padding-left: 6px !important;
+    padding-right: 10px !important;
+    vertical-align: top !important;
+}
+body.pg-gk.pg-build div#build.gid0 table.new_building td.bimg img.building {
+    display: block !important;
+    width: 75px !important;
+    height: 100px !important;
+    max-width: none !important;
+}
+
+/* قيد الإنشاء — classic Travian building_contract (not Greek-restyled) */
+body.pg-gk table#building_contract {
+    width: 502px !important;
+    max-width: 100% !important;
+    margin: 14px 0 0 !important;
+    margin-inline-start: auto !important;
+    margin-inline-end: 0 !important;
+    clear: both !important;
+    border-collapse: collapse !important;
+    background: #fff !important;
+    line-height: 19px !important;
+    direction: rtl !important;
+    float: none !important;
+    table-layout: auto !important;
+}
+body.pg-gk table#building_contract thead th {
+    background-color: #e7e7e7 !important;
+    background-image: linear-gradient(to bottom, #f0f0f0, #dcdcdc) !important;
+    background-repeat: repeat !important;
+    text-align: right !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    padding: 2px 4px !important;
+    border: 1px solid #c0c0c0 !important;
+    color: #000 !important;
+}
+body.pg-gk table#building_contract thead th a {
+    float: left !important;
+}
+body.pg-gk table#building_contract thead th img.clock {
+    float: left !important;
+}
+body.pg-gk table#building_contract tbody td {
+    background: #fff !important;
+    border: 1px solid #c0c0c0 !important;
+    padding: 1px 4px !important;
+    text-align: right !important;
+    font-size: 12px !important;
+    color: #000 !important;
+    white-space: nowrap !important;
+}
+body.pg-gk table#building_contract td.ico {
+    width: 18px !important;
+    padding-right: 4px !important;
+    padding-left: 2px !important;
+}
+body.pg-gk.pg-dorf1 .gk-bod > table#building_contract,
+body.pg-gk.pg-dorf2 .gk-bod > table#building_contract {
+    display: table !important;
+}
+
+

@@ -59,7 +59,6 @@ foreach ($units as $i) {
             <img class="r2" src="img/x.gif" alt="<?php echo CLAY; ?>" title="<?php echo CLAY;?>" /><?php echo (int)$unitData['clay'];?>|
             <img class="r3" src="img/x.gif" alt="<?php echo IRON; ?>" title="<?php echo IRON;?>" /><?php echo (int)$unitData['iron'];?>|
             <img class="r4" src="img/x.gif" alt="<?php echo CROP; ?>" title="<?php echo CROP;?>" /><?php echo (int)$unitData['crop'];?>|
-            <img class="r5" src="img/x.gif" alt="Crop consumption" title="<?php echo CROP_COM;?>" /><?php echo (int)$unitData['pop'];?>|
             <img class="clock" src="img/x.gif" alt="<?php echo DURATION; ?>" title="<?php echo DURATION;?>" /><?php echo $timeFormatted;?>
             <?php if ($showNpc):?>
                 |<a href="build.php?gid=17&t=3&r1=<?php echo (int)$unitData['wood']*$maxPlus;?>&r2=<?php echo (int)$unitData['clay']*$maxPlus;?>&r3=<?php echo (int)$unitData['iron']*$maxPlus;?>&r4=<?php echo (int)$unitData['crop']*$maxPlus;?>" title="<?php echo NPC_TRADE; ?>"><img class="npc" src="img/x.gif" alt="<?php echo NPC_TRADE; ?>" title="<?php echo NPC_TRADE; ?>" /></a>

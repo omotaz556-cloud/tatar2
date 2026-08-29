@@ -359,6 +359,28 @@ References: User ID/Message ID, Mode
 		return mysqli_query($this->dblink,$q);
 	}
 
+	function markAllNoticesRead($uid) {
+	    list($uid) = $this->escape_input((int) $uid);
+
+	    if ($uid <= 0) {
+	        return false;
+	    }
+
+	    $q = 'UPDATE ' . TB_PREFIX . 'ndata SET viewed = 1 WHERE uid = ' . $uid . ' AND del = 0 AND viewed = 0';
+	    return mysqli_query($this->dblink, $q);
+	}
+
+	function markAllMessagesRead($uid) {
+	    list($uid) = $this->escape_input((int) $uid);
+
+	    if ($uid <= 0) {
+	        return false;
+	    }
+
+	    $q = 'UPDATE ' . TB_PREFIX . 'mdata SET viewed = 1 WHERE target = ' . $uid . ' AND viewed = 0 AND deltarget = 0';
+	    return mysqli_query($this->dblink, $q);
+	}
+
     function addNotice($uid, $toWref, $ally, $type, $topic, $data, $time = 0) {
     list($uid, $toWref, $ally, $type, $topic, $data, $time) = $this->escape_input((int) $uid, (int) $toWref, (int) $ally, (int) $type, $topic, $data, (int) $time);
         

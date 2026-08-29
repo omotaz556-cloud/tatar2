@@ -93,7 +93,7 @@ trait DatabaseStatisticsQueries {
 	     *
 	     * Aceeasi lista completa e folosita deja in winner.php.
 	     */
-	    $q = "SELECT v.wref,v.name,v.owner,v.pop FROM " . TB_PREFIX . "vdata AS v," . TB_PREFIX . "users AS u WHERE v.owner=u.id AND u.tribe IN(1,2,3,6,7,8,9".(SHOW_NATARS ? ',5' : '').") AND v.wref != '' AND u.access<" . (INCLUDE_ADMIN ? "10" : "8");
+	    $q = "SELECT v.wref,v.name,v.owner,v.pop,v.cp FROM " . TB_PREFIX . "vdata AS v," . TB_PREFIX . "users AS u WHERE v.owner=u.id AND u.tribe IN(1,2,3,6,7,8,9".(SHOW_NATARS ? ',5' : '').") AND v.wref != '' AND u.access<" . (INCLUDE_ADMIN ? "10" : "8");
 		$result = mysqli_query($this->dblink,$q);
 		return $this->mysqli_fetch_all($result);
 	}
@@ -130,7 +130,7 @@ trait DatabaseStatisticsQueries {
 
     // no need to cache this method
 	function getHeroRanking() {
-		$q = "SELECT * FROM " . TB_PREFIX . "hero WHERE dead = 0";
+		$q = "SELECT * FROM " . TB_PREFIX . "hero WHERE uid > 5";
 		$result = mysqli_query($this->dblink,$q);
 		return $this->mysqli_fetch_all($result);
 	}
@@ -230,5 +230,222 @@ trait DatabaseStatisticsQueries {
 	    $row = mysqli_fetch_assoc($result);
 
 	    return $row ? (int) $row['total'] : 0;
+	}
+
+	function ensureWorldNewsTable()
+	{
+	    static $ready = false;
+	    if ($ready) {
+	        return true;
+	    }
+
+	    $q = 'CREATE TABLE IF NOT EXISTS ' . TB_PREFIX . 'world_news (
+	        id int(11) NOT NULL AUTO_INCREMENT,
+	        attacker_uid int(11) NOT NULL,
+	        attacker_name varchar(40) NOT NULL,
+	        defender_wref int(11) NOT NULL,
+	        defender_vname varchar(100) NOT NULL,
+	        kills int(11) NOT NULL DEFAULT 0,
+	        time int(11) NOT NULL,
+	        PRIMARY KEY (id),
+	        KEY time (time),
+	        KEY kills (kills)
+	    ) ENGINE=InnoDB DEFAULT CHARSET=utf8';
+
+	    $ok = mysqli_query($this->dblink, $q);
+	    if ($ok) {
+	        $ready = true;
+	    }
+	    return (bool) $ok;
+	}
+
+	function addWorldNews($attackerUid, $attackerName, $defenderWref, $defenderVname, $kills, $time = 0)
+	{
+	    if (!$this->ensureWorldNewsTable()) {
+	        return false;
+	    }
+
+	    list($attackerUid, $attackerName, $defenderWref, $defenderVname, $kills, $time) = $this->escape_input(
+	        (int) $attackerUid,
+	        (string) $attackerName,
+	        (int) $defenderWref,
+	        (string) $defenderVname,
+	        (int) $kills,
+	        (int) ($time > 0 ? $time : time())
+	    );
+
+	    if ($kills <= 0 || $attackerUid <= 0 || $defenderWref <= 0) {
+	        return false;
+	    }
+
+	    $q = 'INSERT INTO ' . TB_PREFIX . 'world_news
+	        (attacker_uid, attacker_name, defender_wref, defender_vname, kills, time)
+	        VALUES (' . $attackerUid . ", '" . $attackerName . "', " . $defenderWref . ", '"
+	        . $defenderVname . "', " . $kills . ', ' . $time . ')';
+	    $ok = mysqli_query($this->dblink, $q);
+
+	    if ($ok && random_int(1, 20) === 1) {
+	        $this->pruneWorldNews();
+	    }
+
+	    return (bool) $ok;
+	}
+
+	function getWorldNews($limit = 50)
+	{
+	    if (!$this->ensureWorldNewsTable()) {
+	        return [];
+	    }
+
+	    $limit = max(1, min(200, (int) $limit));
+	    $q = 'SELECT id, attacker_uid, attacker_name, defender_wref, defender_vname, kills, time
+	        FROM ' . TB_PREFIX . 'world_news
+	        ORDER BY time DESC, id DESC
+	        LIMIT ' . $limit;
+	    $result = mysqli_query($this->dblink, $q);
+	    if (!$result) {
+	        return [];
+	    }
+
+	    return $this->mysqli_fetch_all($result);
+	}
+
+	function pruneWorldNews($keepDays = 30, $maxRows = 500)
+	{
+	    if (!$this->ensureWorldNewsTable()) {
+	        return;
+	    }
+
+	    $keepDays = max(7, (int) $keepDays);
+	    $maxRows = max(50, (int) $maxRows);
+	    $cutoff = time() - ($keepDays * 86400);
+
+	    mysqli_query(
+	        $this->dblink,
+	        'DELETE FROM ' . TB_PREFIX . 'world_news WHERE time < ' . (int) $cutoff
+	    );
+
+	    $countRes = mysqli_query($this->dblink, 'SELECT COUNT(*) AS total FROM ' . TB_PREFIX . 'world_news');
+	    if (!$countRes) {
+	        return;
+	    }
+	    $countRow = mysqli_fetch_assoc($countRes);
+	    $total = (int) ($countRow['total'] ?? 0);
+	    if ($total <= $maxRows) {
+	        return;
+	    }
+
+	    $trim = $total - $maxRows;
+	    mysqli_query(
+	    $this->dblink,
+	        'DELETE FROM ' . TB_PREFIX . 'world_news ORDER BY time ASC, id ASC LIMIT ' . (int) $trim
+	    );
+	}
+
+	/**
+	 * Greek.sa "لم يُهزموا في الدفاع" ranking table.
+	 * Tracks each player's undefeated-defense streak start timestamp.
+	 */
+	function ensureUndefeatedDefTable()
+	{
+	    static $ready = false;
+	    if ($ready) {
+	        return true;
+	    }
+
+	    $q = 'CREATE TABLE IF NOT EXISTS ' . TB_PREFIX . 'undefeated_def (
+	        uid int(11) NOT NULL,
+	        since int(11) NOT NULL,
+	        PRIMARY KEY (uid),
+	        KEY since (since)
+	    ) ENGINE=InnoDB DEFAULT CHARSET=utf8';
+
+	    $ok = mysqli_query($this->dblink, $q);
+	    if ($ok) {
+	        $ready = true;
+	    }
+	    return (bool) $ok;
+	}
+
+	/**
+	 * Ensure every eligible player has a streak row (defaults to regtime / COMMENCE).
+	 */
+	function seedUndefeatedDefRows()
+	{
+	    if (!$this->ensureUndefeatedDefTable()) {
+	        return;
+	    }
+
+	    $accessMax = defined('INCLUDE_ADMIN') && INCLUDE_ADMIN ? 10 : 8;
+	    $commence = defined('COMMENCE') ? (int) COMMENCE : 0;
+	    $q = 'INSERT IGNORE INTO ' . TB_PREFIX . 'undefeated_def (uid, since)
+	        SELECT u.id,
+	            GREATEST(COALESCE(NULLIF(u.regtime, 0), ' . $commence . '), ' . $commence . ')
+	        FROM ' . TB_PREFIX . 'users u
+	        WHERE u.id > 5
+	          AND u.access < ' . (int) $accessMax . '
+	          AND u.tribe IN (1,2,3,6,7,8,9)';
+	    mysqli_query($this->dblink, $q);
+	}
+
+	/**
+	 * Reset a defender's undefeated streak (called when they lose troops in defense).
+	 */
+	function breakUndefeatedDefense($uid, $when = 0)
+	{
+	    $uid = (int) $uid;
+	    if ($uid <= 5) {
+	        return false;
+	    }
+	    if (!$this->ensureUndefeatedDefTable()) {
+	        return false;
+	    }
+
+	    $when = (int) ($when > 0 ? $when : time());
+	    $q = 'INSERT INTO ' . TB_PREFIX . 'undefeated_def (uid, since) VALUES ('
+	        . $uid . ', ' . $when . ')
+	        ON DUPLICATE KEY UPDATE since = ' . $when;
+	    return (bool) mysqli_query($this->dblink, $q);
+	}
+
+	/**
+	 * Ranking rows for undefeated defense list (longest / highest points first).
+	 * Points = floor(hours_undefeated) * 5. Daily gold reward = 1000 while on list.
+	 *
+	 * @return array
+	 */
+	function getUndefeatedDefRanking()
+	{
+	    if (!$this->ensureUndefeatedDefTable()) {
+	        return [];
+	    }
+
+	    $this->seedUndefeatedDefRows();
+
+	    $accessMax = defined('INCLUDE_ADMIN') && INCLUDE_ADMIN ? 10 : 8;
+	    $now = time();
+	    $q = 'SELECT
+	            u.id AS userid,
+	            u.username,
+	            u.alliance,
+	            a.tag AS allitag,
+	            d.since,
+	            FLOOR(GREATEST(0, (' . (int) $now . ' - d.since)) / 3600) * 5 AS points,
+	            cap.wref AS capital
+	        FROM ' . TB_PREFIX . 'undefeated_def d
+	        INNER JOIN ' . TB_PREFIX . 'users u ON u.id = d.uid
+	        LEFT JOIN ' . TB_PREFIX . 'alidata a ON a.id = u.alliance
+	        LEFT JOIN ' . TB_PREFIX . 'vdata cap ON cap.owner = u.id AND cap.capital = 1
+	        WHERE u.id > 5
+	          AND u.access < ' . (int) $accessMax . '
+	          AND u.tribe IN (1,2,3,6,7,8,9)
+	        ORDER BY points DESC, d.since ASC, u.id ASC';
+
+	    $result = mysqli_query($this->dblink, $q);
+	    if (!$result) {
+	        return [];
+	    }
+
+	    return $this->mysqli_fetch_all($result);
 	}
 }

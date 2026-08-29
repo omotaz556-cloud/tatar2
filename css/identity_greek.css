@@ -1,0 +1,226 @@
+/* ============================================================
+ * identity_greek.css
+ *
+ * Visual identity derived from _design_greek_sa / greek.sa references.
+ * Applied onto EXISTING Novaterra markup (#mid, #content, #res, tables…).
+ * This is NOT a literal MaxB/HTML replacement.
+ *
+ * Tokens (from design MaxB.css / page layout order):
+ *   font: Tahoma stack, body ~14px
+ *   links: #71d000, heavy weight
+ *   titles: ~26–30px, weight 900, right (PaNa feel on h1)
+ *   resource pills: #54c571, radius 5px, pad 5px 4px (Resbar)
+ *   side panels: 14px, right-aligned (prud / Trops feel)
+ * ============================================================ */
+
+/* --- Base typography (all RTL game chrome) --- */
+html[dir="rtl"] body.v35,
+html[dir="rtl"] body.v35 #mid,
+html[dir="rtl"] body.v35 #content,
+html[dir="rtl"] body.v35 #side_navi,
+html[dir="rtl"] body.v35 #side_info {
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif;
+}
+
+/* Greek shell sidebar — MaxB RLisTa uses Tahoma (not Segoe UI) */
+html[dir="rtl"] body.pg-gk,
+html[dir="rtl"] body.pg-gk .gk-td-nav,
+html[dir="rtl"] body.pg-gk .gk-rlista,
+html[dir="rtl"] body.pg-gk .gk-rlista a,
+html[dir="rtl"] body.pg-gk .gk-rlista a b,
+html[dir="rtl"] body.pg-gk .gk-rlista a g,
+html[dir="rtl"] body.pg-gk .gk-rlista a o {
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+}
+
+html[dir="rtl"] body.v35 #content {
+    font-size: 14px;
+}
+
+/* --- Links (design green) --- */
+html[dir="rtl"] body.v35 #content a:link,
+html[dir="rtl"] body.v35 #content a:visited,
+html[dir="rtl"] body.v35 #side_navi a:link,
+html[dir="rtl"] body.v35 #side_navi a:visited,
+html[dir="rtl"] body.v35 #side_info a:link,
+html[dir="rtl"] body.v35 #side_info a:visited,
+html[dir="rtl"] body.v35 #textmenu a:link,
+html[dir="rtl"] body.v35 #textmenu a:visited {
+    color: #71d000;
+    font-weight: 700;
+}
+
+html[dir="rtl"] body.v35 #content a:hover,
+html[dir="rtl"] body.v35 #side_navi a:hover,
+html[dir="rtl"] body.v35 #side_info a:hover,
+html[dir="rtl"] body.v35 #textmenu a:hover {
+    color: #5bb000;
+}
+
+html[dir="rtl"] body.v35 #textmenu a.selected {
+    color: #000 !important;
+    font-weight: 900;
+    text-decoration: underline;
+}
+
+/* --- Page / village titles (PaNa distribution feel on existing h1) --- */
+html[dir="rtl"] body.v35 #content > h1,
+html[dir="rtl"] body.v35 #content.village1 > h1,
+html[dir="rtl"] body.v35 #content.village2 > h1,
+html[dir="rtl"] body.v35 #content.statistics > h1,
+html[dir="rtl"] body.v35 #content.messages > h1,
+html[dir="rtl"] body.v35 #content.reports > h1,
+html[dir="rtl"] body.v35 #content.player > h1,
+html[dir="rtl"] body.v35 #content.plus > h1 {
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-align: right;
+    color: #000;
+    height: auto;
+    min-height: 32px;
+    margin-bottom: 6px;
+}
+
+html[dir="rtl"] body.v35 #content span#cap,
+html[dir="rtl"] body.v35 #content span#cap font {
+    color: #a0a0a0 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+}
+
+/* --- Resource bar pills (Resbar tokens on #res / respill) --- */
+html[dir="rtl"] #res table td.respill span {
+    background-color: #54c571 !important;
+    border-radius: 5px !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 16px;
+    min-width: 50px;
+    padding: 5px 4px !important;
+    text-align: center !important;
+}
+
+/* Warehouse / granary capacity numbers beside pills */
+html[dir="rtl"] #res table td.re .none,
+html[dir="rtl"] #res .resCap {
+    color: #e6fac6;
+}
+
+/* --- Village overview: map + details distribution (VTy | diL feel) --- */
+html[dir="rtl"] body.dorf1Page #content.village1 {
+    padding: 8px 0 0 !important;
+}
+
+html[dir="rtl"] body.dorf1Page #content.village1 > h1 {
+    margin-bottom: 4px !important;
+}
+
+html[dir="rtl"] body.dorf1Page div.village1 table#production,
+html[dir="rtl"] body.dorf1Page div.village1 table#troops,
+html[dir="rtl"] body.dorf1Page div.village1 table#movements {
+    font-size: 14px !important;
+    text-align: right;
+}
+
+html[dir="rtl"] body.dorf1Page div.village1 table#production thead th,
+html[dir="rtl"] body.dorf1Page div.village1 table#troops thead th,
+html[dir="rtl"] body.dorf1Page div.village1 table#movements thead th {
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    text-align: right !important;
+}
+
+html[dir="rtl"] body.dorf1Page div.village1 table#production td.num,
+html[dir="rtl"] body.dorf1Page div.village1 table#troops td.num {
+    font-weight: 700 !important;
+}
+
+html[dir="rtl"] body.dorf1Page div.village1 table#troops td.arabic-text,
+html[dir="rtl"] body.dorf1Page div.village1 table#troops .none {
+    color: silver !important;
+    text-align: center !important;
+    font-weight: 400 !important;
+}
+
+/* --- Village center (dorf2 classic only): title + map breathing room --- */
+html[dir="rtl"] body.pg-dorf2:not(.pg-gk) #content.village2 {
+    padding: 8px 0 0 !important;
+}
+
+/* --- Statistics / messages / reports / profile / plus tables --- */
+html[dir="rtl"] body.v35 #content.statistics table,
+html[dir="rtl"] body.v35 #content.messages table,
+html[dir="rtl"] body.v35 #content.reports table,
+html[dir="rtl"] body.v35 #content.player table,
+html[dir="rtl"] body.v35 #content.plus table {
+    font-size: 14px;
+}
+
+html[dir="rtl"] body.v35 #content.statistics table thead th,
+html[dir="rtl"] body.v35 #content.messages table thead th,
+html[dir="rtl"] body.v35 #content.reports table thead th,
+html[dir="rtl"] body.v35 #content.player table thead th,
+html[dir="rtl"] body.v35 #content.plus table thead th {
+    font-weight: 900;
+    text-align: right;
+}
+
+html[dir="rtl"] body.v35 #content.statistics table td.pla a,
+html[dir="rtl"] body.v35 #content.statistics table td.al a {
+    color: #71d000;
+    font-weight: 700;
+}
+
+/* --- Side menu / village list: denser, right-aligned like RLisTa / MyVs --- */
+html[dir="rtl"] body.v35 #side_navi,
+html[dir="rtl"] body.v35 #side_info {
+    font-size: 14px;
+    text-align: right;
+}
+
+html[dir="rtl"] body.v35 #side_navi a,
+html[dir="rtl"] body.v35 #side_info a {
+    font-weight: 700;
+}
+
+/* --- Forms / buttons inside content: keep Travian controls, tighten type --- */
+html[dir="rtl"] body.v35 #content input[type="text"],
+html[dir="rtl"] body.v35 #content input[type="password"],
+html[dir="rtl"] body.v35 #content textarea,
+html[dir="rtl"] body.v35 #content select {
+    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+/* --- Responsive: identity stays readable; structure unchanged --- */
+@media screen and (max-width: 900px) {
+    html[dir="rtl"] body.v35 #content > h1,
+    html[dir="rtl"] body.v35 #content.village1 > h1,
+    html[dir="rtl"] body.v35 #content.village2 > h1 {
+        font-size: 22px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    html[dir="rtl"] body.v35 #content > h1 {
+        font-size: 20px;
+    }
+    html[dir="rtl"] #res table td.respill span {
+        font-size: 12px !important;
+        padding: 4px 3px !important;
+        min-width: 40px;
+    }
+}
+
+/* Hero mansion — oasis summary: center intro, keep max counts right */
+html[dir="rtl"] body.pg-gk.pg-build div#build.gid37 .gk-oasis-summary,
+html[dir="rtl"] body.pg-gk.pg-build div#build.gid37 .gk-oasis-summary > p:not(.gk-oasis-max),
+html[dir="rtl"] body.pg-gk.pg-build div#build.gid37 .gk-oasis-summary a {
+    text-align: center !important;
+}
+html[dir="rtl"] body.pg-gk.pg-build div#build.gid37 .gk-oasis-summary p.gk-oasis-max {
+    text-align: right !important;
+}

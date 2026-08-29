@@ -63,7 +63,7 @@ if (!empty($trainList)):
                 <?php endif;?>
             </td>
             <td class="fin">
-                <?php if ($time[0]!== "today") echo "on ".$time[0]." at "; echo $time[1];?>
+                <?php if (!tz_mtime_is_today($time[0])) echo "on ".$time[0]." at "; echo $time[1];?>
             </td>
         </tr>
     <?php endforeach;?>

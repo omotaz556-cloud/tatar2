@@ -67,7 +67,7 @@ if ($plusRtl) {
     ];
 }
 ?>
-<table id="plus_features" class="features" cellpadding="1" cellspacing="1">
+<table id="plus_features" class="features<?php echo $plusRtl ? ' lang_rtl' : ' lang_ltr'; ?>" cellpadding="1" cellspacing="1">
 <thead><tr><th colspan="2"><?php echo TZ_FEATURES_OF_NOVATERRA; ?> <span class="plus_g">P</span><span class="plus_o">l</span><span class="plus_g">u</span><span class="plus_o">s</span></th></tr></thead>
 <tbody>
 <tr><td colspan="2" class="empty"></td></tr>
@@ -81,7 +81,7 @@ if ($plusRtl) {
 <?php endforeach; ?>
 </tbody></table>
 
-<table id="gold_features" class="features" cellpadding="1" cellspacing="1">
+<table id="gold_features" class="features<?php echo $plusRtl ? ' lang_rtl' : ' lang_ltr'; ?>" cellpadding="1" cellspacing="1">
 <thead><tr><th colspan="2"><?php echo TZ_FEATURES_OF_NOVATERRA; ?> <font color="#71D000">G</font><font color="#FF6F0F">o</font><font color="#71D000">l</font><font color="#FF6F0F">d</font></th></tr></thead>
 <tbody>
 <tr><td colspan="2" class="empty"></td></tr>
@@ -94,4 +94,3 @@ if ($plusRtl) {
 <tr><td colspan="2" class="empty"></td></tr>
 <?php endforeach; ?>
 </tbody></table>
-</div>

@@ -192,6 +192,3 @@ function tzmsHide() {
 }
 </script>
 <?php endif; ?>
-
-<?php?>
-<table cellpadding="1" cellspacing="1" id="search_navi">

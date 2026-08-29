@@ -67,7 +67,7 @@ $buyLabel = $plusRtl ? 'شراء' : 'Buy';
 
 <?php if (!empty($purchaseMsg)) echo '<p class="error">' . htmlspecialchars($purchaseMsg, ENT_QUOTES, 'UTF-8') . '</p>'; ?>
 <?php if (isset($session->uid)): $history = PaymentShop::history($session->uid); ?>
-<table class="rate_details" cellpadding="1" cellspacing="1">
+<table class="rate_details <?php echo $plusRtl ? 'lang_rtl' : 'lang_ltr'; ?>" cellpadding="1" cellspacing="1">
     <thead><tr><th colspan="5"><?php echo $plusRtl ? 'سجل مشتريات اللاعب' : 'Player purchase history'; ?></th></tr></thead>
     <tbody>
     <?php if (!$history): ?><tr><td colspan="5"><?php echo $plusRtl ? 'لا توجد مشتريات بعد.' : 'No purchases yet.'; ?></td></tr><?php endif; ?>
@@ -83,4 +83,3 @@ $buyLabel = $plusRtl ? 'شراء' : 'Buy';
     </tbody>
 </table>
 <?php endif; ?>
-</div>

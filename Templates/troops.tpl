@@ -22,7 +22,7 @@
 <thead>
 <tr>
     <th colspan="3">
-        <?php echo TROOPS; ?>
+        <?php echo !empty($gkShell) ? GK_TROOPS : TROOPS; ?>
     </th>
 </tr>
 </thead>
@@ -129,7 +129,7 @@ if (!empty($troops['hero'])) {
  */
 if (!$troopsPresent) {
     $rtlClass = (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) ? ' class="arabic-text"' : '';
-    echo '<tr><td' . $rtlClass . '>' . NONE . '</td></tr>';
+    echo '<tr><td' . $rtlClass . '>' . (!empty($gkShell) ? GK_NONE : NONE) . '</td></tr>';
 }
 ?>
 

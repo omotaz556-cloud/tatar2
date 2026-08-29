@@ -17,13 +17,17 @@
 if (GP_ENABLE) {
 ?>
 
-<h1><?php echo PLAYER_PROFILE; ?></h1>
+<?php
+$gkSpielerGreek = !empty($GLOBALS['gkSpielerGreek']);
+$gkHideClassicMenu = !empty($GLOBALS['gkSpielerLiteralPage'])
+    || (class_exists('GreekSpieler') && GreekSpieler::suppressClassicMenu());
+if (!$gkHideClassicMenu) {
+    echo '<h1>' . PLAYER_PROFILE . '</h1>';
+    include __DIR__ . '/menu.tpl';
+}
+?>
 
 <?php
-// =========================
-// MENU INCLUDE (IMPORTANT)
-// =========================
-include("menu.tpl");
 
 // =========================
 // SAVE CUSTOM GPACK (POST)

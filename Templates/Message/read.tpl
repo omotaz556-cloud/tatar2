@@ -1,13 +1,8 @@
 <?php
 #################################################################################
 ##  SAFE INCREMENTAL REFACTOR - Read Message                                   ##
-##  Credits: cleaned structure, same logic preserved                           ##
-##  Compatibility: PHP 5.6+ / PHP 7+                                           ##
 #################################################################################
 
-// ======================================================
-// LOAD MESSAGE DATA (UNCHANGED)
-// ======================================================
 $reading  = $message->reading;
 
 $input    = tz_expand_report($reading['message']);
@@ -16,53 +11,46 @@ $player   = $reading['player'];
 $coor     = $reading['coor'];
 $report   = $reading['report'];
 
-// ======================================================
-// BBCODE PARSER (IMPORTANT - NU MODIFICĂM)
-// ======================================================
-include("GameEngine/BBCode.php");
+include('GameEngine/BBCode.php');
 
-// ======================================================
-// CACHE USERNAME (reduce SQL calls)
-// ======================================================
-$userCache = [];
+$userCache = array();
 function getCachedUsername($uid, $database, &$cache) {
-    $uid = (int)$uid;
+    $uid = (int) $uid;
     if (!isset($cache[$uid])) {
-        $cache[$uid] = $database->getUserField($uid, "username", 0);
+        $cache[$uid] = $database->getUserField($uid, 'username', 0);
     }
     return $cache[$uid];
 }
 
-// ======================================================
-// BASIC VARIABLES
-// ======================================================
-$ownerId = (int)$reading['owner'];
+$ownerId = (int) $reading['owner'];
 $linkSender = ($ownerId != 2 && $ownerId != 4);
-
-// date format
 $date = $generator->procMtime($reading['time']);
+
+$gkMsgGreek = !empty($GLOBALS['gkNachrichtenLiteralPage']);
+$gkMsgReadTitle = tz_expand_report($reading['topic']);
+
+if (!$gkMsgGreek) {
+    echo '<div id="content" class="messages">';
+    echo '<h1>' . MESSAGES . '</h1>';
+    include('menu.tpl');
+} else {
+    echo '<div class="gk-msg-panel gk-msg-read">';
+    echo '<div class="gk-msg-panel-title">' . htmlspecialchars($gkMsgReadTitle, ENT_QUOTES, 'UTF-8') . '</div>';
+    echo '<div class="gk-msg-panel-body">';
+}
 ?>
-
-<div id="content" class="messages">
-<h1><?php echo MESSAGES; ?></h1>
-
-<?php include("menu.tpl"); ?>
 
 <form method="post" action="nachrichten.php">
 
-<div id="read_head" class="msg_head"></div>
+<?php if (!$gkMsgGreek) { ?><div id="read_head" class="msg_head"></div><?php } ?>
 
-<div id="read_content" class="msg_content">
+<div id="read_content" class="msg_content<?php echo $gkMsgGreek ? ' gk-msg-read-content' : ''; ?>">
 
-<img src="img/x.gif" id="label" class="read" alt="" />
+<?php if (!$gkMsgGreek) { ?><img src="img/x.gif" id="label" class="read" alt="" /><?php } ?>
 
-<!-- ======================================================
-     HEADER (SENDER + SUBJECT)
-====================================================== -->
-<div id="heading">
+<div id="heading" class="<?php echo $gkMsgGreek ? 'gk-msg-read-heading' : ''; ?>">
 
-    <!-- Sender -->
-    <div>
+    <div class="gk-msg-read-sender">
         <?php
         if ($linkSender) {
             echo '<a href="' . rtrim(SERVER, '/') . '/spieler.php?uid=' . $ownerId . '">';
@@ -76,15 +64,13 @@ $date = $generator->procMtime($reading['time']);
         ?>
     </div>
 
-    <!-- Subject -->
+    <?php if (!$gkMsgGreek) { ?>
     <div><?php echo tz_expand_report($reading['topic']); ?></div>
+    <?php } ?>
 
 </div>
 
-<!-- ======================================================
-     DATE / TIME
-====================================================== -->
-<div id="time">
+<div id="time" class="<?php echo $gkMsgGreek ? 'gk-msg-read-time' : ''; ?>">
     <div><?php echo $date[0]; ?></div>
     <div><?php echo $date[1]; ?></div>
 </div>
@@ -92,31 +78,30 @@ $date = $generator->procMtime($reading['time']);
 <div class="clear"></div>
 <div class="line"></div>
 
-<!-- ======================================================
-     MESSAGE CONTENT (CRITICAL: NU MODIFICĂM FLOW)
-====================================================== -->
-<div class="message">
+<div class="message<?php echo $gkMsgGreek ? ' gk-msg-read-text' : ''; ?>">
 <?php
-// păstrăm exact ordinea: stripslashes -> nl2br -> bbcoded
 echo stripslashes(nl2br($bbcoded));
 ?>
 </div>
 
-<!-- ======================================================
-     HIDDEN INPUTS (UNCHANGED)
-====================================================== -->
 <input type="hidden" name="id" value="<?php echo $reading['id']; ?>" />
 <input type="hidden" name="ft" value="m1" />
 <input type="hidden" name="t" value="1" />
 
 <p class="btn">
-    <button name="s1" id="btn_reply" class="trav_buttons"><?php echo ANSWER; ?></button>
+    <button name="s1" id="btn_reply" class="<?php echo $gkMsgGreek ? 'gk-msg-del gk-msg-reply' : 'trav_buttons'; ?>"><?php echo ANSWER; ?></button>
 </p>
 
 </div>
 
-<div id="read_foot" class="msg_foot"></div>
+<?php if (!$gkMsgGreek) { ?><div id="read_foot" class="msg_foot"></div><?php } ?>
 
 </form>
 
-</div>
+<?php
+if ($gkMsgGreek) {
+    echo '</div></div>';
+} else {
+    echo '</div>';
+}
+?>
