@@ -276,6 +276,15 @@ class Message
                 }
             }
         }
+        if (!empty($this->reading) && $this->isWelcomeSystemMessage($this->reading)) {
+            $targetUid = (int) ($this->reading['target'] ?? $session->uid);
+            $welcomeUser = $database->getUserField($targetUid, 'username', 0);
+            if (empty($welcomeUser)) {
+                $welcomeUser = $session->username;
+            }
+            $this->reading['message'] = $this->composeWelcomeMessage($welcomeUser);
+        }
+
         if (!empty($this->reading) && $this->reading['viewed'] == 0) {
             $database->getMessage($id, 4);
         }
@@ -747,10 +756,85 @@ class Message
         }
     }
 
-	public function sendWelcome($uid, $username){
-		global $database;
+    private function isWelcomeSystemMessage(array $row): bool
+    {
+        if ((int) ($row['owner'] ?? 0) !== 1) {
+            return false;
+        }
 
-    $welcomemsg = file_get_contents("GameEngine/Admin/welcome.tpl");
+        $message = (string) ($row['message'] ?? '');
+        if (strpos($message, '[message]') === false) {
+            return false;
+        }
+
+        $topic = trim(strip_tags((string) ($row['topic'] ?? '')));
+        if ($topic === '') {
+            return false;
+        }
+
+        $knownTopics = array(
+            defined('WEL_TOPIC') ? trim(WEL_TOPIC) : 'نصائح ومعلومات مفيدة',
+            'Useful tips & information',
+            'نصائح ومعلومات مفيدة',
+        );
+
+        foreach ($knownTopics as $knownTopic) {
+            if ($topic === trim($knownTopic)) {
+                return true;
+            }
+        }
+
+        return (strpos($topic, 'نصائح') !== false || stripos($topic, 'tips') !== false);
+    }
+
+    private function localizeWelcomeFeatureName(string $name): string
+    {
+        if (!function_exists('tz_is_rtl_lang') || !tz_is_rtl_lang()) {
+            return $name;
+        }
+
+        static $map = array(
+            'Enhanced Oasis Display' => 'عرض المحيط المحسّن',
+            'Alliance Invitation System' => 'نظام دعوات التحالف',
+            'New Alliance & Embassy Mechanics' => 'آليات التحالف والسفارة الجديدة',
+            'Forum Post Notifications' => 'إشعارات منشورات المنتدى',
+            'Tribe Images' => 'صور القبائل',
+            'Multihunter Images' => 'صور صياد المتعددين',
+            'Artifact Display' => 'عرض القطع الأثرية',
+            'World Wonder Display' => 'عرض عجائب الدنيا',
+            'Vacation Mode' => 'وضع الإجازة',
+            'Catapult Target Display' => 'عرض هدف المنجنيق',
+            'Nature & Natars Manual' => 'دليل الطبيعة والتتار',
+            'Direct Links' => 'روابط مباشرة',
+            '3-Year Veteran Medal' => 'ميدالية خدمة 3 سنوات',
+            '5-Year Veteran Medal' => 'ميدالية خدمة 5 سنوات',
+            '10-Year Veteran Medal' => 'ميدالية خدمة 10 سنوات',
+            'Special Medals System' => 'نظام الميداليات الخاصة',
+            'Server Milestones' => 'إنجازات السيرفر',
+            'Medal Reset Timer' => 'مؤقت إعادة الميداليات',
+            'T4 Hero System' => 'نظام البطل T4',
+            'Huns' => (defined('TRIBE6') ? TRIBE6 : 'الهون'),
+            'Egyptians' => (defined('TRIBE7') ? TRIBE7 : 'المصريون'),
+            'Spartans' => (defined('TRIBE8') ? TRIBE8 : 'الإسبرطيون'),
+            'Vikings' => (defined('TRIBE9') ? TRIBE9 : 'الفايكنج'),
+            'Registration Gold Bonus' => 'مكافأة ذهب التسجيل',
+            'Alliance Bonus' => 'مكافأة التحالف',
+            'WW Image by Tribe' => 'صورة عجيبة الدنيا حسب القبيلة',
+        );
+
+        return $map[$name] ?? $name;
+    }
+
+    private function composeWelcomeMessage($username)
+    {
+        global $database;
+
+        $isAr = function_exists('tz_is_rtl_lang') && tz_is_rtl_lang();
+        $welcomeTpl = $isAr
+            ? 'GameEngine/Admin/welcome_ar.tpl'
+            : 'GameEngine/Admin/welcome.tpl';
+
+        $welcomemsg = file_get_contents($welcomeTpl);
 
     /*
      * ================================================================
@@ -952,7 +1036,11 @@ class Message
      */
 
     $formatDate = function ($timestamp) {
-        return date("d.m.Y H:i", $timestamp);
+        $formatted = date("d.m.Y H:i", $timestamp);
+        if ($isAr && function_exists('tz_arabic_digits')) {
+            return tz_arabic_digits($formatted);
+        }
+        return $formatted;
     };
 
 
@@ -973,27 +1061,47 @@ class Message
     $wwBuildTimeParts = [];
 
     if ($wwBuildTimeDays > 0) {
-        $wwBuildTimeParts[] =
-            $wwBuildTimeDays . ' ' .
-            ($wwBuildTimeDays == 1 ? 'day' : 'days');
+        if ($isAr) {
+            $wwBuildTimeParts[] =
+                $wwBuildTimeDays . ' ' .
+                ($wwBuildTimeDays == 1 ? 'يوم' : 'أيام');
+        } else {
+            $wwBuildTimeParts[] =
+                $wwBuildTimeDays . ' ' .
+                ($wwBuildTimeDays == 1 ? 'day' : 'days');
+        }
     }
 
     if ($wwBuildTimeHours > 0) {
-        $wwBuildTimeParts[] =
-            $wwBuildTimeHours . ' ' .
-            ($wwBuildTimeHours == 1 ? 'hour' : 'hours');
+        if ($isAr) {
+            $wwBuildTimeParts[] =
+                $wwBuildTimeHours . ' ' .
+                ($wwBuildTimeHours == 1 ? 'ساعة' : 'ساعات');
+        } else {
+            $wwBuildTimeParts[] =
+                $wwBuildTimeHours . ' ' .
+                ($wwBuildTimeHours == 1 ? 'hour' : 'hours');
+        }
     }
 
     if ($wwBuildTimeMinutes > 0) {
-        $wwBuildTimeParts[] =
-            $wwBuildTimeMinutes . ' ' .
-            ($wwBuildTimeMinutes == 1 ? 'minute' : 'minutes');
+        if ($isAr) {
+            $wwBuildTimeParts[] =
+                $wwBuildTimeMinutes . ' ' .
+                ($wwBuildTimeMinutes == 1 ? 'دقيقة' : 'دقائق');
+        } else {
+            $wwBuildTimeParts[] =
+                $wwBuildTimeMinutes . ' ' .
+                ($wwBuildTimeMinutes == 1 ? 'minute' : 'minutes');
+        }
     }
 
     if (empty($wwBuildTimeParts)) {
-        $wwBuildTime = 'less than 1 minute';
+        $wwBuildTime = $isAr ? 'أقل من دقيقة واحدة' : 'less than 1 minute';
     } else {
-        $wwBuildTime = implode(', ', $wwBuildTimeParts);
+        $wwBuildTime = $isAr
+            ? implode('، ', $wwBuildTimeParts)
+            : implode(', ', $wwBuildTimeParts);
     }
 
 
@@ -1032,16 +1140,26 @@ class Message
             $roundedNatarMonths = (int) $roundedNatarMonths;
         }
 
-        $natarTime =
-            'approximately ' .
-            $roundedNatarMonths . ' ' .
-            ($roundedNatarMonths == 1 ? 'month' : 'months');
+        if ($isAr) {
+            $monthsLabel = ($roundedNatarMonths == 1) ? 'شهر' : 'أشهر';
+            $monthsVal = function_exists('tz_arabic_digits')
+                ? tz_arabic_digits((string) $roundedNatarMonths)
+                : (string) $roundedNatarMonths;
+            $natarTime = 'حوالي ' . $monthsVal . ' ' . $monthsLabel;
+        } else {
+            $natarTime =
+                'approximately ' .
+                $roundedNatarMonths . ' ' .
+                ($roundedNatarMonths == 1 ? 'month' : 'months');
+        }
 
     } else {
 
-        $natarTime =
-            'on ' .
-            date("d.m.Y H:i", $natarsDate);
+        $natarDateStr = date("d.m.Y H:i", $natarsDate);
+        if ($isAr && function_exists('tz_arabic_digits')) {
+            $natarDateStr = tz_arabic_digits($natarDateStr);
+        }
+        $natarTime = $isAr ? 'في ' . $natarDateStr : 'on ' . $natarDateStr;
     }
 
 
@@ -1056,38 +1174,74 @@ class Message
      * NEW_FUNCTION constant is enabled.
      */
 
-    $tribes = [
-        'Romans',
-        'Gauls',
-        'Teutons'
-    ];
+    if ($isAr) {
+        $tribes = array(
+            defined('TRIBE1') ? TRIBE1 : 'الرومان',
+            defined('TRIBE3') ? TRIBE3 : 'الغال',
+            defined('TRIBE2') ? TRIBE2 : 'التوتون',
+        );
 
-    if (
-        defined('NEW_FUNCTION_TRIBE_HUNS') &&
-        NEW_FUNCTION_TRIBE_HUNS
-    ) {
-        $tribes[] = 'Huns';
-    }
+        if (
+            defined('NEW_FUNCTION_TRIBE_HUNS') &&
+            NEW_FUNCTION_TRIBE_HUNS
+        ) {
+            $tribes[] = defined('TRIBE6') ? TRIBE6 : 'الهون';
+        }
 
-    if (
-        defined('NEW_FUNCTION_TRIBE_EGIPTEANS') &&
-        NEW_FUNCTION_TRIBE_EGIPTEANS
-    ) {
-        $tribes[] = 'Egyptians';
-    }
+        if (
+            defined('NEW_FUNCTION_TRIBE_EGIPTEANS') &&
+            NEW_FUNCTION_TRIBE_EGIPTEANS
+        ) {
+            $tribes[] = defined('TRIBE7') ? TRIBE7 : 'المصريون';
+        }
 
-    if (
-        defined('NEW_FUNCTION_TRIBE_SPARTANS') &&
-        NEW_FUNCTION_TRIBE_SPARTANS
-    ) {
-        $tribes[] = 'Spartans';
-    }
+        if (
+            defined('NEW_FUNCTION_TRIBE_SPARTANS') &&
+            NEW_FUNCTION_TRIBE_SPARTANS
+        ) {
+            $tribes[] = defined('TRIBE8') ? TRIBE8 : 'الإسبرطيون';
+        }
 
-    if (
-        defined('NEW_FUNCTION_TRIBE_VIKINGS') &&
-        NEW_FUNCTION_TRIBE_VIKINGS
-    ) {
-        $tribes[] = 'Vikings';
+        if (
+            defined('NEW_FUNCTION_TRIBE_VIKINGS') &&
+            NEW_FUNCTION_TRIBE_VIKINGS
+        ) {
+            $tribes[] = defined('TRIBE9') ? TRIBE9 : 'الفايكنج';
+        }
+    } else {
+        $tribes = [
+            'Romans',
+            'Gauls',
+            'Teutons'
+        ];
+
+        if (
+            defined('NEW_FUNCTION_TRIBE_HUNS') &&
+            NEW_FUNCTION_TRIBE_HUNS
+        ) {
+            $tribes[] = 'Huns';
+        }
+
+        if (
+            defined('NEW_FUNCTION_TRIBE_EGIPTEANS') &&
+            NEW_FUNCTION_TRIBE_EGIPTEANS
+        ) {
+            $tribes[] = 'Egyptians';
+        }
+
+        if (
+            defined('NEW_FUNCTION_TRIBE_SPARTANS') &&
+            NEW_FUNCTION_TRIBE_SPARTANS
+        ) {
+            $tribes[] = 'Spartans';
+        }
+
+        if (
+            defined('NEW_FUNCTION_TRIBE_VIKINGS') &&
+            NEW_FUNCTION_TRIBE_VIKINGS
+        ) {
+            $tribes[] = 'Vikings';
+        }
     }
 
 
@@ -1112,18 +1266,17 @@ class Message
 
     } elseif ($tribeCount == 2) {
 
-        $tribesText =
-            $tribes[0] . ' and ' .
-            $tribes[1];
+        $tribesText = $isAr
+            ? ($tribes[0] . ' و ' . $tribes[1])
+            : ($tribes[0] . ' and ' . $tribes[1]);
 
     } else {
 
         $lastTribe = array_pop($tribes);
 
-        $tribesText =
-            implode(', ', $tribes) .
-            ' and ' .
-            $lastTribe;
+        $tribesText = $isAr
+            ? (implode('، ', $tribes) . ' و ' . $lastTribe)
+            : (implode(', ', $tribes) . ' and ' . $lastTribe);
     }
 
 
@@ -1411,9 +1564,10 @@ class Message
             '<ul style="margin-top:0;margin-bottom:0;">';
 
         foreach ($activeFunctions as $feature) {
+            $featureLabel = $this->localizeWelcomeFeatureName($feature);
             $activeFunctionsHtml .=
                 '<li>' .
-                htmlspecialchars($feature, ENT_QUOTES, 'UTF-8') .
+                htmlspecialchars($featureLabel, ENT_QUOTES, 'UTF-8') .
                 '</li>';
         }
 
@@ -1421,8 +1575,9 @@ class Message
 
     } else {
 
-        $activeFunctionsHtml =
-            '<i>No additional server features are currently active.</i>';
+        $activeFunctionsHtml = $isAr
+            ? '<i>لا توجد ميزات إضافية نشطة على هذا السيرفر حالياً.</i>'
+            : '<i>No additional server features are currently active.</i>';
     }
 
 
@@ -1434,6 +1589,9 @@ class Message
 
     $welcomemsg = preg_replace(
         [
+            "'%ADMIN_INSTRUCTIONS%'",
+            "'%ADMIN_CONTACT_SUPPORT%'",
+            "'%ADMIN_ACTIVE_SERVER_FEATURES%'",
             "'%USER%'",
             "'%START%'",
             "'%TIME%'",
@@ -1452,13 +1610,26 @@ class Message
             "'%ACTIVE_NEW_FUNCTIONS%'"
         ],
         [
+            defined('ADMIN_INSTRUCTIONS') ? ADMIN_INSTRUCTIONS : 'التعليمات',
+            defined('ADMIN_CONTACT_SUPPORT') ? ADMIN_CONTACT_SUPPORT : 'تواصل مع الدعم',
+            defined('ADMIN_ACTIVE_SERVER_FEATURES') ? ADMIN_ACTIVE_SERVER_FEATURES : 'ميزات السيرفر النشطة',
             $username,
-            date("d.m.Y", $worldStart),
-            date("H:i", $worldStart),
-            $database->countUser(),
-            $database->countAlli(),
+            $isAr && function_exists('tz_arabic_digits')
+                ? tz_arabic_digits(date("d.m.Y", $worldStart))
+                : date("d.m.Y", $worldStart),
+            $isAr && function_exists('tz_arabic_digits')
+                ? tz_arabic_digits(date("H:i", $worldStart))
+                : date("H:i", $worldStart),
+            $isAr && function_exists('tz_arabic_digits')
+                ? tz_arabic_digits((string) $database->countUser())
+                : $database->countUser(),
+            $isAr && function_exists('tz_arabic_digits')
+                ? tz_arabic_digits((string) $database->countAlli())
+                : $database->countAlli(),
             SERVER_NAME,
-            round((PROTECTION / 3600)),
+            $isAr && function_exists('tz_arabic_digits')
+                ? tz_arabic_digits((string) round((PROTECTION / 3600)))
+                : round((PROTECTION / 3600)),
             $tribesText,
             $formatDate($worldEndDate),
             $formatDate($natarsDate),
@@ -1477,21 +1648,25 @@ class Message
      */
     $welcomemsg = "[message]" . $welcomemsg . "[/message]";
 
-    /*
-     * Send welcome message.
-     */
-    return $database->sendMessage(
-        $uid,
-        1,
-        WEL_TOPIC,
-        addslashes($welcomemsg),
-        0,
-        0,
-        0,
-        0,
-        0
-    );
-	}
+    return $welcomemsg;
+    }
+
+    public function sendWelcome($uid, $username)
+    {
+        global $database;
+
+        return $database->sendMessage(
+            $uid,
+            1,
+            WEL_TOPIC,
+            addslashes($this->composeWelcomeMessage($username)),
+            0,
+            0,
+            0,
+            0,
+            0
+        );
+    }
 
     private function wordCensor($text)
     {

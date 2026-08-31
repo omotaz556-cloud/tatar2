@@ -17,7 +17,7 @@ $gkCapLabel = defined('TZ_PROF_CAP_SHORT') ? TZ_PROF_CAP_SHORT : (defined('CAPIT
 	<bdi>
 		<?php if ($canRename) { ?>
 		<span class="gk-vname gk-vname-editable" id="gkVnameLabel" onclick="gkToggleVnameForm(true);" title="<?php echo htmlspecialchars($renameLabel, ENT_QUOTES, 'UTF-8'); ?>" style="font-size:inherit;color:inherit;">
-			<?php echo htmlspecialchars($vDisplayName, ENT_QUOTES, 'UTF-8'); ?>
+			<?php echo htmlspecialchars($vDisplayName, ENT_QUOTES, 'UTF-8'); ?><span class="gk-vname-pencil" aria-hidden="true"> ✏️</span>
 		</span>
 		<form class="gk-vname-form" id="gkVnameForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" style="display:none;">
 			<input type="text" name="newVNa" value="<?php echo htmlspecialchars($vNameRaw, ENT_QUOTES, 'UTF-8'); ?>" maxlength="25" style="width:38%;font-size:inherit;height:auto;margin-left:10px;" />

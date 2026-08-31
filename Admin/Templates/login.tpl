@@ -21,7 +21,7 @@
 ?>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Cinzel:wght@600&display=swap');
-html{zoom:1 !important}
+html{zoom:1.1 !important}
 *{box-sizing:border-box}
 body{margin:0;background:#0a0f1c;font-family:'Inter',sans-serif;color:#e2e8f0}
 /* ASCUNDE ELEMENTELE VECHI */

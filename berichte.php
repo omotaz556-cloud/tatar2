@@ -88,7 +88,7 @@ if ($gkBerichteGreek) {
     tz_greek_shell_open('', array('contentWrap' => false));
     GreekBerichte::menuOpen($gkBerichteTab);
     GreekBerichte::attackFilterOpen();
-    echo '<div class="reports gk-berichte-body">';
+    echo '<div class="gk-berichte-body">';
 } else {
     tz_greek_shell_open('reports', array('contentWrap' => true));
 ?>

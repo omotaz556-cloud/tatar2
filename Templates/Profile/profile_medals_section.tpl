@@ -5,6 +5,8 @@
  * Optional: $gkMedalGreekLayout (6-column Greek.sa layout).
  */
 
+require_once dirname(__DIR__, 2) . '/GameEngine/GreekMedalAssets.php';
+
 $gkMedalGreekLayout = !empty($gkMedalGreekLayout);
 $gkMedalColspan = $gkMedalGreekLayout ? 6 : 4;
 $gkMedalCellPad = $gkMedalGreekLayout ? 1 : 0;
@@ -15,10 +17,54 @@ $gkDovePeaceLabel = defined('TZ_PROF_DOVE_PEACE') ? TZ_PROF_DOVE_PEACE : 'حما
 $gkMedalNa = 'غير متاح';
 $gkMedalZero = '0';
 
-$gkMedalIcon = static function ($src, $alt = '') {
+$gkMedalIcon = static function ($src, $alt = '', $extraClass = '') use ($gkSpielerGreek) {
     $src = htmlspecialchars((string) $src, ENT_QUOTES, 'UTF-8');
     $alt = htmlspecialchars((string) $alt, ENT_QUOTES, 'UTF-8');
-    return '<img class="gk-medal-badge" src="' . $src . '" alt="' . $alt . '" />';
+    $class = 'gk-medal-badge';
+    if (!empty($gkSpielerGreek)) {
+        $class .= ' gk-inline-medal';
+        if ($extraClass !== '') {
+            $class .= ' ' . htmlspecialchars(trim($extraClass), ENT_QUOTES, 'UTF-8');
+        }
+    }
+    return '<img class="' . $class . '" src="' . $src . '" alt="' . $alt . '" />';
+};
+
+$gkMedalPackIcon = static function ($imgName, $alt = '', $extraClass = '', $ext = '') use ($gkSpielerGreek, $gkMedalIcon) {
+    $imgName = preg_replace('/[^a-zA-Z0-9_.-]/', '', (string) $imgName);
+    if ($imgName === '') {
+        return '';
+    }
+    if (!empty($gkSpielerGreek)) {
+        if (in_array($imgName, GreekMedalAssets::BANNERS, true)) {
+            return '';
+        }
+        $src = GreekMedalAssets::url(GP_LOCATE, $imgName);
+        if ($extraClass === '') {
+            $extraClass = 'medal ' . $imgName;
+        }
+        return $gkMedalIcon($src, $alt, $extraClass);
+    }
+    if ($ext === '') {
+        $ext = 'jpg';
+    }
+    $src = GP_LOCATE . 'img/t/' . rawurlencode($imgName) . '.' . $ext;
+    return $gkMedalIcon($src, $alt, $extraClass);
+};
+
+$gkMedalKeyIcon = static function ($key, $alt = '', $extraClass = '') use ($gkSpielerGreek, $gkMedalIcon) {
+    if (empty($gkSpielerGreek)) {
+        return '';
+    }
+    $base = GreekMedalAssets::basename($key);
+    if ($base === null) {
+        return '';
+    }
+    $src = GreekMedalAssets::url(GP_LOCATE, $key);
+    if ($extraClass === '') {
+        $extraClass = GreekMedalAssets::extraClass($key) . ' medal ' . $base;
+    }
+    return $gkMedalIcon($src, $alt, $extraClass);
 };
 
 $gkMedalAddLink = static function ($code, $iconHtml = '') use ($gkMedalGreekLayout) {
@@ -108,11 +154,8 @@ foreach ($varmedal as $medal) {
     }
 
     $medalImage = preg_replace('/[^a-zA-Z0-9_.-]/', '', (string)($medal['img'] ?? ''));
-    $medalImageUrl = $medalImage !== ''
-        ? GP_LOCATE . 'img/t/' . rawurlencode($medalImage) . '.jpg'
-        : '';
-    $medalPreview = $medalImageUrl !== ''
-        ? $gkMedalIcon($medalImageUrl, $titel)
+    $medalPreview = $medalImage !== ''
+        ? $gkMedalPackIcon($medalImage, $titel, 'medal ' . $medalImage)
         : '';
     $medalRank = !empty($medal['plaats']) ? $medal['plaats'] : $gkMedalNa;
     $medalWeek = !empty($medal['week']) ? $medal['week'] : $gkMedalNa;
@@ -122,7 +165,9 @@ foreach ($varmedal as $medal) {
     $gkEmitMedalRow($titel, $medalRank, $medalWeek, $addCell, $medalPreview, $medalPoints);
 }
 
-$doveIcon = $gkMedalIcon(GP_LOCATE . 'img/t/tn.gif', '[#0]');
+$doveIcon = !empty($gkSpielerGreek)
+    ? $gkMedalKeyIcon('0', '[#0]', 'gk-medal-bird medal tn')
+    : $gkMedalPackIcon('tn', '[#0]', 'gk-medal-bird', 'gif');
 $gkEmitMedalRow(
     $gkDovePeaceLabel,
     $gkMedalZero,
@@ -140,21 +185,27 @@ $gkVet10Label = defined('ADM_MEDAL_VETERAN_PLAYER_10A') ? ADM_MEDAL_VETERAN_PLAY
 ?>
 <?php if (NEW_FUNCTIONS_MEDAL_3YEAR): ?>
 <?php
-$vet3Icon = $gkMedalIcon(GP_LOCATE . 'img/t/Veteran_Medal.jpg', '[#g2300]');
+$vet3Icon = !empty($gkSpielerGreek)
+    ? $gkMedalKeyIcon('g2300', '[#g2300]', 'gk-medal-special medal t10_1')
+    : $gkMedalPackIcon('Veteran_Medal', '[#g2300]', '', 'jpg');
 $gkEmitMedalRow($gkVet3Label, $gkMedalZero, $gkMedalZero, $gkMedalAddLink('[#g2300]', $vet3Icon), $vet3Icon, $gkMedalZero);
 ?>
 <?php endif; ?>
 
 <?php if (NEW_FUNCTIONS_MEDAL_5YEAR): ?>
 <?php
-$vet5Icon = $gkMedalIcon(GP_LOCATE . 'img/t/5year_medal.png', '[#g2301]');
+$vet5Icon = !empty($gkSpielerGreek)
+    ? $gkMedalKeyIcon('g2301', '[#g2301]', 'gk-medal-special medal t200_1')
+    : $gkMedalPackIcon('5year_medal', '[#g2301]', '', 'png');
 $gkEmitMedalRow($gkVet5Label, $gkMedalZero, $gkMedalZero, $gkMedalAddLink('[#g2301]', $vet5Icon), $vet5Icon, $gkMedalZero);
 ?>
 <?php endif; ?>
 
 <?php if (NEW_FUNCTIONS_MEDAL_10YEAR): ?>
 <?php
-$vet10Icon = $gkMedalIcon(GP_LOCATE . 'img/t/10_year_medal.png', '[#g2302]');
+$vet10Icon = !empty($gkSpielerGreek)
+    ? $gkMedalKeyIcon('g2302', '[#g2302]', 'gk-medal-special medal t210_1')
+    : $gkMedalPackIcon('10_year_medal', '[#g2302]', '', 'png');
 $gkEmitMedalRow($gkVet10Label, $gkMedalZero, $gkMedalZero, $gkMedalAddLink('[#g2302]', $vet10Icon), $vet10Icon, $gkMedalZero);
 ?>
 <?php endif; ?>
@@ -186,10 +237,22 @@ if (defined('NEW_FUNCTION_TRIBE_VIKINGS') && NEW_FUNCTION_TRIBE_VIKINGS) {
 
 $tribe = $session->userinfo['tribe'] ?? 0;
 
+$tribeMedalImg = [
+    1 => 'roman',
+    2 => 'teuton',
+    3 => 'gaul',
+    6 => 'huns',
+    7 => 'egyptians',
+    8 => 'spartans',
+    9 => 'vikings',
+];
+
 if (isset($tribeMedals[$tribe])) {
     [$name, $tag] = $tribeMedals[$tribe];
-    $badgeImage = ['roman' => 'roman.gif', 'teuton' => 'teutons.gif', 'gaul' => 'gauls.gif'][$tag] ?? 'roman.gif';
-    $tribeIcon = $gkMedalIcon(GP_LOCATE . 'img/t/' . $badgeImage, '[#' . $tag . ']');
+    $tribeKey = $tribeMedalImg[$tribe] ?? 'roman';
+    $tribeIcon = !empty($gkSpielerGreek)
+        ? $gkMedalKeyIcon($tribeKey, '[#' . $tag . ']', 'gk-medal-tribe medal ' . (GreekMedalAssets::basename($tribeKey) ?? ''))
+        : $gkMedalPackIcon(['roman' => 'roman', 'teuton' => 'teutons', 'gaul' => 'gauls'][$tag] ?? 'roman', '[#' . $tag . ']', 'gk-medal-tribe', 'gif');
     $tribeLabel = defined('TZ_PROF_TRIBE_MEDAL') ? TZ_PROF_TRIBE_MEDAL . ' ' . $name : 'القبيلة ' . $name;
     $gkEmitMedalRow(
         $tribeLabel,
@@ -205,24 +268,24 @@ if (defined('NEW_FUNCTIONS_MHS_IMAGES') && NEW_FUNCTIONS_MHS_IMAGES) {
 
     if (($session->userinfo['access'] ?? 0) == 9) {
 
-        $mhIcon = $gkMedalIcon(GP_LOCATE . 'img/t/t6_1.png', '[#MULTIHUNTER]');
+        $mhIcon = $gkMedalKeyIcon('multihunter', '[#MULTIHUNTER]', 'gk-medal-special medal t6_1');
         $gkEmitMedalRow(ADMIN1, $gkMedalNa, $gkMedalNa, $gkMedalAddLink('[#MULTIHUNTER]', $mhIcon), $mhIcon, $gkMedalZero);
 
-        $mh2Icon = $gkMedalIcon(GP_LOCATE . 'img/t/MH.png', '[#MH]');
+        $mh2Icon = $gkMedalKeyIcon('mh', '[#MH]', 'gk-medal-special medal t6_2');
         $gkEmitMedalRow(ADMIN1, $gkMedalNa, $gkMedalNa, $gkMedalAddLink('[#MH]', $mh2Icon), $mh2Icon, $gkMedalZero);
 
-        $teamIcon = $gkMedalIcon(GP_LOCATE . 'img/t/team.png', '[#TEAM]');
+        $teamIcon = $gkMedalKeyIcon('team', '[#TEAM]', 'gk-medal-special medal t6_3');
         $gkEmitMedalRow(ADMIN1, $gkMedalNa, $gkMedalNa, $gkMedalAddLink('[#TEAM]', $teamIcon), $teamIcon, $gkMedalZero);
 
     } elseif (($session->userinfo['access'] ?? 0) == 8) {
 
-        $mhIcon = $gkMedalIcon(GP_LOCATE . 'img/t/t6_1.png', '[#MULTIHUNTER]');
+        $mhIcon = $gkMedalKeyIcon('multihunter', '[#MULTIHUNTER]', 'gk-medal-special medal t6_1');
         $gkEmitMedalRow(MULTIH1, $gkMedalNa, $gkMedalNa, $gkMedalAddLink('[#MULTIHUNTER]', $mhIcon), $mhIcon, $gkMedalZero);
 
-        $mh2Icon = $gkMedalIcon(GP_LOCATE . 'img/t/MH.png', '[#MH]');
+        $mh2Icon = $gkMedalKeyIcon('mh', '[#MH]', 'gk-medal-special medal t6_2');
         $gkEmitMedalRow(MULTIH1, $gkMedalNa, $gkMedalNa, $gkMedalAddLink('[#MH]', $mh2Icon), $mh2Icon, $gkMedalZero);
 
-        $teamIcon = $gkMedalIcon(GP_LOCATE . 'img/t/team.png', '[#TEAM]');
+        $teamIcon = $gkMedalKeyIcon('team', '[#TEAM]', 'gk-medal-special medal t6_3');
         $gkEmitMedalRow(MULTIH1, $gkMedalNa, $gkMedalNa, $gkMedalAddLink('[#TEAM]', $teamIcon), $teamIcon, $gkMedalZero);
     }
 }

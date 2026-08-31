@@ -132,7 +132,7 @@ $maxcrop  = max(0, (int) $village->maxcrop);
             </table>
 
             <p id="submitButton">
-                <a href="javascript:document.goldbuy.submit();"><?php echo GOLD_BUY_RESOURCES;?></a>
+                <button type="submit" class="gk-npc-submit" name="s1" value="ok"><?php echo GOLD_BUY_RESOURCES;?></button>
             </p>
         </form>
 

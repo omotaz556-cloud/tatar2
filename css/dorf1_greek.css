@@ -6,9 +6,9 @@ html.pg-gk,
 body.pg-gk {
     margin: 0 !important;
     padding: 0 !important;
-    background: #ffffff !important;
+    background: #ffffff url("../gpack/novaterra_classic/img/vip/header-line.webp") repeat-x right top !important;
     color: #000 !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     line-height: 1.45 !important;
     min-width: 0 !important;
@@ -22,7 +22,7 @@ html.pg-gk[dir="rtl"] body.pg-gk .gk-shell table,
 html.pg-gk[dir="rtl"] body.pg-gk .gk-shell td,
 html.pg-gk[dir="rtl"] body.pg-gk .gk-shell th,
 html.pg-gk[dir="rtl"] body.pg-gk .gk-resbar {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
 }
 
 body.pg-gk a { color: #000; text-decoration: none; }
@@ -47,11 +47,17 @@ body.pg-gk .wrapper { display: none !important; }
     margin-bottom: 6px;
 }
 
-/* ---- Banner ---- */
+/* ---- Banner: login حرب التتار (header-rtl) — natural size, sides via header-line ---- */
 .gk-banner {
     width: 100%;
-    height: 110px;
-    background: #d9f0fb url("../img/login/banner.png") center top / 100% 110px no-repeat;
+    height: 100px;
+    background-color: transparent;
+    background-image:
+        url("../gpack/novaterra_classic/img/vip/header-rtl.webp"),
+        url("../gpack/novaterra_classic/img/vip/header-line.webp");
+    background-repeat: no-repeat, repeat-x;
+    background-position: center top, right top;
+    background-size: auto 100px, auto 100px;
     overflow: hidden;
     position: relative;
     z-index: 1;
@@ -68,7 +74,7 @@ body.pg-gk .wrapper { display: none !important; }
     z-index: 5;
 }
 .gk-bar-inner {
-    width: 1000px;
+    width: 1024px;
     max-width: 98%;
     height: 36px;
     margin: 0 auto;
@@ -92,7 +98,7 @@ body.pg-gk .wrapper { display: none !important; }
     width: 210px;
     text-align: right;
     white-space: nowrap;
-    font-family: Tahoma, Arial, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, sans-serif;
     font-size: 12px;
     line-height: 1.25;
     color: #555;
@@ -102,6 +108,21 @@ body.pg-gk .wrapper { display: none !important; }
     display: block;
     color: #666;
 }
+.gk-bar-world .gk-daynight {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin-left: 4px;
+    flex-shrink: 0;
+}
+.gk-bar-world .gk-daynight.day_image {
+    background-image: url("../gpack/novaterra_classic/img/l/day.gif");
+}
+.gk-bar-world .gk-daynight.night_image {
+    background-image: url("../gpack/novaterra_classic/img/l/night.gif");
+}
+/* Legacy CSS moon fallback */
 .gk-moon {
     display: inline-block;
     width: 14px;
@@ -117,7 +138,7 @@ body.pg-gk .wrapper { display: none !important; }
 body.pg-gk .gk-head #mtop.gk-mtop {
     position: absolute;
     left: 50%;
-    top: 82px;
+    top: 72px;
     transform: translateX(-50%);
     width: 350px;
     height: 72px;
@@ -144,7 +165,8 @@ body.pg-gk .gk-head #topNavIcons {
     top: auto !important;
 }
 body.pg-gk .gk-head #topNavIcons > a,
-body.pg-gk .gk-head #topNavIcons > div#n5 {
+body.pg-gk .gk-head #topNavIcons > div#n5,
+body.pg-gk .gk-head #topNavIcons > .gk-n5-wrap {
     float: none !important;
     flex: 0 0 70px !important;
     width: 70px !important;
@@ -158,7 +180,8 @@ body.pg-gk .gk-head #topNavIcons > a#n3,
 body.pg-gk .gk-head #topNavIcons > a#n4 {
     margin-left: -2px !important;
 }
-body.pg-gk .gk-head #topNavIcons > div#n5 { order: 1; }
+body.pg-gk .gk-head #topNavIcons > div#n5,
+body.pg-gk .gk-head #topNavIcons > .gk-n5-wrap { order: 1; }
 body.pg-gk .gk-head #topNavIcons > a#n4 { order: 2; }
 body.pg-gk .gk-head #topNavIcons > a#n3 { order: 3; }
 body.pg-gk .gk-head #topNavIcons > a#n2 { order: 4; }
@@ -186,11 +209,58 @@ body.pg-gk .gk-head #topNavIcons > a#n1:hover img {
     -webkit-transform: scaleX(-1) !important;
     transform-origin: center center;
 }
-/* Reports/messages (n5, left end): mirror in place only. */
-body.pg-gk .gk-head #topNavIcons > div#n5 {
+/* Reports/messages: original n5 sprite. Tooltip lives outside #n5 so Arabic is not flipped. */
+body.pg-gk .gk-head #topNavIcons > .gk-n5-wrap {
+    position: relative;
+    overflow: visible;
+}
+body.pg-gk .gk-head #topNavIcons div#n5 {
     transform: scaleX(-1) !important;
     -webkit-transform: scaleX(-1) !important;
     transform-origin: center center;
+    width: 70px;
+    height: 72px;
+    overflow: hidden;
+}
+body.pg-gk .gk-head #topNavIcons .gk-nav-count-tip,
+#mtop #topNavIcons .gk-nav-count-tip {
+    display: none;
+    position: absolute;
+    bottom: 2px;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    background: #1f1f1f;
+    color: #fff;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    line-height: 1.35 !important;
+    padding: 4px 11px;
+    border-radius: 14px;
+    white-space: nowrap !important;
+    z-index: 120;
+    pointer-events: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    direction: rtl;
+    unicode-bidi: isolate;
+    text-align: center;
+}
+/* n5 is mirrored; reports is visual-right, messages visual-left */
+body.pg-gk .gk-head #topNavIcons .gk-tip-reports,
+#mtop #topNavIcons .gk-tip-reports {
+    left: 52.5px;
+}
+body.pg-gk .gk-head #topNavIcons .gk-tip-messages,
+#mtop #topNavIcons .gk-tip-messages {
+    left: 17.5px;
+}
+body.pg-gk .gk-head #topNavIcons .gk-n5-wrap:has(.gk-nav-reports:hover) .gk-tip-reports,
+body.pg-gk .gk-head #topNavIcons .gk-n5-wrap:has(.gk-nav-messages:hover) .gk-tip-messages,
+#mtop #topNavIcons .gk-n5-wrap:has(.gk-nav-reports:hover) .gk-tip-reports,
+#mtop #topNavIcons .gk-n5-wrap:has(.gk-nav-messages:hover) .gk-tip-messages {
+    display: block;
 }
 
 .gk-bar-gold {
@@ -258,7 +328,7 @@ body.pg-gk .gk-head #topNavIcons > div#n5 {
 
 /* ---- Resources: centered under Vs (greek .Resbar) ---- */
 .gk-resbar {
-    width: 1000px;
+    width: 1024px;
     max-width: 98%;
     margin: 4px auto 0 !important;
     padding: 0 !important;
@@ -280,47 +350,44 @@ body.pg-gk .gk-head #topNavIcons > div#n5 {
     white-space: nowrap;
     vertical-align: middle;
 }
-.gk-resitem img.r4 {
-    width: 18px !important;
-    height: 12px !important;
-    display: inline-block;
+.gk-resitem img.r1,
+.gk-resitem img.r2,
+.gk-resitem img.r3,
+.gk-resitem img.r4,
+.gk-resitem img.r5,
+.gk-resitem img.warehouse,
+.gk-resitem img.granary {
+    display: inline-block !important;
     flex: 0 0 auto;
     margin: 0 !important;
-    padding: 0;
+    padding: 0 !important;
     vertical-align: middle;
-    transform: scale(1.7);
-    transform-origin: center center;
+    background-image: url("../gpack/novaterra_classic/img/a/res2.gif") !important;
+    background-repeat: no-repeat !important;
+    transform: none !important;
 }
 .gk-resitem img.r1,
 .gk-resitem img.r2,
-.gk-resitem img.r3 {
-    width: 18px !important;
-    height: 12px !important;
-    display: inline-block;
-    flex: 0 0 auto;
-    margin: 0 !important;
-    padding: 0;
-    vertical-align: middle;
-    transform: scale(1.35);
-    transform-origin: center center;
-}
-.gk-resitem img.g10Icon,
-.gk-resitem img.g11Icon {
+.gk-resitem img.r3,
+.gk-resitem img.r4,
+.gk-resitem img.r5 {
     width: 16px !important;
     height: 16px !important;
-    display: inline-block;
-    flex: 0 0 auto;
-    margin: 0 !important;
-    padding: 0;
-    vertical-align: middle;
-    background-size: 16px 16px !important;
-    background-repeat: no-repeat !important;
-    background-position: center bottom !important;
-    transform: scale(1.35);
-    transform-origin: center bottom;
 }
-.gk-resitem img.g11Icon {
-    transform: scale(1.7);
+.gk-resitem img.r1 { background-position: right 0 !important; }
+.gk-resitem img.r2 { background-position: right -26px !important; }
+.gk-resitem img.r3 { background-position: right -52px !important; }
+.gk-resitem img.r4 { background-position: right -78px !important; }
+.gk-resitem img.r5 { background-position: right -104px !important; }
+.gk-resitem img.warehouse {
+    width: 18px !important;
+    height: 21px !important;
+    background-position: 0 -130px !important;
+}
+.gk-resitem img.granary {
+    width: 18px !important;
+    height: 24px !important;
+    background-position: 0 -161px !important;
 }
 .gk-resitem b {
     display: inline-block !important;
@@ -358,11 +425,11 @@ body.pg-gk #res {
 
 /* ---- Main 3 columns (table) — no grey dividers ---- */
 .gk-shell {
-    width: 1000px;
+    width: 1024px;
     max-width: 98%;
     margin: 10px auto 40px;
     border-collapse: separate !important;
-    border-spacing: 10px 0 !important;
+    border-spacing: 0 !important;
     direction: ltr;
     table-layout: fixed;
     background: transparent !important;
@@ -371,11 +438,14 @@ body.pg-gk #res {
 .gk-shell,
 .gk-shell > tbody,
 .gk-shell > tbody > tr,
-.gk-inner,
+.gk-inner {
+    border: 0 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
 .gk-inner td {
     border: 0 !important;
-    background: transparent !important;
-    background-image: none !important;
+    background-color: transparent !important;
     box-shadow: none !important;
 }
 .gk-shell > tbody > tr > td.gk-td-nav,
@@ -410,9 +480,11 @@ body.pg-gk #res {
     /* Trap map z-index inside main so it cannot cover sidebars */
     position: relative !important;
     z-index: 1 !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
     box-shadow:
-        -16px 0 26px -20px rgba(0, 0, 0, 0.22),
-        16px 0 26px -20px rgba(0, 0, 0, 0.22);
+        -20px 0 24px -24px rgba(0, 0, 0, 0.2),
+        20px 0 24px -24px rgba(0, 0, 0, 0.2);
 }
 .gk-td-nav {
     width: 213px;
@@ -423,7 +495,7 @@ body.pg-gk #res {
     vertical-align: top;
     padding: 70px 0 0 0 !important;
     overflow: visible !important;
-    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
 }
 /* MaxB .RLisTa — sit near map edge (left:10px), leave white space on far right */
 .gk-rlista {
@@ -432,7 +504,7 @@ body.pg-gk #res {
     min-height: 200px;
     margin: 0 !important;
     padding: 0 !important;
-    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
     font-size: 13px !important;
     line-height: 1.9 !important;
     color: #000 !important;
@@ -448,7 +520,7 @@ body.pg-gk #res {
 .gk-rlista a {
     display: inline-block !important;
     width: 140px !important;
-    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
     color: #000 !important;
     font-weight: 301 !important;
     font-size: 13px !important;
@@ -500,13 +572,16 @@ body.pg-gk #res {
     font-weight: 700;
 }
 .gk-td-main {
-    width: auto;
+    width: 588px;
+    min-width: 588px;
+    max-width: 588px;
     text-align: right;
     direction: rtl;
 }
 .gk-td-left {
-    width: 160px;
-    min-width: 160px;
+    width: 223px;
+    min-width: 223px;
+    max-width: 223px;
     text-align: center;
     direction: rtl;
     position: relative;
@@ -548,6 +623,187 @@ body.pg-gk #res {
     height: 0 !important;
     overflow: hidden;
 }
+.gk-vlist-side {
+    display: block;
+    text-align: right;
+    direction: rtl;
+    width: 90%;
+    max-width: 200px;
+    margin: 0 auto;
+    background: #fff;
+}
+body.pg-gk .gk-td-left table.MyVs {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    direction: rtl;
+    table-layout: fixed;
+    background: #fff !important;
+    border: 0 !important;
+}
+body.pg-gk .gk-td-left table.MyVs th {
+    text-align: right;
+    padding: 2px 0;
+    font-weight: 301;
+    border: 0 !important;
+    background: #fff !important;
+    vertical-align: middle;
+}
+body.pg-gk .gk-td-left table.MyVs tr:first-child th {
+    padding-bottom: 4px;
+}
+body.pg-gk .gk-td-left table.MyVs a.C_K {
+    color: #000 !important;
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+}
+body.pg-gk .gk-td-left table.MyVs a.C_O {
+    color: #b58900 !important;
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+}
+body.pg-gk .gk-td-left table.MyVs th.gk-vil-row {
+    padding: 2px 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+    vertical-align: middle !important;
+    text-align: right !important;
+    direction: rtl !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-line {
+    display: flex !important;
+    flex-direction: row !important;
+    direction: rtl !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    box-sizing: border-box !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-line .fl + .gk-vil-actions-inline {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-actions-inline {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    vertical-align: middle !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-line p.Rs,
+body.pg-gk .gk-td-left table.MyVs .gk-vil-actions-inline p.Rs {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-line > a:first-child {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    text-decoration: none !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-line > a.C_O {
+    color: #b58900 !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-line .fl {
+    color: #a0a0a0 !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    font-weight: 301 !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-actions-inline a {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    text-decoration: none !important;
+    line-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-actions-inline p.Rs {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+}
+body.pg-gk .gk-td-left table.MyVs .gk-vil-coords {
+    display: block !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    color: #000 !important;
+    white-space: nowrap !important;
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+}
+body.pg-gk .gk-td-left table.MyVs a.fl {
+    color: #a0a0a0 !important;
+    font-size: 11px;
+    font-weight: 301;
+    text-decoration: none;
+    cursor: default;
+    margin: 0;
+    padding: 0;
+}
+body.pg-gk .gk-td-left table.MyVs th.gk-vcoords.gk-vil-actions {
+    width: auto;
+    min-width: 44px;
+    text-align: left;
+    direction: ltr;
+    white-space: nowrap;
+    padding-left: 4px;
+    vertical-align: middle;
+}
+body.pg-gk .gk-td-left table.MyVs th.gk-vcoords a {
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: none;
+}
+body.pg-gk .gk-td-left table.MyVs th.gk-vcoords b,
+body.pg-gk .gk-td-left table.MyVs th.gk-vcoords bdi {
+    color: #000 !important;
+    font-size: 12px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+body.pg-gk .gk-td-left table.MyVs p.Rs {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    margin: 0 1px;
+    background-repeat: no-repeat;
+    background-image: url(../gpack/novaterra_classic/img/a/res2.gif);
+}
+body.pg-gk .gk-td-left table.MyVs p.Rs.x5 {
+    background-position: 0 -104px;
+}
+body.pg-gk .gk-td-left table.MyVs p.Rs.x6 {
+    background-position: 0 -104px;
+}
+
+/* Legacy gk-vlist (unused) — keep capital color hook */
 .gk-vlist {
     text-align: right;
     direction: rtl;
@@ -609,6 +865,12 @@ body.pg-gk #res {
 }
 .gk-vname-editable {
     cursor: pointer;
+}
+.gk-vname-pencil {
+    color: #ff6f0f;
+    font-size: 0.82em;
+    vertical-align: middle;
+    line-height: 1;
 }
 .gk-vname-form {
     display: none;
@@ -706,7 +968,7 @@ body.pg-gk #movements {
     border-collapse: collapse !important;
     direction: rtl !important;
     table-layout: auto !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 12px !important;
     color: #000 !important;
 }
@@ -763,7 +1025,7 @@ body.pg-gk #production.gk-prud td.per {
 body.pg-gk #production.gk-prud thead th {
     text-align: right !important;
     direction: rtl !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     font-style: normal !important;
@@ -771,7 +1033,7 @@ body.pg-gk #production.gk-prud thead th {
 body.pg-gk #production.gk-prud tbody td,
 body.pg-gk #troops thead th,
 body.pg-gk #troops tbody td {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 12px !important;
     line-height: 1.45 !important;
 }
@@ -785,10 +1047,129 @@ body.pg-gk #troops td.arabic-text {
 body.pg-gk #troops {
     margin-top: 14px !important;
 }
+body.pg-gk #troops.gk-troops {
+    width: auto !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    direction: rtl !important;
+    table-layout: auto !important;
+    border-collapse: collapse !important;
+}
+body.pg-gk #troops.gk-troops thead th {
+    text-align: right !important;
+    padding: 0 0 6px !important;
+}
+body.pg-gk #troops.gk-troops tbody td {
+    padding: 0 !important;
+    white-space: nowrap !important;
+}
+body.pg-gk #troops.gk-troops td.ico {
+    width: 16px !important;
+    min-width: 16px !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+}
+body.pg-gk #troops.gk-troops td.gk-troop-label {
+    font-weight: 700 !important;
+    text-align: right !important;
+    padding: 0 4px 0 0 !important;
+    vertical-align: middle !important;
+}
+
+/* Troop movements: natural block layout (not a table) */
+body.pg-gk #movements.gk-movements {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 10px 0 !important;
+    direction: rtl !important;
+    text-align: right !important;
+    border-collapse: unset !important;
+    table-layout: unset !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    color: #000 !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-head {
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-align: right !important;
+    padding: 0 0 2px !important;
+    background: transparent !important;
+    border: 0 !important;
+    line-height: 1.35 !important;
+    color: #000 !important;
+    width: 100% !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-body {
+    display: block !important;
+    width: 100% !important;
+    text-align: right !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-item {
+    margin-bottom: 2px !important;
+    width: 100% !important;
+    text-align: right !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-item:last-child {
+    margin-bottom: 0 !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-line {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    line-height: 1.35 !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    direction: rtl !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-line a {
+    display: flex !important;
+    flex-shrink: 0 !important;
+    line-height: 0 !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-line img {
+    display: block !important;
+    margin: 0 !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-text {
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+}
+body.pg-gk #movements.gk-movements .gk-mov-dur {
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    color: #000 !important;
+    white-space: nowrap !important;
+}
+body.pg-gk #movements.gk-movements .a1 {
+    color: #d4af37 !important;
+}
+body.pg-gk #movements.gk-movements .d1 {
+    color: #228b22 !important;
+}
+body.pg-gk #movements.gk-movements .a2,
+body.pg-gk #movements.gk-movements .d2 {
+    color: #d4af37 !important;
+}
+body.pg-gk #movements.gk-movements .a3,
+body.pg-gk #movements.gk-movements .d3 {
+    color: #b500a3 !important;
+}
+body.pg-gk #movements.gk-movements .adv {
+    color: #0000ff !important;
+}
+
 body.pg-gk #production thead th,
 body.pg-gk #troops thead th {
     text-align: right !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-weight: 700 !important;
     font-size: 12px !important;
     font-style: normal !important;
@@ -798,7 +1179,7 @@ body.pg-gk #troops thead th {
 }
 body.pg-gk #production tbody td,
 body.pg-gk #troops tbody td {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 12px !important;
     text-align: right !important;
     background: transparent !important;
@@ -870,6 +1251,9 @@ body.pg-gk #map_details {
     padding: 0 !important;
     position: static !important;
 }
+body.pg-gk.pg-dorf1 td.gk-stats#map_details {
+    padding: 20px 0 0 0 !important;
+}
 
 /* ---- Shared shell overrides (all pg-gk pages) ---- */
 body.pg-gk #res {
@@ -880,11 +1264,32 @@ body.pg-gk .gk-resbar {
     justify-content: center !important;
     align-items: center !important;
     gap: 4px !important;
-    width: 1000px !important;
+    width: 1024px !important;
     max-width: 98% !important;
     margin: 8px auto 0 !important;
     float: none !important;
     position: static !important;
+}
+body.pg-gk .gk-shell {
+    width: 1024px !important;
+    max-width: 98% !important;
+    border-spacing: 0 !important;
+    table-layout: fixed !important;
+}
+body.pg-gk .gk-shell > tbody > tr > td.gk-td-left {
+    width: 223px !important;
+    min-width: 223px !important;
+    max-width: 223px !important;
+}
+body.pg-gk .gk-shell > tbody > tr > td.gk-td-main {
+    width: 588px !important;
+    min-width: 588px !important;
+    max-width: 588px !important;
+}
+body.pg-gk .gk-shell > tbody > tr > td.gk-td-nav {
+    width: 213px !important;
+    min-width: 213px !important;
+    max-width: 213px !important;
 }
 body.pg-gk .gk-resitem b.gk-cap {
     min-width: 44px !important;
@@ -898,9 +1303,11 @@ body.pg-gk .gk-shell > tbody > tr > td.gk-td-main {
     direction: rtl !important;
     position: relative !important;
     z-index: 1 !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
     box-shadow:
-        -16px 0 26px -20px rgba(0, 0, 0, 0.22),
-        16px 0 26px -20px rgba(0, 0, 0, 0.22);
+        -20px 0 24px -24px rgba(0, 0, 0, 0.2),
+        20px 0 24px -24px rgba(0, 0, 0, 0.2) !important;
 }
 body.pg-gk .gk-shell > tbody > tr > td.gk-td-nav,
 body.pg-gk .gk-shell > tbody > tr > td.gk-td-left {
@@ -913,10 +1320,10 @@ body.pg-gk .gk-shell > tbody > tr > td.gk-td-nav {
 }
 body.pg-gk .gk-td-nav .gk-rlista {
     top: 0 !important;
-    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
 }
 body.pg-gk .gk-td-nav .gk-rlista a {
-    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
     font-size: 13px !important;
     font-weight: 301 !important;
 }
@@ -967,13 +1374,16 @@ body.pg-gk.pg-dorf1 .gk-td-main > .gk-bod,
 body.pg-gk.pg-dorf2 .gk-td-main > .gk-bod {
     position: relative;
     top: 0;
-    padding: 0 8px 8px;
+    padding: 0 8px 8px 8px;
     margin: 0;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
     direction: rtl;
-    text-align: right;
+    text-align: right !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
 }
 body.pg-gk.pg-dorf1 .gk-bod .PaNa,
 body.pg-gk.pg-dorf2 .gk-bod .PaNa {
@@ -981,7 +1391,7 @@ body.pg-gk.pg-dorf2 .gk-bod .PaNa {
     text-align: right;
     width: 100%;
     font-weight: 900;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     color: #000;
     margin: 0 0 4px;
     padding: 0;
@@ -990,6 +1400,11 @@ body.pg-gk.pg-dorf2 .gk-bod .PaNa {
     display: block;
     direction: rtl;
     box-sizing: border-box;
+}
+/* Title above map only — not full content width */
+body.pg-gk.pg-dorf1 .gk-mapcell .PaNa,
+body.pg-gk.pg-dorf2 .gk-mapcol .PaNa {
+    width: 100%;
 }
 body.pg-gk.pg-dorf1 .gk-bod .PaNa bdi,
 body.pg-gk.pg-dorf2 .gk-bod .PaNa bdi,
@@ -1030,11 +1445,40 @@ body.pg-gk .gk-td-left span.gk-cap {
 body.pg-gk.pg-dorf1 .gk-bod > .gk-inner {
     display: inline-table !important;
     width: auto !important;
-    margin: 0 !important;
-    margin-inline-start: auto !important;
-    margin-inline-end: 0 !important;
+    margin: 0 auto !important;
+    transform: none !important;
     direction: ltr !important;
     vertical-align: top !important;
+    border-spacing: 6px 0 !important;
+}
+body.pg-gk.pg-dorf1 .gk-mapcol {
+    width: 300px;
+    max-width: 100%;
+    text-align: right;
+    direction: rtl;
+    display: block;
+}
+body.pg-gk.pg-dorf1 .gk-mapcell .PaNa,
+body.pg-gk.pg-dorf2 .gk-mapcol .PaNa {
+    width: 100%;
+    max-width: 100%;
+    text-align: right;
+    margin: 0 0 4px;
+    padding: 0;
+    display: block;
+    box-sizing: border-box;
+}
+body.pg-gk.pg-dorf2 .gk-mapcol.gk-dorf2-mapcol {
+    width: 540px;
+    max-width: 100%;
+    margin: 0 auto !important;
+    transform: none !important;
+    text-align: right;
+    direction: rtl;
+}
+body.pg-gk.pg-dorf2 .gk-mapcol.gk-dorf2-mapcol > .village2,
+body.pg-gk.pg-dorf2 .gk-mapcol.gk-dorf2-mapcol > #village_map_wrap {
+    margin: 0 auto !important;
 }
 body.pg-gk.pg-dorf1 .gk-stats {
     display: table-cell !important;
@@ -1047,33 +1491,57 @@ body.pg-gk.pg-dorf1 .gk-mapcell {
 }
 body.pg-gk.pg-dorf1 .gk-shell > tbody > tr > td.gk-td-main {
     height: auto !important;
-    min-height: 480px !important;
+    min-height: 580px !important;
 }
 body.pg-gk:not(.pg-dorf1) .gk-shell > tbody > tr > td.gk-td-main {
     height: auto !important;
 }
 
-/* MaxB content pages (stat/plus): no white column card — content sits on page bg */
+/* Greek-shell main column — side shadows only, no horizontal borders */
 body.pg-gk.pg-statistics .gk-shell > tbody > tr > td.gk-td-main,
-body.pg-gk.pg-plus .gk-shell > tbody > tr > td.gk-td-main {
-    background: transparent !important;
-    box-shadow: none !important;
+body.pg-gk.pg-plus .gk-shell > tbody > tr > td.gk-td-main,
+body.pg-gk.pg-berichte .gk-shell > tbody > tr > td.gk-td-main,
+body.pg-gk.pg-nachrichten .gk-shell > tbody > tr > td.gk-td-main,
+body.pg-gk.pg-spieler .gk-shell > tbody > tr > td.gk-td-main,
+body.pg-gk.pg-feeding .gk-shell > tbody > tr > td.gk-td-main {
+    background: #fff !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+    box-shadow:
+        -20px 0 24px -24px rgba(0, 0, 0, 0.2),
+        20px 0 24px -24px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Popup host: fixed + high z-index must not steal sidebar clicks when empty */
+/* Popup host (#ce): full-viewport overlay, quest/manual popups centered */
 body.pg-gk #ce {
-    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 body.pg-gk #ce:not(:empty) {
-    width: auto !important;
-    height: auto !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 body.pg-gk #ce > * {
     pointer-events: auto !important;
+    flex-shrink: 0;
+}
+body.pg-gk #ce > div.popup3,
+body.pg-gk #ce > div.popup3.quest {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    margin: 0 !important;
 }
 
 /* Classic #content inside Greek main column */
@@ -1091,7 +1559,7 @@ body.pg-gk .gk-td-main #content {
     direction: rtl;
 }
 body.pg-gk .gk-td-main #content h1 {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 28px !important;
     font-weight: 900 !important;
     text-align: right !important;
@@ -1103,7 +1571,7 @@ body.pg-gk .gk-td-main #textmenu {
     margin-bottom: 8px;
 }
 body.pg-gk .gk-td-main #textmenu a {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
 }
 body.pg-gk.pg-build .gk-td-main #textmenu a.selected,
@@ -1111,6 +1579,10 @@ html[dir="rtl"] body.pg-gk.pg-build #textmenu a.selected {
     color: #71d000 !important;
     font-weight: 700 !important;
     text-decoration: none !important;
+}
+
+body.pg-gk.pg-build #build.gid16 #textmenu {
+    margin: 14px 0 !important;
 }
 
 /* spieler.php — hide legacy profile tab row (عضوية اللاعب / الحزمة الرسومية) */
@@ -1121,13 +1593,15 @@ body.pg-gk.pg-spieler #content.player > h1 {
     display: none !important;
 }
 
-/* dorf2 village center — map centered; clip hit-layers so they never cover sidebars */
+/* dorf2 village center — align toward right nav sidebar */
 body.pg-gk.pg-dorf2 .gk-bod > .village2,
-body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap {
+body.pg-gk.pg-dorf2 .gk-bod > #village_map_wrap,
+body.pg-gk.pg-dorf2 .gk-bod .gk-dorf2-mapcol .village2,
+body.pg-gk.pg-dorf2 .gk-bod .gk-dorf2-mapcol #village_map_wrap {
     float: none !important;
     width: 540px !important;
     max-width: 100% !important;
-    margin: 0 auto !important;
+    margin: 0 0 0 auto !important;
     padding: 0 !important;
     overflow: hidden !important;
     direction: ltr !important;
@@ -1137,13 +1611,14 @@ body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap {
     z-index: 1 !important;
 }
 body.pg-gk.pg-dorf2 .gk-bod .village2 #village_map,
-body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap #village_map {
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap #village_map,
+body.pg-gk.pg-dorf2 .gk-bod .gk-dorf2-mapcol #village_map {
     float: none !important;
     position: relative !important;
     width: 540px !important;
     max-width: 100% !important;
     height: 448px !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     display: block !important;
     overflow: hidden !important;
     background-repeat: no-repeat !important;
@@ -1158,7 +1633,7 @@ body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap img.map1 {
     top: 0 !important;
     width: 540px !important;
     height: 448px !important;
-    max-width: 100% !important;
+    max-width: none !important;
     z-index: 98 !important;
 }
 body.pg-gk.pg-dorf2 .gk-bod .village2 img.map2,
@@ -1168,8 +1643,90 @@ body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap img.map2 {
     top: 40px !important;
     width: 422px !important;
     height: 339px !important;
+    max-width: none !important;
     z-index: 99 !important;
 }
+/* dorf2 building sprites (img/x.gif + compact.css g* / .dN positions) */
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.building {
+    width: 75px !important;
+    height: 100px !important;
+    max-width: none !important;
+    position: absolute !important;
+    display: block !important;
+}
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.dx1,
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g16,
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g16b,
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g16n {
+    width: 69px !important;
+    height: 120px !important;
+    max-width: none !important;
+    position: absolute !important;
+    display: block !important;
+}
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.ww,
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g40 {
+    width: 214px !important;
+    max-width: none !important;
+    position: absolute !important;
+    display: block !important;
+}
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g40_1 { height: 167px !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g40_2 { height: 193px !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g40_3 { height: 230px !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g40_4 { height: 239px !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g40_5 { height: 302px !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img:not(.map1):not(.map2) {
+    max-width: none !important;
+}
+/* Village center terrain JPEG */
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map.d2_0 { background-image: url("../gpack/novaterra_classic/img/g/bg0.jpg") !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map.d2_1 { background-image: url("../gpack/novaterra_classic/img/g/bg1.jpg") !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map.d2_11 { background-image: url("../gpack/novaterra_classic/img/g/bg11.jpg") !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map.d2_12 { background-image: url("../gpack/novaterra_classic/img/g/bg12.jpg") !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map.d2_16 { background-image: url("../gpack/novaterra_classic/img/g/bg16.jpg") !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map.d2_17 { background-image: url("../gpack/novaterra_classic/img/g/bg17.jpg") !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map.d2_18 { background-image: url("../gpack/novaterra_classic/img/g/bg18.jpg") !important; }
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map.d2_19 { background-image: url("../gpack/novaterra_classic/img/g/bg19.jpg") !important; }
+
+/* Level toggle (lswitch) — reposition inside map box; sprite fallback when gpack glvlp/glvlm missing */
+body.pg-gk.pg-dorf2 .gk-bod .village2#village_map_wrap img#lswitch,
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap img#lswitch {
+    position: absolute !important;
+    left: auto !important;
+    right: 8px !important;
+    top: auto !important;
+    bottom: 7px !important;
+    width: 18px !important;
+    height: 17px !important;
+    min-width: 18px !important;
+    min-height: 17px !important;
+    max-width: none !important;
+    z-index: 500 !important;
+    cursor: pointer !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: transparent !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: 18px 17px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='17' viewBox='0 0 18 17'%3E%3Cellipse cx='9' cy='8.5' rx='8' ry='7.5' fill='%23e8c968' stroke='%23a88632' stroke-width='1'/%3E%3Cpath d='M5 8.5h8M9 4.5v8' stroke='%235a4820' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+}
+body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap img#lswitch.on {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='17' viewBox='0 0 18 17'%3E%3Cellipse cx='9' cy='8.5' rx='8' ry='7.5' fill='%23e8c968' stroke='%23a88632' stroke-width='1'/%3E%3Cpath d='M5 8.5h8' stroke='%235a4820' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+}
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map #levels.on div {
+    background-color: #e8c968 !important;
+    border: 1px solid #a88632 !important;
+    border-radius: 50% !important;
+    color: #3a3010 !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    line-height: 15px !important;
+    box-sizing: border-box !important;
+}
+
 body.pg-gk.pg-dorf2 .gk-bod .village2 #levels:not(.on),
 body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap #levels:not(.on) {
     pointer-events: none !important;
@@ -1181,15 +1738,66 @@ body.pg-gk.pg-dorf2 .gk-bod #village_map_wrap h1 {
 /* dorf1: keep field map from painting over side columns */
 body.pg-gk.pg-dorf1 .gk-mapcell .village1,
 body.pg-gk.pg-dorf1 .gk-bod .village1 {
-    overflow: hidden !important;
+    overflow: visible !important;
     position: relative !important;
     z-index: 1 !important;
 }
+/* Terrain JPEG + level sprites must paint (compact.css / dorf1.css) */
+body.pg-gk.pg-dorf1 .village1 #village_map {
+    background-color: transparent !important;
+    background-repeat: no-repeat !important;
+    background-position: 0 0 !important;
+    min-width: 300px !important;
+    min-height: 264px !important;
+    visibility: visible !important;
+}
+body.pg-gk.pg-dorf1 .gk-mapcell {
+    position: relative !important;
+    z-index: 2 !important;
+}
+/* Terrain backgrounds — reinforced (compact.css paths via site css/) */
+body.pg-gk.pg-dorf1 .village1 #village_map.f1 { background-image: url("../gpack/novaterra_classic/img/g/f1.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f2 { background-image: url("../gpack/novaterra_classic/img/g/f2.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f3 { background-image: url("../gpack/novaterra_classic/img/g/f3.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f4 { background-image: url("../gpack/novaterra_classic/img/g/f4.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f5 { background-image: url("../gpack/novaterra_classic/img/g/f5.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f6 { background-image: url("../gpack/novaterra_classic/img/g/f6.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f7 { background-image: url("../gpack/novaterra_classic/img/g/f7.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f8 { background-image: url("../gpack/novaterra_classic/img/g/f8.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f9 { background-image: url("../gpack/novaterra_classic/img/g/f9.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f10 { background-image: url("../gpack/novaterra_classic/img/g/f10.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f11 { background-image: url("../gpack/novaterra_classic/img/g/f11.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f12 { background-image: url("../gpack/novaterra_classic/img/g/f12.jpg") !important; }
+body.pg-gk.pg-dorf1 .village1 #village_map.f99 { background-image: url("../gpack/novaterra_classic/img/g/f99.jpg") !important; }
+/* Field level sprites (img/x.gif) */
+body.pg-gk.pg-dorf1 .village1 #village_map img.reslevel {
+    width: 17px !important;
+    height: 12px !important;
+    max-width: none !important;
+    min-width: 17px !important;
+    min-height: 12px !important;
+    position: absolute !important;
+    display: block !important;
+    visibility: visible !important;
+    background-repeat: no-repeat !important;
+}
+body.pg-gk.pg-dorf1 .village1 #village_map img.level0 {
+    display: none !important;
+    visibility: hidden !important;
+}
+body.pg-gk.pg-dorf1 .village1 #village_map img#resfeld {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
 
-/* Map page */
-body.pg-gk.pg-map .gk-td-main #content.map {
-    width: auto !important;
+/* Map page — full-width content so tile view can align to the right edge */
+body.pg-gk.pg-map .gk-td-main #content.map,
+body.pg-gk.pg-map .gk-td-main #content.map.gk-map-page {
+    width: 100% !important;
     max-width: 100% !important;
+    overflow: visible !important;
+    float: none !important;
 }
 
 /* dorf1 field overview inner layout */
@@ -1216,9 +1824,8 @@ html[dir="rtl"] body.pg-gk.pg-dorf2 .gk-bod .PaNa {
 }
 html[dir="rtl"] body.pg-gk.pg-dorf1 .gk-bod > .gk-inner {
     display: inline-table !important;
-    margin: 0 !important;
-    margin-inline-start: auto !important;
-    margin-inline-end: 0 !important;
+    margin: 0 auto !important;
+    transform: none !important;
 }
 
 /* build.php gid0 — new-building list icons clip on the left in RTL */
@@ -1254,55 +1861,81 @@ body.pg-gk.pg-build div#build.gid0 table.new_building td.bimg img.building {
     max-width: none !important;
 }
 
-/* قيد الإنشاء — classic Travian building_contract (not Greek-restyled) */
-body.pg-gk table#building_contract {
-    width: 502px !important;
+/* قيد الإنشاء — div layout, right-aligned, no borders, no gold speed-up */
+body.pg-gk #building_contract.gk-build-queue,
+body.pg-gk #building_contract.gk-build-queue .gk-bq-head,
+body.pg-gk #building_contract.gk-build-queue .gk-bq-list,
+body.pg-gk #building_contract.gk-build-queue .gk-bq-row,
+body.pg-gk #building_contract.gk-build-queue .gk-bq-ico,
+body.pg-gk #building_contract.gk-build-queue .gk-bq-name,
+body.pg-gk #building_contract.gk-build-queue .gk-bq-time,
+body.pg-gk #building_contract.gk-build-queue .gk-bq-finish {
+    border: none !important;
+    border-width: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+body.pg-gk #building_contract.gk-build-queue {
+    width: fit-content !important;
     max-width: 100% !important;
     margin: 14px 0 0 !important;
-    margin-inline-start: auto !important;
-    margin-inline-end: 0 !important;
+    margin-inline-start: 0 !important;
+    margin-inline-end: auto !important;
+    align-self: flex-start !important;
     clear: both !important;
-    border-collapse: collapse !important;
-    background: #fff !important;
+    background: transparent !important;
     line-height: 19px !important;
     direction: rtl !important;
     float: none !important;
-    table-layout: auto !important;
+    box-sizing: border-box !important;
+    text-align: right !important;
 }
-body.pg-gk table#building_contract thead th {
-    background-color: #e7e7e7 !important;
-    background-image: linear-gradient(to bottom, #f0f0f0, #dcdcdc) !important;
-    background-repeat: repeat !important;
+body.pg-gk #building_contract.gk-build-queue .gk-bq-head {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
     text-align: right !important;
     font-weight: 700 !important;
     font-size: 12px !important;
     padding: 2px 4px !important;
-    border: 1px solid #c0c0c0 !important;
     color: #000 !important;
 }
-body.pg-gk table#building_contract thead th a {
-    float: left !important;
-}
-body.pg-gk table#building_contract thead th img.clock {
-    float: left !important;
-}
-body.pg-gk table#building_contract tbody td {
-    background: #fff !important;
-    border: 1px solid #c0c0c0 !important;
-    padding: 1px 4px !important;
+body.pg-gk #building_contract.gk-build-queue .gk-bq-list {
+    background: transparent !important;
     text-align: right !important;
+}
+body.pg-gk #building_contract.gk-build-queue .gk-bq-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    padding: 1px 4px !important;
     font-size: 12px !important;
     color: #000 !important;
     white-space: nowrap !important;
+    background: transparent !important;
+    width: fit-content !important;
+    max-width: 100% !important;
 }
-body.pg-gk table#building_contract td.ico {
+body.pg-gk #building_contract.gk-build-queue .gk-bq-ico {
+    flex: 0 0 18px !important;
     width: 18px !important;
-    padding-right: 4px !important;
-    padding-left: 2px !important;
+    padding: 0 !important;
 }
-body.pg-gk.pg-dorf1 .gk-bod > table#building_contract,
-body.pg-gk.pg-dorf2 .gk-bod > table#building_contract {
-    display: table !important;
+body.pg-gk #building_contract.gk-build-queue .gk-bq-name {
+    flex: 0 0 auto !important;
+    text-align: right !important;
+}
+body.pg-gk #building_contract.gk-build-queue .gk-bq-name a {
+    color: #00bc00 !important;
+}
+body.pg-gk #building_contract.gk-build-queue .gk-bq-time,
+body.pg-gk #building_contract.gk-build-queue .gk-bq-finish {
+    flex: 0 0 auto !important;
+    text-align: right !important;
+    padding: 0 !important;
 }
 
 

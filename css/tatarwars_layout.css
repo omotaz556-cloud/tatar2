@@ -1,0 +1,7 @@
+@charset "UTF-8";
+
+/**
+ * DISABLED — do not load on Greek shell (pg-gk).
+ * Forcing 984px / 522px grid breaks dorf1, reports, and build pages.
+ * Use css/tatarwars_theme.css for safe tatarwars typography + resbar only.
+ */

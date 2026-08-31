@@ -19,7 +19,30 @@
 
     //gp link
     $separator=isset($separator)? $separator:"";
-    $gpack_load=isset($user['gpack'])? $user['gpack']:$database->getUserField($_SESSION['username'], 'gpack', 1);
+
+    if (!isset($displayarray) || !is_array($displayarray) || !isset($displayarray['id'])) {
+        if (isset($user) && is_array($user) && isset($user['id'])) {
+            $displayarray = $user;
+        } else {
+            $displayarray = [];
+        }
+    }
+    if (!isset($user) || !is_array($user) || !isset($user['id'])) {
+        $user = $displayarray;
+    }
+    $gkProfileOwnerUid = (int) ($displayarray['id'] ?? $user['id'] ?? 0);
+    if (!isset($varmedal) && $gkProfileOwnerUid > 0) {
+        $varmedal = $database->getProfileMedal($gkProfileOwnerUid);
+    }
+    if (!is_array($varmedal)) {
+        $varmedal = [];
+    }
+
+    $profileUser = (isset($user) && is_array($user) && isset($user['id']))
+        ? $user
+        : $displayarray;
+    $gpack_load = isset($profileUser['gpack']) ? $profileUser['gpack']
+        : $database->getUserField($_SESSION['username'], 'gpack', 1);
     if($gpack_load== null || GP_ENABLE == false) {
     $gpack= $separator.GP_LOCATE;
     } else {
@@ -28,8 +51,53 @@
 
 $profiel = preg_replace('/\[([a-z0-9_]+)#\]/i', '[#$1]', $profiel);
 
-$gkProfMedalCompact = !empty($GLOBALS['gkSpielerGreek']);
+require_once dirname(__DIR__, 2) . '/GameEngine/GreekMedalAssets.php';
+
+$gkProfMedalCompact = !empty($GLOBALS['gkSpielerGreek'])
+    || !empty($GLOBALS['gkSpielerProfileGreek']);
+if ($gkProfMedalCompact) {
+    $gpack = $separator . GP_LOCATE;
+}
 $gkProfMedalImgClass = $gkProfMedalCompact ? ' class="gk-prof-medal-img"' : '';
+$gkMedalTip = function ($text) {
+    return addslashes('<table><tr><td>' . $text . '</td></tr></table>');
+};
+$gkMedalInlineImg = static function ($src, $tipHtml, $extraClass = '') use ($gkProfMedalCompact, $gkProfMedalImgClass) {
+    $tip = addslashes($tipHtml);
+    $srcEsc = htmlspecialchars((string) $src, ENT_QUOTES, 'UTF-8');
+    if ($gkProfMedalCompact) {
+        $class = trim('gk-inline-medal ' . $extraClass);
+        return '<img src="' . $srcEsc . '" class="' . htmlspecialchars($class, ENT_QUOTES, 'UTF-8') . '" alt="" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'' . $tip . '\')">';
+    }
+    return '<img src="' . $srcEsc . '" border="0"' . $gkProfMedalImgClass . ' onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'' . $tip . '\')">';
+};
+$gkMedalPackImg = static function ($imgName, $fallbackExt = 'jpg') use ($gpack, $gkProfMedalCompact) {
+    $imgName = preg_replace('/[^a-zA-Z0-9_.-]/', '', (string) $imgName);
+    if ($imgName === '') {
+        return '';
+    }
+    if ($gkProfMedalCompact) {
+        if (in_array($imgName, GreekMedalAssets::BANNERS, true)) {
+            return '';
+        }
+        return GreekMedalAssets::url($gpack, $imgName);
+    }
+    return $gpack . 'img/t/' . $imgName . '.' . $fallbackExt;
+};
+$gkMedalKeyImg = static function ($key, $tipHtml, $extraClass = '') use ($gpack, $gkProfMedalCompact, $gkMedalInlineImg) {
+    if (!$gkProfMedalCompact) {
+        return '';
+    }
+    $src = GreekMedalAssets::url($gpack, $key);
+    if ($src === '') {
+        return '';
+    }
+    if ($extraClass === '') {
+        $base = GreekMedalAssets::basename($key);
+        $extraClass = trim(GreekMedalAssets::extraClass($key) . ' medal ' . ($base ?? ''));
+    }
+    return $gkMedalInlineImg($src, $tipHtml, $extraClass);
+};
 
 //de bird
 if($displayarray['protect'] > time()){
@@ -37,10 +105,12 @@ $secondsDiff      = $displayarray['protect'] - time();
 $remainingDay     = floor($secondsDiff/(3600*24));
 
 $left = \App\Utils\DateTime::getTimeFormat($secondsDiff);
-$profiel = preg_replace("/\[#0]/is",'<img src="'.$gpack.'img/t/tn.gif" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>This player has '.$left.' hours of beginners protection left.</td></tr></table>\')">', $profiel, 1);
+$birdTip = '<table><tr><td>'.PLAYER_HAS.' '.$left.' '.HOURS_OF_BG_PROT.'</td></tr></table>';
+$profiel = preg_replace("/\[#0]/is", $gkMedalInlineImg($gpack . 'img/t/tn.gif', $birdTip, 'gk-medal-bird'), $profiel);
 } else {
 $geregistreerd=date('d.m.Y', ($displayarray['regtime']));
-$profiel = preg_replace("/\[#0]/is",'<img src="'.$gpack.'img/t/tnd.gif" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>This player registered his account on '.$geregistreerd.'.</td></tr></table>\')">', $profiel, 1);
+$birdTip = '<table><tr><td>'.PLAYER_WAS_REG_ON.' '.$geregistreerd.'.</td></tr></table>';
+$profiel = preg_replace("/\[#0]/is", $gkMedalInlineImg($gpack . 'img/t/tnd.gif', $birdTip, 'gk-medal-bird'), $profiel);
 }
 
 // Added by Shadow
@@ -50,66 +120,57 @@ if (NEW_FUNCTIONS_TRIBE_IMAGES) {
 
     switch ($tribe) {
         case 1: // Romans
-            $romanImg = $gkProfMedalCompact ? $gpack . 'img/t/roman.gif' : $gpack . '../../img/rpage/Roman1.jpg';
-            $replacement = '<img src="' . $romanImg . '" border="0"' . $gkProfMedalImgClass . ' '
-                         . 'onmouseout="med_closeDescription()" '
-                         . 'onmousemove="med_mouseMoveHandler(arguments[0],\''
-                         . '<table><tr><td>The Romans : Because of its high level of social and technological development the Romans are masters at building and its coordination. Also, their troops are part of the elite in Novaterra. They are very balanced and useful in attacking and defending.</td></tr></table>'
-                         . '\')">';
-            $profiel = preg_replace("/\[#roman]/is", $replacement, $profiel, 1);
+            $romanImg = $gkProfMedalCompact ? GreekMedalAssets::url($gpack, 'roman') : $gpack . '../../img/rpage/Roman1.jpg';
+            $tooltip = '<table><tr><td>'.ROMAN_T_M.'</td></tr></table>';
+            $replacement = $gkMedalInlineImg($romanImg, $tooltip, 'gk-medal-tribe');
+            $profiel = preg_replace("/\[#roman]/is", $replacement, $profiel);
             break;
 
         case 2: // Teutons
-            $teutonImg = $gkProfMedalCompact ? $gpack . 'img/t/teutons.gif' : $gpack . '../../img/rpage/Teuton1.jpg';
-            $replacement = '<img src="' . $teutonImg . '" border="0"' . $gkProfMedalImgClass . ' '
-                         . 'onmouseout="med_closeDescription()" '
-                         . 'onmousemove="med_mouseMoveHandler(arguments[0],\''
-                         . '<table><tr><td>The Teutons : The Teutons are the most aggressive tribe. Their troops are notorious and feared for their rage and frenzy when they attack. They move around as a plundering horde, not even afraid of death.</td></tr></table>'
-                         . '\')">';
-            $profiel = preg_replace("/\[#teuton]/is", $replacement, $profiel, 1);
+            $teutonImg = $gkProfMedalCompact ? GreekMedalAssets::url($gpack, 'teuton') : $gpack . '../../img/rpage/Teuton1.jpg';
+            $tooltip = '<table><tr><td>'.TEUTON_T_M.'</td></tr></table>';
+            $replacement = $gkMedalInlineImg($teutonImg, $tooltip, 'gk-medal-tribe');
+            $profiel = preg_replace("/\[#teuton]/is", $replacement, $profiel);
             break;
 
         case 3: // Gauls
-            $gaulImg = $gkProfMedalCompact ? $gpack . 'img/t/gauls.gif' : $gpack . '../../img/rpage/Gaul1.jpg';
-            $replacement = '<img src="' . $gaulImg . '" border="0"' . $gkProfMedalImgClass . ' '
-                         . 'onmouseout="med_closeDescription()" '
-                         . 'onmousemove="med_mouseMoveHandler(arguments[0],\''
-                         . '<table><tr><td>The Gauls : The Gauls are the most peaceful of all three tribes in Novaterra. Their troops are trained for an excellent defence, but their ability to attack can still compete with the other two tribes. The Gauls are born riders and their horses are famous for their speed. This means that their riders can hit the enemy exactly where they can cause the most damage and swiftly take care of them.</td></tr></table>'
-                         . '\')">';
-            $profiel = preg_replace("/\[#gaul]/is", $replacement, $profiel, 1);
+            $gaulImg = $gkProfMedalCompact ? GreekMedalAssets::url($gpack, 'gaul') : $gpack . '../../img/rpage/Gaul1.jpg';
+            $tooltip = '<table><tr><td>'.GAUL_T_M.'</td></tr></table>';
+            $replacement = $gkMedalInlineImg($gaulImg, $tooltip, 'gk-medal-tribe');
+            $profiel = preg_replace("/\[#gaul]/is", $replacement, $profiel);
             break;
 
         // ==================== NOILE TRIBURI ====================
 		case 6: // Huns
-			$tooltip = '<table><tr><td>The Huns: Fast and deadly, the Huns are known for their lightning raids and powerful cavalry. They live to conquer and leave nothing but ashes behind.</td></tr></table>';
+			$tooltip = '<table><tr><td>'.(defined('HUNS_T_M') ? HUNS_T_M : TRIBE6).'</td></tr></table>';
 			$replacement = '<img src="'.$gpack.'../../img/rpage/Huns1.jpg" border="0" '
                  . 'onmouseout="med_closeDescription()" '
                  . 'onmousemove="med_mouseMoveHandler(arguments[0], \''.addslashes($tooltip).'\')">';
-			$profiel = preg_replace('/\[#huns\]/i', $replacement, $profiel, 1);
+			$profiel = preg_replace('/\[#huns\]/i', $replacement, $profiel);
 			break;
 
 		case 7: // Egyptians
-			$tooltip = '<table><tr><td>The Egyptians: Masters of architecture and ancient magic. Their troops are resilient and their cities are fortified with monumental structures.</td></tr></table>';
+			$tooltip = '<table><tr><td>'.(defined('EGYPTIANS_T_M') ? EGYPTIANS_T_M : TRIBE7).'</td></tr></table>';
 			$replacement = '<img src="'.$gpack.'../../img/rpage/Egyptians1.jpg" border="0" '
                  . 'onmouseout="med_closeDescription()" '
                  . 'onmousemove="med_mouseMoveHandler(arguments[0], \''.addslashes($tooltip).'\')">';
-			$profiel = preg_replace('/\[#egyptians\]/i', $replacement, $profiel, 1);
+			$profiel = preg_replace('/\[#egyptians\]/i', $replacement, $profiel);
 			break;
 
 		case 8: // Spartans
-			$tooltip = '<table><tr><td>The Spartans: Born warriors with unbreakable discipline. &quot;Come back with your shield or on it&quot; is their creed.</td></tr></table>';
+			$tooltip = '<table><tr><td>'.(defined('SPARTANS_T_M') ? SPARTANS_T_M : TRIBE8).'</td></tr></table>';
 			$replacement = '<img src="'.$gpack.'../../img/rpage/Spartans1.jpg" border="0" '
                  . 'onmouseout="med_closeDescription()" '
                  . 'onmousemove="med_mouseMoveHandler(arguments[0], \''.addslashes($tooltip).'\')">';
-			$profiel = preg_replace('/\[#spartans\]/i', $replacement, $profiel, 1);
+			$profiel = preg_replace('/\[#spartans\]/i', $replacement, $profiel);
 			break;
 
 		case 9: // Vikings
-			$tooltip = '<table><tr><td>The Vikings: Fierce seafarers and feared raiders. Their axes sing songs of glory and their longships strike terror across the seas.</td></tr></table>';
+			$tooltip = '<table><tr><td>'.(defined('VIKINGS_T_M') ? VIKINGS_T_M : TRIBE9).'</td></tr></table>';
 			$replacement = '<img src="'.$gpack.'../../img/rpage/Vikings1.jpg" border="0" '
                  . 'onmouseout="med_closeDescription()" '
                  . 'onmousemove="med_mouseMoveHandler(arguments[0], \''.addslashes($tooltip).'\')">';
-			$profiel = preg_replace('/\[#vikings\]/i', $replacement, $profiel, 1);
+			$profiel = preg_replace('/\[#vikings\]/i', $replacement, $profiel);
 			break;
     }
 }
@@ -120,8 +181,8 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
 
     $uid = (int)$displayarray['id'];
     $username = htmlspecialchars($displayarray['username'], ENT_QUOTES);
-    $tribeMap = [1=>'Romans',2=>'Teutons',3=>'Gauls',6=>'Huns',7=>'Egipteans',8=>'Spartans',9=>'Vikings'];
-    $tribeName = $tribeMap[$displayarray['tribe']??0]?? 'Unknown';
+    $tribeMap = [1 => TRIBE1, 2 => TRIBE2, 3 => TRIBE3, 6 => TRIBE6, 7 => TRIBE7, 8 => TRIBE8, 9 => TRIBE9];
+    $tribeName = $tribeMap[$displayarray['tribe'] ?? 0] ?? ADM_UNKNOWN_2;
 
     // luam WW real
 	$wwLevel = 0;
@@ -144,33 +205,32 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
 	}
 
 	// [#ARTEFACT]
-	$profiel = preg_replace_callback("/\[#ARTEFACT\]/is", function($m) use ($database,$uid,$username,$tribeName,$gpack){
+	$profiel = preg_replace_callback("/\[#ARTEFACT\]/is", function($m) use ($database,$uid,$username,$tribeName,$gpack,$gkMedalInlineImg){
     $q = $database->query("SELECT size, name FROM ".TB_PREFIX."artefacts WHERE owner=$uid");
     if(!$q || !$q->num_rows) return '';
     
     $sizeMap = [
-        1 => 'Small (Village Effect)',
-        2 => 'Large (Account Effect)',
-        3 => 'Unique (Account Effect)'
+        1 => MEDAL_ARTEFACT_SMALL,
+        2 => MEDAL_ARTEFACT_LARGE,
+        3 => MEDAL_ARTEFACT_UNIQUE,
     ];
     
     $arts = '';
     while($a = $q->fetch_assoc()){
-        $type = $sizeMap[(int)$a['size']] ?? 'Unknown';
+        $type = $sizeMap[(int)$a['size']] ?? ADM_UNKNOWN_2;
         $aname = htmlspecialchars($a['name'], ENT_QUOTES);
         $arts .= "<tr><td>Type:</td><td>{$type}</td></tr><tr><td>Artefact:</td><td>{$aname}</td></tr>";
     }
     
     $tip = "<table><tr><td>Name:</td><td>{$username}</td></tr><tr><td>Tribe:</td><td>{$tribeName}</td></tr><tr><td>Category:</td><td>Artefact Holder</td></tr>{$arts}</table>";
     
-    return "<img src='{$gpack}img/gloriamedals/artifact.png' border='0' onmouseout='med_closeDescription()' onmousemove=\"med_mouseMoveHandler(arguments[0],'{$tip}')\">";
+    return $gkMedalInlineImg($gpack . 'img/gloriamedals/artifact.png', $tip, 'gk-medal-special');
 	}, $profiel);
 
     // [#WWBUILDER]
 	if($wwLevel > 0){
     $tip = "<table <tr><td>Name:</td><td>{$username}</td></tr><tr><td>Tribe:</td><td>{$tribeName}</td></tr><tr><td>Category:</td><td>World Wonder</td></tr><tr><td>Village:</td><td>{$wwName}</td></tr><tr><td>WW Level:</td><td>{$wwLevel}</td></tr></table>";
-    $profiel = preg_replace("/\[#WWBUILDER\]/is","<img src='{$gpack}img/gloriamedals/ww_builder.png' border='0' onmouseout='med_closeDescription()' onmousemove=\"med_mouseMoveHandler(arguments[0],'{$tip}')\">",
-    $profiel);
+    $profiel = preg_replace("/\[#WWBUILDER\]/is", $gkMedalInlineImg($gpack . 'img/gloriamedals/ww_builder.png', $tip, 'gk-medal-special'), $profiel);
 	} else {
     $profiel = str_replace("[#WWBUILDER]", "", $profiel);
 	}
@@ -178,9 +238,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
     // [#WINNERWW]
     if($wwLevel >= 100){
         $tip = "<table><tr><td>Name:</td><td>{$username}</td></tr><tr><td>Tribe:</td><td>{$tribeName}</td></tr><tr><td>Category:</td><td>Winner</td></tr><tr><td>WW Level:</td><td>100</td></tr></table>";
-        $profiel = preg_replace("/\[#WINNERWW\]/is",
-            "<img src='{$gpack}img/gloriamedals/ww_winner.png' border='0' onmouseout='med_closeDescription()' onmousemove=\"med_mouseMoveHandler(arguments[0],'{$tip}')\">",
-        $profiel);
+        $profiel = preg_replace("/\[#WINNERWW\]/is", $gkMedalInlineImg($gpack . 'img/gloriamedals/ww_winner.png', $tip, 'gk-medal-special'), $profiel);
     }
 	
 	//[#GREATSTORE] - DOAR Great Warehouse (38) si Great Granary (39) nivel 20
@@ -207,7 +265,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
 
 	if($hasGreatStore){
     $tip = "<table><tr><td>Name:</td><td>{$username}</td></tr><tr><td>Tribe:</td><td>{$tribeName}</td></tr><tr><td>Category:</td><td>Great Store</td></tr><tr><td>Village:</td><td>{$gsVillage}</td></tr><tr><td>Great Warehouse:</td><td>20</td></tr><tr><td>Great Granary:</td><td>20</td></tr></table>";
-    $profiel = str_replace("[#GREATSTORE]", "<img src='{$gpack}img/gloriamedals/greatstore.png' border='0' onmouseout='med_closeDescription()' onmousemove=\"med_mouseMoveHandler(arguments[0],'{$tip}')\">", $profiel);
+    $profiel = str_replace("[#GREATSTORE]", $gkMedalInlineImg($gpack . 'img/gloriamedals/greatstore.png', $tip, 'gk-medal-special'), $profiel);
 	} else {
     $profiel = str_replace("[#GREATSTORE]", "", $profiel);
 	}
@@ -217,7 +275,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
 	if($q && $q->num_rows){
     $heroLvl = (int)$q->fetch_assoc()['level'];
     $tip = "<table><tr><td>Name:</td><td>{$username}</td></tr><tr><td>Tribe:</td><td>{$tribeName}</td></tr><tr><td>Category:</td><td>Hero Level</td></tr><tr><td>Level:</td><td>{$heroLvl}</td></tr></table>";
-    $profiel = str_replace("[#HERO100]", "<img src='{$gpack}img/gloriamedals/hero.png' border='0' onmouseout='med_closeDescription()' onmousemove=\"med_mouseMoveHandler(arguments[0],'{$tip}')\">", $profiel);
+    $profiel = str_replace("[#HERO100]", $gkMedalInlineImg($gpack . 'img/gloriamedals/hero.png', $tip, 'gk-medal-special'), $profiel);
 	} else {
     $profiel = str_replace("[#HERO100]", "", $profiel);
 	}
@@ -237,7 +295,7 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
 
 	if($wallCount >= 3){
     $tip = "<table><tr><td>Name:</td><td>{$username}</td></tr><tr><td>Tribe:</td><td>{$tribeName}</td></tr><tr><td>Category:</td><td>Wall Master</td></tr><tr><td>Walls level 20:</td><td>{$wallCount}</td></tr></table>";
-    $profiel = str_replace("[#WALLMASTER]", "<img src='{$gpack}img/gloriamedals/wallmaster.png' border='0' onmouseout='med_closeDescription()' onmousemove=\"med_mouseMoveHandler(arguments[0],'{$tip}')\">", $profiel);
+    $profiel = str_replace("[#WALLMASTER]", $gkMedalInlineImg($gpack . 'img/gloriamedals/wallmaster.png', $tip, 'gk-medal-special'), $profiel);
 	} else {
     $profiel = str_replace("[#WALLMASTER]", "", $profiel);
 	}
@@ -248,56 +306,85 @@ if(defined('NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM') && NEW_FUNCTIONS_SPECIAL_MEDAL
 // Added by Shadow
 if(NEW_FUNCTIONS_MHS_IMAGES){
 	if($displayarray['access'] == "9"){
-		$profiel = preg_replace("/\[#MULTIHUNTER]/is",'<img src="'.$gpack.'img/t/t6_1.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official Server Global Multihunter</td></tr></table>\')">', $profiel, 1);
-		$profiel = preg_replace("/\[#MH]/is",'<img src="'.$gpack.'img/t/MH.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>The Multihunter is an official Novaterra position mainly used for enforcement of Novaterra rules within a server. Multihunters all use the account named Multihunter with its only village located in (0|0). A Multihunter may not play on the server on which they are the Multihunter, but be an active player on other servers. </td></tr></table>\')">', $profiel, 1);
-		$profiel = preg_replace("/\[#TEAM]/is",'<img src="'.$gpack.'img/t/team.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Novaterra is a persistent, browser-based, massively multiplayer, online real-time strategy game developed by the German software company Novaterra. It was originally written and released in June 2004 by Gerhard Müller. Set in classical antiquity, Novaterra is a predominantly militaristic real-time strategy game.</td></tr></table>\')">', $profiel, 1);
+		if ($gkProfMedalCompact) {
+			$profiel = preg_replace("/\[#MULTIHUNTER]/is", $gkMedalKeyImg('multihunter', '<table><tr><td>Official Server Global Multihunter</td></tr></table>', 'gk-medal-special medal t6_1'), $profiel);
+			$profiel = preg_replace("/\[#MH]/is", $gkMedalKeyImg('mh', '<table><tr><td>' . MEDAL_MH_DESC . '</td></tr></table>', 'gk-medal-special medal t6_2'), $profiel);
+			$profiel = preg_replace("/\[#TEAM]/is", $gkMedalKeyImg('team', '<table><tr><td>' . MEDAL_TEAM_DESC . '</td></tr></table>', 'gk-medal-special medal t6_3'), $profiel);
+		} else {
+			$profiel = preg_replace("/\[#MULTIHUNTER]/is",'<img src="'.$gpack.'img/t/t6_1.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official Server Global Multihunter</td></tr></table>\')">', $profiel);
+			$profiel = preg_replace("/\[#MH]/is",'<img src="'.$gpack.'img/t/MH.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],'.$gkMedalTip(MEDAL_MH_DESC).')">', $profiel);
+			$profiel = preg_replace("/\[#TEAM]/is",'<img src="'.$gpack.'img/t/team.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],'.$gkMedalTip(MEDAL_TEAM_DESC).')">', $profiel);
+		}
 	}elseif($displayarray['access'] == "8"){
-		$profiel = preg_replace("/\[#MULTIHUNTER]/is",'<img src="'.$gpack.'img/t/t6_1.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official Server Global Multihunter</td></tr></table>\')">', $profiel, 1);
-		$profiel = preg_replace("/\[#MH]/is",'<img src="'.$gpack.'img/t/MH.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>The Multihunter is an official Novaterra position mainly used for enforcement of Novaterra rules within a server. Multihunters all use the account named Multihunter with its only village located in (0|0). A Multihunter may not play on the server on which they are the Multihunter, but be an active player on other servers. </td></tr></table>\')">', $profiel, 1);
-		$profiel = preg_replace("/\[#TEAM]/is",'<img src="'.$gpack.'img/t/team.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Novaterra is a persistent, browser-based, massively multiplayer, online real-time strategy game developed by the German software company Novaterra. It was originally written and released in June 2004 by Gerhard Müller. Set in classical antiquity, Novaterra is a predominantly militaristic real-time strategy game.</td></tr></table>\')">', $profiel, 1);
+		if ($gkProfMedalCompact) {
+			$profiel = preg_replace("/\[#MULTIHUNTER]/is", $gkMedalKeyImg('multihunter', '<table><tr><td>Official Server Global Multihunter</td></tr></table>', 'gk-medal-special medal t6_1'), $profiel);
+			$profiel = preg_replace("/\[#MH]/is", $gkMedalKeyImg('mh', '<table><tr><td>' . MEDAL_MH_DESC . '</td></tr></table>', 'gk-medal-special medal t6_2'), $profiel);
+			$profiel = preg_replace("/\[#TEAM]/is", $gkMedalKeyImg('team', '<table><tr><td>' . MEDAL_TEAM_DESC . '</td></tr></table>', 'gk-medal-special medal t6_3'), $profiel);
+		} else {
+			$profiel = preg_replace("/\[#MULTIHUNTER]/is",'<img src="'.$gpack.'img/t/t6_1.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official Server Global Multihunter</td></tr></table>\')">', $profiel);
+			$profiel = preg_replace("/\[#MH]/is",'<img src="'.$gpack.'img/t/MH.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],'.$gkMedalTip(MEDAL_MH_DESC).')">', $profiel);
+			$profiel = preg_replace("/\[#TEAM]/is",'<img src="'.$gpack.'img/t/team.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],'.$gkMedalTip(MEDAL_TEAM_DESC).')">', $profiel);
+		}
 	}
 }
 
 // METHOD CODED IN CONFIG
 // VETERAN & VETERAN 5 YEARS & VETERAN 10 YEARS IMAGES
 if(NEW_FUNCTIONS_MEDAL_3YEAR){
-	$profiel = preg_replace("/\[#g2300]/is",'<img src="'.$gpack.'img/t/Veteran_Medal.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 3 Years<br><br>Medal achieved for playing 3 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
+	$vet3Tip = '<table><tr><td>Veteran Player 3 Years<br><br>Medal achieved for playing 3 years of Novaterra.</td></tr></table>';
+	$vet3Rep = $gkProfMedalCompact
+		? $gkMedalKeyImg('g2300', $vet3Tip, 'gk-medal-special medal t10_1')
+		: $gkMedalInlineImg($gpack . 'img/t/Veteran_Medal.jpg', $vet3Tip, 'gk-medal-special');
+	$profiel = preg_replace("/\[#g2300]/is", $vet3Rep, $profiel);
 }
 if(NEW_FUNCTIONS_MEDAL_5YEAR){
-	$profiel = preg_replace("/\[#g2301]/is",'<img src="'.$gpack.'img/t/5year_medal.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 5 Years<br><br>Medal achieved for playing 5 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
+	$vet5Tip = '<table><tr><td>Veteran Player 5 Years<br><br>Medal achieved for playing 5 years of Novaterra.</td></tr></table>';
+	$vet5Rep = $gkProfMedalCompact
+		? $gkMedalKeyImg('g2301', $vet5Tip, 'gk-medal-special medal t200_1')
+		: $gkMedalInlineImg($gpack . 'img/t/5year_medal.png', $vet5Tip, 'gk-medal-special');
+	$profiel = preg_replace("/\[#g2301]/is", $vet5Rep, $profiel);
 }
 if(NEW_FUNCTIONS_MEDAL_10YEAR){
-	$profiel = preg_replace("/\[#g2302]/is",'<img src="'.$gpack.'img/t/10_year_medal.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Veteran Player 10 Years<br><br>Medal achieved for playing 10 years of Novaterra.</td></tr></table>\')">', $profiel, 1);
+	$vet10Tip = '<table><tr><td>Veteran Player 10 Years<br><br>Medal achieved for playing 10 years of Novaterra.</td></tr></table>';
+	$vet10Rep = $gkProfMedalCompact
+		? $gkMedalKeyImg('g2302', $vet10Tip, 'gk-medal-special medal t210_1')
+		: $gkMedalInlineImg($gpack . 'img/t/10_year_medal.png', $vet10Tip, 'gk-medal-special');
+	$profiel = preg_replace("/\[#g2302]/is", $vet10Rep, $profiel);
 }
 
 // NO NEED TO CODE THIS METHOD
 // Added by Shadow
 if($displayarray['username'] == "Shadow"){
-$profiel = preg_replace("/\[#SHADOW]/is",'<img src="'.$gpack.'img/t/shadow.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official Server Administrator of Novaterra Project</td></tr></table>\')">', $profiel, 1);
-$profiel = preg_replace("/\[#MH]/is",'<img src="'.$gpack.'img/t/MH.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>The Multihunter is an official Novaterra position mainly used for enforcement of Novaterra rules within a server. Multihunters all use the account named Multihunter with its only village located in (0|0). A Multihunter may not play on the server on which they are the Multihunter, but be an active player on other servers. </td></tr></table>\')">', $profiel, 1);
-$profiel = preg_replace("/\[#TEAM]/is",'<img src="'.$gpack.'img/t/team.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Novaterra is a persistent, browser-based, massively multiplayer, online real-time strategy game developed by the German software company Novaterra. It was originally written and released in June 2004 by Gerhard Müller. Set in classical antiquity, Novaterra is a predominantly militaristic real-time strategy game.</td></tr></table>\')">', $profiel, 1);
-$profiel = preg_replace("/\[#EVENT]/is",'<img src="'.$gpack.'img/t/t10_1.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>You played on Novaterra Hammelburg Event. Congrats !</td></tr></table>\')">', $profiel, 1);
+$profiel = preg_replace("/\[#SHADOW]/is",'<img src="'.$gpack.'img/t/shadow.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official Server Administrator of Novaterra Project</td></tr></table>\')">', $profiel);
+if ($gkProfMedalCompact) {
+	$profiel = preg_replace("/\[#MH]/is", $gkMedalKeyImg('mh', '<table><tr><td>' . MEDAL_MH_DESC . '</td></tr></table>', 'gk-medal-special medal t6_2'), $profiel);
+	$profiel = preg_replace("/\[#TEAM]/is", $gkMedalKeyImg('team', '<table><tr><td>' . MEDAL_TEAM_DESC . '</td></tr></table>', 'gk-medal-special medal t6_3'), $profiel);
+} else {
+	$profiel = preg_replace("/\[#MH]/is",'<img src="'.$gpack.'img/t/MH.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],'.$gkMedalTip(MEDAL_MH_DESC).')">', $profiel);
+	$profiel = preg_replace("/\[#TEAM]/is",'<img src="'.$gpack.'img/t/team.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],'.$gkMedalTip(MEDAL_TEAM_DESC).')">', $profiel);
+}
+$profiel = preg_replace("/\[#EVENT]/is",'<img src="'.$gpack.'img/t/t10_1.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>You played on Novaterra Hammelburg Event. Congrats !</td></tr></table>\')">', $profiel);
 }
 
 // NO NEED TO CODE THIS METHOD NATARS
 // Added by Shadow
 if($displayarray['username'] == "Natars"){
-$profiel = preg_replace("/\[#natars]/is",'<img src="'.$gpack.'img/t/t10_2.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official Natar account</td></tr></table>\')">', $profiel, 1);
-$profiel = preg_replace("/\[#WW]/is",'<img src="'.$gpack.'img/t/g40_11-ltr.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official World Wonder Village</td></tr></table>\')">', $profiel, 1);
+$profiel = preg_replace("/\[#natars]/is",'<img src="'.$gpack.'img/t/t10_2.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official Natar account</td></tr></table>\')">', $profiel);
+$profiel = preg_replace("/\[#WW]/is",'<img src="'.$gpack.'img/t/g40_11-ltr.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Official World Wonder Village</td></tr></table>\')">', $profiel);
 }
 
 // NO NEED TO CODE THIS METHOD NATURE
 // Added by Shadow
 if($displayarray['username'] == "Nature"){
-$profiel = preg_replace("/\[#NATURE]/is",'<img src="'.$gpack.'img/t/nature.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Natures troops are the animals living in unoccupied oases. You can use the combat simulator to see whether you have enough troops to defeat the animals in an oasis you want to conquer, but remember that you can only raid oasis. Keep in mind that all the animals above Bear can kill its contemporary max tier novaterra troop in single combat. </td></tr></table>\')">', $profiel, 1);
-$profiel = preg_replace("/\[#NATURE2]/is",'<img src="'.$gpack.'img/t/nature2.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Natures troops are the animals living in unoccupied oases. You can use the combat simulator to see whether you have enough troops to defeat the animals in an oasis you want to conquer, but remember that you can only raid oasis. Keep in mind that all the animals above Bear can kill its contemporary max tier novaterra troop in single combat. </td></tr></table>\')">', $profiel, 1);
+$profiel = preg_replace("/\[#NATURE]/is",'<img src="'.$gpack.'img/t/nature.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Natures troops are the animals living in unoccupied oases. You can use the combat simulator to see whether you have enough troops to defeat the animals in an oasis you want to conquer, but remember that you can only raid oasis. Keep in mind that all the animals above Bear can kill its contemporary max tier novaterra troop in single combat. </td></tr></table>\')">', $profiel);
+$profiel = preg_replace("/\[#NATURE2]/is",'<img src="'.$gpack.'img/t/nature2.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Natures troops are the animals living in unoccupied oases. You can use the combat simulator to see whether you have enough troops to defeat the animals in an oasis you want to conquer, but remember that you can only raid oasis. Keep in mind that all the animals above Bear can kill its contemporary max tier novaterra troop in single combat. </td></tr></table>\')">', $profiel);
 }
 
 // NO NEED TO CODE THIS METHOD TASKMASTER
 // Added by Shadow
 if($displayarray['username'] == "Taskmaster"){
-$profiel = preg_replace("/\[#TASKMASTER]/is",'<img src="'.$gpack.'img/t/taskmaster.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Taskmaster Account</td></tr></table>\')">', $profiel, 1);
-$profiel = preg_replace("/\[#TASKMASTER2]/is",'<img src="'.$gpack.'img/t/taskmaster2.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Taskmaster Account</td></tr></table>\')">', $profiel, 1);
+$profiel = preg_replace("/\[#TASKMASTER]/is",'<img src="'.$gpack.'img/t/taskmaster.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Taskmaster Account</td></tr></table>\')">', $profiel);
+$profiel = preg_replace("/\[#TASKMASTER2]/is",'<img src="'.$gpack.'img/t/taskmaster2.png" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Taskmaster Account</td></tr></table>\')">', $profiel);
 }
 
 
@@ -386,10 +473,12 @@ switch ($medal['categorie']) {
 }
 
 if(isset($bonus[$medal['id']])){
-$profiel = preg_replace("/\[#".$medal['id']."]/is",'<img src="'.$gpack.'img/t/'.$medal['img'].'.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>'.$titel.'<br /><br />Received in week: '.$medal['week'].'</td></tr></table>\')">', $profiel, 1);
+    $tipHtml = '<table><tr><td>'.$titel.'<br /><br />Received in week: '.$medal['week'].'</td></tr></table>';
 } else {
-$profiel = preg_replace("/\[#".$medal['id']."]/is",'<img src="'.$gpack.'img/t/'.$medal['img'].'.jpg" border="0" onmouseout="med_closeDescription()" onmousemove="med_mouseMoveHandler(arguments[0],\'<table><tr><td>Category:</td><td>'.$titel.'</td></tr><tr><td>Week:</td><td>'.$medal['week'].'</td></tr><tr><td>Rank:</td><td>'.$medal['plaats'].'</td></tr><tr><td>'.$woord.':</td><td>'.$medal['points'].'</td></tr></table>\')">', $profiel, 1);
+    $tipHtml = '<table><tr><td>Category:</td><td>'.$titel.'</td></tr><tr><td>Week:</td><td>'.$medal['week'].'</td></tr><tr><td>Rank:</td><td>'.$medal['plaats'].'</td></tr><tr><td>'.$woord.':</td><td>'.$medal['points'].'</td></tr></table>';
 }
+$imgSrc = $gkMedalPackImg($medal['img']);
+$profiel = preg_replace("/\[#".$medal['id']."]/is", $gkMedalInlineImg($imgSrc, $tipHtml, 'gk-inline-medal medal ' . preg_replace('/[^a-zA-Z0-9_.-]/', '', (string) ($medal['img'] ?? ''))), $profiel);
 }
 
 

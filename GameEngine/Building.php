@@ -692,7 +692,9 @@ class Building {
 
 	public static function procResType($ref) {
 
-    static $types = array(
+    $stonemasonLabel = (defined('TZ_STONEMASON_S_LODGE') ? TZ_STONEMASON_S_LODGE : STONEMASON);
+
+    $types = array(
         1  => WOODCUTTER,
         2  => CLAYPIT,
         3  => IRONMINE,
@@ -726,7 +728,7 @@ class Building {
         31 => CITYWALL,
         32 => EARTHWALL,
         33 => PALISADE,
-        34 => STONEMASON,
+        34 => $stonemasonLabel,
         35 => BREWERY,
         36 => TRAPPER,
         37 => HEROSMANSION,
@@ -745,8 +747,51 @@ class Building {
         50 => BARRICADE
     );
 
-    return isset($types[$ref]) ? $types[$ref] : 'Error';
+    $ref = (int) $ref;
+    if (!isset($types[$ref])) {
+        return defined('TZ_BUILDING_UNKNOWN') ? TZ_BUILDING_UNKNOWN : 'Error';
+    }
+
+    return $types[$ref];
 }
+
+	/**
+	 * Localized hover/title for village map buildings (dorf1/dorf2).
+	 */
+	public static function procBuildingHoverTitle($type, $level = 0, $variant = '')
+	{
+		$type  = (int) $type;
+		$level = (int) $level;
+
+		if ($type > 0) {
+			$name = self::procResType($type);
+			if ($level <= 0 && $variant === 'name_only') {
+				return $name;
+			}
+			$levelWord = defined('LEVEL') ? LEVEL : 'Level';
+			return $name . ' ' . $levelWord . ' ' . $level;
+		}
+
+		switch ($variant) {
+			case 'rally_site':
+				if (defined('TZ_RALLY_POINT_BUILDING_SITE')) {
+					return TZ_RALLY_POINT_BUILDING_SITE;
+				}
+				$rp = defined('RALLYPOINT') ? RALLYPOINT : 'Rally Point';
+				$site = defined('TZ_BUILDING_SITE') ? TZ_BUILDING_SITE : 'building site';
+				return $rp . ' ' . $site;
+			case 'outer':
+				return defined('TZ_OUTER_BUILDING_SITE')
+					? TZ_OUTER_BUILDING_SITE
+					: 'Outer building site';
+			case 'worldwonder':
+				return defined('WORLD_WONDER')
+					? WORLD_WONDER
+					: (defined('WONDER') ? WONDER : 'World Wonder');
+			default:
+				return defined('TZ_BUILDING_SITE') ? TZ_BUILDING_SITE : 'Building site';
+		}
+	}
 
 	/*****************************************
 	Function to load all building

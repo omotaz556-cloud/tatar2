@@ -49,27 +49,39 @@ window.addEvent('domready', function() {
 		this.getParent('div.overlay').fireEvent('hide');
 	});
 
-	//Signup Buttons
+	//Signup Buttons — overlay on index; direct links (e.g. anmelden.php) still navigate.
 	$$('.signup_link').addEvent('click', function(event) {
+		var href = (this.getAttribute('href') || '').trim();
+		if (href && href !== '#' && href.indexOf('?') !== 0) {
+			return;
+		}
 		if (typeof(event) !== 'undefined') {
 			event.stop();
 		}
 		var signupLayer = $('signup_layer');
 		if (!signupLayer) {
-			console.warn('[DEBUG] signup_layer not found');
+			if (href && href !== '#') {
+				window.location.href = href;
+			}
 			return;
 		}
 		signupLayer.fireEvent('show');
 	});
 
-	//Login Buttons
+	//Login Buttons — overlay on index; login.php links still navigate.
 	$$('.login_link').addEvent('click', function(event) {
+		var href = (this.getAttribute('href') || '').trim();
+		if (href && href !== '#' && href.indexOf('?') !== 0) {
+			return;
+		}
 		if (typeof(event) !== 'undefined') {
 			event.stop();
 		}
 		var loginLayer = $('login_layer');
 		if (!loginLayer) {
-			console.warn('[DEBUG] login_layer not found');
+			if (href && href !== '#') {
+				window.location.href = href;
+			}
 			return;
 		}
 		loginLayer.fireEvent('show');

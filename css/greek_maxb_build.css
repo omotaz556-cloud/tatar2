@@ -1,11 +1,11 @@
 /* ============================================================
- * greek_maxb_build.css — Market (17), Barracks (19), Hero Mansion (37)
+ * greek_maxb_build.css — Market (17), Barracks (19), Hero Mansion (37), Rally send (a2b)
  * Loaded on build.php for Greek shell pages.
  * ============================================================ */
 
 body.pg-gk.pg-build .gk-td-main #content.build,
 body.pg-gk.pg-build .gk-td-main #content {
-    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
     text-align: right;
     direction: rtl;
     width: 100% !important;
@@ -24,9 +24,17 @@ body.pg-gk.pg-build div#build.gid37 {
     padding-right: 0 !important;
 }
 
+body.pg-gk.pg-build div#build.gid16 {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 12px 0 0 !important;
+}
+
 body.pg-gk.pg-build .gk-td-main #content h1,
 body.pg-gk.pg-build div#build:not(.gid0) h1 {
-    font-family: Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
     font-size: 28px !important;
     font-weight: 900 !important;
     text-align: right !important;
@@ -101,49 +109,958 @@ body.pg-gk.pg-build #textmenu a:hover {
     color: #5bb000 !important;
 }
 
-/* Market NPC — row-per-resource table */
-body.pg-gk.pg-build #build.gid17 table#npc.gk-npc {
-    width: 100%;
-    max-width: 520px;
-    margin: 0 0 12px;
+/* Market navbar */
+body.pg-gk.pg-build #build.gid17 #textmenu.gk-market-nav {
+    margin: 0 0 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #ccc;
+    line-height: 1.35;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-build #build.gid17 #textmenu.gk-market-nav a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    margin: 0 2px;
+    padding: 0 2px 3px;
+    border-bottom: 1px dotted #71d000 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 #textmenu.gk-market-nav a.selected {
+    font-weight: 700 !important;
+    border: none !important;
+    padding: 0 2px 2px;
+    border-bottom: 2px solid #71d000 !important;
+    border-radius: 0;
+}
+
+body.pg-gk.pg-build #build.gid17 #textmenu.gk-market-nav a:hover {
+    color: #5bb000 !important;
+}
+
+/* Rally point navbar — نظرة عامة | إرسال قوات | محاكي المعركة | مزارع */
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-nav,
+body.pg-gk.pg-a2b #build.gid16 #textmenu.gk-rally-nav,
+body.pg-gk.pg-warsim #textmenu.gk-rally-nav {
+    clear: both !important;
+    display: block !important;
+    margin: 14px 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+    font-size: 12px !important;
+    text-align: right !important;
+    direction: rtl !important;
+    position: relative !important;
+    z-index: 5 !important;
+    pointer-events: auto !important;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-nav a,
+body.pg-gk.pg-a2b #build.gid16 #textmenu.gk-rally-nav a,
+body.pg-gk.pg-warsim #textmenu.gk-rally-nav a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-decoration: none !important;
+    margin: 0 4px !important;
+    padding: 0 2px 2px !important;
+    border: none !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-nav a.selected,
+body.pg-gk.pg-a2b #build.gid16 #textmenu.gk-rally-nav a.selected,
+body.pg-gk.pg-warsim #textmenu.gk-rally-nav a.selected {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    border-bottom: 1px dotted #888 !important;
+}
+
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-nav a:hover,
+body.pg-gk.pg-a2b #build.gid16 #textmenu.gk-rally-nav a:hover,
+body.pg-gk.pg-warsim #textmenu.gk-rally-nav a:hover {
+    color: #5bb000 !important;
+}
+
+/* Overview troop filters: في القرية | القادمة | الذاهبة | في قرى اخرى */
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-sub {
+    clear: both !important;
+    display: block !important;
+    margin: 14px 0 50px !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+    font-size: 12px !important;
+    text-align: right !important;
+    direction: rtl !important;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-sub a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-decoration: none !important;
+    margin: 0 4px !important;
+    padding: 0 2px 2px !important;
+    border: none !important;
+    border-bottom: 1px dotted #bbb !important;
+    cursor: pointer !important;
+}
+
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-sub a.selected {
+    color: #71d000 !important;
+    border-bottom: 1px dotted #666 !important;
+}
+
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-sub a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid16 #textmenu.gk-rally-sub a sup {
+    font-size: 10px;
+    font-weight: 700;
+    color: #71d000;
+    margin-right: 1px;
+}
+
+body.pg-gk.pg-build #build.gid16 p.gk-rally-empty {
+    margin: 20px 0 14px;
+    text-align: right;
+    color: #888;
+    font-size: 12px;
+}
+
+/* Rally overview — vertical rhythm like Travian compact (textmenu 14px, h4 20px) */
+body.pg-gk.pg-build div#build.gid16 .gk-build-intro {
+    margin: 0 0 0 !important;
+}
+
+body.pg-gk.pg-build div#build.gid16 h4 {
+    margin: 20px 0 6px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+    text-align: right !important;
+    line-height: 1.35 !important;
+}
+
+body.pg-gk.pg-build div#build.gid16 table.troop_details {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 15px !important;
+    border-collapse: collapse !important;
+}
+
+body.pg-gk.pg-build div#build.gid16 table.troop_details.gk-rally-own-troops {
+    border: 1px solid #c9c9c9 !important;
+    background: #fff !important;
+    font-size: 12px !important;
+    margin: 0 0 15px !important;
+}
+
+body.pg-gk.pg-build div#build.gid16 table.gk-rally-own-troops thead th {
+    background: #efefef !important;
+    border: 1px solid #c9c9c9 !important;
+    padding: 5px 6px !important;
+    text-align: center !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+}
+
+body.pg-gk.pg-build div#build.gid16 table.gk-rally-own-troops tbody.units td {
+    border: 1px solid #c9c9c9 !important;
+    padding: 3px 4px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    background: #fff !important;
+    min-width: 28px;
+}
+
+body.pg-gk.pg-build div#build.gid16 table.gk-rally-own-troops tbody.units tr:first-child td {
+    background: #efefef !important;
+}
+
+body.pg-gk.pg-build div#build.gid16 table.gk-rally-own-troops tbody.units td.none {
+    color: #bbb !important;
+}
+
+body.pg-gk.pg-build div#build.gid16 table.gk-rally-own-troops tbody.units img.unit {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+/* Market — buy/sell sub-nav (شراء | عرض) shown on t=1 and t=2 */
+body.pg-gk.pg-build #build.gid17 #textmenu.gk-market-sub {
+    margin: -2px 0 12px;
+    padding-bottom: 4px;
+    line-height: 1.35;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-build #build.gid17 #textmenu.gk-market-sub a {
+    color: #71d000 !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    margin: 0 2px;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 #textmenu.gk-market-sub a.selected {
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 #textmenu.gk-market-sub a:hover {
+    color: #5bb000 !important;
+}
+
+/* Market — buy/sell tables styled to match the statistics page (stat.css) look:
+   bordered cells, grey header rows, alternating row backgrounds, green links. */
+body.pg-gk.pg-build #build.gid17 table.buy_select {
+    float: right !important;
+    margin: 0 0 12px 14px !important;
+    border-collapse: collapse !important;
+    border: 1px solid #c9c9c9 !important;
+    background: #fff !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-build #build.gid17 table#bid_select {
+    margin-left: 0 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.buy_select thead td {
+    border: 1px solid #c9c9c9 !important;
+    background: #efefef !important;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 6px !important;
+    text-align: center;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-build #build.gid17 table.buy_select td {
+    height: 22px;
+    width: 28px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #c9c9c9 !important;
+    background: #fff;
+}
+
+body.pg-gk.pg-build #build.gid17 table#ratio_select td {
+    width: auto;
+    padding: 2px 10px;
+}
+
+body.pg-gk.pg-build #build.gid17 table.buy_select td.hl {
+    background-color: #eaf8d0 !important;
+    border-color: #71d000 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range {
+    clear: both;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0 0 !important;
+    border-collapse: collapse !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    direction: rtl;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range th,
+body.pg-gk.pg-build #build.gid17 table#range td {
+    border: 1px solid #c9c9c9 !important;
+    padding: 4px 6px !important;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range thead tr:first-child th {
+    background: #efefef !important;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    text-align: center !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range thead tr:nth-child(2) td {
+    font-weight: 700;
+    font-size: 12px;
+    background: #f5f5f5 !important;
+    color: #000;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range tbody tr:nth-child(even) td {
+    background: #fafafa;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range td.val {
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range td.pla a {
+    color: #71d000 !important;
+    font-weight: 301;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range td.act a {
+    color: #71d000 !important;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range td.act a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range td.none {
+    color: #999;
+    font-weight: 301;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range tfoot td {
+    background: #fff !important;
+    padding: 8px 4px !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#range tfoot a {
+    color: #71d000 !important;
+    font-weight: 700;
+    text-decoration: none !important;
+    margin: 0 8px;
+}
+
+/* Market — create offer (t=2) + own offers overview */
+body.pg-gk.pg-build #build.gid17 table#sell {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1px solid #c9c9c9 !important;
+    background: #fff !important;
+    direction: rtl;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell th,
+body.pg-gk.pg-build #build.gid17 table#sell td {
+    border: 1px solid #c9c9c9 !important;
+    padding: 5px 7px !important;
+    vertical-align: middle;
+    background: #fff;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell th {
+    text-align: center;
+    font-weight: 700;
+    background: #efefef !important;
+    white-space: nowrap;
+    width: auto;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell tr:nth-child(even) td {
+    background: #fafafa;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell td.val {
+    text-align: center;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell td.val input.text {
+    width: 60px !important;
+    border: 1px solid #71d000 !important;
+    padding: 2px 4px !important;
+    text-align: center;
+    direction: ltr;
+    font-size: 12px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell td.res select.dropdown {
+    border: 1px solid #71d000 !important;
+    padding: 2px 4px !important;
+    font-size: 12px !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell td.tra,
+body.pg-gk.pg-build #build.gid17 table#sell td.al {
+    font-size: 11px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell td.tra input.text {
+    width: 28px !important;
+    border: 1px solid #71d000 !important;
+    padding: 2px 3px !important;
+    text-align: center;
+    direction: ltr;
+    font-size: 11px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell input.check {
+    position: relative;
+    top: 1px;
+    margin: 0 2px;
+}
+
+body.pg-gk.pg-build #build.gid17 form p.error2 {
+    color: #c00;
+    font-weight: 700;
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+body.pg-gk.pg-build #build.gid17 form > p {
+    font-size: 12px;
+    margin: 6px 0;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid17 form input[type="image"].dynamic_img {
+    filter: none;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell_overview {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 10px !important;
+    border-collapse: collapse !important;
+    border: 1px solid #c9c9c9 !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    direction: rtl;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell_overview th,
+body.pg-gk.pg-build #build.gid17 table#sell_overview td {
+    border: 1px solid #c9c9c9 !important;
+    padding: 4px 6px !important;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell_overview thead tr:first-child th {
+    background: #efefef !important;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell_overview thead tr:nth-child(2) td {
+    font-weight: 700;
+    font-size: 12px;
+    background: #f5f5f5 !important;
+    color: #000;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell_overview tbody tr:nth-child(even) td {
+    background: #fafafa;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell_overview td.abo a {
+    display: inline-block;
+}
+
+body.pg-gk.pg-build #build.gid17 table#sell_overview td.ratio.red { color: #c00; font-weight: 700; }
+body.pg-gk.pg-build #build.gid17 table#sell_overview td.ratio.orange { color: #d68a00; font-weight: 700; }
+body.pg-gk.pg-build #build.gid17 table#sell_overview td.ratio.green { color: #4a9c00; font-weight: 700; }
+
+/* Market — send resources, NPC, merchant info */
+body.pg-gk.pg-build #build.gid17 table.send_res,
+body.pg-gk.pg-build #build.gid17 table.res_target,
+body.pg-gk.pg-build #build.gid17 table#target_validate {
+    float: none !important;
+    margin: 0 !important;
     border-collapse: collapse;
     direction: rtl;
-    font-size: 13px;
+    background: #fff !important;
+    line-height: 1.6;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-send-wrap {
+    width: 100%;
+    margin: 0 0 8px;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-send-inner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    direction: rtl;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0 16%;
+    width: 100%;
+    max-width: 504px;
+    margin-bottom: 2px;
+    font-size: 12px;
+    line-height: 21px;
+}
+
+/* RTL flex: first child = right column (resources), second child = left column (target) */
+body.pg-gk.pg-build #build.gid17 .gk-market-col-resources {
+    flex: 0 0 42%;
+    max-width: 42%;
+    direction: rtl;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-col-target {
+    flex: 0 0 42%;
+    max-width: 42%;
+    direction: rtl;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-row {
+    height: 23px;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-mer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    text-align: center;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-or {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-vil,
+body.pg-gk.pg-build #build.gid17 .gk-market-coo {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px;
+    width: 100%;
+    float: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-vil datalist {
+    display: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-label {
+    font-weight: 700;
+    font-size: 12px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    line-height: 1.35;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-vil input.text {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto !important;
+    max-width: 100%;
+    margin: 0 !important;
+    border: 1px solid #71d000 !important;
+    padding: 2px 4px !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    float: none !important;
+    display: block !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-coo input.text {
+    flex: 0 0 40px;
+    width: 40px !important;
+    min-width: 40px;
+    margin: 0 !important;
+    border: 1px solid #71d000 !important;
+    padding: 2px 3px !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    direction: ltr;
+    text-align: center;
+    background: #fff !important;
+    box-shadow: none !important;
+    float: none !important;
+    display: block !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-col-resources table.send_res {
+    width: 100% !important;
+    max-width: 100% !important;
+    line-height: 21px !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-repeat {
+    text-align: right;
+    margin: 4px 0 0;
+    font-size: 11px;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-ok {
+    text-align: right !important;
+    margin: 6px 0 2px !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res tr {
+    height: 23px;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td {
+    padding: 1px 4px !important;
+    vertical-align: middle !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td.ico {
+    width: 22px;
+    text-align: center;
+    padding-right: 2px !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td.ico img {
+    position: relative;
+    top: 1px;
+    margin: 0;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td.nam {
+    text-align: right;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 12px;
+    min-width: 0;
+    width: auto;
+    padding-right: 2px !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td.val input.text {
+    width: 48px !important;
+    padding: 2px 3px !important;
+    border: 1px solid #71d000 !important;
+    text-align: center;
+    direction: ltr;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td.val input.text.disabled {
+    background: #fff !important;
+    color: #333 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td.max {
+    text-align: left;
+    white-space: nowrap;
+    font-size: 11px !important;
+    padding-left: 2px !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td.max a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table.send_res td.max a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#target_validate th,
+body.pg-gk.pg-build #build.gid17 table#target_validate td {
+    padding: 4px 0 !important;
+    vertical-align: middle !important;
+    border: none !important;
+    background: transparent !important;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-btn {
+    display: inline-block !important;
+    background: linear-gradient(to bottom, #f9f9f9 0%, #e8e8e8 100%) !important;
+    color: #333 !important;
+    border: 1px solid #84c225 !important;
+    border-radius: 999px !important;
+    padding: 3px 16px !important;
+    cursor: pointer !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    line-height: 1.25 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    min-width: 0;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-btn:hover:not(:disabled) {
+    color: #111 !important;
+    border-color: #71d000 !important;
+    background: linear-gradient(to bottom, #fcfcfc 0%, #ececec 100%) !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-btn:disabled {
+    opacity: 0.55;
+    cursor: default !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-carry {
+    margin: 6px 0 8px;
+    text-align: right;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-merchants {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 0;
+    font-size: 12px;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    color: #000033;
+    line-height: 1.35;
+    text-align: right;
+    direction: rtl;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-merchants .gk-market-merchants-line {
+    display: flex;
+    flex-direction: row;
+    direction: rtl;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 4px;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-merchants-label {
+    font-weight: 700;
+    color: #000033;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-market-merchants-val {
+    font-weight: 700;
+    color: #000033;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc {
+    width: 360px;
+    max-width: 360px;
+    table-layout: fixed;
+    margin: 0 auto 10px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    direction: rtl;
+    font-size: 12px;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc col.gk-npc-col-res {
+    width: 65px;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc col.gk-npc-col-have {
+    width: 90px;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc col.gk-npc-col-want {
+    width: 140px;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc col.gk-npc-col-rest {
+    width: 65px;
 }
 
 body.pg-gk.pg-build #build.gid17 table#npc.gk-npc th,
 body.pg-gk.pg-build #build.gid17 table#npc.gk-npc td {
-    border: 1px solid #c9c9c9;
-    padding: 6px 8px;
+    border: 1px solid #ccc !important;
+    padding: 2px 6px !important;
+    height: 20px;
+    line-height: 1.2;
     text-align: center;
     vertical-align: middle;
+    background: #fff;
+    box-sizing: border-box;
 }
 
-body.pg-gk.pg-build #build.gid17 table#npc.gk-npc thead th {
-    background: #efefef;
-    font-weight: 700;
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc thead tr:first-child th {
+    text-align: center !important;
+    font-weight: 700 !important;
+    font-size: 12px;
+    color: #000 !important;
+    padding: 3px 6px !important;
+    height: auto;
+    background: #efefef !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc thead tr:nth-child(2) th {
+    text-align: center !important;
+    font-weight: 700 !important;
+    font-size: 11px;
+    color: #000 !important;
+    padding: 2px 6px !important;
+    height: auto;
+    background: #f5f5f5 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc tbody tr:nth-child(even) td {
+    background: #fafafa;
 }
 
 body.pg-gk.pg-build #build.gid17 table#npc.gk-npc td.res {
-    text-align: right;
+    text-align: center !important;
+    white-space: nowrap;
 }
 
-body.pg-gk.pg-build #build.gid17 table#npc.gk-npc input.text {
-    width: 72px;
-    padding: 3px 4px;
-    border: 1px solid #71d000;
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc td.res img {
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc td.res a {
+    display: inline-block;
+    line-height: 0;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc td.sel input.text {
+    width: 108px !important;
+    padding: 1px 3px !important;
+    border: 1px solid #71d000 !important;
     text-align: center;
     direction: ltr;
-}
-
-body.pg-gk.pg-build #build.gid17 #submitButton a {
+    background: #fff !important;
     color: #71d000 !important;
-    font-weight: 700;
-    text-decoration: none;
+    font-weight: 700 !important;
+    box-sizing: border-box;
 }
 
-body.pg-gk.pg-build #build.gid17 #submitButton a:hover {
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc tr:last-child td {
+    font-weight: 700;
+}
+
+body.pg-gk.pg-build #build.gid17 table#npc.gk-npc td span {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+}
+
+body.pg-gk.pg-build #build.gid17 p#submitButton {
+    text-align: center !important;
+    margin: 8px 0 6px !important;
+}
+
+body.pg-gk.pg-build #build.gid17 p#submitButton a,
+body.pg-gk.pg-build #build.gid17 button.gk-npc-submit {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    background: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+    cursor: pointer;
+    box-shadow: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 p#submitButton a:hover,
+body.pg-gk.pg-build #build.gid17 button.gk-npc-submit:hover {
     color: #5bb000 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 p#submitText,
+body.pg-gk.pg-build #build.gid17 p.gk-npc-distribute {
+    display: block;
+    text-align: center !important;
+    margin: 6px 0 10px !important;
+    font-size: 13px;
+}
+
+body.pg-gk.pg-build #build.gid17 p#submitText a,
+body.pg-gk.pg-build #build.gid17 p.gk-npc-distribute a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .gk-npc-hint {
+    margin: 10px 0 12px;
+    padding: 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.55;
+    color: #333;
+    text-align: right;
+    direction: rtl;
+    unicode-bidi: plaintext;
+    overflow: visible;
+    word-wrap: break-word;
+}
+
+body.pg-gk.pg-build #build.gid17 p#submitButton,
+body.pg-gk.pg-build #build.gid17 p#submitText,
+body.pg-gk.pg-build #build.gid17 p.gk-npc-distribute {
+    overflow: visible;
+    padding: 0 4px;
+}
+
+body.pg-gk.pg-build #build.gid17 button.gk-npc-submit {
+    direction: rtl;
+    unicode-bidi: isolate;
+    white-space: normal;
+}
+
+body.pg-gk.pg-build #build.gid17 p#contract {
+    text-align: right;
+    margin-top: 8px;
+}
+
+body.pg-gk.pg-build #build.gid17 p#contract a.build {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-build #build.gid17 .clear {
+    clear: both;
+    height: 0;
 }
 
 /* Barracks train table — greek.sa reference */
@@ -155,7 +1072,7 @@ body.pg-gk.pg-build #build.gid19 table.gk-train-table {
     border-spacing: 0;
     direction: rtl;
     font-size: 13px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     margin: 0 0 10px;
     border: 1px solid #ccc;
     background: #fff;
@@ -293,59 +1210,178 @@ body.pg-gk.pg-build #build.gid19 table.build_details input.text:focus {
 }
 
 body.pg-gk.pg-build #build.gid19 .gk-train-actions {
-    text-align: center !important;
-    margin: 12px 0 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
     direction: rtl;
+    margin: 12px 0 16px !important;
+    text-align: center !important;
+    background: transparent !important;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-submit {
+    display: flex;
+    flex-direction: row;
+    direction: rtl;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 8px;
 }
 
 body.pg-gk.pg-build #build.gid19 button.trav_buttons,
 body.pg-gk.pg-build #build.gid19 .trav_buttons,
 body.pg-gk.pg-build #build.gid19 .gk-train-btn {
     display: inline-block !important;
-    background: #fff !important;
-    color: #71d000 !important;
-    border: 1px solid #71d000 !important;
+    background: linear-gradient(to bottom, #f9f9f9 0%, #e8e8e8 100%) !important;
+    color: #333 !important;
+    border: 1px solid #84c225 !important;
     border-radius: 999px !important;
     padding: 5px 26px !important;
     cursor: pointer !important;
     font-weight: 700 !important;
     font-size: 13px !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     line-height: 1.3 !important;
     box-shadow: none !important;
+    margin: 0 !important;
 }
 
 body.pg-gk.pg-build #build.gid19 button.trav_buttons:hover,
 body.pg-gk.pg-build #build.gid19 .gk-train-btn:hover {
-    color: #5bb000 !important;
-    border-color: #5bb000 !important;
-    background: #f7fff0 !important;
+    color: #111 !important;
+    border-color: #71d000 !important;
+    background: linear-gradient(to bottom, #fcfcfc 0%, #ececec 100%) !important;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-duration {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    font-size: 13px;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    color: #000033;
+    line-height: 1.5;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-duration-line {
+    display: flex;
+    flex-direction: row;
+    direction: rtl;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-duration-label {
+    font-weight: 700;
+    color: #000033;
+    white-space: nowrap;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-duration-pct {
+    font-weight: 700;
+    color: #000033;
+    white-space: nowrap;
+    min-width: 2.8em;
+    text-align: left;
+    unicode-bidi: isolate;
+}
+
+body.pg-gk.pg-build #build.gid19 table.under_progress tr.gk-train-gold-row td {
+    padding: 0;
+    background: #fafafa;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-finish-gold {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px 8px;
+    color: #000;
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+    direction: rtl;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-finish-gold-amt {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+body.pg-gk.pg-build #build.gid19 .gk-train-finish-gold img {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
 }
 
 body.pg-gk.pg-build #build.gid19 table.under_progress {
     width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
+    border: 1px solid #ccc !important;
     direction: rtl;
-    font-size: 13px;
+    font-size: 12px;
     margin: 0 0 12px;
 }
 
 body.pg-gk.pg-build #build.gid19 table.under_progress th,
 body.pg-gk.pg-build #build.gid19 table.under_progress td {
-    border: 1px solid #c9c9c9;
-    padding: 6px 8px;
+    border: 1px solid #ccc !important;
+    padding: 4px 8px;
     text-align: right;
 }
 
 body.pg-gk.pg-build #build.gid19 table.under_progress thead td,
 body.pg-gk.pg-build #build.gid19 table.under_progress thead th {
-    background: linear-gradient(to bottom, #fafafa 0%, #e8e8e8 100%);
+    background: #f0f0f0;
+    font-weight: 700;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid19 table.under_progress td.dur {
+    width: 120px;
+    text-align: center;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+body.pg-gk.pg-build #build.gid19 table.under_progress thead td.dur {
+    text-align: center;
+    direction: rtl;
+    unicode-bidi: normal;
+}
+
+body.pg-gk.pg-build #build.gid19 table.under_progress td.desc img.unit {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+body.pg-gk.pg-build #build.gid19 table.under_progress tr.next td {
+    background: #fafafa;
     font-weight: 700;
     text-align: center;
 }
 
 body.pg-gk.pg-build #build.gid19 .gk-train-empty {
-    margin: 8px 0 14px;
+    margin: 8px 0 10px;
     color: #888;
 }
 
@@ -421,7 +1457,7 @@ body.pg-gk.pg-build #build.gid37 table.gk-hero-train {
     border-spacing: 0;
     direction: rtl;
     font-size: 13px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     border: 1px solid #ccc;
     background: #fff;
 }
@@ -599,7 +1635,7 @@ body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info {
     table-layout: fixed !important;
     direction: rtl;
     font-size: 13px !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     border: 1px solid #c0c0c0 !important;
     background: #fff !important;
 }
@@ -680,7 +1716,7 @@ body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info a.gk-edit-link 
     text-align: center !important;
     background: none !important;
     border: none !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     cursor: pointer;
 }
 
@@ -719,7 +1755,7 @@ body.pg-gk.pg-build #build.gid37 table#distribution.gk-hero-info .gk-xp-txt {
     font-size: 12px !important;
     font-weight: 400 !important;
     color: #000 !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
 }
 
 body.pg-gk.pg-build #build.gid37 table.gk-hero-info tbody th {
@@ -958,4 +1994,804 @@ body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases td.sq bdi {
 body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases td.none,
 body.pg-gk.pg-build #build.gid37 table.gk-nearby-oases .none {
     color: #888;
+}
+
+/* ============================================================
+ * Rally point send troops (a2b.php) — gid16 Greek layout
+ * ============================================================ */
+
+body.pg-gk.pg-a2b .gk-td-main #content.a2b,
+body.pg-gk.pg-a2b .gk-td-main #content {
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    text-align: right;
+    direction: rtl;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-a2b.pg-build .gk-shell > tbody > tr > td.gk-td-main,
+body.pg-gk.pg-a2b.pg-build .gk-td-main #content {
+    overflow: visible !important;
+    overflow-x: visible !important;
+}
+
+body.pg-gk.pg-a2b div#build.gid16 {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 4px 0 0 !important;
+    overflow: visible !important;
+}
+
+/* Title full width; image left + description right */
+body.pg-gk.pg-a2b div#build.gid16 h1,
+body.pg-gk.pg-build div#build.gid16 h1 {
+    font-family: "Expo Arabic", Tahoma, Helvetica, Arial, Verdana, sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 900 !important;
+    color: #000 !important;
+    margin: 0 0 10px !important;
+    padding: 0 !important;
+    text-align: right !important;
+    line-height: 1.2 !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-a2b div#build.gid16 h1 span.level,
+body.pg-gk.pg-build div#build.gid16 h1 span.level {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    color: inherit !important;
+}
+
+body.pg-gk.pg-a2b div#build.gid16 .gk-build-intro,
+body.pg-gk.pg-build div#build.gid16 .gk-build-intro {
+    display: flex !important;
+    flex-direction: row !important;
+    direction: ltr !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-a2b div#build.gid16 .gk-build-intro a.build_logo,
+body.pg-gk.pg-build div#build.gid16 .gk-build-intro a.build_logo {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    float: none !important;
+    display: block !important;
+    flex: 0 0 85px !important;
+    width: 85px !important;
+    min-width: 85px !important;
+    height: 110px !important;
+    margin: 0 !important;
+    z-index: auto !important;
+}
+
+body.pg-gk.pg-a2b div#build.gid16 .gk-build-intro a.build_logo img,
+body.pg-gk.pg-build div#build.gid16 .gk-build-intro a.build_logo img {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+body.pg-gk.pg-a2b div#build.gid16 .gk-build-intro p.build_desc,
+body.pg-gk.pg-build div#build.gid16 .gk-build-intro p.build_desc {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    clear: none !important;
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    color: #000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    text-align: right !important;
+    direction: rtl !important;
+    box-sizing: border-box !important;
+    position: static !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 #textmenu.gk-rally-nav,
+body.pg-gk.pg-a2b #textmenu.gk-rally-nav {
+    clear: both !important;
+    display: block !important;
+    margin: 0 0 12px !important;
+    font-size: 12px !important;
+    text-align: right !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+body.pg-gk.pg-a2b #textmenu.gk-rally-nav a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-a2b #textmenu.gk-rally-nav a.selected {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    border-bottom: 1px dotted #888 !important;
+}
+
+body.pg-gk.pg-a2b #textmenu.gk-rally-nav a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 .gk-a2b-send-wrap {
+    width: 100%;
+    margin: 0 0 8px;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+body.pg-gk.pg-a2b #build.gid16 .gk-a2b-send-inner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    direction: rtl;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 2px;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-a2b #build.gid16 .gk-a2b-col-troops {
+    flex: 0 0 auto;
+    max-width: none;
+    width: auto;
+    direction: rtl;
+    text-align: right;
+    order: 1;
+}
+
+body.pg-gk.pg-a2b #build.gid16 .gk-a2b-col-target {
+    flex: 0 0 auto;
+    max-width: none;
+    width: auto;
+    direction: rtl;
+    text-align: right;
+    order: 2;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops {
+    width: 198px !important;
+    max-width: 198px !important;
+    min-width: 198px !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    direction: rtl !important;
+    background: #fff !important;
+    font-size: 11px !important;
+    margin: 0 !important;
+    border: 1px solid #c5c5c5 !important;
+    table-layout: fixed !important;
+    float: none !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops th,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops th,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td {
+    border: 1px solid #c5c5c5 !important;
+    padding: 1px 2px !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    color: #000 !important;
+    line-height: 18px !important;
+    white-space: nowrap !important;
+    display: table-cell !important;
+    height: 20px !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops thead th,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops thead th {
+    font-weight: 700 !important;
+    text-align: center !important;
+    font-size: 11px !important;
+    height: auto !important;
+    padding: 2px 3px !important;
+    border: 1px solid #c5c5c5 !important;
+    color: #000 !important;
+}
+
+/* Main title row — grey gradient band */
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops thead tr:first-child th,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops thead tr:first-child th {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 3px 4px !important;
+    color: #000 !important;
+    background: linear-gradient(to bottom, #d6d6d6 0%, #e8e8e8 45%, #f5f5f5 100%) !important;
+    border-color: #c5c5c5 !important;
+}
+
+/* Column labels row — white band, colored labels */
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops thead tr:nth-child(2) th,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops thead tr:nth-child(2) th {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    padding: 2px 3px !important;
+    background: #fff !important;
+    border-color: #c5c5c5 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops thead tr:nth-child(2) th.ico,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops thead tr:nth-child(2) th.ico {
+    color: #9aa3ad !important;
+    font-weight: 400 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops thead tr:nth-child(2) th.send,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops thead tr:nth-child(2) th.send {
+    color: #000 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops thead tr:nth-child(2) th.hav,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops thead tr:nth-child(2) th.hav,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops thead tr:nth-child(2) th.last,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops thead tr:nth-child(2) th.last {
+    color: #8a96a3 !important;
+    font-weight: 400 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops tbody tr:nth-child(even) td,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops tbody tr:nth-child(even) td {
+    background: #f5f5f5 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops tbody tr:nth-child(odd) td,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops tbody tr:nth-child(odd) td {
+    background: #fff !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops th.ico,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.ico,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops th.ico,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.ico {
+    width: 22px !important;
+    min-width: 22px !important;
+    max-width: 22px !important;
+    padding: 1px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops th.send,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.send,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops th.send,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.send {
+    width: 52px !important;
+    min-width: 52px !important;
+    max-width: 52px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops th.hav,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.hav,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops th.hav,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.hav {
+    width: 52px !important;
+    min-width: 52px !important;
+    max-width: 52px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops th.last,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.last,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops th.last,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.last {
+    width: 52px !important;
+    min-width: 52px !important;
+    max-width: 52px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.ico img.unit,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.ico img.unit {
+    cursor: pointer !important;
+    vertical-align: middle !important;
+    display: inline-block !important;
+    margin: 0 !important;
+    float: none !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.send,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.send {
+    display: table-cell !important;
+    text-align: center !important;
+    padding: 1px 2px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.send input.text,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.send input.text {
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 16px !important;
+    padding: 0 2px !important;
+    border: 1px solid #71d000 !important;
+    text-align: center !important;
+    direction: ltr !important;
+    font-size: 11px !important;
+    line-height: 14px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+    display: inline-block !important;
+    float: none !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.send input.text:disabled,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.send input.text:disabled {
+    border-color: #ccc !important;
+    background: #f5f5f5 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.hav a,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.hav a {
+    color: #71d000 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.hav a:hover,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.hav a:hover {
+    color: #5bb000 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.last,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops .none,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.last,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops .none {
+    color: #888 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-troops td.hav .none,
+body.pg-gk.pg-a2b #build.gid16 table#a2b_troops td.hav .none {
+    color: #888 !important;
+    font-weight: 400 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target {
+    width: 228px !important;
+    max-width: 228px !important;
+    min-width: 228px !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    direction: rtl !important;
+    background: #fff !important;
+    font-size: 11px !important;
+    margin: 0 !important;
+    border: 1px solid #c5c5c5 !important;
+    table-layout: fixed !important;
+    float: none !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target th,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target th,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td {
+    border: 1px solid #c5c5c5 !important;
+    padding: 3px 5px !important;
+    vertical-align: middle !important;
+    color: #000 !important;
+    text-align: right !important;
+    line-height: 18px !important;
+    background: #fff !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target thead th,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target thead th {
+    font-weight: 700 !important;
+    text-align: center !important;
+    border-color: #c5c5c5 !important;
+    color: #000 !important;
+    background: linear-gradient(to bottom, #d6d6d6 0%, #e8e8e8 45%, #f5f5f5 100%) !important;
+    font-size: 11px !important;
+    padding: 3px 4px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td.row-vil,
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td.row-coo,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td.row-vil,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td.row-coo {
+    white-space: nowrap !important;
+    height: 22px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target .gk-a2b-label,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target .gk-a2b-label {
+    font-weight: 700 !important;
+    margin-right: 2px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td.row-vil input.text,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td.row-vil input.text {
+    width: 108px !important;
+    max-width: 108px !important;
+    min-width: 108px !important;
+    height: 16px !important;
+    border: 1px solid #7eb55d !important;
+    padding: 0 3px !important;
+    font-size: 11px !important;
+    line-height: 14px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+    display: inline-block !important;
+    float: none !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td.row-coo input.text,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td.row-coo input.text {
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    height: 16px !important;
+    border: 1px solid #7eb55d !important;
+    padding: 0 2px !important;
+    font-size: 11px !important;
+    line-height: 14px !important;
+    direction: ltr !important;
+    text-align: center !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    margin: 0 2px 0 0 !important;
+    vertical-align: middle !important;
+    display: inline-block !important;
+    float: none !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td.sel,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td.sel {
+    padding: 2px 6px !important;
+    height: 20px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td.sel label,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td.sel label {
+    font-weight: 400 !important;
+    cursor: pointer !important;
+    display: inline-block !important;
+    margin: 0 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td.sel input.radio,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td.sel input.radio {
+    vertical-align: middle !important;
+    margin: 0 4px 0 0 !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 table.gk-a2b-target td.row-vil datalist,
+body.pg-gk.pg-a2b #build.gid16 table#coords.gk-a2b-target td.row-vil datalist {
+    display: none !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 .gk-a2b-coord-label {
+    font-weight: 700 !important;
+    margin-right: 2px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 .gk-a2b-ok {
+    text-align: center !important;
+    margin: 8px 0 2px !important;
+    width: 228px !important;
+    max-width: 228px !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 .gk-a2b-send-btn,
+body.pg-gk.pg-a2b #build.gid16 .gk-market-btn {
+    display: inline-block !important;
+    background: linear-gradient(to bottom, #eef8e4 0%, #dfeecd 55%, #d4e8c4 100%) !important;
+    color: #000 !important;
+    border: 1px solid #7eb55d !important;
+    border-radius: 999px !important;
+    padding: 2px 18px !important;
+    cursor: pointer !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    min-width: 0 !important;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 .gk-a2b-send-btn:hover,
+body.pg-gk.pg-a2b #build.gid16 .gk-market-btn:hover {
+    background: linear-gradient(to bottom, #f4fbe9 0%, #e8f3dc 55%, #dcecc8 100%) !important;
+}
+
+body.pg-gk.pg-a2b #build.gid16 p.error {
+    color: #c00;
+    font-weight: 700;
+    margin: 4px 0;
+}
+
+body.pg-gk.pg-a2b #build.gid16 #contract {
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+/* Rally point — farms tab (مزارع) */
+body.pg-gk.pg-build #build.gid16 .gk-farms-wrap,
+body.pg-gk.pg-build #build.gid16 .gk-farms-content {
+    width: 100%;
+    max-width: 100%;
+    direction: rtl;
+    text-align: right;
+    font-size: 12px;
+    line-height: 1.45;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid16 #gk-farm-add.gk-farms-add-wrap {
+    width: calc(100% + 28px) !important;
+    max-width: none !important;
+    margin-left: -14px !important;
+    margin-right: -14px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-add-wrap {
+    margin: 16px 0 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-add-form {
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-page-title {
+    margin: 0 0 10px;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: #71d000;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-empty-msg {
+    margin: 0 0 14px;
+    padding: 0;
+    text-align: center;
+    color: #888;
+    font-size: 12px;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-error {
+    margin: 0 0 10px;
+    color: #c00;
+    font-weight: 700;
+    text-align: center;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 100% !important;
+    margin: 0 !important;
+    border-collapse: collapse !important;
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+    table-layout: fixed;
+    direction: rtl;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table th,
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table td {
+    border: 1px solid #ccc !important;
+    padding: 3px 6px;
+    vertical-align: middle;
+    text-align: right;
+    background: #fff;
+    line-height: 1.2;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table thead th {
+    background: linear-gradient(180deg, #fcfcfc 0%, #e0e0e0 100%);
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    padding: 3px 6px;
+    line-height: 1.25;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-add-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-gold-cost {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 4px;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-gold-cost img.gold {
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-th-coords,
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-th-type,
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-th-count {
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: #000;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-coords {
+    width: 18%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 4px 5px;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-coord-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin: 2px 0;
+    direction: rtl;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-coord-label {
+    font-weight: 700;
+    font-size: 12px;
+    color: #000;
+    flex-shrink: 0;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-coords input.text,
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-count input.text {
+    width: 40px;
+    min-width: 40px;
+    height: 18px;
+    border: 1px solid #7cb028 !important;
+    padding: 0 3px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.1;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-type {
+    width: 62%;
+    vertical-align: middle;
+    padding: 4px 8px;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-list {
+    display: block;
+    direction: rtl;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    direction: rtl;
+    cursor: pointer;
+    margin: 0;
+    padding: 1px 0;
+    line-height: 1.15;
+    border: none;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-label input.radio {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-label img.unit {
+    flex-shrink: 0;
+    margin: 0;
+    width: 16px;
+    height: 16px;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-name {
+    flex: 0 1 auto;
+    font-size: 11px;
+    color: #000;
+    line-height: 1.15;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-have {
+    color: #333;
+    font-size: 11px;
+    flex-shrink: 0;
+    line-height: 1.15;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-count {
+    width: 20%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 4px 5px;
+}
+
+body.pg-gk.pg-build #build.gid16 table.gk-farms-add-table .gk-farms-troop-count input.text {
+    display: block;
+    margin: 0 auto;
+    width: 72px;
+    min-width: 72px;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-ok {
+    text-align: center;
+    margin: 14px 0 0;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-add-btn {
+    display: inline-block;
+    min-width: 110px;
+    padding: 4px 30px;
+    border: 1px solid #7cb028 !important;
+    border-radius: 999px !important;
+    background: linear-gradient(180deg, #f9f9f9 0%, #e8e8e8 48%, #dededd 100%) !important;
+    color: #555 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-add-btn:hover {
+    background: linear-gradient(180deg, #f4fbe9 0%, #e8f3dc 55%, #dcecc8 100%) !important;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-gc-note {
+    margin: 0 0 12px;
+    padding: 8px 10px;
+    background: #fff8e6;
+    border: 1px solid #e8c96a;
+    color: #664d00;
+    font-size: 12px;
+    line-height: 1.45;
+    text-align: right;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-gc-note a {
+    color: #71d000 !important;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-build #build.gid16 .gk-farms-evasion {
+    margin-top: 20px;
 }

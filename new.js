@@ -314,7 +314,7 @@ var BBEditor = new Class ({
 
 
 
-	Binds: ['fetchPreview', 'showToolbarWindow', 'insertTag', 'insertSingleTag', 'insertSmilieTag', 'hideToolbarWindow', 'showPreview', 'hidePreview'],
+	Binds: ['fetchPreview', 'showToolbarWindow', 'insertTag', 'insertSingleTag', 'insertSmilieTag', 'hideToolbarWindow', 'showPreview', 'hidePreview', 'preserveToolbarFocus'],
 
 
 
@@ -350,13 +350,31 @@ var BBEditor = new Class ({
 
 		$(textAreaId + '_previewButton').addEvent('click', this.fetchPreview);
 
+		$(textAreaId + '_previewButton').addEvent('mousedown', this.preserveToolbarFocus);
+
 		$(textAreaId + '_resourceButton').addEvent('click', this.showToolbarWindow);
+
+		$(textAreaId + '_resourceButton').addEvent('mousedown', this.preserveToolbarFocus);
 
 		$(textAreaId + '_smilieButton').addEvent('click', this.showToolbarWindow);
 
+		$(textAreaId + '_smilieButton').addEvent('mousedown', this.preserveToolbarFocus);
+
 		$(textAreaId + '_troopButton').addEvent('click', this.showToolbarWindow);
 
+		$(textAreaId + '_troopButton').addEvent('mousedown', this.preserveToolbarFocus);
+
 		$(textAreaId).addEvent('click', this.hideToolbarWindow);
+
+		var toolbarWindows = $(textAreaId + '_toolbarWindows');
+
+		if (this.toolbar) {
+			this.toolbar.addEvent('mousedown', this.preserveToolbarFocus);
+		}
+
+		if (toolbarWindows) {
+			toolbarWindows.addEvent('mousedown', this.preserveToolbarFocus);
+		}
 
 		this.addEvent($(textAreaId + '_toolbar'), this.insertTag);
 
@@ -366,6 +384,38 @@ var BBEditor = new Class ({
 
 		this.addEvent($(textAreaId + '_troops'), this.insertTag);
 
+	},
+
+	preserveToolbarFocus: function(Event) {
+		Event.preventDefault();
+	},
+
+	findBbLink: function(target) {
+		var node = target;
+
+		while (node && node !== document.body) {
+			if (node.getAttribute && node.getAttribute('bbTag')) {
+				return $(node);
+			}
+			node = node.parentNode;
+		}
+
+		return null;
+	},
+
+	normalizeTextAreaSelection: function() {
+		var ta = this.textArea;
+
+		if (!ta || !ta.setSelectionRange) {
+			return;
+		}
+
+		var start = ta.selectionStart;
+		var end = ta.selectionEnd;
+
+		if (start > end) {
+			ta.setSelectionRange(end, start);
+		}
 	},
 
 
@@ -414,13 +464,22 @@ var BBEditor = new Class ({
 
 	insertTag: function(Event) {
 
+		if (Event && Event.stop) {
+			Event.stop();
+		}
+
 		this.hidePreview();
 
-		var link = $(Event.target.parentNode);
+		var link = this.findBbLink(Event.target);
+
+		if (!link) {
+			return;
+		}
 
 		var tag = link.get('bbTag');
 
-
+		this.textArea.focus();
+		this.normalizeTextAreaSelection();
 
 		switch (link.get('bbType')) {
 

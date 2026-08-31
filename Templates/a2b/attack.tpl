@@ -258,7 +258,7 @@ $kata = !empty($process['t8']);
     <input name="ckey" value="<?php echo $id; ?>" type="hidden">
     <input name="id" value="39" type="hidden">
     <input name="a" value="533374" type="hidden">
-    <input name="c" value="3" type="hidden">
+    <input name="c" value="<?php echo (int) $process['c']; ?>" type="hidden">
 
     <?php
     if ($database->hasBeginnerProtection($village->wid) == 1 && $database->hasBeginnerProtection($process['0']) == 0) {
@@ -271,4 +271,3 @@ $kata = !empty($process['t8']);
         <p class="btn"><input value="ok" name="s1" id="btn_ok" class="dynamic_img " src="img/x.gif" alt="OK" type="image" onclick="if (this.disabled==false) {document.getElementsByTagName('form')[0].submit();} this.disabled=true;" onLoad="this.disabled=false;"></p>
     <?php } ?>
 </form>
-</div>

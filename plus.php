@@ -644,4 +644,10 @@ if (is_numeric($id) && (int) $id > 16) {
 ?>
 <?php
 include __DIR__ . '/Templates/Plus/pmenu_close.tpl';
-tz_greek_shell_close(array('buildPopup' => false, 'timer' => $start_timer));
+$gkPlusCountdownJs = __DIR__ . '/js/gk_plus_countdown.js';
+$gkPlusCountdownVer = is_file($gkPlusCountdownJs) ? (int) @filemtime($gkPlusCountdownJs) : time();
+tz_greek_shell_close(array(
+    'buildPopup' => false,
+    'timer' => $start_timer,
+    'extraScriptTags' => '<script src="js/gk_plus_countdown.js?v=' . $gkPlusCountdownVer . '" type="text/javascript"></script>',
+));

@@ -1,5 +1,5 @@
 <?php
-$gkNavUid = isset($uid) ? (int) $uid : (isset($session->uid) ? (int) $session->uid : 0);
+$gkNavUid = (isset($session) && is_object($session) && isset($session->uid)) ? (int) $session->uid : 0;
 ?>
 <nav class="gk-stat-nav" aria-label="قائمة الموقع">
 	<div class="gk-rlista">

@@ -179,6 +179,15 @@ class Units {
         //no errors, we can add the additional information to the post array
         array_push($post, $id, $villageInfo['name'], $villageInfo['owner'], 0);
 
+        global $village;
+        if (isset($village->wid)) {
+            $lastKey = 'a2b_last_' . (int) $village->wid;
+            $_SESSION[$lastKey] = array();
+            for ($i = 1; $i <= 11; $i++) {
+                $_SESSION[$lastKey]['t' . $i] = empty($post['t' . $i]) ? 0 : (int) $post['t' . $i];
+            }
+        }
+
         return "";
     }
 
@@ -823,6 +832,12 @@ class Units {
                 $_SESSION['valuearray'] = $_POST;
                 header("Location: a2b.php" );
                 exit;
+            }
+
+            $lastKey = 'a2b_last_' . (int) $village->wid;
+            $_SESSION[$lastKey] = array();
+            for ($i = 1; $i <= 11; $i++) {
+                $_SESSION[$lastKey]['t' . $i] = isset($data['u' . $i]) ? (int) $data['u' . $i] : 0;
             }
             
             header("Location: build.php?id=39");

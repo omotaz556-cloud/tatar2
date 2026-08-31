@@ -20,20 +20,20 @@ $count=$result['Total'];
 
 ?>
 
-<h1><img class="point" src="img/x.gif" alt="" title="" /> event jam (00:00:0?)</h1>
+<h1><img class="point" src="img/x.gif" alt="" title="" /> ازدحام الأحداث (00:00:0?)</h1>
 
 <p>
-All events occurring at a later time get calculated by an event system. In case the server is overloaded or the connection between webserver and database is bad an event jam can result of this.
+تُحسب جميع الأحداث التي تحدث في وقت لاحق عبر نظام الأحداث. في حال زيادة الحمل على الخادم أو ضعف الاتصال بين خادم الويب وقاعدة البيانات قد ينتج عن ذلك ازدحام في الأحداث.
 <br />
-As soon as more events are received per second than can be calculated per second, events (e.g."construction finished" or "troops arrived") will be put into a waiting loop.
+بمجرد استقبال أحداث في الثانية أكثر مما يمكن حسابه في الثانية، تُوضع الأحداث (مثل «انتهاء البناء» أو «وصول القوات») في حلقة انتظار.
 <br />
-The chronological order of troop movements stays the same, even in an event jam, so troops that would normally arrive somewhere first would still arrive there first.
+يظل الترتيب الزمني لحركات القوات كما هو حتى أثناء ازدحام الأحداث، فالقوات التي كانت ستصل أولاً في الوضع الطبيعي ستصل أولاً أيضاً.
 <br />
-As player, nothing can be done against an event jam except waiting. Normally these problems get resolved after a few minutes automatically. At the moment <b><?php echo $count; ?></b> events await
+كلاعب، لا يمكن فعل شيء ضد ازدحام الأحداث سوى الانتظار. عادةً تُحل هذه المشاكل تلقائياً خلال دقائق قليلة. حالياً يوجد <b><?php echo $count; ?></b> حدثاً في الانتظار.
 </p>
 <map id="nav" name="nav">
     <area href="manual.php?s=1" title="<?php echo BACK; ?>" coords="0,0,45,18" shape="rect" alt="" />
     <area href="manual.php?s=1" title="<?php echo OVERVIEW; ?>" coords="46,0,70,18" shape="rect" alt="" />
-    <area href="manual.php?s=1" title="forward" coords="71,0,116,18" shape="rect" alt="" />
+    <area href="manual.php?s=1" title="<?php echo FORWARD; ?>" coords="71,0,116,18" shape="rect" alt="" />
 </map>
 <img usemap="#nav" src="img/x.gif" class="navi" alt="" />

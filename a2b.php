@@ -83,9 +83,18 @@ if(isset($_GET['o'])){
 	else $disabled = "disabled=disabled";
 }
 $process = $units->procUnits($_POST);
+$rallyFieldId = 39;
 $gkShell = true;
-$gkPageTitle = SERVER_NAME . ' - إرسال الجيوش';
-tz_greek_shell_head($gkPageTitle, 'pg-a2b', array('includeNew2Js' => false));
+$gkPageTitle = SERVER_NAME . ' - ' . (defined('TZ_RALLY_SEND_TROOPS') ? TZ_RALLY_SEND_TROOPS : SEND_TROOPS);
+$gkExtraCss = array(GP_LOCATE . 'lang/en/build.override.css?v=' . ((int) @filemtime(__DIR__ . '/' . GP_LOCATE . 'lang/en/build.override.css') ?: time()));
+$gkBuildCss = 'css/greek_maxb_build.css';
+if (is_file(__DIR__ . '/' . $gkBuildCss)) {
+	$gkExtraCss[] = $gkBuildCss . '?v=' . ((int) @filemtime(__DIR__ . '/' . $gkBuildCss));
+}
+tz_greek_shell_head($gkPageTitle, 'pg-a2b pg-build', array(
+	'includeNew2Js' => false,
+	'extraCss' => $gkExtraCss,
+));
 tz_greek_shell_open('a2b', array('contentWrap' => true));
 if(!empty($id)){
 	include ("Templates/a2b/newdorf.tpl");

@@ -1,0 +1,305 @@
+/* Map tile view (karte.php vilview) — Greek.sa reference layout */
+
+body.pg-gk.pg-map #content.map.gk-map-page {
+    min-height: 0 !important;
+    overflow: visible !important;
+    direction: rtl !important;
+    text-align: right !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+    position: relative !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page h1 {
+    margin: 0 0 14px !important;
+    padding: 0 !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    text-align: right !important;
+    direction: rtl !important;
+    color: #000 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* details (left) | map+opts (right); explicit grid columns, pinned to right edge */
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-body,
+body.pg-gk.pg-map #content.map .gk-map-body {
+    display: grid !important;
+    grid-template-columns: 227px 300px !important;
+    grid-template-rows: auto !important;
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    align-items: start !important;
+    gap: 15px !important;
+    width: 542px !important;
+    max-width: 100% !important;
+    margin: 0 0 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-details-col,
+body.pg-gk.pg-map #content.map .gk-map-details-col {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    flex: none !important;
+    width: 227px !important;
+    max-width: 227px !important;
+    direction: rtl !important;
+    text-align: right !important;
+    overflow: visible !important;
+    padding-top: 0 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-right-col,
+body.pg-gk.pg-map #content.map .gk-map-right-col {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    flex: none !important;
+    width: 300px !important;
+    max-width: 300px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    direction: rtl !important;
+    text-align: right !important;
+    overflow: visible !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page #map_details,
+body.pg-gk.pg-map #content.map .gk-map-body #map_details {
+    float: none !important;
+    clear: none !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    position: static !important;
+    overflow: visible !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page img#detailed_map,
+body.pg-gk.pg-map #content.map .gk-map-body img#detailed_map {
+    float: none !important;
+    clear: none !important;
+    left: auto !important;
+    top: auto !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-right-col img#detailed_map {
+    float: none !important;
+    clear: none !important;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    display: block !important;
+    width: 300px !important;
+    height: 264px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table.tableNone {
+    width: 100% !important;
+    border: 0 !important;
+    border-collapse: collapse !important;
+    background: transparent !important;
+    margin: 0 0 12px 0 !important;
+    float: none !important;
+    clear: none !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table.tableNone thead th {
+    background: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    text-align: right !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+    padding: 0 0 6px !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table.tableNone thead th div {
+    float: none !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table.tableNone tbody td,
+body.pg-gk.pg-map #content.map.gk-map-page table.tableNone tbody th {
+    border: 0 !important;
+    background: transparent !important;
+    padding: 1px 0 !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    text-align: right !important;
+    vertical-align: middle !important;
+    color: #000 !important;
+    line-height: 1.35 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table#troop_info.gk-map-troops,
+body.pg-gk.pg-map #content.map.gk-map-page table#distribution.gk-map-distribution {
+    width: 227px !important;
+    margin-bottom: 14px !important;
+    direction: rtl !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table#troop_info.gk-map-troops .ico,
+body.pg-gk.pg-map #content.map.gk-map-page table#distribution.gk-map-distribution .ico {
+    width: 20px !important;
+    min-width: 20px !important;
+    max-width: 20px !important;
+    text-align: right !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table#troop_info.gk-map-troops .ico img {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table#troop_info.gk-map-troops .gk-troop-line,
+body.pg-gk.pg-map #content.map.gk-map-page table#distribution.gk-map-distribution .gk-troop-line {
+    text-align: right !important;
+    direction: rtl !important;
+    white-space: nowrap !important;
+    padding: 1px 0 !important;
+    vertical-align: middle !important;
+    width: auto !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table#troop_info.gk-map-troops .gk-troop-line .val,
+body.pg-gk.pg-map #content.map.gk-map-page table#distribution.gk-map-distribution .gk-troop-line .val {
+    font-weight: 700 !important;
+    color: #000 !important;
+    margin: 0 !important;
+    margin-left: 6px !important;
+    padding: 0 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table#troop_info.gk-map-troops .gk-troop-line .desc,
+body.pg-gk.pg-map #content.map.gk-map-page table#distribution.gk-map-distribution .gk-troop-line .desc {
+    font-weight: 400 !important;
+    color: #000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table.gk-map-bonus {
+    margin-bottom: 0 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page table.gk-map-bonus .gk-bonus-line {
+    font-weight: 400 !important;
+    color: #000 !important;
+    line-height: 1.45 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts {
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 10px 0 0 0 !important;
+    direction: rtl !important;
+    text-align: right !important;
+    clear: none !important;
+    float: none !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-h {
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+    margin: 0 0 6px 0 !important;
+    padding: 0 !important;
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-links {
+    display: block !important;
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-links a {
+    display: block !important;
+    color: #8fc838 !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.55 !important;
+    text-decoration: none !important;
+    margin: 0 !important;
+    padding: 1px 0 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-links a:hover {
+    color: #7ab52f !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-links a .gk-map-opts-main {
+    color: #8fc838 !important;
+    font-weight: 700 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-links a .gk-map-opts-note {
+    color: #999999 !important;
+    font-weight: 400 !important;
+}
+
+body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-links .gk-map-opts-muted {
+    display: block !important;
+    color: #000 !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+    margin: 0 !important;
+    padding: 1px 0 !important;
+}
+
+body.pg-gk.pg-map .gk-td-main #content.map.gk-map-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+}
+
+body.pg-gk.pg-map .gk-shell > tbody > tr > td.gk-td-main {
+    overflow: visible !important;
+    padding: 10px 14px 28px 14px !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk.pg-map #content.map {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    padding-top: 0 !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page h1 {
+    text-align: right !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-body,
+html[dir="rtl"] body.pg-gk.pg-map #content.map .gk-map-body {
+    display: grid !important;
+    grid-template-columns: 227px 300px !important;
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    width: 542px !important;
+    max-width: 100% !important;
+    margin: 0 0 0 auto !important;
+}

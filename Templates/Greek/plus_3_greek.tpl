@@ -48,21 +48,34 @@ if (isset($_POST['buy_gold_resources'])) {
     }
 }
 
+global $database;
+$gkBuyGoldHint = class_exists('GreekPlus')
+    ? GreekPlus::suggestedGoldForResourcePurchase($village, $database)
+    : 1;
+
 $buyResMsg = isset($buyResMsg) ? $buyResMsg : '';
 $buyResOk  = isset($buyResOk) ? $buyResOk : false;
 $gkPlusUntil = isset($golds['plus']) ? (int) $golds['plus'] : 0;
 $gkDate2 = isset($date2) ? (int) $date2 : time();
+$gkPlusCdLabels = array(
+    'remaining' => isset($plusText['remaining']) ? $plusText['remaining'] : 'المتبقي',
+    'until' => isset($plusText['until']) ? $plusText['until'] : 'حتى',
+    'seconds' => isset($plusText['seconds']) ? $plusText['seconds'] : 'ثانية',
+    'days' => defined('DAYS') ? DAYS : 'أيام',
+    'hours' => defined('HOURS') ? HOURS : 'ساعات',
+    'mins' => defined('MINS') ? MINS : 'دقيقة',
+);
 ?>
 <form method="post" id="Form_buyg" action="plus.php?id=3"></form>
 <table class="a b0 th1"><tbody>
 <tr><th colspan="4"><?php echo $plusText['functions']; ?></th></tr>
 <tr><th>الوصف</th><th>المده</th><th>الذهب</th><th>فعل</th></tr>
-<tr class="gk-plus-row"><th><g>حساب</g><o> بلاس</o><?php
+<tr class="gk-plus-row" data-expired-msg="<?php echo htmlspecialchars($plusText['ended'], ENT_QUOTES, 'UTF-8'); ?>"><th><g>حساب</g><o> بلاس</o><?php
     /* Match greek.sa: one-line title when inactive; timer only while plus is active */
     if (!empty($plusJustExpired)) {
         echo '<c>' . htmlspecialchars($plusText['ended'], ENT_QUOTES, 'UTF-8') . '</c>';
-    } elseif ($gkPlusUntil > $gkDate2 && function_exists('formatRemainingTime')) {
-        echo '<c>' . formatRemainingTime($gkPlusUntil, $gkDate2) . '</c>';
+    } elseif ($gkPlusUntil > $gkDate2 && class_exists('GreekPlus')) {
+        echo GreekPlus::renderPlusCountdown($gkPlusUntil, $gkDate2, $gkPlusCdLabels);
     }
 ?></th><th><?php echo htmlspecialchars($gkPlusDur, ENT_QUOTES, 'UTF-8'); ?></th><th><?php echo GreekPlus::goldCell($gkPlusCost); ?></th><th><?php
     echo GreekPlus::actionLink($golds['gold'], $gkPlusCost, $gkPlusUntil, 8, null, $plusIsBanned);
@@ -74,8 +87,8 @@ $gkDate2 = isset($date2) ? (int) $date2 : time();
     $bl = isset($gkBonusLabels[$plusBonus['field']]) ? $gkBonusLabels[$plusBonus['field']] : $plusBonus['label'];
 ?>
 <tr><th>+25% <p class="Rs <?php echo $rs; ?>" title="<?php echo htmlspecialchars($bl, ENT_QUOTES, 'UTF-8'); ?>"></p> <?php echo htmlspecialchars($bl, ENT_QUOTES, 'UTF-8'); ?><?php
-    if ($until >= $gkDate2 && function_exists('formatRemainingTime')) {
-        echo '<br><c>' . formatRemainingTime($until, $gkDate2) . '</c>';
+    if ($until >= $gkDate2 && class_exists('GreekPlus')) {
+        echo '<br>' . GreekPlus::renderPlusCountdown($until, $gkDate2, $gkPlusCdLabels);
     }
 ?></th><th><?php echo htmlspecialchars($gkBonusDur, ENT_QUOTES, 'UTF-8'); ?></th><th><?php echo GreekPlus::goldCell(5); ?></th><th><?php
     echo GreekPlus::actionLink($golds['gold'], 5, $until, $plusBonus['id'], null, $plusIsBanned);
@@ -105,7 +118,7 @@ $gkDate2 = isset($date2) ? (int) $date2 : time();
         echo '<a href="plus.php?s=1">' . TOO_LITTLE_GOLD . '</a>';
     }
 ?></th></tr>
-<tr><th>شراء <?php echo $gkResUnitFmt; ?> من كل مورد مقابل 1 <?php echo GOLD; ?> <a href="#" onclick="var e=document.getElementById('Buyg');if(e){e.value='2';}return false;" class="green">(2)</a></th><th><?php echo htmlspecialchars($gkNow, ENT_QUOTES, 'UTF-8'); ?></th><th><input id="Buyg" class="S2" name="goldamt" type="text" value="<?php echo (int) $gkBuyGoldDefault; ?>" autocomplete="off" autocorrect="off" form="Form_buyg" inputmode="numeric" maxlength="6"><p class="Rs x7" title="<?php echo GOLD; ?>"></p><input type="hidden" name="buy_gold_resources" value="1" form="Form_buyg"></th><th><input type="submit" value="شراء" class="OffSu" form="Form_buyg"></th></tr>
+<tr><th>شراء <?php echo $gkResUnitFmt; ?> من كل مورد مقابل 1 <?php echo GOLD; ?> <a href="#" onclick="var e=document.getElementById('Buyg');if(e){e.value='<?php echo (int) $gkBuyGoldHint; ?>';}return false;" class="green" id="gkBuyGoldHint">(<?php echo (int) $gkBuyGoldHint; ?>)</a></th><th><?php echo htmlspecialchars($gkNow, ENT_QUOTES, 'UTF-8'); ?></th><th><input id="Buyg" class="S2" name="goldamt" type="text" value="<?php echo (int) $gkBuyGoldDefault; ?>" autocomplete="off" autocorrect="off" form="Form_buyg" inputmode="numeric" maxlength="6"><p class="Rs x7" title="<?php echo GOLD; ?>"></p><input type="hidden" name="buy_gold_resources" value="1" form="Form_buyg"></th><th><input type="submit" value="شراء" class="OffSu" form="Form_buyg"></th></tr>
 </tbody></table>
 <?php if ($buyResMsg !== '') { ?>
 <p style="font-weight:bold;color:<?php echo $buyResOk ? '#2e7d32' : '#b3261e'; ?>;"><?php echo htmlspecialchars($buyResMsg, ENT_QUOTES, 'UTF-8'); ?></p>

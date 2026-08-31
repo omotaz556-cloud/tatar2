@@ -152,7 +152,8 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
     } elseif ($msg['owner'] == 5) {
         echo '<tr class="multihunterMsg">';
     } else {
-        echo '<tr>';
+        $rowClass = ($msg['viewed'] == 0) ? ' unread' : '';
+        echo '<tr class="' . trim($rowClass) . '">';
     }
 
     $message_for_text = '';
@@ -171,8 +172,9 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
     echo '<td class="sel">' . $message_for_text . '</td>';
 
     echo '<td class="top"><a href="nachrichten.php?id=' . $msg['id'] . '">' . tz_expand_report($msg['topic']) . '</a>';
-    if (!$gkMsgGreek && $msg['viewed'] == 0) {
-        echo ' (new)';
+    if ($msg['viewed'] == 0) {
+        $gkMsgNewLabel = defined('TZ_MSG_NEW') ? TZ_MSG_NEW : '(جديد)';
+        echo ' ' . htmlspecialchars($gkMsgNewLabel, ENT_QUOTES, 'UTF-8');
     }
     echo '</td>';
 
@@ -184,14 +186,15 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
     $date = $generator->procMtime($msg['time']);
 
     if ($ownerId <= 1) {
-        echo '<td class="send"><a href="spieler.php?uid=1"><u>' . $username . '</u></a></td>';
+        $username = defined('SUPPORT') ? SUPPORT : 'الدعم';
+        echo '<td class="send"><a href="spieler.php?uid=1"><u>' . htmlspecialchars($username, ENT_QUOTES, 'UTF-8') . '</u></a></td>';
     } else {
         $linkSender = ($ownerId != 2 && $ownerId != 4);
         echo '<td class="send">' . ($linkSender ? '<a href="spieler.php?uid=' . $ownerId . '">' : '<b>')
             . $username . ($linkSender ? '</a>' : '</b>') . '</td>';
     }
 
-    echo '<td class="dat">' . $date[0] . ' ' . $date[1] . '</td></tr>';
+    echo '<td class="dat"><bdi class="gk-msg-dat"><span class="gk-msg-dat-time">' . htmlspecialchars($date[1], ENT_QUOTES, 'UTF-8') . '</span><span class="gk-msg-dat-day">' . htmlspecialchars($date[0], ENT_QUOTES, 'UTF-8') . '</span></bdi></td></tr>';
     $name++;
 }
 

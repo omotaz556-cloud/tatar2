@@ -1,169 +1,156 @@
 <?php
 
 #################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Filename       : anleitung.php                      	                   ##
-##  Type           : In Game Part of Main Page                                 ##
-## --------------------------------------------------------------------------- ##
-##  Developed by   : Dzoki & Advocaite & Donnchadh                             ##
-##  Refactored by  : Shadow                                                    ##
-##  Redesign by    : Shadow                                                    ##
-## --------------------------------------------------------------------------- ##
-##  Contact        : (see project maintainer)                                 ##
-##  Project        : Novaterra                                                  ##
-##  URLs:          : https://novaterra.example                                      ##
-##  GitHub         : https://github.com/omotaz556-cloud/tatar                   ##
-## --------------------------------------------------------------------------- ##
-##  License        : GPLv3 (derived from TravianZ; see project LICENSE)       ##
-##  Copyright      : Novaterra mods (c) 2010-2026; base engine (c) TravianZ authors (GPLv3). ##
-## --------------------------------------------------------------------------- ##
+##  Filename       : anleitung.php
+##  Project        : Novaterra
+##  Purpose        : Portal game guide (tatarwars manual.phtml)
 #################################################################################
 
 use App\Utils\AccessLogger;
 
-include_once("GameEngine/config.php");
-include_once("GameEngine/Database.php");
-require_once __DIR__ . "/GameEngine/Lang/loader.php";
+include_once('GameEngine/config.php');
+include_once('GameEngine/Database.php');
+require_once __DIR__ . '/GameEngine/Lang/loader.php';
 tz_load_language(LANG);
+if (!function_exists('tz_portal_form_shell_open')) {
+    require_once __DIR__ . '/GameEngine/PortalClassic.php';
+}
 AccessLogger::logRequest();
+
+$tab = isset($_GET['t']) ? (int) $_GET['t'] : 0;
+if ($tab !== 1) {
+    $tab = 0;
+}
+
+$roundDays = defined('NATARS_SPAWN_TIME') ? (int) NATARS_SPAWN_TIME : 7;
+$artDays = defined('NATARS_WW_BUILDING_PLAN_SPAWN_TIME') ? (int) NATARS_WW_BUILDING_PLAN_SPAWN_TIME : 4;
+$medalSec = defined('MEDALINTERVAL') ? (int) MEDALINTERVAL : 86400;
+if ($medalSec <= 86400) {
+    $medalLabel = '24 ساعة';
+} elseif ($medalSec % 86400 === 0) {
+    $medalLabel = ((int) ($medalSec / 86400)) . ' يوم';
+} else {
+    $medalLabel = ((int) round($medalSec / 3600)) . ' ساعة';
+}
+
+$serverName = defined('SERVER_NAME') ? SERVER_NAME : 'Novaterra';
+$pageTitle = 'دليل اللعبة';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" <?php echo tz_html_dir_attrs(); ?>>
+<html <?php echo tz_html_dir_attrs(); ?> class="pg-portal-guide">
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME; ?></title>
-	<link rel="stylesheet" type="text/css" href="img/tutorial/main.css"/>
-	<link rel="stylesheet" type="text/css" href="img/tutorial/flaggs.css"/>
-	<meta name="content-language" content="en"/>
-	<meta http-equiv="imagetoolbar" content="no"/>
-	<script src="mt-core.js" type="text/javascript"></script>
-	<script src="new.js" type="text/javascript"></script>
-	<style type="text/css" media="screen">
-
-	</style>
-	<?php echo tz_rtl_stylesheet_tag(); ?>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><?php echo htmlspecialchars($serverName . ' - ' . $pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <?php echo tz_portal_classic_stylesheet_tag(); ?>
 </head>
-<body class="webkit contentPage">
-<div class="wrapper">
-<div id="country_select">
+<body class="webkit v35 pg-portal-guide">
 
-</div>
-<div id="header">
-	<h1><?php echo PUBLIC_WELCOME_TO; ?> <?php echo SERVER_NAME; ?></h1>
-</div>
+<?php echo tz_portal_form_shell_open('guide'); ?>
 
-<div id="navigation">
-
-<a href="index.php" class="home"><img src="img/x.gif" alt="Novaterra"/></a>
-
-	<table class="menu">
-
-	<tr>
-
-		<td><a href="tutorial.php"><span><?php echo TUTORIAL; ?></span></a></td>
-
-		<td><a href="anleitung.php"><span><?php echo PUBLIC_MANUAL; ?></span></a></td>
-
-		<td><a href="https://github.com/omotaz556-cloud/tatar/discussions" target="_blank"><span><?php echo FORUM; ?></span></a></td>
-
-
-
-
-
-		<td><a href="index.php?signup"><span><?php echo PUBLIC_REGISTER; ?></span></a></td>
-
-		<td><a href="index.php?login"><span><?php echo LOGIN; ?></span></a></td>
-
-</tr>
-
-	</table>
-
+<h1>دليل اللعبة</h1>
+<div id="textmenu">
+    <a href="anleitung.php"<?php echo $tab === 0 ? ' class="selected"' : ''; ?>>دليل اللعبة</a>
+    |
+    <a href="anleitung.php?t=1"<?php echo $tab === 1 ? ' class="selected"' : ''; ?>>دليل التحف</a>
 </div>
 
+<?php if ($tab === 1) { ?>
+    <h3>انواع التحف وتأثيرها</h3>
+    1-<b>تحفة المهاجم الشرس</b> : تزيد قوة الجيوش الهجوميه<br />
+    2-<b>تحفة المهاجم الاسطوري</b> : متطلبات موارد جيوش صاحب التحفه تكون اقل بالنصف او بالربع<br />
+    3-<b>تحفة المدافع العملاق</b> : تزيد قوة الجيوش الدفاعيه (تعزيزات صاحبها تكون اقوى) وقوة للسور ايضا<br />
+    4-<b>تحفة قوات اسرع</b> : تزيد سرعه الجيوش لصاحبها<br />
+    5-<b>تحفة الكشاف الماهر</b> : تزيد قوة الجواسيس ويمكن كشف انواع القوات المهاجمه عليه!!<br />
+    6-<b>تحفة استهلاك قمح اقل !</b> : استهلاك القمح للقريه يكون اقل نصف او ربع<br />
+    7-<b>تحفة المهندس المعماري</b> : تزيد قوة المباني بشكل جدا قوي بحيث تحتاج مقاليع اكثر لهدمها<br />
+    8-<b>تحفة المخبأ الكبير</b> : تزيد حجم المخبأ لدى الاعب ولايمكن اي شخص تحديد اي مبنى عند الهجوم على صاحبها بحيث يضهر له عشوائي فقط<br />
 
+    <h3>اصناف التحف</h3>
+    1-<b>تحف نادرة</b> : مفعول عالي وعلى كل قرى الاعب مستوى الخزنه 20<br />
+    2-<b>تحف كبيره</b> : مفعول وسط وعلى كل قرى الاعب مستوى الخزنه 20<br />
+    3-<b>تحف صغيره</b> : مفعول عالي وعلى القريه التي خطفت بها التحفه مستوى الخزنه 10<br />
 
+    <h3>عدد التحف</h3>
+    <b>تحف نادرة</b> : 8<br />
+    <b>تحف كبيره</b> : 8<br />
+    <b>تحف صغيره</b> : 8<br />
+    <b>جميع عدد التحف</b> : 24<br />
 
+    <h3>ماذا يلزمني لأحتلال تحفه</h3>
+    1-<b>خزنه من المستوى 10 او 20</b><br />
+    2-<b>بطل</b><br />
+    3-<b>تدمير جيوش التحفه بالكامل</b><br />
+    4-<b>مقاليع لتدمير الخزنة في قرية المدافع</b><br />
 
+    <h3>ماذا بعد احتلال التحفه</h3>
+    ستنتقل التحفه الى قريتك ويجب حمايتها في وضع قوات مدافعه في القريه التي خطفت بها التحفه واذ احد قتل الجيوش ودمر الخزنه سيحتلها في البطل
+    فأنتبه ودافع عن التحفه ومفعولها سيتفعل عندك خلال 4 ساعات او فورا على حسب التحف
+<?php } else { ?>
+    <div class="wholebox">
+        <p class="f10 e b">كم مدة اللعبه</p>
+        <div class="f10">
+            <?php echo htmlspecialchars($serverName, ENT_QUOTES, 'UTF-8'); ?> مفتوحه الى <b><?php echo (int) $roundDays; ?></b> يوم/أيام تظهر التحف بعد <b><?php echo (int) $artDays; ?></b> يوم/أيام من بدايه اللعبه وبعد الإنتهاء يتم اعاده السيرفر بعد <b>24</b> ساعة/ساعات تلقائيا.
+        </div>
 
-<div id="content">
+        <p class="f10 e b">متى يتم توزيع الاوسمه</p>
+        <div class="f10">
+            يتم توزيع الاوسمه كل (<b><?php echo htmlspecialchars($medalLabel, ENT_QUOTES, 'UTF-8'); ?></b>) لمعرفه المتبقي على توزيع الاوسمه ادخل على الاحصائيات =&gt; افضل 10 او عن طريق المستطيل الصغير تحت مدير المهمات.
+        </div>
 
-	<div class="grit">
+        <p class="f10 e b">هل قواتي تموت من الجوع (القمح سالب)</p>
+        <div class="f10">
+            نعم ياعزيزي الاعب قواتك تموت عند نفوذ القمح في المخزن فيجب توفير قمح ممتاز لأجلهم.
+        </div>
 
+        <p class="f10 e b">هل يمكن تدمير عاصمتي</p>
+        <div class="f10">
+            نعم يمكن تدميرها بأستثناء ان تكون اخر قريه لديك في العضويه.
+        </div>
 
-<h1><?php echo PUBLIC_MANUAL; ?></h1>
+        <p class="f10 e b">التحف وانواعها</p>
+        <div class="f10">
+            <a class="portal-link" href="anleitung.php?t=1">التحف وانواعها</a>
+        </div>
 
+        <p class="f10 e b">التتار والمعجزات ؟</p>
+        <div class="f10">
+            فور نزول التتار سيتم الإعلان تلقائياً وسيهاجمك التتار في المستويات التاليه (5و25و50و75و90و91و92و93و94و95و96و97و98و99).
+        </div>
 
+        <p class="f10 e b">الفرعيات والتعزيز فيما بينهم (تحديث)</p>
+        <div class="f10">
+            عند تعزيز قريه فرعيه تابعه لنفس العضويه الجيش الذي عززته يصبح ملك القريه المعززه بحيث يمكنك الهجوم وكامل التصرف به .
+        </div>
 
-<p class="submenu">
+        <p class="f10 e b">قوة الجيوش</p>
+        <div class="f10">
+            قوة الجيوش - قوة الجيوش هى الوحده الاساسيه في المعركه فقد تتفاجى بموت قواتك مع ان قوات المدافع او المهاجم اقل من قواتك الا ان قوتهم مضاعفه ومدربين بأتقان قوة القوات قد تكون بتحف او بتحصينه او بالسور التحصين هناك مبنى لتحسين القوات افران صهر الحديد اخر مستوى للتحسين هو 20 طبعا التأثير يكون نسبه مئويه لنأخذ على سبيل المثال مقاتل بهراوه قوته الهجوميه 40 وانت حسنته الى 20 فسيكون قوته 48 بعكس النضام القديم 60 واييضا عند تحسينهم وتدمير مبنى الافران تبقى قوة الجندي كما هي محصنه وايضا التحف تزيد من قوة الجيوش 50% المقاتل الشرس للمهاجم والمدافع العملاق للمدافع وايضا قوة السور اقوى سور هو سور الرومان ويزيد من قوة المدافعين 20% وترتيبا بالقوة سور الرومان ثم الاغريق ثم الجرمان والبطل ايضا يضيف قوة قويه على القوات فلاتستهين بالبطل.
+        </div>
 
-<a href="anleitung.php"><?php echo PUBLIC_TRIBES; ?></a> |
+        <p class="f10 e b">كيف تستطيع خطف سر التتار وكنزهم العظيم (معجزة العالم)</p>
+        <div class="f10">
+            عند ظهور معجزة العالم ونزول قبيلة التتار سيضاف في الاحصائيات خيار التتار يبين لك محتلين المعجزه ومستواهم واذا على اي معجزه هجمات وملك لتحالف من ... عند نزولهم احتل قريه المعجزه احتلالاَ عبر الزعماء وقضاء على قوات التتار في المعجزه لن تحتاج المقاليع في هجمتك لاحتلالهم تحتاج 5 زعماء على الاقل وعند احتلالها سيرسل لك التتار رساله تهديد بانه سيهاجمك ويسترد معجزته فحاول ان تدافع عنها
+        </div>
 
-<a href="anleitung.php?s=1"><?php echo BUILDINGS; ?></a> |
+        <p class="f10 e b">احتلال الواحات (كم/كيف)</p>
+        <div class="f10">
+            الواحات تزيد انتاجية الموارد لديك كل واحه لها صنف تزيده تستطيع احتلال 3 واحات كحد اقصى في كل قريه<br />
+            مستوى قصر الابطال 10 تستطيع احتلال 1 واحات<br />
+            مستوى قصر الابطال 15 تستطيع احتلال 2 واحات<br />
+            مستوى قصر الابطال 20 تستطيع احتلال 3 واحات<br />
+            قوات الواحه هي الوحوش وعاده تلقى القليل في الواحه تقضي على الوحوش واحتلالها يتم عبر البطل
+        </div>
 
-<a href="anleitung.php?s=3"><?php echo MANUAL_FAQ; ?></a>
+        <p class="f10 e b">كيف اؤسس تحالف ؟</p>
+        <div class="f10">
+            تحتاج لتأسيس تحالف انشاء مبنى السفاره الى المستوى 3 ثم انشأء اتحالف من داخله وتستطيع ضم 5 لاعب الى التحالف
+        </div>
+    </div>
+<?php } ?>
 
-</p>
-
-
-
-<?php
-if(!isset($_GET['s'])) {
-$_GET['s'] = ""; }
-if ($_GET['s'] == "") {
-include("Templates/Anleitung/0.tpl"); }
-if ($_GET['s'] == "1") {
-include("Templates/Anleitung/1.tpl"); }
-if ($_GET['s'] == "3") {
-include("Templates/Anleitung/3.tpl"); }
-if ($_GET['s'] == "4") {
-include("Templates/Anleitung/4.tpl"); }
-?>
-
-
-
-</ul>
-
-<div class="footer"></div>
-
-</div>
-
-</div>
-
-<div id="iframe_layer" class="overlay">
-
-
-
-<div class="mask closer"></div>
-
-
-
-
-
-
-
-<div class="overlay_content">
-
-<a href="index.php" class="closer"><img class="dynamic_img" alt="<?php echo PUBLIC_CLOSE; ?>" src="img/un/x.gif" /></a>
-
-<h2>Anleitung</h2>
-
-
-
-<div id="frame_box" >
-
-</div>
-
-<div class="footer"></div>
-
-</div>
-
-
-
-</div>
-
-
-
+<?php echo tz_portal_form_shell_close(); ?>
 
 </body>
 </html>

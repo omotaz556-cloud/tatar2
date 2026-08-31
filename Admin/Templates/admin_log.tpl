@@ -11,7 +11,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta http-equiv="imagetoolbar" content="no">
 <style>
- .log-wrap{max-width:100%;margin:12px;font-family:Tahoma,Verdana,Arial,sans-serif;color:#e2e8f0}
+ .log-wrap{max-width:100%;margin:12px;font-family:"Expo Arabic",Tahoma,Verdana,Arial,sans-serif;color:#e2e8f0}
 .log-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .log-head h2{margin:0;font-size:16px;display:flex;align-items:center;gap:6px;color:#f1f5f9}
 .log-filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}

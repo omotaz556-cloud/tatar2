@@ -19,6 +19,7 @@
 #################################################################################
 
 $dataarray = array_map('tz_expand_report', explode(",", $message->readingNotice['data']));
+$gkRptGreek = !empty($GLOBALS['gkBerichteLiteralPage']);
 
 // ======================== CONFIG ========================
 $hasHero = (!empty($dataarray[13]) && $dataarray[13] > 0);
@@ -61,26 +62,11 @@ if ($fromName != "[?]" || $fromId == 0) {
 }
 
 ?>
-
-<table cellpadding="1" cellspacing="1" id="report_surround">
-<thead>
-
-<tr>
-    <th><?php echo SUBJECT; ?>:</th>
-    <th><?php echo tz_loc_topic($message->readingNotice['topic']); ?></th>
-</tr>
-
-<tr>
-    <?php $date = $generator->procMtime($message->readingNotice['time']); ?>
-    <td class="sent"><?php echo TZ_SENT; ?></td>
-    <td><?php echo ON; ?> <span><?php echo $date[0]." ".TZ_AT." ".$date[1]; ?></span><span> </span></td>
-</tr>
-
-</thead>
+<?php include __DIR__ . '/gk_rpt_head.inc.tpl'; ?>
 
 <tbody>
-<tr><td colspan="2" class="empty"></td></tr>
-<tr><td colspan="2" class="report_content">
+<tr><td colspan="<?php echo (int) ($gkRptSurroundCols ?? 2); ?>" class="empty"></td></tr>
+<tr><td colspan="<?php echo (int) ($gkRptSurroundCols ?? 2); ?>" class="report_content">
 
 <!-- ======================== REINFORCEMENT ======================== -->
 <table cellpadding="1" cellspacing="1" id="reinforcement">
@@ -154,3 +140,4 @@ if ($hasHero) {
 </table>
 
 </td></tr></tbody></table>
+<?php include __DIR__ . '/gk_rpt_foot.inc.tpl'; ?>

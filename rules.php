@@ -34,7 +34,7 @@ if(isset($_GET['newdid'])) {
 	exit;
 }
 $gkShell = true;
-$gkPageTitle = SERVER_NAME . ' - Game Rules';
+$gkPageTitle = SERVER_NAME . ' - ' . GAME_RULES;
 tz_greek_shell_head($gkPageTitle, 'pg-rules', array('includeNew2Js' => false));
 tz_greek_shell_open('village2', array('contentWrap' => true));
 include("Templates/rules.tpl");

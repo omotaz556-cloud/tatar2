@@ -75,8 +75,8 @@ if (count($rankArray) > 1) {
             continue;
         }
         $row = $rankArray[$i];
-        $uid = (int) ($row['userid'] ?? $row['id'] ?? 0);
-        $isHighlight = ($i === $search) || ($uid === $gkUid);
+        $rowUid = (int) ($row['userid'] ?? $row['id'] ?? 0);
+        $isHighlight = ($i === $search) || ($rowUid === $gkUid);
         $hlCls = $isHighlight ? ' hl' : '';
         $fcCls = $isHighlight ? ' fc' : '';
         $lcCls = $isHighlight ? ' lc' : '';
@@ -95,7 +95,7 @@ if (count($rankArray) > 1) {
 
         echo '<th class="pla">';
         $username = htmlspecialchars((string) $row['username'], ENT_QUOTES, 'UTF-8');
-        echo '<a href="spieler.php?uid=' . $uid . '">' . $username . '</a>';
+        echo '<a href="spieler.php?uid=' . $rowUid . '">' . $username . '</a>';
         echo '</th>';
 
         echo '<th class="al">';
@@ -117,7 +117,7 @@ if (count($rankArray) > 1) {
             . htmlspecialchars($goldTitle, ENT_QUOTES, 'UTF-8') . '" /></th>';
 
         echo '<th class="brk' . $lcCls . '">';
-        if ($capital > 0 && $uid !== $gkUid) {
+        if ($capital > 0 && $rowUid !== $gkUid) {
             echo '<a class="gk-sta-atk" href="a2b.php?z=' . $capital . '">'
                 . htmlspecialchars($atkLabel, ENT_QUOTES, 'UTF-8') . '</a>';
         } else {

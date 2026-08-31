@@ -35,11 +35,14 @@ $level = (int)$village->resarray['f'.$id];
     <form method="POST" name="snd" action="build.php">
         <input type="hidden" name="id" value="<?php echo (int)$id;?>" />
         <input type="hidden" name="ft" value="t3" />
-        <table cellpadding="1" cellspacing="1" class="build_details">
+        <table cellpadding="1" cellspacing="1" class="build_details gk-train-table">
             <thead><tr><td><?php echo NAME;?></td><td><?php echo QUANTITY;?></td><td><?php echo MAX;?></td></tr></thead>
             <tbody><?php include("30_train.tpl");?></tbody>
         </table>
-        <p><input type="image" id="btn_train" class="dynamic_img" value="ok" name="s1" src="img/x.gif" alt="<?php echo TRAIN; ?>" /><?php include("training_gold.tpl"); ?></p>
+        <p class="gk-train-actions">
+            <button type="submit" id="btn_train" class="trav_buttons gk-train-btn" name="s1" onclick="this.disabled=true;this.form.submit();"><?php echo TRAIN; ?></button>
+            <?php include("training_gold.tpl"); ?>
+        </p>
     </form>
     <?php else:?>
         <b><?php echo TRAINING_COMMENCE_GREATSTABLE;?></b><br />

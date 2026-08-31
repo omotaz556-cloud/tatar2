@@ -20,6 +20,7 @@ if (!function_exists('tz_user_display_prefs_values')) {
             'invert_colors' => !empty($ui['invert_colors']) ? 1 : 0,
             'stats_format' => (int) ($ui['stats_format'] ?? 0),
             'night_mode' => (int) ($ui['night_mode'] ?? 0),
+            'upgrade_redirect' => ((int) ($ui['upgrade_redirect'] ?? 0) === 1) ? 1 : 0,
         );
     }
 }

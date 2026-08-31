@@ -46,9 +46,14 @@ else{
 	$building->procBuild($_GET);
 }
 $gkShell = true;
+$gkMapCss = __DIR__ . '/css/greek_maxb_map.css';
+$gkMapCssVer = is_file($gkMapCss) ? (int) @filemtime($gkMapCss) : time();
 $gkPageTitle = SERVER_NAME . ' - World Map';
-tz_greek_shell_head($gkPageTitle, 'pg-map', array('includeNew2Js' => false));
-tz_greek_shell_open('map', array('contentWrap' => true));
+tz_greek_shell_head($gkPageTitle, 'pg-map', array(
+    'includeNew2Js' => false,
+    'extraCss' => array('css/greek_maxb_map.css?v=' . $gkMapCssVer),
+));
+tz_greek_shell_open('', array('contentWrap' => false));
 if(isset($_GET['d']) && !empty($_GET['d']) && isset($_GET['c']) && !empty($_GET['c'])) {
     if($generator->getMapCheck($_GET['d']) == $_GET['c']) include("Templates/Map/vilview.tpl");
 	else 

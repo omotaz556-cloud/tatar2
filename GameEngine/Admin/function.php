@@ -444,15 +444,6 @@ class funct
 
 $funct = new funct();
 
-if ($funct->CheckLogin()) {
-    if (!empty($_GET['action'])) {
-        $funct->Act($_GET);
-    }
-    if (!empty($_POST['action'])) {
-        $funct->Act2($_POST);
-    }
-}
-
 if (($_POST['action'] ?? '') === 'login') {
     $funct->LogIN($_POST['name'], $_POST['pw']);
 }

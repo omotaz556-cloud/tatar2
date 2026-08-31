@@ -23,7 +23,7 @@ if(!isset($_SESSION)) session_start();
 if($_SESSION['access'] < ADMIN) die(ADM_ACCESS_DENIED_DOT);
 ?>
 <style>
-.notreg-wrap{max-width:100%;margin:12px auto;font-family:Tahoma,Verdana,Arial,sans-serif;padding:0 10px;box-sizing:border-box}
+.notreg-wrap{max-width:100%;margin:12px auto;font-family:"Expo Arabic",Tahoma,Verdana,Arial,sans-serif;padding:0 10px;box-sizing:border-box}
 .notreg-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
 .notreg-head h2{margin:0;font-size:16px;color:#c0392b;display:flex;align-items:center;gap:6px}
 .notreg-search input{padding:6px 12px;border:1px solid #bbb;border-radius:14px;font-size:12px;width:200px;box-sizing:border-box}

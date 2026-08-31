@@ -52,14 +52,16 @@ if (!$gkMsgGreek) {
 
     <div class="gk-msg-read-sender">
         <?php
-        if ($linkSender) {
+        if ($ownerId <= 1) {
+            $gkReadSender = defined('SUPPORT') ? SUPPORT : 'الدعم';
+            echo '<a href="' . rtrim(SERVER, '/') . '/spieler.php?uid=1">'
+                . htmlspecialchars($gkReadSender, ENT_QUOTES, 'UTF-8') . '</a>';
+        } elseif ($linkSender) {
             echo '<a href="' . rtrim(SERVER, '/') . '/spieler.php?uid=' . $ownerId . '">';
-        }
-
-        echo getCachedUsername($ownerId, $database, $userCache);
-
-        if ($linkSender) {
+            echo getCachedUsername($ownerId, $database, $userCache);
             echo '</a>';
+        } else {
+            echo getCachedUsername($ownerId, $database, $userCache);
         }
         ?>
     </div>

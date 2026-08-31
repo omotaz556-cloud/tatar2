@@ -211,7 +211,7 @@ if ($gkNachrichtenGreek) {
 
 	GreekNachrichten::menuOpen($gkMsgTab);
 
-	echo '<div class="messages gk-nachrichten-body">';
+	echo '<div class="gk-nachrichten-body">';
 
 } else {
 
@@ -268,6 +268,12 @@ if (isset($_GET['id']) && (!isset($_GET['t']) || $_GET['t'] == '2a')) {
 				include("Templates/Message/notes.tpl");
 
 			}
+
+			break;
+
+		case 5:
+
+			include("Templates/Message/ignored.tpl");
 
 			break;
 

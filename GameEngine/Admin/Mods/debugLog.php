@@ -38,7 +38,7 @@ for ($i = 0; $i < 5; $i++) {
 }
 $logFile = $autoprefix . 'var/log/debug-players.log';
 
-$uid = (int)($_SESSION['id_user'] ?? 0);
+$uid = (int)($_SESSION['id'] ?? 0);
 $do  = $_REQUEST['do'] ?? '';
 
 switch ($do) {

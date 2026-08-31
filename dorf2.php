@@ -76,9 +76,11 @@ tz_greek_shell_open('', array(
 ));
 ?>
 <div class="gk-bod">
-<?php include __DIR__ . '/Templates/Greek/gk_village_title.tpl'; ?>
-	<div class="village2" id="village_map_wrap">
+	<div class="gk-mapcol gk-dorf2-mapcol">
+		<?php include __DIR__ . '/Templates/Greek/gk_village_title.tpl'; ?>
+		<div class="village2" id="village_map_wrap">
 <?php include("Templates/dorf2.tpl"); ?>
+		</div>
 	</div>
 <?php
 if ($building->NewBuilding) {

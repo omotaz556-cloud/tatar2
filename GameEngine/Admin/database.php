@@ -82,6 +82,13 @@ class adm_DB {
 
         $dbarray = mysqli_fetch_array($result);
 
+        if (!is_array($dbarray)) {
+            $username = htmlspecialchars($username);
+            $realIp = \App\Utils\IpResolver::getClientIp() ?? ($_SERVER['REMOTE_ADDR'] ?? '0.0.0.0');
+            mysqli_query($this->connection, "INSERT INTO ". TB_PREFIX. "admin_log VALUES (0,'X','<font color=\'red\'><b>IP: ". $realIp. " tried to log in with username <u> $username</u> but access was denied!</font></b>',". time(). ")");
+            return false;
+        }
+
         // verificare parolă - bcrypt sau md5 legacy
         $bcrypted = true;
         $pwOk = password_verify($password, $dbarray['password']);

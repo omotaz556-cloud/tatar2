@@ -116,8 +116,9 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
     echo '<td class="sel"><input class="check" type="checkbox" name="n' . $name . '" value="' . $msg['id'] . '" /></td>';
 
     echo '<td class="top"><a href="nachrichten.php?id=' . $msg['id'] . '">' . tz_expand_report($msg['topic']) . '</a>';
-    if (!$gkMsgGreek && $msg['viewed'] == 0) {
-        echo ' (new)';
+    if ($msg['viewed'] == 0) {
+        $gkMsgNewLabel = defined('TZ_MSG_NEW') ? TZ_MSG_NEW : '(جديد)';
+        echo ' ' . htmlspecialchars($gkMsgNewLabel, ENT_QUOTES, 'UTF-8');
     }
     echo '</td>';
 
@@ -129,7 +130,7 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
     $date = $generator->procMtime($msg['time']);
 
     echo '<td class="send"><a href="spieler.php?uid=' . $ownerId . '">' . $username . '</a></td>';
-    echo '<td class="dat">' . $date[0] . ' ' . $date[1] . '</td></tr>';
+    echo '<td class="dat"><bdi class="gk-msg-dat"><span class="gk-msg-dat-time">' . htmlspecialchars($date[1], ENT_QUOTES, 'UTF-8') . '</span><span class="gk-msg-dat-day">' . htmlspecialchars($date[0], ENT_QUOTES, 'UTF-8') . '</span></bdi></td></tr>';
     $name++;
 }
 

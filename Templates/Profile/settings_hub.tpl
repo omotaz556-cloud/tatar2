@@ -28,11 +28,9 @@ $mobileOn = ((int) ($ui['mobile_mode'] ?? 0) === 2);
 $webNotifOn = !empty($ui['web_notifications']);
 
 $upgradeRedirect = (int) ($ui['upgrade_redirect'] ?? 0);
-$upgradeLabel = TZ_UPGRADE_NAVIGATION_DEFAULT;
+$upgradeLabel = defined('PREF_STAY_IN_BUILDING') ? PREF_STAY_IN_BUILDING : TZ_UPGRADE_NAVIGATION_BUILDING;
 if ($upgradeRedirect === 1) {
-    $upgradeLabel = TZ_UPGRADE_NAVIGATION_MAP;
-} elseif ($upgradeRedirect === 2) {
-    $upgradeLabel = defined('PREF_STAY_IN_BUILDING') ? PREF_STAY_IN_BUILDING : TZ_UPGRADE_NAVIGATION_BUILDING;
+    $upgradeLabel = defined('PREF_GO_TO_MAP') ? PREF_GO_TO_MAP : TZ_UPGRADE_NAVIGATION_MAP;
 }
 
 $statsFormat = (int) ($ui['stats_format'] ?? 0);
@@ -90,7 +88,7 @@ function tzHubCycle($action, $cycle, $label) {
     max-width: 100%;
     margin: 8px auto 20px;
     box-sizing: border-box;
-    font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+    font-family: "Expo Arabic", Tahoma, "Segoe UI", Arial, sans-serif;
 }
 .settingsHub .hubSection {
     margin: 0 0 12px;

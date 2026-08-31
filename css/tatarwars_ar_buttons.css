@@ -1,0 +1,221 @@
+@CHARSET "UTF-8";
+
+/*
+ * Arabic GIF action buttons — legacy inputs, dynamic_img, and Greek pill buttons.
+ * Loaded after greek_maxb_* and tatarwars_theme.css on RTL pages.
+ */
+
+/* Shared GIF button reset (wins over .trav_buttons / .gk-* pill gradients) */
+html[dir="rtl"] input#btn_ok,
+html[dir="rtl"] button#btn_ok,
+html[dir="rtl"] input#btn_train,
+html[dir="rtl"] button#btn_train,
+html[dir="rtl"] input#btn_save,
+html[dir="rtl"] button#btn_save,
+html[dir="rtl"] input#btn_delete,
+html[dir="rtl"] button#btn_delete,
+html[dir="rtl"] input#btn_archiv,
+html[dir="rtl"] button#btn_archiv,
+html[dir="rtl"] input#btn_back,
+html[dir="rtl"] button#btn_back,
+html[dir="rtl"] input#btn_reply,
+html[dir="rtl"] button#btn_reply,
+html[dir="rtl"] input#btn_send,
+html[dir="rtl"] button#btn_send,
+html[dir="rtl"] button#btn_send_msg,
+html[dir="rtl"] input#btn_forward,
+html[dir="rtl"] input#btn_demolish,
+html[dir="rtl"] input#btn_search,
+html[dir="rtl"] input#btn_login,
+html[dir="rtl"] input#btn_signup,
+html[dir="rtl"] input.gk-rpt-del#btn_delete {
+    display: inline-block !important;
+    box-sizing: content-box !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    background-repeat: no-repeat !important;
+    background-position: center top !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    text-indent: -9999px !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+    vertical-align: middle !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+
+html[dir="rtl"] input#btn_ok:hover,
+html[dir="rtl"] button#btn_ok:hover,
+html[dir="rtl"] input#btn_train:hover,
+html[dir="rtl"] button#btn_train:hover,
+html[dir="rtl"] input#btn_save:hover,
+html[dir="rtl"] button#btn_save:hover,
+html[dir="rtl"] input#btn_delete:hover,
+html[dir="rtl"] button#btn_delete:hover,
+html[dir="rtl"] input#btn_archiv:hover,
+html[dir="rtl"] button#btn_archiv:hover,
+html[dir="rtl"] input#btn_back:hover,
+html[dir="rtl"] button#btn_back:hover,
+html[dir="rtl"] input#btn_reply:hover,
+html[dir="rtl"] button#btn_reply:hover,
+html[dir="rtl"] input#btn_send:hover,
+html[dir="rtl"] button#btn_send:hover,
+html[dir="rtl"] button#btn_send_msg:hover,
+html[dir="rtl"] input#btn_forward:hover,
+html[dir="rtl"] input#btn_demolish:hover,
+html[dir="rtl"] input#btn_search:hover,
+html[dir="rtl"] input#btn_login:hover,
+html[dir="rtl"] input#btn_signup:hover,
+html[dir="rtl"] input.gk-rpt-del#btn_delete:hover {
+    background-position: center bottom !important;
+}
+
+html[dir="rtl"] input#btn_ok:active,
+html[dir="rtl"] button#btn_ok:active,
+html[dir="rtl"] input#btn_train:active,
+html[dir="rtl"] button#btn_train:active,
+html[dir="rtl"] input#btn_save:active,
+html[dir="rtl"] button#btn_save:active,
+html[dir="rtl"] input#btn_delete:active,
+html[dir="rtl"] button#btn_delete:active,
+html[dir="rtl"] input#btn_archiv:active,
+html[dir="rtl"] button#btn_archiv:active,
+html[dir="rtl"] input#btn_back:active,
+html[dir="rtl"] button#btn_back:active,
+html[dir="rtl"] input#btn_reply:active,
+html[dir="rtl"] button#btn_reply:active,
+html[dir="rtl"] input#btn_send:active,
+html[dir="rtl"] button#btn_send:active,
+html[dir="rtl"] button#btn_send_msg:active,
+html[dir="rtl"] input#btn_forward:active,
+html[dir="rtl"] input#btn_demolish:active,
+html[dir="rtl"] input#btn_search:active,
+html[dir="rtl"] input#btn_login:active,
+html[dir="rtl"] input#btn_signup:active,
+html[dir="rtl"] input.gk-rpt-del#btn_delete:active {
+    background-position: center center !important;
+}
+
+/* 47px buttons */
+html[dir="rtl"] input#btn_ok,
+html[dir="rtl"] button#btn_ok {
+    width: 47px !important;
+    min-width: 47px !important;
+    max-width: 47px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/ok.gif) !important;
+}
+
+html[dir="rtl"] input#btn_search {
+    width: 47px !important;
+    min-width: 47px !important;
+    max-width: 47px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/search.gif) !important;
+}
+
+/* 97px buttons */
+html[dir="rtl"] input#btn_train,
+html[dir="rtl"] button#btn_train {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/train.gif) !important;
+}
+
+html[dir="rtl"] input#btn_save,
+html[dir="rtl"] button#btn_save {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/save.gif) !important;
+}
+
+html[dir="rtl"] input#btn_delete,
+html[dir="rtl"] button#btn_delete,
+html[dir="rtl"] input.gk-rpt-del#btn_delete {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/delete.gif) !important;
+}
+
+html[dir="rtl"] input#btn_archiv,
+html[dir="rtl"] button#btn_archiv {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/archiv.gif) !important;
+}
+
+html[dir="rtl"] input#btn_back,
+html[dir="rtl"] button#btn_back {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/back.gif) !important;
+}
+
+html[dir="rtl"] input#btn_reply,
+html[dir="rtl"] button#btn_reply {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/reply.gif) !important;
+}
+
+html[dir="rtl"] input#btn_send,
+html[dir="rtl"] button#btn_send,
+html[dir="rtl"] button#btn_send_msg {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/send.gif) !important;
+}
+
+html[dir="rtl"] input#btn_forward {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/forward.gif) !important;
+}
+
+html[dir="rtl"] input#btn_demolish {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/demolish.gif) !important;
+}
+
+html[dir="rtl"] input#btn_login {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/login.gif) !important;
+}
+
+html[dir="rtl"] input#btn_signup {
+    width: 97px !important;
+    min-width: 97px !important;
+    max-width: 97px !important;
+    background-image: url(../gpack/novaterra_classic/lang/ar/b/signup.gif) !important;
+}
+
+/* dynamic_img inputs keep sprite behaviour */
+html[dir="rtl"] input.dynamic_img#btn_ok,
+html[dir="rtl"] input.dynamic_img#btn_train,
+html[dir="rtl"] input.dynamic_img#btn_save,
+html[dir="rtl"] input.dynamic_img#btn_delete,
+html[dir="rtl"] input.dynamic_img#btn_archiv,
+html[dir="rtl"] input.dynamic_img#btn_back,
+html[dir="rtl"] input.dynamic_img#btn_demolish,
+html[dir="rtl"] input.dynamic_img#btn_search {
+    background-size: auto !important;
+}

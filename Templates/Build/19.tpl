@@ -19,13 +19,51 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-global $village, $building, $technology, $generator, $session, $id;
+global $village, $building, $technology, $generator, $session, $id, $bid19;
+
+include('next.tpl');
 
 $level = (int)$village->resarray['f'.$id];
 $canTrain = $building->getTypeLevel(19) > 0;
 $trainlist = $technology->getTrainingList(1);
 $lvlLabel = defined('BUILD_LEVEL_SHORT') ? BUILD_LEVEL_SHORT : LEVEL;
 $emptyTrainMsg = defined('AVAILABLE_ACADEMY') ? AVAILABLE_ACADEMY : 'لا توجد وحدات متاحة. ابحث في الأكاديمية';
+
+$field = 'f'.$id;
+$buildingType = (int)($village->resarray[$field.'t'] ?? 0);
+$currentTrainDuration = $level > 0 ? (float)$bid19[$level]['attri'] : 100;
+$barracksIsMax = $building->isMax($buildingType, $id);
+$nextBarracksLevel = min($level + 1 + $loopsame + $doublebuild + $master, 20);
+$nextTrainDuration = (!$barracksIsMax && isset($bid19[$nextBarracksLevel]))
+    ? (float)$bid19[$nextBarracksLevel]['attri']
+    : null;
+$trainDurationNowLbl = defined('TRAINING_DURATION_NOW') ? TRAINING_DURATION_NOW : 'مدة التدريب الآن:';
+$trainDurationLevelLbl = defined('TRAINING_DURATION_AT_LEVEL') ? TRAINING_DURATION_AT_LEVEL : 'مدة التدريب في المستوى';
+
+$gkFormatTrainDuration = static function ($value) {
+    $value = (float)$value;
+    if ($value === floor($value)) {
+        return (string)(int)$value;
+    }
+    return rtrim(rtrim(sprintf('%.2f', $value), '0'), '.');
+};
+
+ob_start();
+?>
+<div class="gk-train-duration">
+    <div class="gk-train-duration-line">
+        <span class="gk-train-duration-label"><?php echo $trainDurationNowLbl; ?></span>
+        <span class="gk-train-duration-pct" dir="ltr"><?php echo $gkFormatTrainDuration($currentTrainDuration); ?>%</span>
+    </div>
+    <?php if ($nextTrainDuration !== null): ?>
+    <div class="gk-train-duration-line">
+        <span class="gk-train-duration-label"><?php echo $trainDurationLevelLbl; ?> <?php echo (int)$nextBarracksLevel; ?>:</span>
+        <span class="gk-train-duration-pct" dir="ltr"><?php echo $gkFormatTrainDuration($nextTrainDuration); ?>%</span>
+    </div>
+    <?php endif; ?>
+</div>
+<?php
+$gkTrainDurationBlock = ob_get_clean();
 ?>
 <div id="build" class="gid19">
     <a href="#" onClick="return Popup(19,4);" class="build_logo">
@@ -54,28 +92,44 @@ $emptyTrainMsg = defined('AVAILABLE_ACADEMY') ? AVAILABLE_ACADEMY : 'لا توج
                     <?php echo $barracksTrainRows; ?>
                 </tbody>
             </table>
-            <p class="gk-train-actions">
-                <button type="submit" id="btn_train" class="trav_buttons gk-train-btn" name="s1" onclick="this.disabled=true;this.form.submit();"><?php echo TRAIN; ?></button>
-                <?php include("training_gold.tpl"); ?>
-            </p>
+            <div class="gk-train-actions">
+                <div class="gk-train-submit">
+                    <button type="submit" id="btn_train" class="trav_buttons gk-train-btn" name="s1" onclick="this.disabled=true;this.form.submit();"><?php echo TRAIN; ?></button>
+                </div>
+                <?php echo $gkTrainDurationBlock; ?>
+            </div>
         </form>
         <?php else: ?>
             <p class="none gk-train-empty"><?php echo htmlspecialchars($emptyTrainMsg, ENT_QUOTES, 'UTF-8'); ?></p>
-            <?php include("training_gold.tpl"); ?>
-        <?php endif; ?>
+            <div class="gk-train-actions">
+                <?php echo $gkTrainDurationBlock; ?>
+            </div>
+            <?php endif; ?>
     <?php else:?>
         <b><?php echo TRAINING_COMMENCE_BARRACKS;?></b><br />
     <?php endif;?>
 
     <?php if (count($trainlist) > 0):
         $NextFinished = '';
+        $trainQueueCount = count($trainlist);
+        $goldFinishLabel = defined('TRAINING_FINISH_GOLD') ? TRAINING_FINISH_GOLD : 'إنهاء تدريب الجنود فورًا';
+        $inTrainingLabel = defined('IN_TRAINING') ? IN_TRAINING : 'قيد التدريب';
    ?>
-        <table cellpadding="1" cellspacing="1" class="under_progress">
-            <thead><tr>
-                <td><?php echo TRAINING;?></td>
-                <td><?php echo DURATION;?></td>
-                <td><?php echo FINISHED;?></td>
-            </tr></thead>
+        <table cellpadding="1" cellspacing="1" class="under_progress gk-train-queue">
+            <thead>
+                <tr class="gk-train-gold-row">
+                    <td colspan="2">
+                        <a class="gk-train-finish-gold" href="plus.php?id=3" title="<?php echo GOLD_SHOP; ?>">
+                            <?php echo $goldFinishLabel; ?> : <span class="gk-train-finish-gold-amt"><?php echo (int)$session->gold; ?></span>
+                            <img src="<?php echo GP_LOCATE; ?>img/a/gold.gif" alt="<?php echo GOLD; ?>" />
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="desc"><?php echo $inTrainingLabel; ?> (<?php echo $trainQueueCount;?>)</td>
+                    <td class="dur"><?php echo DURATION;?></td>
+                </tr>
+            </thead>
             <tbody>
             <?php $TrainCount = 0; foreach ($trainlist as $train):
                 $TrainCount++;
@@ -98,16 +152,9 @@ $emptyTrainMsg = defined('AVAILABLE_ACADEMY') ? AVAILABLE_ACADEMY : 'لا توج
                             <?php echo $generator->getTimeFormat($train['eachtime'] * $amt);?>
                         <?php endif;?>
                     </td>
-                    <td class="fin">
-                        <?php
-                        $time = $generator->procMTime($train['timestamp']);
-                        if (!tz_mtime_is_today($time[0])) echo "on ".$time[0]." at ";
-                        echo $time[1];
-                       ?>
-                    </td>
                 </tr>
             <?php endforeach;?>
-                <tr class="next"><td colspan="3"><?php echo UNIT_FINISHED;?> <span id="timer<?php echo ++$session->timer;?>"><?php echo $NextFinished;?></span></td></tr>
+                <tr class="next"><td colspan="2"><?php echo UNIT_FINISHED;?> <span id="timer<?php echo ++$session->timer;?>"><?php echo $NextFinished;?></span></td></tr>
             </tbody>
         </table>
     <?php endif;?>

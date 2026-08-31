@@ -1014,44 +1014,98 @@ class Market
         $maxstore = (int) $village->maxstore;
         $maxcrop  = (int) $village->maxcrop;
 
-        $m2 = [
-            max(0, min($maxstore, (int)($post['m2'][0] ?? 0))),
-            max(0, min($maxstore, (int)($post['m2'][1] ?? 0))),
-            max(0, min($maxstore, (int)($post['m2'][2] ?? 0))),
-            max(0, min($maxcrop,  (int)($post['m2'][3] ?? 0))),
+        $floorRes = static function ($v) {
+            $v = (float) $v;
+            return (is_finite($v) && $v > 0) ? (int) floor($v) : 0;
+        };
+
+        $current = [
+            $floorRes($village->awood),
+            $floorRes($village->aclay),
+            $floorRes($village->airon),
+            $floorRes($village->acrop),
         ];
+        $currentTotal = array_sum($current);
 
-        $newTotal = $m2[0] + $m2[1] + $m2[2] + $m2[3];
+        $m1 = [];
+        for ($i = 0; $i < 4; $i++) {
+            $m1[$i] = max(0, (int) ($post['m1'][$i] ?? 0));
+        }
+        $m1Total = array_sum($m1);
 
-        // Cast to int so !== does not reject equal totals (round() returns float)
-        $currentTotal = (int) (
-            round($village->awood) +
-            round($village->aclay) +
-            round($village->airon) +
-            round($village->acrop)
-        );
+        $m2 = [
+            max(0, min($maxstore, (int) ($post['m2'][0] ?? 0))),
+            max(0, min($maxstore, (int) ($post['m2'][1] ?? 0))),
+            max(0, min($maxstore, (int) ($post['m2'][2] ?? 0))),
+            max(0, min($maxcrop,  (int) ($post['m2'][3] ?? 0))),
+        ];
+        $m2Total = array_sum($m2);
 
-        // Exact redistribution only — reject surplus OR shortfall (prevents gold drain + resource loss)
-        if ($newTotal !== $currentTotal) {
+        // Validate against hidden m1[] (what the page showed), not live village
+        // totals — production may tick while the player fills the form.
+        if ($m2Total !== $m1Total) {
+            header('Location: build.php?id=' . (int) $post['id'] . '&t=3&e=1');
+            exit;
+        }
 
-            header('Location: build.php?id=' . $post['id'] . '&t=3');
+        if ($m2Total > $currentTotal) {
+            header('Location: build.php?id=' . (int) $post['id'] . '&t=3&e=1');
+            exit;
+        }
+
+        // Absorb production gained while the form was open.
+        $remainder = $currentTotal - $m2Total;
+        if ($remainder > 0) {
+            for ($i = 3; $i >= 0 && $remainder > 0; $i--) {
+                $cap = ($i < 3) ? $maxstore : $maxcrop;
+                $room = $cap - $m2[$i];
+                if ($room > 0) {
+                    $add = min($room, $remainder);
+                    $m2[$i] += $add;
+                    $remainder -= $add;
+                }
+            }
+        }
+
+        if ($remainder > 0) {
+            header('Location: build.php?id=' . (int) $post['id'] . '&t=3&e=2');
             exit;
         }
 
         $database->setVillageField(
             $village->wid,
-            ['wood', 'clay', 'iron', 'crop'],
+            ['wood', 'clay', 'iron', 'crop', 'lastupdate'],
             [
                 $m2[0],
                 $m2[1],
                 $m2[2],
-                $m2[3]
+                $m2[3],
+                time(),
             ]
         );
 		$this->forget();
 
+        // Sync in-memory village so any code in this request sees the new stock.
+        $village->awood = $m2[0];
+        $village->aclay = $m2[1];
+        $village->airon = $m2[2];
+        $village->acrop = $m2[3];
+        if (!empty($village->infoarray)) {
+            $village->infoarray['wood'] = $m2[0];
+            $village->infoarray['clay'] = $m2[1];
+            $village->infoarray['iron'] = $m2[2];
+            $village->infoarray['crop'] = $m2[3];
+            $village->infoarray['lastupdate'] = time();
+        }
+
+        if (isset($_SESSION['username'])) {
+            unset($_SESSION['cache_user_' . $_SESSION['username']]);
+        }
+
         // permisiunea a fost verificata la intrarea in functie
-        $database->spendGold($session->uid, 3, 'NPC merchant');
+        if ($database->spendGold($session->uid, 3, 'NPC merchant')) {
+            $session->gold = max(0, (int) $session->gold - 3);
+        }
 
         header('Location: build.php?id=' . $post['id'] . '&t=3&c');
         exit;

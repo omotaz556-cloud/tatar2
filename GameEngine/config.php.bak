@@ -19,8 +19,8 @@
 //////////////////////////////////
 // (E_ALL ^ E_NOTICE) = enabled
 // (0) = disabled
-define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);");
-error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE);");
+error_reporting (E_ALL ^ E_NOTICE);
 define('AUTOMATION_LOCK_FILE_NAME', 'automation.lck');
 
 //////////////////////////////////
@@ -129,7 +129,7 @@ define("START_TIME", "02:31");
 // strictly sanitized to [a-z_] (no path traversal) and the target file MUST
 // exist, otherwise we fall back to the server default. This prevents Local
 // File Inclusion via a crafted session value.
-define("SERVER_LANG", "ar");
+define("SERVER_LANG", "en");
 if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 $__user_lang = isset($_SESSION['lang']) ? preg_replace('/[^a-z_]/', '', strtolower((string) $_SESSION['lang'])) : '';
 define("LANG", ($__user_lang !== '' && is_file(__DIR__ . "/Lang/" . $__user_lang . ".php")) ? $__user_lang : SERVER_LANG);
@@ -265,7 +265,7 @@ define("OASIS_IRON_PRODUCTION",OASIS_IRON_MULTIPLIER*SPEED);
 define("OASIS_CROP_PRODUCTION",OASIS_CROP_MULTIPLIER*SPEED); 
 
 // ***** Medal Interval check
-define("MEDALINTERVAL",604800);
+define("MEDALINTERVAL",(3600*24*7));
 // ***** Great Workshop
 define("GREAT_WKS",false);
 // ***** Tourn threshold
@@ -533,7 +533,7 @@ define("NEW_FUNCTIONS_MEDAL_10YEAR", true);
 define("NEW_FUNCTIONS_SPECIAL_MEDALS_SYSTEM", true);
 define("NEW_FUNCTIONS_MILESTONES", true);
 define("NEW_FUNCTIONS_MEDAL_RESET", true);
-define("NEW_FUNCTIONS_HERO_T4", false);
+define("NEW_FUNCTIONS_HERO_T4", true);
 define("NEW_FUNCTION_TRIBE_HUNS", false);
 define("NEW_FUNCTION_TRIBE_EGIPTEANS", false);
 define("NEW_FUNCTION_TRIBE_SPARTANS", false);

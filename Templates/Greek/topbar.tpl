@@ -15,7 +15,7 @@ if (!empty($message->unread) && empty($message->nunread)) {
 <div class="gk-topbar">
     <div class="gk-topbar__inner">
         <div class="gk-world">
-            <span class="gk-moon" aria-hidden="true"></span>
+            <?php echo function_exists('tz_day_night_icon_html') ? tz_day_night_icon_html('gk-daynight') : '<span class="gk-moon" aria-hidden="true"></span>'; ?>
             <span><?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?></span>
             <span class="gk-clock">(<span id="_Clock"><?php echo htmlspecialchars($clockNow, ENT_QUOTES, 'UTF-8'); ?></span>)</span>
         </div>

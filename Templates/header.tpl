@@ -255,10 +255,6 @@ if ($hour > 1759 || $hour < 500) {
 
         <style type="text/css">
 
-        html[dir="rtl"] {
-            zoom: 1.32 !important;
-        }
-
         #topNavIcons {
             float: left;
             width: 350px;
@@ -280,7 +276,8 @@ if ($hour > 1759 || $hour < 500) {
         }
 
         html[dir="rtl"] #topNavIcons > a,
-        html[dir="rtl"] #topNavIcons > div#n5 {
+        html[dir="rtl"] #topNavIcons > div#n5,
+        html[dir="rtl"] #topNavIcons > .gk-n5-wrap {
             display: block;
             float: none !important;
             flex: 0 0 70px;
@@ -288,7 +285,8 @@ if ($hour > 1759 || $hour < 500) {
             height: 72px;
         }
 
-        html[dir="rtl"] #topNavIcons > div#n5 { order: 1; }
+        html[dir="rtl"] #topNavIcons > div#n5,
+        html[dir="rtl"] #topNavIcons > .gk-n5-wrap { order: 1; }
         html[dir="rtl"] #topNavIcons > a#n4 { order: 2; }
         html[dir="rtl"] #topNavIcons > a#n3 { order: 3; }
         html[dir="rtl"] #topNavIcons > a#n2 { order: 4; }
@@ -301,7 +299,8 @@ if ($hour > 1759 || $hour < 500) {
             transform-origin: center center;
         }
 
-        html[dir="rtl"] #topNavIcons > div#n5 {
+        html[dir="rtl"] #topNavIcons > div#n5,
+        html[dir="rtl"] #topNavIcons div#n5 {
             transform: scaleX(-1) !important;
             -webkit-transform: scaleX(-1) !important;
             transform-origin: center center;

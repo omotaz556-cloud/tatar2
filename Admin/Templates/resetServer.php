@@ -20,6 +20,7 @@
 
 include_once("../../GameEngine/config.php");
 include_once("../../GameEngine/Database.php");
+include_once("../../GameEngine/Admin/csrf.php");
 require_once("../../GameEngine/Admin/ServerResetPreserve.php");
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -28,6 +29,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 if (!isset($_SESSION['access']) || (int)$_SESSION['access'] < ADMIN) {
     die("<h1><font color=\"red\">Access Denied: You are not Admin!</font></h1>");
 }
+csrf_verify();
 set_time_limit(0);
 
 $performingAdminId = (int) ($_SESSION['id'] ?? 0);

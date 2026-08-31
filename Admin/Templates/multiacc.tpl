@@ -114,7 +114,7 @@ $pairs = $data['pairs'];
 
     <div class="mad-panel">
         <?php if ($isFullAdmin): ?>
-        <form method="post" action="../GameEngine/Admin/Mods/multiAccountSettings.php">
+        <form method="post" action="../GameEngine/Admin/Mods/MultiAccountSettings.php">
             <?php echo csrf_field(); ?>
             <div class="mad-panel-row">
                 <div class="mad-toggle">

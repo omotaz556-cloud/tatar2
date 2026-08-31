@@ -1,4 +1,6 @@
-/* Apply the requested browser-like scale consistently to every page. */
-html {
-    zoom: 132% !important;
+/* Site-wide page zoom: 110% on every page (LTR + RTL). Set on <html>, not <body>. */
+html,
+html[dir="ltr"],
+html[dir="rtl"] {
+    zoom: 1.1 !important;
 }

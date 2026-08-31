@@ -130,12 +130,14 @@ for ($i = 1; $i <= 18; $i++) {
     /**
      * Tooltip
      */
-    $title = $resourceName .
-             ' ' . LEVEL . ' ' .
-             $fieldLevel;
+    $title = Building::procBuildingHoverTitle($fieldType, $fieldLevel);
 
     if ($isActive) {
-        $title .= ' (' . strip_tags(UPGRADE_IN_PROGRESS) . ')';
+        $progress = defined('UPGRADE_IN_PROGRESS') ? strip_tags(UPGRADE_IN_PROGRESS) : '';
+        $progress = preg_replace('/\s+/', ' ', trim(str_replace('<br>', ' ', $progress)));
+        if ($progress !== '') {
+            $title .= ' (' . $progress . ')';
+        }
     }
 
     echo '<area href="build.php?id=' . $i . '"
@@ -183,6 +185,13 @@ for ($i = 1; $i <= 18; $i++) {
     }
 
     /**
+     * Level 0 — no badge (lvl1_10.gif has digits 1–10 only; 0,0 shows "1")
+     */
+    if ($fieldLevel <= 0) {
+        continue;
+    }
+
+    /**
      * Text alt
      */
     $text = isset($fieldNames[$fieldType])
@@ -209,10 +218,14 @@ for ($i = 1; $i <= 18; $i++) {
     /**
      * Alt text
      */
-    $altText = $text . ' ' . $fieldLevel;
+    $altText = Building::procBuildingHoverTitle($fieldType, $fieldLevel);
 
     if ($isActive) {
-        $altText .= ' (' . strip_tags(UPGRADE_IN_PROGRESS) . ')';
+        $progress = defined('UPGRADE_IN_PROGRESS') ? strip_tags(UPGRADE_IN_PROGRESS) : '';
+        $progress = preg_replace('/\s+/', ' ', trim(str_replace('<br>', ' ', $progress)));
+        if ($progress !== '') {
+            $altText .= ' (' . $progress . ')';
+        }
     }
 
     echo '<img src="img/x.gif"

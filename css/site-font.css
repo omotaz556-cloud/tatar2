@@ -1,0 +1,71 @@
+/**
+ * Site-wide Arabic font — Expo Arabic (tatarwars-fv7-ex-lts-last).
+ */
+@import url("fonts/expo-arabic.css");
+
+:root {
+    --tz-site-font: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+/* Portal + every RTL page */
+html[dir="rtl"],
+html[dir="rtl"] body,
+html[dir="rtl"] body button,
+html[dir="rtl"] body input,
+html[dir="rtl"] body select,
+html[dir="rtl"] body textarea,
+html[dir="rtl"] body.pg-login,
+html[dir="rtl"] body.pg-login *,
+html[dir="rtl"] body.pg-register,
+html[dir="rtl"] body.pg-register *,
+html[dir="rtl"] body.pg-logout,
+html[dir="rtl"] body.pg-logout *,
+html[dir="rtl"] body.pg-index,
+html[dir="rtl"] body.pg-index *,
+html[dir="rtl"] body.pg-portal-index,
+html[dir="rtl"] body.pg-portal-index *,
+html[dir="rtl"] body.pg-manual,
+html[dir="rtl"] body.pg-manual *,
+html[dir="rtl"] body.v35,
+html[dir="rtl"] body.v35 * {
+    font-family: var(--tz-site-font) !important;
+}
+
+/* In-game Greek shell — override per-page Tahoma !important rules */
+html[dir="rtl"] body.pg-gk,
+html[dir="rtl"] body.pg-gk *,
+html[dir] body.pg-gk #content,
+html[dir] body.pg-gk #content *,
+html[dir] body.pg-gk #bodyWrapper,
+html[dir] body.pg-gk #bodyWrapper *,
+html[dir] body.pg-gk #gk-td-main,
+html[dir] body.pg-gk #gk-td-main *,
+html[dir] body.pg-gk .gk-head,
+html[dir] body.pg-gk .gk-head *,
+html[dir] body.pg-gk #mtop,
+html[dir] body.pg-gk #mtop *,
+html[dir] body.pg-gk #build,
+html[dir] body.pg-gk #build *,
+html[dir] body.pg-gk #build.gid16 *,
+html[dir] body.pg-gk #build.gid17 *,
+html[dir] body.pg-gk table,
+html[dir] body.pg-gk table *,
+html[dir] body.pg-gk .gk-bar,
+html[dir] body.pg-gk .gk-bar *,
+html[dir] body.pg-gk .trav_buttons,
+html[dir] body.pg-gk .gk-train-btn,
+html[dir] body.pg-gk .gk-market-btn,
+html[dir] body.pg-gk [class^="gk-"],
+html[dir] body.pg-gk [class*=" gk-"] {
+    font-family: var(--tz-site-font) !important;
+}
+
+/* Admin + legacy chrome */
+html[dir="rtl"] body table,
+html[dir="rtl"] body table *,
+html[dir="rtl"] body form,
+html[dir="rtl"] body form *,
+html[dir="rtl"] body .tz-topbar,
+html[dir="rtl"] body .tz-topbar * {
+    font-family: var(--tz-site-font) !important;
+}

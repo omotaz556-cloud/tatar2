@@ -31,6 +31,10 @@ $gkLblStats = defined('TZ_GK_OPT_STATS_SHAPE') ? TZ_GK_OPT_STATS_SHAPE : (define
 $gkLblStatsAuto = defined('PREF_STATS_AUTO') ? PREF_STATS_AUTO : 'تلقائي';
 $gkLblStatsClassic = defined('PREF_STATS_CLASSIC') ? PREF_STATS_CLASSIC : 'كلاسيكي';
 $gkLblStatsCompact = defined('PREF_STATS_COMPACT') ? PREF_STATS_COMPACT : 'مختصر';
+$gkLblRedirect = defined('PREF_REDIRECT_BEHAVIOR') ? PREF_REDIRECT_BEHAVIOR : 'سلوك التوجيه بعد الترقية';
+$gkLblStayBuild = defined('PREF_STAY_IN_BUILDING') ? PREF_STAY_IN_BUILDING : 'البقاء في المبنى';
+$gkLblGoMap = defined('PREF_GO_TO_MAP') ? PREF_GO_TO_MAP : 'الذهاب إلى الخريطة';
+$gkUpgrade = ((int) ($ui['upgrade_redirect'] ?? 0) === 1) ? 1 : 0;
 $gkLblSave = defined('SAVE') ? SAVE : 'حفظ';
 $gkLblSaved = defined('TZ_GK_OPT_SAVED') ? TZ_GK_OPT_SAVED : 'تم حفظ الخيارات.';
 ?>
@@ -84,6 +88,13 @@ $gkLblSaved = defined('TZ_GK_OPT_SAVED') ? TZ_GK_OPT_SAVED : 'تم حفظ الخ
                 <label><input class="radio" type="radio" name="stats_format" value="0"<?php echo $gkStats === 0 ? ' checked' : ''; ?> /> <?php echo htmlspecialchars($gkLblStatsAuto, ENT_QUOTES, 'UTF-8'); ?></label><br />
                 <label><input class="radio" type="radio" name="stats_format" value="1"<?php echo $gkStats === 1 ? ' checked' : ''; ?> /> <?php echo htmlspecialchars($gkLblStatsClassic, ENT_QUOTES, 'UTF-8'); ?></label><br />
                 <label><input class="radio" type="radio" name="stats_format" value="2"<?php echo $gkStats === 2 ? ' checked' : ''; ?> /> <?php echo htmlspecialchars($gkLblStatsCompact, ENT_QUOTES, 'UTF-8'); ?></label>
+            </td>
+        </tr>
+        <tr>
+            <th class="gk-opt-name"><?php echo htmlspecialchars($gkLblRedirect, ENT_QUOTES, 'UTF-8'); ?></th>
+            <td class="gk-opt-values">
+                <label><input class="radio" type="radio" name="upgrade_redirect" value="0"<?php echo $gkUpgrade === 0 ? ' checked' : ''; ?> /> <?php echo htmlspecialchars($gkLblStayBuild, ENT_QUOTES, 'UTF-8'); ?></label><br />
+                <label><input class="radio" type="radio" name="upgrade_redirect" value="1"<?php echo $gkUpgrade === 1 ? ' checked' : ''; ?> /> <?php echo htmlspecialchars($gkLblGoMap, ENT_QUOTES, 'UTF-8'); ?></label>
             </td>
         </tr>
     </tbody>

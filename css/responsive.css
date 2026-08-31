@@ -1,0 +1,338 @@
+/**
+ * Novaterra — responsive layer
+ * Greek in-game shell (pg-gk): proportional scaling only — see js/gk_scale.js + #gk-scale-root.
+ * Portal / login / admin: classic fluid breakpoints below.
+ */
+
+/* ---- Global safety ---- */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+/* Greek shell uses 1×1 img/x.gif CSS sprites — never apply fluid img rules there */
+body.pg-gk img,
+body.pg-gk video {
+    max-width: none;
+}
+table.row_table_data,
+table.transparent,
+table.vis,
+.mobile-scroll-x {
+    max-width: 100%;
+}
+.mobile-scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* =====================================================================
+ * Greek shell — proportional scaling on narrow viewports only.
+ * Desktop (≥1126px): original layout — device-width + global 110% zoom.
+ * Disable site-wide html zoom inside pg-gk (breaks village map sprites).
+ * ===================================================================== */
+html.pg-gk,
+html.pg-gk.gk-scaled-layout,
+html.pg-gk.gk-scaled-layout[dir="ltr"],
+html.pg-gk.gk-scaled-layout[dir="rtl"],
+html.pg-gk.gk-desktop-layout,
+html.pg-gk.gk-desktop-layout[dir="ltr"],
+html.pg-gk.gk-desktop-layout[dir="rtl"] {
+    zoom: 1 !important;
+}
+body.pg-gk {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    background: #ffffff !important;
+}
+/* Desktop: full-width wrapper (banner spans screen; shell centered at 1024) */
+html.pg-gk.gk-desktop-layout #gk-scale-root.gk-scale-root {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+    position: relative;
+}
+/* Scaled mobile/tablet: 1024px assembly scaled via viewport initial-scale */
+html.pg-gk.gk-scaled-layout #gk-scale-root.gk-scale-root {
+    width: 1024px;
+    max-width: none;
+    margin: 0 auto;
+    box-sizing: border-box;
+    position: relative;
+}
+/* Fallback before JS runs on wide screens */
+#gk-scale-root.gk-scale-root {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    box-sizing: border-box;
+    position: relative;
+}
+/* Imagemaps + dorf1 field sprites (img/x.gif) — fixed pixel metrics */
+body.pg-gk .village1 img,
+body.pg-gk .village1 #village_map,
+body.pg-gk .village2 img.map1,
+body.pg-gk .village2 img.map2,
+body.pg-gk #village_map_wrap img {
+    max-width: none !important;
+}
+body.pg-gk.pg-dorf1 .village1 img.reslevel {
+    width: 17px !important;
+    height: 12px !important;
+    max-width: none !important;
+}
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.building {
+    width: 75px !important;
+    height: 100px !important;
+    max-width: none !important;
+}
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.dx1,
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g16,
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g16b,
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.g16n {
+    width: 69px !important;
+    height: 120px !important;
+    max-width: none !important;
+}
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.map1,
+body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.map2 {
+    max-width: none !important;
+}
+
+/* ---- Portal / classic Travian (#mid) ---- */
+@media screen and (max-width: 1040px) {
+    body:not(.pg-gk) {
+        min-width: 0 !important;
+    }
+    body:not(.pg-gk) .wrapper {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    body:not(.pg-gk) #header,
+    body:not(.pg-gk) #mid {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    body:not(.pg-gk) div#mid {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+    }
+    body:not(.pg-gk) div#side_navi,
+    body:not(.pg-gk) div#content,
+    body:not(.pg-gk) div#side_info {
+        float: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box;
+    }
+    body:not(.pg-gk) div#content.map,
+    body:not(.pg-gk) div.village1,
+    body:not(.pg-gk) div.village2,
+    body:not(.pg-gk) div.village3,
+    body:not(.pg-gk) #village_map_wrap,
+    body:not(.pg-gk) #map_details {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    body:not(.pg-gk) #panel_content table,
+    body:not(.pg-gk) #panel_content .grid-2,
+    body:not(.pg-gk) #panel_content .grid-1 {
+        display: block;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+}
+
+/* ---- Public content pages ---- */
+@media screen and (max-width: 1023px) {
+    body.contentPage .rules,
+    body.contentPage .grit {
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+    body.contentPage #content {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+    body.contentPage #navigation {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body.contentPage .rules,
+    body.contentPage .grit {
+        margin-left: 8px !important;
+        margin-right: 8px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body.contentPage #content {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+}
+
+/* ---- Login / register / index ---- */
+@media screen and (max-width: 1040px) {
+    body.pg-index .wrapper,
+    body.indexPage .wrapper,
+    body.indexpage .wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    body.pg-index #content,
+    body.indexPage #content,
+    body.indexpage #content {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 820px) {
+    body.pg-index .wrapper,
+    body.indexPage .wrapper,
+    body.indexpage .wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+    body.pg-index #navigation,
+    body.indexPage #navigation,
+    body.indexpage #navigation {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+    }
+    body.pg-index #navigation table.menu,
+    body.indexPage #navigation table.menu,
+    body.indexpage #navigation table.menu {
+        width: 100% !important;
+    }
+    body.pg-index #content,
+    body.indexPage #content,
+    body.indexpage #content {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    body.login-page .login-wrap,
+    body.register-page .register-wrap,
+    .login-container,
+    .register-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body.login-page .login-wrap,
+    body.register-page .register-wrap,
+    .login-container,
+    .register-container {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+}
+
+/* ---- Admin panel ---- */
+@media screen and (max-width: 1024px) {
+    body.app #lmidall,
+    body.login #lmidall {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+    body.app #lleft,
+    body.app #lmid1 {
+        float: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    body.app #menu {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    body.app #menu li.sub > ul {
+        position: static !important;
+    }
+    body.app .tz-topbar {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    body.app table,
+    body.login table {
+        max-width: 100%;
+    }
+    body.app #lmid3 table,
+    body.login #lmid3 table {
+        display: block;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body.app #lmid3 {
+        padding: 8px !important;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    body.app #menu li.sub > ul {
+        display: block !important;
+    }
+    body.app #menu > li > a {
+        padding: 12px 16px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body.app .tz-topbar {
+        padding: 8px !important;
+    }
+}

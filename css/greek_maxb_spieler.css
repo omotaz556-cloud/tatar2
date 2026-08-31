@@ -61,9 +61,11 @@ body.pg-gk.pg-spieler table.gk-shell > tbody > tr > td.gk-td-main {
     height: auto !important;
     min-height: 480px !important;
     background: #fff !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
     box-shadow:
-        -12px 0 20px -18px rgba(0, 0, 0, 0.12),
-        12px 0 20px -18px rgba(0, 0, 0, 0.12) !important;
+        -20px 0 24px -24px rgba(0, 0, 0, 0.2),
+        20px 0 24px -24px rgba(0, 0, 0, 0.2) !important;
     overflow: visible !important;
     text-align: right !important;
     direction: rtl !important;
@@ -144,7 +146,7 @@ body.pg-gk.pg-spieler .gk-td-nav .gk-rlista a.plus {
 
 /* Resbar — same placement/centering as dorf1 (above shell, centered) */
 body.pg-gk.pg-spieler > .gk-resbar {
-    width: 1000px !important;
+    width: 1024px !important;
     max-width: 98% !important;
     margin: 8px auto 2px !important;
     padding: 0 !important;
@@ -279,7 +281,7 @@ body.pg-gk.pg-spieler #BP .PaNa {
     text-align: right;
     width: 100%;
     font-weight: 900;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     color: #000;
     margin: 0 0 6px;
     padding: 0;
@@ -293,7 +295,7 @@ body.pg-gk.pg-spieler #BP .BAR5 {
     margin: 0 0 8px;
     padding: 0;
     direction: rtl;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px;
     line-height: 16px;
 }
@@ -308,7 +310,7 @@ body.pg-gk.pg-spieler #BP .BAR5 .c-row {
 body.pg-gk.pg-spieler #BP .BAR5 .c-row > a {
     font-size: 13px;
     font-weight: 400;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     color: #8cc63f;
     text-decoration: none;
 }
@@ -374,7 +376,7 @@ body.pg-gk.pg-spieler #BP table.b0.fl.L6_S:not(.gk-prof-ally):not(.gk-prof-hero)
 
 /* Alliance table — exact greek.sa reference (4 cols: # | التحالف | اللاعبون | النقاط) */
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
 }
@@ -393,7 +395,7 @@ body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th,
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th a,
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally th bdi,
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tr.gk-prof-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 4px 6px !important;
@@ -439,7 +441,7 @@ body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally tbody tr th.al a {
 }
 
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-ally .staTit {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -449,7 +451,7 @@ body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-search input,
 body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-search button,
 body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-navi,
 body.pg-gk.pg-spieler #BP table.gk-prof-foot .gk-prof-navi a {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 301;
 }
@@ -506,7 +508,7 @@ body.pg-gk.pg-spieler #BP .gk-prof-hero-wrap {
 }
 
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
     table-layout: fixed;
@@ -556,7 +558,7 @@ body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero col.gk-prof-hero-life-co
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th,
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th a,
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th bdi {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 4px 5px !important;
@@ -564,7 +566,7 @@ body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero th bdi {
 }
 
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tr.gk-prof-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 12px !important;
     text-align: center !important;
     padding: 5px 3px !important;
@@ -719,7 +721,7 @@ body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero tbody tr th.life.dead {
 }
 
 body.pg-gk.pg-spieler #BP table.b0.fl.L6_S.gk-prof-hero .staTit {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -773,7 +775,7 @@ body.pg-gk.pg-spieler #BP .gk-prof-natars {
     text-align: center;
     background: transparent;
     border: none;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 body.pg-gk.pg-spieler #BP .gk-prof-natars-lab {
@@ -793,7 +795,7 @@ body.pg-gk.pg-spieler #BP .gk-prof-natars-clock {
     font-weight: 301;
     line-height: 1.1;
     letter-spacing: 1px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     direction: ltr;
     unicode-bidi: embed;
 }
@@ -811,7 +813,7 @@ body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-gen {
     width: 588px !important;
     max-width: 100%;
     margin: 0 0 10px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
     table-layout: fixed;
@@ -975,7 +977,7 @@ body.pg-gk.pg-spieler #BP table.a.b0.gk-prof-news {
     table-layout: fixed;
     border-collapse: collapse;
     border: 1px solid #ccc;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.45;
     float: none !important;
@@ -2042,7 +2044,7 @@ html[dir="rtl"] body.pg-gk.pg-spieler,
 html[dir="rtl"] body.pg-gk.pg-spieler #BP,
 html[dir="rtl"] body.pg-gk.pg-spieler #BP .Bod,
 html[dir="rtl"] body.pg-gk.pg-spieler .gk-spieler-body {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     line-height: 16px !important;
     direction: rtl;
@@ -2059,7 +2061,7 @@ body.pg-gk.pg-spieler .gk-spieler-body {
     box-sizing: border-box;
     padding: 0;
     direction: rtl;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px;
     line-height: 16px;
 }
@@ -2067,11 +2069,11 @@ body.pg-gk.pg-spieler .gk-spieler-body {
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview,
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages,
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
 }
 
 body.pg-gk.pg-spieler .gk-spieler-body .gk-num {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-variant-numeric: lining-nums;
     direction: ltr;
     unicode-bidi: isolate;
@@ -2176,39 +2178,119 @@ body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview tr.gk-prof-main-ro
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview td.gk-prof-detail-cell {
     width: 50%;
     height: 156px;
+    max-height: 156px;
     min-height: 156px;
     padding: 0;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview tr.gk-prof-main-row > td.gk-prof-desc-cell {
+    direction: ltr !important;
+    text-align: center !important;
 }
 
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview td.gk-prof-desc-cell {
     width: 50%;
+    height: 156px;
+    max-height: 156px;
     min-height: 156px;
-    padding: 0 7px;
-    vertical-align: middle;
-    text-align: right;
+    padding: 4px 7px;
+    vertical-align: top;
+    text-align: center !important;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
-body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1 {
-    padding: 0;
-    min-height: 120px;
-    line-height: 1.5;
+/* Medal wall rows — one distribution per row, medals side-by-side within row */
+body.pg-gk.pg-spieler .gk-spieler-body .gk-medal-row {
+    display: block;
+    width: 100%;
+    text-align: center;
+    line-height: normal;
+    min-height: 52px;
+    margin: 0 0 2px;
+    padding: 1px 0;
+    overflow: visible;
+    clear: both;
+    flex: none;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1,
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-medals-wall {
+    padding: 4px 2px;
+    line-height: 1.2;
     word-wrap: break-word;
-    text-align: right;
+    text-align: center !important;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
 }
 
-/* Inline medals in profile overview — same compact size as Travian (48px) */
+/* Overview medal wall — fixed height, scroll when many medals */
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-overview .desc1div.gk-prof-desc1.gk-prof-medals-wall {
+    min-height: 0;
+    max-height: 148px;
+    height: 148px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    text-align: center !important;
+}
+
+/* Medal wall — Travian / greek.sa layout (35×48 ribbons, centered rows) */
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1 img.gk-inline-medal,
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-medals-wall img.gk-inline-medal,
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc2-inline img.gk-inline-medal,
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img.gk-inline-medal,
 body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1 img,
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-medals-wall img,
 body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc2-inline img,
 body.pg-gk.pg-spieler .gk-spieler-body .desc1div.messages img {
-    display: inline-block;
-    width: auto;
-    height: 48px;
-    max-width: 48px;
-    max-height: 48px;
+    display: inline-block !important;
+    width: 35px !important;
+    height: 48px !important;
+    max-width: 35px !important;
+    max-height: 48px !important;
     object-fit: contain;
-    vertical-align: middle;
-    margin: 0 3px;
+    vertical-align: top;
+    margin: 1px 2px;
     border: 0;
+    float: none;
+    position: static !important;
+    background: none !important;
+    background-image: none !important;
+    flex-shrink: 0;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1 img.gk-medal-tribe,
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-medals-wall img.gk-medal-tribe,
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img.gk-medal-tribe {
+    width: 48px !important;
+    height: auto !important;
+    max-width: 64px !important;
+    max-height: 72px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1 img.gk-medal-bird,
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-medals-wall img.gk-medal-bird,
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img.gk-medal-bird {
+    width: 65px !important;
+    height: 45px !important;
+    max-width: 65px !important;
+    max-height: 45px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-desc1 img.gk-medal-special,
+body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-medals-wall img.gk-medal-special,
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img.gk-medal-special {
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
 }
 
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-detail-table {
@@ -2359,7 +2441,7 @@ body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td.gk-prof-coords 
     direction: ltr;
     display: inline-block;
     unicode-bidi: isolate;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
 }
 
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-villages td.gk-prof-coords a:hover {
@@ -2459,7 +2541,7 @@ body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit input.text,
 body.pg-gk.pg-spieler .gk-spieler-body table#edit.gk-prof-edit select.dropdown {
     border: 1px solid #7cb044;
     padding: 2px 4px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     background: #fff;
     box-sizing: border-box;
@@ -2540,24 +2622,67 @@ body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals td a:hover {
 body.pg-gk.pg-spieler .gk-spieler-body .badge-option,
 body.pg-gk.pg-spieler .gk-spieler-body img.gk-medal-badge {
     display: inline-block;
-    width: 32px;
-    height: 32px;
-    max-width: 32px;
-    max-height: 32px;
+    width: 35px;
+    height: 48px;
+    max-width: 35px;
+    max-height: 48px;
     object-fit: contain;
     vertical-align: middle;
     margin: 0;
 }
 
-body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img.gk-medal-badge,
-body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img {
-    width: 48px;
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek img.gk-medal-badge,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek td.gk-medal-ico img,
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek td.gk-medal-add img {
+    width: 35px !important;
+    height: 48px !important;
+    max-width: 35px !important;
+    max-height: 48px !important;
+    object-fit: contain !important;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek img.gk-medal-tribe {
+    width: 48px !important;
+    height: auto !important;
+    max-width: 64px !important;
+    max-height: 72px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek img.gk-medal-special {
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-medals-greek img.gk-medal-bird {
+    width: 65px !important;
+    height: 45px !important;
+    max-width: 65px !important;
+    max-height: 45px !important;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor img.gk-medal-badge,
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img.gk-medal-badge {
+    width: 35px;
     height: 48px;
-    max-width: 48px;
+    max-width: 35px;
     max-height: 48px;
     object-fit: contain;
-    margin: 0 4px;
-    vertical-align: middle;
+    margin: 1px 2px;
+    vertical-align: top;
+}
+
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor img:not(.gk-inline-medal):not(.gk-medal-badge),
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor img:not(.gk-inline-medal):not(.gk-medal-badge) {
+    width: 35px;
+    height: 48px;
+    max-width: 35px;
+    max-height: 48px;
+    object-fit: contain;
+    margin: 1px 2px;
+    vertical-align: top;
 }
 
 /* ---- Profile edit — من نحن (s=1) ---- */
@@ -2569,8 +2694,12 @@ body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-main td.gk-prof-detail
 
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-main td.gk-prof-desc-cell {
     min-height: 220px;
+    max-height: 220px;
+    height: 220px;
     padding: 6px 7px;
     vertical-align: top;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 body.pg-gk.pg-spieler .gk-spieler-body .gk-prof-detail-stack {
@@ -2589,8 +2718,14 @@ body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields tr.gk-prof-edit
     border-bottom: 0 !important;
 }
 
+body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-medals-wall .gk-medal-row {
+    text-align: center;
+}
+
 body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor {
-    min-height: 200px;
+    min-height: 0;
+    max-height: 200px;
+    height: 200px;
     width: 100%;
     box-sizing: border-box;
     border: 1px solid #7cb058;
@@ -2600,11 +2735,12 @@ body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor {
     overflow: auto;
     white-space: pre-wrap;
     word-break: break-word;
-    text-align: right;
-    direction: rtl;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    text-align: center;
+    direction: ltr;
+    unicode-bidi: isolate;
+    line-height: 1.2;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
-    line-height: 1.45;
 }
 
 body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor-desc2 {
@@ -2612,6 +2748,11 @@ body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor-desc2 {
     min-height: 72px;
     margin: 6px 7px 7px;
     width: auto;
+    text-align: right;
+    direction: rtl;
+    line-height: 1.45;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
 }
 
 body.pg-gk.pg-spieler .gk-spieler-body .profile-editor.gk-prof-editor img {
@@ -2640,7 +2781,7 @@ body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields td.gend label {
 body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-fields input.text {
     border: 1px solid #7cb058;
     padding: 2px 4px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     background: #fff;
     box-sizing: border-box;
@@ -2680,7 +2821,7 @@ body.pg-gk.pg-spieler .gk-spieler-body table.gk-prof-edit-vil input.gk-prof-vil-
     max-width: 100%;
     border: 1px solid #7cb058;
     padding: 2px 4px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     background: #fff;
     box-sizing: border-box;
@@ -2813,7 +2954,7 @@ body.pg-gk.pg-spieler .gk-spieler-body button.gk-prof-ok {
     background: #fff !important;
     background-image: linear-gradient(to bottom, #ffffff, #e6e6e6) !important;
     color: #000 !important;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     font-weight: 700 !important;
     line-height: 18px !important;
@@ -3402,7 +3543,7 @@ body.pg-gk.pg-spieler .gk-spieler-body table.gk-accounts-table button.gk-acc-lin
     color: #8cc63f;
     font-size: 13px;
     font-weight: 700;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     cursor: pointer;
     padding: 0;
     text-decoration: none;

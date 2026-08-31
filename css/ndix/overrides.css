@@ -1,0 +1,316 @@
+@charset "UTF-8";
+
+/**
+ * Fixes for tatarwars ndix index — local fonts/images, broken external URLs.
+ */
+
+/* Fonts: style.css references css/ndix/fonts/ which does not exist */
+@font-face {
+    font-display: swap;
+    font-family: greekFont;
+    src: url("../fonts/ExpoArabic-Medium.ttf");
+    font-weight: 500;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: greekFont;
+    src: url("../fonts/ExpoArabic-Light.ttf");
+    font-weight: 400;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: greekFont;
+    src: url("../fonts/ExpoArabic-Bold.otf");
+    font-weight: 700;
+}
+
+body.pg-portal-index {
+    display: block !important;
+    direction: rtl;
+    text-align: right;
+    min-height: 100vh;
+    background: #fff;
+    color: #080808;
+}
+
+body.pg-portal-index *,
+body.pg-portal-index *::before,
+body.pg-portal-index *::after {
+    font-family: "Expo Arabic", greekFont, Tahoma, Arial, sans-serif;
+}
+
+/* Header — fixed 1332×421 aspect so % positioning stays on the artwork */
+body.pg-portal-index header {
+    position: relative;
+    width: 100%;
+    height: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    padding-bottom: 31.622% !important; /* 421 / 1332 */
+    background: #d7f2ff url("../../img/ndix/newIndex/imgs/main.jpg") center top / 100% 100% no-repeat !important;
+    overflow: visible;
+}
+
+body.pg-portal-index header .hero-section {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Kill legacy offsets from style.css (top:85px on ul, top:258px on .world) */
+body.pg-portal-index header .hero-section nav.nav ul,
+body.pg-portal-index header .hero-section .nav ul {
+    position: static !important;
+    top: 0 !important;
+    right: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 14% 0 8% !important;
+    box-sizing: border-box;
+    display: flex !important;
+    flex-direction: row !important;
+    direction: rtl !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    list-style: none;
+    min-height: 0;
+    gap: 0 !important;
+}
+
+/* White strip — box aligned to main.jpg (1332×421) */
+body.pg-portal-index header .hero-section nav.nav,
+body.pg-portal-index header .hero-section .nav {
+    position: absolute;
+    left: calc(50% + 150px);
+    top: calc(10.45% + 55px);
+    width: 30% !important;
+    height: 6.2%;
+    min-width: 0;
+    max-width: none !important;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0;
+    padding: 0;
+}
+
+body.pg-portal-index header .hero-section nav.nav ul li,
+body.pg-portal-index header .hero-section .nav ul li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 0 1 auto;
+    text-align: center;
+}
+
+body.pg-portal-index header .hero-section nav.nav ul a,
+body.pg-portal-index header .hero-section nav.nav ul button,
+body.pg-portal-index header .hero-section .nav ul a,
+body.pg-portal-index header .hero-section .nav ul button {
+    font-size: clamp(0.72rem, 1.2vw, 0.92rem);
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    line-height: 1.2;
+    display: inline-block;
+    padding: 0;
+    color: #080808;
+}
+
+/* World CTA — tatarwars reference: top 258px / left -78px on 1332×421 artwork */
+body.pg-portal-index header .hero-section .world {
+    display: table !important;
+    position: absolute !important;
+    left: calc(50% - 108px) !important;
+    right: auto !important;
+    top: calc(61.28% + 50px) !important;
+    transform: translateX(-50%) !important;
+    margin: 0 auto !important;
+    width: max-content;
+    max-width: 42%;
+    text-align: center;
+    z-index: 2;
+}
+
+body.pg-portal-index header .hero-section .world a {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    height: 42px !important;
+    color: #691009 !important;
+    font-weight: 700 !important;
+    display: block !important;
+    text-align: center !important;
+}
+
+body.pg-portal-index header .hero-section .world a span {
+    display: block;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+body.pg-portal-index header .hero-section .world a span.world-reg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 1.15em;
+    width: 100%;
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.58);
+    margin-top: 0;
+}
+
+body.pg-portal-index header .hero-section .world a .world-title {
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+@media only screen and (max-width: 1020px) {
+    body.pg-portal-index header .hero-section .world {
+        display: table !important;
+        left: calc(50% - 108px) !important;
+        top: calc(61.28% + 50px) !important;
+        transform: translateX(-50%) !important;
+    }
+
+    body.pg-portal-index header .hero-section nav.nav,
+    body.pg-portal-index header .hero-section .nav {
+        left: calc(50% + 150px) !important;
+        top: calc(10.45% + 55px) !important;
+        width: 30% !important;
+        max-width: none !important;
+        height: 6.2% !important;
+        transform: translateX(-50%) !important;
+        background: none !important;
+        background-image: none !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    body.pg-portal-index header .hero-section nav.nav ul,
+    body.pg-portal-index header .hero-section .nav ul {
+        max-width: none !important;
+        width: 100% !important;
+        justify-content: space-between !important;
+        padding: 0 14% 0 8% !important;
+    }
+}
+
+/* Main layout */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 12px;
+}
+
+.container main #hero-side {
+    top: 0;
+    padding-top: 2rem;
+}
+
+.container main #hero-side h1 {
+    font-size: 2.2rem;
+    line-height: 1.35;
+}
+
+.container main #about .max-width {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+@media only screen and (max-width: 900px) {
+    .container main #about .max-width {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.container main #about .max-width .btn-group {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.container main #about .max-width .btn-group a.btn-primary {
+    background-color: #df8b00;
+    border-radius: 19px;
+    padding: 10px 24px;
+    color: #020710;
+    font-weight: 700;
+    text-decoration: none;
+    margin: 0;
+}
+
+.container main #latestServer .server-details-box .server-data-grid img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Footer — index uses .footer-data, reference uses .footer-grid */
+.container footer {
+    padding: 2rem 1rem 5rem;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 2rem;
+}
+
+.container footer .footer-data ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 20px;
+}
+
+.container footer .footer-data a {
+    color: #004956;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.container footer .footer-data a:hover {
+    color: #df8b00;
+}
+
+/* Modal server lists — style.css hides both with display:none */
+.container #modal .modal-body .server-item1,
+.container #modal .modal-body .server-item2 {
+    display: block;
+}
+
+.container #modal .modal-body .serverItem {
+    margin-bottom: 12px;
+}
+
+/* Floating register bar */
+#register-box {
+    display: flex !important;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.container aside .menu {
+    display: block;
+}
+
+.container aside .menu-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+}

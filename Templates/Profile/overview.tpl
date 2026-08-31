@@ -30,8 +30,16 @@ $_GET['uid'] = $uid;
 // =========================
 // USER DATA
 // =========================
-$displayarray = $database->getUserArray($uid, 1);
+$displayarray = $database->getUserArray($uid, 1, false);
 $varmedal     = $database->getProfileMedal($uid);
+
+require_once dirname(__DIR__, 2) . '/GameEngine/GreekMedalLayout.php';
+$gkMedalWeekMap = GreekMedalLayout::weekMapFromVarmedal($varmedal);
+$gkMedalDesc2 = GreekMedalLayout::markBbRows(GreekMedalLayout::layoutBbByWeekRuns(
+    (string) ($displayarray['desc2'] ?? ''),
+    $gkMedalWeekMap
+));
+$GLOBALS['gkSpielerProfileGreek'] = class_exists('GreekSpieler');
 
 // =========================
 // PROFILE SAFE MERGE
@@ -48,12 +56,13 @@ $profileSeparator = md5('skJkev3');
 // htmlspecialchars()/BBCode.php untouched and are still handled by medal.php.
 $input = htmlspecialchars($displayarray['desc1'] ?? '', ENT_QUOTES, 'UTF-8')
        . $profileSeparator
-       . htmlspecialchars($displayarray['desc2'] ?? '', ENT_QUOTES, 'UTF-8');
-include("GameEngine/BBCode.php");
+       . htmlspecialchars($gkMedalDesc2, ENT_QUOTES, 'UTF-8');
+include __DIR__ . '/../../GameEngine/BBCode.php';
 $profiel = $bbcoded;
+$user = $displayarray;
 
 // medal.php se ocupă de procesare (NU îi strica inputul)
-require("medal.php");
+require __DIR__ . '/medal.php';
 
 // split DUPĂ medal processing
 $profiel = explode($profileSeparator, $profiel);
@@ -312,7 +321,7 @@ if ($uid == $session->uid) {
 <div class="desc1div">
     <!-- Issue #250: see the matching wrapper above (enables BBCode smileys). -->
     <div class="messages" style="padding:0;width:auto">
-    <?php echo nl2br($profiel[1]); ?>
+    <?php echo GreekMedalLayout::wallHtmlFromMarkedRows($profiel[1]); ?>
     </div>
 </div>
 </td>

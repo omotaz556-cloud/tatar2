@@ -118,4 +118,143 @@ class GreekPlus
     {
         return '<tr><th colspan="' . (int) $cols . '"><br></th></tr>';
     }
+
+    /**
+     * Suggested gold for "buy N of each resource" on plus balance (greek.sa green hint).
+     * Uses master-builder queue deficits; if none, suggests filling warehouse/granary.
+     */
+    public static function suggestedGoldForResourcePurchase($village, $database = null)
+    {
+        if (empty($village) || !is_object($village)) {
+            return defined('GOLD_RES_MIN_GOLD') ? max(1, (int) GOLD_RES_MIN_GOLD) : 1;
+        }
+
+        if ($database === null) {
+            global $database;
+        }
+
+        $unit = defined('GOLD_RES_UNIT') ? max(1, (int) GOLD_RES_UNIT) : 20000;
+        $maxGoldCfg = defined('GOLD_RES_MAX_GOLD') ? max(0, (int) GOLD_RES_MAX_GOLD) : 0;
+
+        $wood = (int) floor($village->awood);
+        $clay = (int) floor($village->aclay);
+        $iron = (int) floor($village->airon);
+        $crop = (int) floor($village->acrop);
+        $maxStore = (int) $village->maxstore;
+        $maxCrop = (int) $village->maxcrop;
+
+        $needed = array('wood' => 0, 'clay' => 0, 'iron' => 0, 'crop' => 0);
+
+        if ($database && !empty($village->wid)) {
+            $masterJobs = $database->getMasterJobs((int) $village->wid);
+            foreach ($masterJobs as $job) {
+                $type = (int) $job['type'];
+                $level = (int) $job['level'];
+                $bid = isset($GLOBALS['bid' . $type]) ? $GLOBALS['bid' . $type] : null;
+                if (!$bid || !isset($bid[$level])) {
+                    continue;
+                }
+                $req = $bid[$level];
+                $needed['wood'] += (int) $req['wood'];
+                $needed['clay'] += (int) $req['clay'];
+                $needed['iron'] += (int) $req['iron'];
+                $needed['crop'] += (int) $req['crop'];
+            }
+        }
+
+        $suggest = 0;
+        $queueTotal = $needed['wood'] + $needed['clay'] + $needed['iron'] + $needed['crop'];
+
+        if ($queueTotal > 0) {
+            $fromQueue = max(
+                self::goldUnitsForShortage($needed['wood'], $wood, $maxStore, $unit),
+                self::goldUnitsForShortage($needed['clay'], $clay, $maxStore, $unit),
+                self::goldUnitsForShortage($needed['iron'], $iron, $maxStore, $unit),
+                self::goldUnitsForShortage($needed['crop'], $crop, $maxCrop, $unit)
+            );
+            $suggest = max($suggest, $fromQueue);
+        } else {
+            $fill = max(
+                self::goldUnitsForShortage($maxStore, $wood, $maxStore, $unit),
+                self::goldUnitsForShortage($maxStore, $clay, $maxStore, $unit),
+                self::goldUnitsForShortage($maxStore, $iron, $maxStore, $unit),
+                self::goldUnitsForShortage($maxCrop, $crop, $maxCrop, $unit)
+            );
+            $suggest = max($suggest, $fill);
+        }
+
+        global $session;
+        if (isset($session) && isset($session->gold)) {
+            $suggest = min($suggest, (int) $session->gold);
+        }
+        if ($maxGoldCfg > 0) {
+            $suggest = min($suggest, $maxGoldCfg);
+        }
+
+        return max(0, (int) $suggest);
+    }
+
+    private static function goldUnitsForShortage($required, $current, $capacity, $unit)
+    {
+        $shortage = max(0, (int) $required - (int) $current);
+        $room = max(0, (int) $capacity - (int) $current);
+        $shortage = min($shortage, $room);
+
+        if ($shortage <= 0) {
+            return 0;
+        }
+
+        return (int) ceil($shortage / max(1, (int) $unit));
+    }
+
+    /**
+     * Live Plus/bonus countdown (greek.sa <c> tag) — updated every second via gk_plus_countdown.js.
+     *
+     * @param int   $endTimestamp Unix expiry
+     * @param int   $nowTimestamp Server time at page render
+     * @param array $labels       remaining, until, seconds, days, hours, mins
+     */
+    public static function renderPlusCountdown($endTimestamp, $nowTimestamp, array $labels)
+    {
+        $end = (int) $endTimestamp;
+        $now = (int) $nowTimestamp;
+
+        if ($end <= $now) {
+            return '';
+        }
+
+        $untilHms = date('H:i:s', $end);
+        $labelsJson = json_encode($labels, JSON_UNESCAPED_UNICODE);
+        if ($labelsJson === false) {
+            $labelsJson = '{}';
+        }
+
+        return '<c class="gk-plus-countdown" data-end="' . $end . '" data-now="' . $now . '"'
+            . ' data-until-hms="' . htmlspecialchars($untilHms, ENT_QUOTES, 'UTF-8') . '"'
+            . ' data-l10n="' . htmlspecialchars($labelsJson, ENT_QUOTES, 'UTF-8') . '">'
+            . self::formatPlusCountdownInner($end, $now, $labels, $untilHms)
+            . '</c>';
+    }
+
+    private static function formatPlusCountdownInner($end, $now, array $labels, $untilHms)
+    {
+        $remaining = (int) $end - (int) $now;
+
+        if ($remaining <= 0) {
+            return '';
+        }
+
+        $days = intdiv($remaining, 86400);
+        $remaining %= 86400;
+        $hours = intdiv($remaining, 3600);
+        $remaining %= 3600;
+        $mins = intdiv($remaining, 60);
+        $secs = $remaining % 60;
+
+        return $labels['remaining'] . ': <b>' . $days . '</b> ' . $labels['days']
+            . ' <b>' . $hours . '</b> ' . $labels['hours']
+            . ' <b>' . $mins . '</b> ' . $labels['mins']
+            . ' <b>' . $secs . '</b> ' . $labels['seconds']
+            . ' (' . $labels['until'] . ' ' . $untilHms . ')';
+    }
 }

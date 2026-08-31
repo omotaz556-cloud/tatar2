@@ -1,0 +1,2 @@
+Buyg: 3&amp;k=395855&amp;U[60]=10"></form><tr><th>���� 20,000 �� �� ���� �矠� 1 �� <a onclick="filD(&quot;#Buyg&quot;,2)">(2)</a></th><th>����</th><th><input id="Buyg" class="S2" name="X[0]" type="text" value="1" typ="N" autocomplete="off" autocorrect="off" form="Form_10" inputmode="numeric"><p class="Rs x7" t
+greens: []

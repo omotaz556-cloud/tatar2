@@ -126,7 +126,7 @@ class Profile {
 		if (!in_array($statsFormat, [0, 1, 2], true)) $statsFormat = 0;
 		if (!in_array($nightMode, [0, 1, 2], true)) $nightMode = 0;
 		$upgradeRedirect = isset($post['upgrade_redirect']) ? (int)$post['upgrade_redirect'] : 0;
-		if (!in_array($upgradeRedirect, [0, 1, 2], true)) {
+		if ($upgradeRedirect !== 1) {
 			$upgradeRedirect = 0;
 		}
 
@@ -218,6 +218,7 @@ class Profile {
 		$timerRefresh = isset($post['timer_refresh']) ? (int) $post['timer_refresh'] : 0;
 		$invertColors = isset($post['invert_colors']) ? (int) $post['invert_colors'] : 0;
 		$statsFormat = isset($post['stats_format']) ? (int) $post['stats_format'] : 0;
+		$upgradeRedirect = isset($post['upgrade_redirect']) ? (int) $post['upgrade_redirect'] : 0;
 
 		if (!in_array($mobileMode, [0, 1, 2], true)) {
 			$mobileMode = 0;
@@ -227,12 +228,14 @@ class Profile {
 		if (!in_array($statsFormat, [0, 1, 2], true)) {
 			$statsFormat = 0;
 		}
+		$upgradeRedirect = ($upgradeRedirect === 1) ? 1 : 0;
 
 		foreach ([
 			'mobile_mode' => "TINYINT(1) NOT NULL DEFAULT '0'",
 			'timer_refresh' => "TINYINT(1) NOT NULL DEFAULT '0'",
 			'invert_colors' => "TINYINT(1) NOT NULL DEFAULT '0'",
 			'stats_format' => "TINYINT(1) NOT NULL DEFAULT '0'",
+			'upgrade_redirect' => "TINYINT(1) NOT NULL DEFAULT '0'",
 		] as $column => $definition) {
 			$columnCheck = mysqli_query(
 				$database->dblink,
@@ -249,7 +252,8 @@ class Profile {
 		$database->query(
 			"UPDATE " . TB_PREFIX . "users SET " .
 			"mobile_mode=$mobileMode, timer_refresh=$timerRefresh, " .
-			"invert_colors=$invertColors, stats_format=$statsFormat " .
+			"invert_colors=$invertColors, stats_format=$statsFormat, " .
+			"upgrade_redirect=$upgradeRedirect " .
 			"WHERE id=$uid"
 		);
 
@@ -262,6 +266,7 @@ class Profile {
 			$session->userinfo['timer_refresh'] = $timerRefresh;
 			$session->userinfo['invert_colors'] = $invertColors;
 			$session->userinfo['stats_format'] = $statsFormat;
+			$session->userinfo['upgrade_redirect'] = $upgradeRedirect;
 		}
 
 		header('Location: spieler.php?uid=' . $uid . '&hub=1&saved=1');
@@ -413,7 +418,14 @@ class Profile {
 	$be1 = trim($post['be1'] ?? ''); // right description
 	$be2 = trim($post['be2'] ?? ''); // left description
 
+    require_once __DIR__ . '/GreekMedalLayout.php';
+    $gkMedalWeekMap = GreekMedalLayout::weekMapFromVarmedal($database->getProfileMedal($session->uid));
+    $be1 = GreekMedalLayout::layoutBbByWeekRuns($be1, $gkMedalWeekMap);
+
     $database->submitProfile($session->uid, $mw, $ort, $birthday, $be2, $be1);
+    if (isset($_SESSION['username'])) {
+        unset($_SESSION['cache_user_' . $_SESSION['username']]);
+    }
 
     // Cache villages
     if (!isset(self::$cache['villages'][$session->uid])) {

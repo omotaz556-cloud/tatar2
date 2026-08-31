@@ -19,7 +19,7 @@
 #################################################################################
 ?>
 <style>
-.reset-wrap{max-width:720px;margin:20px auto;font-family:Tahoma,Verdana,Arial,sans-serif;padding:0 10px;box-sizing:border-box}
+.reset-wrap{max-width:720px;margin:20px auto;font-family:"Expo Arabic",Tahoma,Verdana,Arial,sans-serif;padding:0 10px;box-sizing:border-box}
 html[dir="rtl"] .reset-wrap{direction:rtl;text-align:right}
 html[dir="rtl"] .reset-body,html[dir="rtl"] .reset-option{text-align:right}
 html[dir="rtl"] .reset-foot{direction:rtl}
@@ -50,6 +50,7 @@ html[dir="rtl"] .reset-option input{margin-right:0;margin-left:6px}
 </style>
 
 <form action="Templates/resetServer.php" method="post" id="resetForm">
+        <?php echo csrf_field(); ?>
 <div class="reset-wrap">
   <div class="reset-card">
     <div class="reset-head">

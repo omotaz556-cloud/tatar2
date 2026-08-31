@@ -19,8 +19,8 @@
 //////////////////////////////////
 // (E_ALL ^ E_NOTICE) = enabled
 // (0) = disabled
-define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);");
-error_reporting (E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+define("ERROR_REPORT","error_reporting (E_ALL ^ E_NOTICE);");
+error_reporting (E_ALL ^ E_NOTICE);
 define('AUTOMATION_LOCK_FILE_NAME', 'automation.lck');
 
 //////////////////////////////////
@@ -101,7 +101,7 @@ define('HERO_RES_PER_POINT_ONE', 10);
 //////////////////////////////////
 
 // ***** Name
-define("SERVER_NAME","Novaterra");
+define("SERVER_NAME","حروب التتار");
 
 // ***** Time zone added by ronix
 // Defines server time zone.
@@ -266,9 +266,6 @@ define("OASIS_CROP_PRODUCTION",OASIS_CROP_MULTIPLIER*SPEED);
 
 // ***** Medal Interval check
 define("MEDALINTERVAL",604800);
-// Top-10 daily stats reset countdown (86400 = midnight each day; 0 = use MEDALINTERVAL)
-define("STAT_TOP10_RESET_INTERVAL", 86400);
-define("STAT_TOP10_GOLD_DIVISOR", 55897);
 // ***** Great Workshop
 define("GREAT_WKS",false);
 // ***** Tourn threshold
@@ -276,11 +273,6 @@ define("TS_THRESHOLD",20);
 
 // ***** Register open/close
 define("REG_OPEN",true);
-// Max new accounts per IP / browser fingerprint within REGISTRATION_LIMIT_WINDOW (seconds).
-// Local dev: raised so repeated test signups are not blocked.
-define("REGISTRATION_MAX_PER_IP", 50);
-define("REGISTRATION_MAX_PER_DEVICE", 50);
-define("REGISTRATION_LIMIT_WINDOW", 86400);
 
 // ***** Peace system
 // 0 = None
@@ -396,9 +388,6 @@ define("PLUS_PACKAGE_E_GOLD","2000");
 define("PLUS_TIME",604800);
 //+25% production lenght
 define("PLUS_PRODUCTION",604800);
-define("GOLD_RES_PURCHASE_ENABLED", true);
-define("GOLD_RES_UNIT", 20000);
-define("GOLD_RES_MIN_GOLD", 1);
 
 //////////////////////////////////
 //    **** LOG SETTINGS  ****   //
@@ -429,13 +418,6 @@ define("LOG_ILLEGAL",false);
 define("NEWSBOX1",false);
 define("NEWSBOX2",false);
 define("NEWSBOX3",false);
-
-//////////////////////////////////
-// ****  WORLD NEWS (stats)  **** //
-//////////////////////////////////
-// Minimum defender kills for an attack to appear on Statistics » News
-define("WORLD_NEWS_MIN_KILLS", 10000);
-define("WORLD_NEWS_MAX_ITEMS", 50);
 
 //////////////////////////////////
 //   ****  SQL SETTINGS  ****   //
@@ -553,7 +535,7 @@ define("NEW_FUNCTIONS_MILESTONES", true);
 define("NEW_FUNCTIONS_MEDAL_RESET", true);
 define("NEW_FUNCTIONS_HERO_T4", true);
 define("NEW_FUNCTION_TRIBE_HUNS", false);
-define("NEW_FUNCTION_TRIBE_EGIPTEANS", false);
+define("NEW_FUNCTION_TRIBE_EGIPTEANS", true);
 define("NEW_FUNCTION_TRIBE_SPARTANS", false);
 define("NEW_FUNCTION_TRIBE_VIKINGS", false);
 define("NEW_FUNCTION_REGISTRATION_GOLD", false);
@@ -746,6 +728,40 @@ if (!function_exists('tz_mtime_is_yesterday')) {
 
 require_once __DIR__ . '/GreekShell.php';
 require_once __DIR__ . '/UserDisplayPrefs.php';
+require_once __DIR__ . '/PortalClassic.php';
+
+if (!function_exists('tz_global_stylesheet_tag')) {
+    /**
+     * Shared CSS for portal pages (index, login, register, logout).
+     */
+    function tz_global_stylesheet_tag($relPath = '')
+    {
+        $tag = '';
+        $root = dirname(__DIR__);
+
+        $globalDisk = $root . '/css/global.css';
+        if (is_file($globalDisk)) {
+            $href = $relPath . 'css/global.css';
+            $ver = (int) @filemtime($globalDisk);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES)
+                . '?v=' . $ver . '" rel="stylesheet" type="text/css" />';
+        }
+
+        if (function_exists('tz_rtl_stylesheet_tag')) {
+            $tag .= tz_rtl_stylesheet_tag(null, $relPath);
+        }
+
+        $responsiveDisk = $root . '/css/responsive.css';
+        if (is_file($responsiveDisk)) {
+            $href = $relPath . 'css/responsive.css';
+            $ver = (int) @filemtime($responsiveDisk);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES)
+                . '?v=' . $ver . '" rel="stylesheet" type="text/css" />';
+        }
+
+        return $tag;
+    }
+}
 
 if (!function_exists('tz_rtl_stylesheet_tag')) {
     function tz_rtl_stylesheet_tag($langCode = null, $relPath = '') {
@@ -776,6 +792,30 @@ if (!function_exists('tz_rtl_stylesheet_tag')) {
             $identityVer = (int) @filemtime($identityDiskPath);
             $tag .= "\n\t" . '<link href="' . htmlspecialchars($identityHref, ENT_QUOTES)
                 . '?v=' . $identityVer . '" rel="stylesheet" type="text/css" />';
+        }
+
+        $fontDiskPath = dirname(__DIR__) . '/css/site-font.css';
+        if (is_file($fontDiskPath)) {
+            $fontHref = $relPath . 'css/site-font.css';
+            $fontVer = (int) @filemtime($fontDiskPath);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($fontHref, ENT_QUOTES)
+                . '?v=' . $fontVer . '" rel="stylesheet" type="text/css" />';
+        }
+
+        $twThemeDiskPath = dirname(__DIR__) . '/css/tatarwars_theme.css';
+        if (is_file($twThemeDiskPath)) {
+            $twThemeHref = $relPath . 'css/tatarwars_theme.css';
+            $twThemeVer = (int) @filemtime($twThemeDiskPath);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($twThemeHref, ENT_QUOTES)
+                . '?v=' . $twThemeVer . '" rel="stylesheet" type="text/css" />';
+        }
+
+        $twBtnDiskPath = dirname(__DIR__) . '/css/tatarwars_ar_buttons.css';
+        if (is_file($twBtnDiskPath)) {
+            $twBtnHref = $relPath . 'css/tatarwars_ar_buttons.css';
+            $twBtnVer = (int) @filemtime($twBtnDiskPath);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($twBtnHref, ENT_QUOTES)
+                . '?v=' . $twBtnVer . '" rel="stylesheet" type="text/css" />';
         }
 
         return $tag;

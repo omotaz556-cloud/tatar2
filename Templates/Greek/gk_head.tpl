@@ -1,10 +1,10 @@
 <div class="gk-head">
-<div class="gk-banner"></div>
+<div class="gk-banner" title="<?php echo htmlspecialchars(defined('SERVER_NAME') ? SERVER_NAME : 'حرب التتار', ENT_QUOTES, 'UTF-8'); ?>" role="img" aria-label="حرب التتار"></div>
 
 <div class="gk-bar">
 	<div class="gk-bar-inner">
 		<div class="gk-bar-world">
-			<span class="gk-moon"></span>
+			<?php echo function_exists('tz_day_night_icon_html') ? tz_day_night_icon_html('gk-daynight') : '<span class="gk-moon"></span>'; ?>
 			<span class="gk-world-name"><?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?></span>
 			<span class="gk-world-now">الآن : <b id="_Clock"><?php echo date('H:i:s'); ?></b></span>
 		</div>
@@ -30,8 +30,9 @@ html[dir="rtl"] body.pg-gk .gk-head #topNavIcons > a#n1:hover img {
     -webkit-transform: scaleX(-1) !important;
     transform-origin: center center;
 }
-/* Reports/messages (n5, left end): mirror in place only. */
-html[dir="rtl"] body.pg-gk .gk-head #topNavIcons > div#n5 {
+/* Reports/messages (n5, left end): original sprite — no extra flip. */
+html[dir="rtl"] body.pg-gk .gk-head #topNavIcons > div#n5,
+html[dir="rtl"] body.pg-gk .gk-head #topNavIcons div#n5 {
     transform: scaleX(-1) !important;
     -webkit-transform: scaleX(-1) !important;
     transform-origin: center center;

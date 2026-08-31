@@ -35,58 +35,16 @@ if (!function_exists('safeHTML')) {
 
 <?php if ($building->NewBuilding) { ?>
 
-<table cellpadding="1" cellspacing="1" id="building_contract">
+<div id="building_contract" class="gk-build-queue">
 
-    <thead>
-        <tr>
-            <th colspan="4">
-                <?php echo BUILDING_UPGRADING; ?>
+    <div class="gk-bq-head"><?php echo BUILDING_UPGRADING; ?></div>
 
-                <?php
-                // Buton instant finish dacă jucătorul are minim 2 gold
-                if (isset($session->gold) && $session->gold >= 2) {
-
-                    /**
-                     * FEATURE: this table is included from 3 different
-                     * pages (build.php, dorf1.php, dorf2.php - see the
-                     * include() call sites), each with their own $_GET
-                     * context, so we can't rely on the current request's
-                     * ?id=. Build an absolute build.php URL from the first
-                     * queued job's field slot instead - same value the
-                     * "cancel" link's field column already resolves above.
-                     * The JS interceptor (new2.js bindPopupLinks) reads
-                     * data-field-id off this link the same way it does for
-                     * every other data-ajax-build link.
-                     */
-                    $finishFieldId = !empty($building->buildArray)
-                        ? (int) reset($building->buildArray)['field']
-                        : 1;
-                ?>
-                    <a href="build.php?id=<?php echo $finishFieldId; ?>&amp;buildingFinish=1"
-                       data-ajax-build="1"
-                       data-field-id="<?php echo $finishFieldId; ?>"
-                       onclick="return confirm('<?php echo FINISH_GOLD; ?>');"
-                       title="<?php echo FINISH_GOLD; ?>">
-
-                        <img class="clock"
-                             alt="<?php echo FINISH_GOLD; ?>"
-                             src="img/x.gif" />
-                    </a>
-                <?php } ?>
-
-            </th>
-        </tr>
-    </thead>
-
-    <tbody>
-
+    <div class="gk-bq-list">
     <?php
-    // Verifică dacă există array valid
     if (!empty($building->buildArray) && is_array($building->buildArray)) {
 
         foreach ($building->buildArray as $jobs) {
 
-            // Normalizează valorile pentru compatibilitate și siguranță
             $jobId     = isset($jobs['id']) ? (int)$jobs['id'] : 0;
             $fieldId   = isset($jobs['field']) ? (int)$jobs['field'] : 0;
             $type      = isset($jobs['type']) ? (int)$jobs['type'] : 0;
@@ -95,96 +53,52 @@ if (!function_exists('safeHTML')) {
             $master    = isset($jobs['master']) ? (int)$jobs['master'] : 0;
             $loopcon   = isset($jobs['loopcon']) ? (int)$jobs['loopcon'] : 0;
 
-            // Nume clădire procesat
             $buildingName = Building::procResType($type);
-
-            // Timer rămas
             $remainingTime = $timestamp - time();
-
-            // Evită timp negativ
             if ($remainingTime < 0) {
                 $remainingTime = 0;
             }
-
-            // Ora finalizării
             $finishTime = date('H:i', $timestamp);
     ?>
+        <div class="gk-bq-row">
 
-        <tr>
-
-            <!-- Buton cancel -->
-            <td class="ico">
+            <span class="gk-bq-ico">
                 <a href="?d=<?php echo $jobId; ?>&amp;a=0&amp;c=<?php echo safeHTML($session->checker); ?>">
                     <img src="img/x.gif"
                          class="del"
                          title="<?php echo CANCEL; ?>"
                          alt="<?php echo CANCEL; ?>" />
                 </a>
-            </td>
+            </span>
 
-            <!-- Informații clădire -->
-            <td>
-
+            <span class="gk-bq-name">
                 <?php if ($master == 0) { ?>
-
-                    <a href="build.php?id=<?php echo $fieldId; ?>">
-                        <?php echo safeHTML($buildingName); ?>
-                    </a>
-
+                    <a href="build.php?id=<?php echo $fieldId; ?>"><?php echo safeHTML($buildingName); ?></a>
                     (<?php echo LEVEL.' '.$level; ?>)
-
-                    <?php
-                    // Construcție în waiting loop
-                    if ($loopcon == 1) {
-                        echo WAITING_LOOP;
-                    }
-                    ?>
-
+                    <?php if ($loopcon == 1) { echo WAITING_LOOP; } ?>
                 <?php } else { ?>
-					<a href="build.php?id=<?php echo $fieldId; ?>">
-                    <?php echo safeHTML($buildingName); ?>
-					</a>
-                    <span class="none">
-                        (<?php echo LEVEL.' '.$level.' ) ('.CONSTRUCTING_MASTER_BUILDER;?>)
-                    </span>
-
+                    <a href="build.php?id=<?php echo $fieldId; ?>"><?php echo safeHTML($buildingName); ?></a>
+                    <span class="none">(<?php echo LEVEL.' '.$level.' ) ('.CONSTRUCTING_MASTER_BUILDER;?>)</span>
                 <?php } ?>
-
-            </td>
+            </span>
 
             <?php if ($master == 0) { ?>
-
-                <!-- Timer -->
-                <td>
-                    <?php echo P_IN; ?>
-                    <span id="timer<?php echo ++$session->timer; ?>">
-                        <?php echo $generator->getTimeFormat($remainingTime); ?>
-                    </span>
-                    <?php echo TZ_HRS_2; ?>
-                </td>
-
-                <!-- Ora finalizare -->
-                <td>
-                    <?php echo DONE_AT.' '.$finishTime; ?>
-                </td>
-
-            <?php } else { ?>
-			
-                <!-- Compatibil layout original -->
-                <td colspan="2">&nbsp;</td>
-
+            <span class="gk-bq-time">
+                <?php echo P_IN; ?>
+                <span id="timer<?php echo ++$session->timer; ?>"><?php echo $generator->getTimeFormat($remainingTime); ?></span>
+                <?php echo TZ_HRS_2; ?>
+            </span>
+            <span class="gk-bq-finish"><?php echo DONE_AT.' '.$finishTime; ?></span>
             <?php } ?>
 
-        </tr>
-
+        </div>
     <?php
         }
     }
     ?>
+    </div>
 
-    </tbody>
-
-</table>
+</div>
 
 <!-- JS original păstrat -->
 <script type="text/javascript">

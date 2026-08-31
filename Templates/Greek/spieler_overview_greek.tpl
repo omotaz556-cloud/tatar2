@@ -4,19 +4,32 @@
  */
 
 $uid = isset($_GET['uid']) ? (int) $_GET['uid'] : (int) $session->uid;
+if ($uid < 2) {
+    $uid = (int) $session->uid;
+}
 $ranking->procRankReq($_GET);
 $_GET['uid'] = $uid;
 
-$displayarray = $database->getUserArray($uid, 1);
+$displayarray = $database->getUserArray($uid, 1, false);
 if (!is_array($displayarray) || !isset($displayarray['id'])) {
     return;
 }
 $varmedal = $database->getProfileMedal($uid);
 
+$GLOBALS['gkSpielerGreek'] = true;
+$GLOBALS['gkSpielerProfileGreek'] = true;
+
+require_once dirname(__DIR__, 2) . '/GameEngine/GreekMedalLayout.php';
+$gkMedalWeekMap = GreekMedalLayout::weekMapFromVarmedal($varmedal);
+$gkMedalDesc2 = GreekMedalLayout::markBbRows(GreekMedalLayout::layoutBbByWeekRuns(
+    (string) ($displayarray['desc2'] ?? ''),
+    $gkMedalWeekMap
+));
+
 $profileSeparator = md5('skJkev3');
 $input = htmlspecialchars($displayarray['desc1'] ?? '', ENT_QUOTES, 'UTF-8')
     . $profileSeparator
-    . htmlspecialchars($displayarray['desc2'] ?? '', ENT_QUOTES, 'UTF-8');
+    . htmlspecialchars($gkMedalDesc2, ENT_QUOTES, 'UTF-8');
 include __DIR__ . '/../../GameEngine/BBCode.php';
 $profiel = $bbcoded;
 $user = $displayarray;
@@ -107,7 +120,7 @@ if ($displayarray['vac_mode'] == 1) {
 <tbody>
 <tr class="gk-prof-main-row">
 <td class="desc1 gk-prof-desc-cell">
-<div class="desc1div messages gk-prof-desc1"><?php echo nl2br($profiel[1]); ?></div>
+<div class="desc1div gk-prof-desc1 gk-prof-medals-wall"><?php echo GreekMedalLayout::wallHtmlFromMarkedRows($profiel[1]); ?></div>
 </td>
 <td class="details gk-prof-detail-cell">
 <table cellpadding="0" cellspacing="0" class="gk-prof-detail-table" dir="rtl">

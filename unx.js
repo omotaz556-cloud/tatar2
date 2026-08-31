@@ -106,6 +106,9 @@ function executeCounter(){
 	if(eb == 0 && yb < 0){
 	    bb[i] = null;
 	    eb = 1;
+	    if (typeof window.gkRefreshResbar === 'function') {
+		window.gkRefreshResbar();
+	    }
 	    if (!window.reloading) {
 	    	setTimeout(function() {
 					// reload after automation is ran
@@ -140,13 +143,13 @@ function executeCounter(){
     setTimeout("executeCounter()",1000);
 }
 
-function mb(zb){pb=document.getElementById(zb);if(pb!=null){fb[zb]=new Object();var $b=pb.innerHTML.match(/(\d+)\/(\d+)/);var _b,ac;if($b){element=$b[0].split("/");_b=parseInt(element[0]);ac=parseInt(element[1]);}else{_b=parseInt(String(pb.innerHTML).replace(/[^\d]/g,''),10)||0;ac=parseInt(pb.getAttribute('data-max'),10)||0;}bc=pb.title;if(bc!=0){cc=nb();timer[zb]=new Object();timer[zb].start=cc;timer[zb].production=bc;timer[zb].start_res=_b;timer[zb].max_res=ac;timer[zb].ms=3600000/bc;dc=100;if(timer[zb].ms<dc){timer[zb].ms=dc;}
+function mb(zb){var root=document.getElementById('gkResbar');var pb=root?root.querySelector('#'+zb):null;if(!pb){pb=document.getElementById(zb);}if(pb!=null){fb[zb]=new Object();var $b=pb.innerHTML.match(/(\d+)\/(\d+)/);var _b,ac;if($b){element=$b[0].split("/");_b=parseInt(element[0],10);ac=parseInt(element[1],10);}else{_b=parseInt(String(pb.innerHTML).replace(/[^\d]/g,''),10)||0;ac=parseInt(pb.getAttribute('data-max'),10)||0;}bc=parseFloat(pb.title);if(!isNaN(bc)&&bc!==0){cc=nb();timer[zb]=new Object();timer[zb].start=cc;timer[zb].production=bc;timer[zb].start_res=_b;timer[zb].max_res=ac;timer[zb].ms=3600000/Math.abs(bc);dc=100;if(timer[zb].ms<dc){timer[zb].ms=dc;}
 timer[zb].node=pb;executeTimer(zb);}
 else
 {timer[zb]=new Object();fb[zb].value=_b;}
 }
 }
-function executeTimer(zb){wb=nb()-timer[zb].start;if(wb>=0){ec=Math.round(timer[zb].start_res+wb*(timer[zb].production/3600000));if(ec>=timer[zb].max_res){ec=timer[zb].max_res;}
+function executeTimer(zb){wb=nb()-timer[zb].start;if(wb>=0){ec=Math.round(timer[zb].start_res+wb*(timer[zb].production/3600000));if(ec<0){ec=0;}if(ec>=timer[zb].max_res){ec=timer[zb].max_res;}
 else
 {window.setTimeout("executeTimer('"+zb+"')",timer[zb].ms);}
 fb[zb].value=ec;if(timer[zb].node.getAttribute('data-max')){timer[zb].node.innerHTML=String(ec);}else{timer[zb].node.innerHTML=ec+'/'+timer[zb].max_res;}}

@@ -43,6 +43,35 @@ if (!function_exists('renderMovementRow')) {
         }
 
         $rtlClass = (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) ? ' arabic-text' : '';
+        $gkShell = !empty($GLOBALS['gkShell']);
+
+        if ($gkShell) {
+            $gkMovHour = defined('GK_MOVEMENT_HOUR') ? GK_MOVEMENT_HOUR : HOURS;
+            echo '
+        <div class="gk-mov-item">
+            <div class="gk-mov-line">
+                <a href="build.php?id=39">
+                    <img
+                        src="img/x.gif"
+                        class="' . $action . '"
+                        alt="' . $title . '"
+                        title="' . $title . '"
+                    />
+                </a>
+                <span class="gk-mov-text ' . $aclass . '">
+                    ' . $count . '&nbsp;' . $short . '
+                </span>
+                <span class="gk-mov-dur' . $rtlClass . '">
+                    ' . P_IN . '&nbsp;
+                    <span id="timer' . ++$session->timer . '">
+                        ' . $generator->getTimeFormat($arrivalTime - time()) . '
+                    </span>
+                    &nbsp;' . $gkMovHour . '
+                </span>
+            </div>
+        </div>';
+            return;
+        }
 
         echo '
         <tr>
@@ -151,7 +180,14 @@ $totalMovements =
  */
 if ($totalMovements > 0) {
 
-    echo '
+    if (!empty($GLOBALS['gkShell'])) {
+        $gkMovHead = defined('GK_TROOP_MOVEMENTS') ? GK_TROOP_MOVEMENTS : TROOP_MOVEMENTS;
+        echo '
+    <div id="movements" class="gk-movements">
+        <div class="gk-mov-head">' . $gkMovHead . '</div>
+        <div class="gk-mov-body">';
+    } else {
+        echo '
     <table id="movements" cellpadding="1" cellspacing="1">
         <thead>
             <tr>
@@ -159,6 +195,7 @@ if ($totalMovements > 0) {
             </tr>
         </thead>
         <tbody>';
+    }
 }
 
 /**
@@ -410,8 +447,14 @@ renderMovementRow(
  */
 if ($totalMovements > 0) {
 
-    echo '
+    if (!empty($GLOBALS['gkShell'])) {
+        echo '
+        </div>
+    </div>';
+    } else {
+        echo '
         </tbody>
     </table>';
+    }
 }
 ?>

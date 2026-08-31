@@ -107,5 +107,9 @@ switch(isset($_GET['f']) ? $_GET['f'] : '') {
 		$ok = $database->setMovementMarker($_POST['moveid'] ?? 0, $_POST['marker'] ?? 0, $uid);
 		echo json_encode(['ok' => $ok ? 1 : 0]);
 		break;
+	case 'resbar':
+		include_once($autoprefix . 'GameEngine/Village.php');
+		include($autoprefix . 'Templates/Ajax/resbar.tpl');
+		break;
 }
 ?>

@@ -141,21 +141,22 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
     $sent_as_text = '';
     if (
         !$support_messages
-        || ($support_messages && $message->inbox1[$i - 1]['target'] != 1)
-        || ($multihunter_messages && $message->inbox1[$i - 1]['target'] != 5)
+        || ($support_messages && $msg['target'] != 1)
+        || ($multihunter_messages && $msg['target'] != 5)
     ) {
         $sent_as_text = '<input class="check" type="checkbox" name="n' . $name . '" value="' . $msg['id'] . '" />';
     } elseif ($support_messages) {
-        $sent_as_text = '<u><b title="Sent as Support"><i>S</i></b></u>';
+        $sent_as_text = '<u><b title="' . htmlspecialchars(SENT_AS_SUP, ENT_QUOTES, 'UTF-8') . '"><i>S</i></b></u>';
     } elseif ($multihunter_messages) {
-        $sent_as_text = '<u><b title="Sent as Multihunter"><i>M</i></b></u>';
+        $sent_as_text = '<u><b title="' . htmlspecialchars(SENT_AS_MH, ENT_QUOTES, 'UTF-8') . '"><i>M</i></b></u>';
     }
 
     echo '<td class="sel">' . $sent_as_text . '</td>';
 
     echo '<td class="top"><a href="nachrichten.php?t=2a&amp;id=' . $msg['id'] . '">' . tz_expand_report($msg['topic']) . '</a>';
-    if (!$gkMsgGreek && $msg['viewed'] == 0) {
-        echo ' (unread)';
+    if ($msg['viewed'] == 0) {
+        $gkMsgUnreadLabel = defined('TZ_MSG_UNREAD') ? TZ_MSG_UNREAD : '(غير مقروء)';
+        echo ' ' . htmlspecialchars($gkMsgUnreadLabel, ENT_QUOTES, 'UTF-8');
     }
     echo '</td>';
 
@@ -164,7 +165,7 @@ for ($i = (1 + $s); $i <= (10 + $s); $i++) {
     $date = $generator->procMtime($msg['time']);
 
     echo '<td class="send"><a href="spieler.php?uid=' . $targetId . '">' . $username . '</a></td>';
-    echo '<td class="dat">' . $date[0] . ' ' . $date[1] . '</td></tr>';
+    echo '<td class="dat"><bdi class="gk-msg-dat"><span class="gk-msg-dat-time">' . htmlspecialchars($date[1], ENT_QUOTES, 'UTF-8') . '</span><span class="gk-msg-dat-day">' . htmlspecialchars($date[0], ENT_QUOTES, 'UTF-8') . '</span></bdi></td></tr>';
     $name++;
 }
 

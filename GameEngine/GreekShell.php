@@ -92,6 +92,7 @@ if (!function_exists('tz_greek_shell_close')) {
             'buildPopup' => true,
             'timer' => null,
             'extraScripts' => '',
+            'extraScriptTags' => '',
         ), $opts);
 
         if ($gkShellCloseOpts['timer'] === null) {

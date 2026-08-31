@@ -1,11 +1,13 @@
 <?php
 global $gkShellOpenOpts, $session, $uid;
+$gkScaleJsVer = @filemtime(dirname(__DIR__) . '/../js/gk_scale.js') ?: time();
 $gkClose = isset($gkShellCloseOpts) && is_array($gkShellCloseOpts) ? $gkShellCloseOpts : array();
 $gkWrapContent = isset($gkShellOpenOpts) && is_array($gkShellOpenOpts) && !empty($gkShellOpenOpts['contentWrap']);
 $gkBuildPopup = !isset($gkClose['buildPopup']) || $gkClose['buildPopup'];
 $gkExtraScripts = isset($gkClose['extraScripts']) ? $gkClose['extraScripts'] : '';
+$gkExtraScriptTags = isset($gkClose['extraScriptTags']) ? $gkClose['extraScriptTags'] : '';
 $gkTimer = isset($gkClose['timer']) ? $gkClose['timer'] : null;
-$gkNavUid = isset($uid) ? (int) $uid : (isset($session->uid) ? (int) $session->uid : 0);
+$gkNavUid = (isset($session) && is_object($session) && isset($session->uid)) ? (int) $session->uid : 0;
 ?>
 <?php if ($gkWrapContent) { ?>
 		</div>
@@ -68,5 +70,8 @@ function gkToggleVnameForm(show) {
 })();
 <?php echo $gkExtraScripts; ?>
 </script>
+<?php echo $gkExtraScriptTags; ?>
+<script src="js/gk_scale.js?v=<?php echo (int) $gkScaleJsVer; ?>" type="text/javascript"></script>
+</div>
 </body>
 </html>

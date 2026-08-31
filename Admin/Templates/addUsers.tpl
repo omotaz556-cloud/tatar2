@@ -56,7 +56,7 @@ elseif(isset($_GET['g']) && $_GET['g']=='OK'){
 }
 ?>
 <style>
-.add-wrap{max-width:520px;margin:14px auto;font-family:Tahoma,Verdana,Arial,sans-serif;color:#222}
+.add-wrap{max-width:520px;margin:14px auto;font-family:"Expo Arabic",Tahoma,Verdana,Arial,sans-serif;color:#222}
 .add-head h2{margin:0 0 8px;font-size:15px;display:flex;align-items:center;gap:5px;color:#111}
 .add-card{background:#fff;border:1px solid #bbb;border-radius:5px;overflow:hidden;color:#222}
 .add-top{padding:10px;background:#f5f5f5;border-bottom:1px solid #ddd;text-align:center;color:#222}

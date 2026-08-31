@@ -19,7 +19,9 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-global $database, $session, $village, $market, $generator, $form, $id;
+global $database, $session, $village, $market, $generator, $form, $id, $bid17;
+
+include('next.tpl');
 
 $merchantAvail = (int)$market->merchantAvail();
 $maxcarry = (int)$market->maxcarry;
@@ -85,6 +87,16 @@ $hasResources = ($r[1] <= $avail[1] && $r[2] <= $avail[2] && $r[3] <= $avail[3] 
 
 $showConfirm = ($ft === 'check' && $canRepeat && $validTarget && $allres > 0 && $allres <= $maxTotalCarry && $hasResources && $validAccess && $userVacation == 0);
 
+$resLabels = [
+    1 => defined('GK_LUMBER') ? GK_LUMBER : LUMBER,
+    2 => defined('GK_CLAY') ? GK_CLAY : CLAY,
+    3 => defined('GK_IRON') ? GK_IRON : IRON,
+    4 => defined('GK_CROP') ? GK_CROP : CROP,
+];
+$villageLabel = defined('VILLAGE') ? VILLAGE : 'القرية';
+$coordXLabel = defined('GK_COORD_X') ? GK_COORD_X : 'X';
+$coordYLabel = defined('GK_COORD_Y') ? GK_COORD_Y : 'Y';
+
 // coordonate prefill din GET
 $coor = ['x' => '', 'y' => ''];
 if (isset($_GET['z'])) {
@@ -111,18 +123,21 @@ if (isset($_GET['z'])) {
         <input type="hidden" name="ft" value="mk1">
         <input type="hidden" name="id" value="<?php echo (int)$id;?>">
         <input type="hidden" name="send3" value="<?php echo $send3;?>">
+        <div class="gk-market-send-inner">
+        <div class="gk-market-col-resources">
         <table id="send_select" class="send_res" cellpadding="1" cellspacing="1">
-            <?php for ($i = 1; $i <= 4; $i++):
-                $resNames = [1=>LUMBER,2=>CLAY,3=>IRON,4=>CROP];
-           ?>
+            <?php for ($i = 1; $i <= 4; $i++): ?>
             <tr>
-                <td class="ico"><img class="r<?php echo $i;?>" src="img/x.gif" alt="<?php echo $resNames[$i];?>" title="<?php echo $resNames[$i];?>" /></td>
-                <td class="nam"><?php echo $resNames[$i];?></td>
+                <td class="ico"><img class="r<?php echo $i;?>" src="img/x.gif" alt="<?php echo $resLabels[$i];?>" title="<?php echo $resLabels[$i];?>" /></td>
+                <td class="nam"><?php echo $resLabels[$i];?>:</td>
                 <td class="val"><input class="text disabled" type="text" name="r<?php echo $i;?>" id="r<?php echo $i;?>" value="<?php echo $r[$i];?>" readonly="readonly"></td>
                 <td class="max"> / <span class="none"><b><?php echo $maxcarry;?></b></span></td>
             </tr>
             <?php endfor;?>
         </table>
+        </div>
+        <div class="gk-market-col-target">
+        <div class="gk-market-row gk-market-mer"><?php echo $merchantAvail; ?>/<?php echo $totalMerchants; ?> <?php echo MERCHANT; ?></div>
         <table id="target_validate" class="res_target" cellpadding="1" cellspacing="1">
             <tbody>
             <tr>
@@ -145,45 +160,53 @@ if (isset($_GET['z'])) {
             </tbody>
         </table>
         <input type="hidden" name="getwref" value="<?php echo $target['wref'];?>">
+        </div>
+        </div>
         <div class="clear"></div>
-        <p><input type="image" value="ok" name="s1" id="btn_ok" class="dynamic_img" src="img/x.gif" tabindex="8" alt="OK" <?php if(!$merchantAvail) echo 'disabled';?> /></p>
+        <p class="gk-market-ok"><button type="submit" name="s1" id="btn_ok" class="gk-market-btn" tabindex="8"<?php if(!$merchantAvail) echo ' disabled';?>><?php echo YES; ?></button></p>
     </form>
 
 <?php else:?>
+    <div class="gk-market-send-wrap">
     <form method="POST" name="snd" action="build.php">
         <input type="hidden" name="ft" value="check">
         <input type="hidden" name="id" value="<?php echo (int)$id;?>">
+        <div class="gk-market-send-inner">
+        <div class="gk-market-col-resources">
         <table id="send_select" class="send_res" cellpadding="1" cellspacing="1">
-            <?php for ($i = 1; $i <= 4; $i++):
-                $resNames = [1=>LUMBER,2=>CLAY,3=>IRON,4=>CROP];
-           ?>
+            <?php for ($i = 1; $i <= 4; $i++): ?>
             <tr>
-                <td class="ico"><a href="#" onClick="upd_res(<?php echo $i;?>,1); return false;"><img class="r<?php echo $i;?>" src="img/x.gif" alt="<?php echo $resNames[$i];?>" title="<?php echo $resNames[$i];?>" /></a></td>
-                <td class="nam"><?php echo $resNames[$i];?>:</td>
-                <td class="val"><input class="text" type="text" name="r<?php echo $i;?>" id="r<?php echo $i;?>" value="" maxlength="9" onKeyUp="upd_res(<?php echo $i;?>)" tabindex="<?php echo $i;?>"></td>
-                <td class="max"><a href="#" onMouseUp="add_res(<?php echo $i;?>);" onClick="return false;">(<?php echo $maxcarry;?>)</a></td>
+                <td class="ico"><a href="#" onClick="upd_res(<?php echo $i;?>,1); return false;"><img class="r<?php echo $i;?>" src="img/x.gif" alt="<?php echo $resLabels[$i];?>" title="<?php echo $resLabels[$i];?>" /></a></td>
+                <td class="nam"><?php echo $resLabels[$i];?>:</td>
+                <td class="val"><input class="text" type="text" name="r<?php echo $i;?>" id="r<?php echo $i;?>" value="<?php echo $r[$i] > 0 ? (int) $r[$i] : ''; ?>" maxlength="9" onKeyUp="upd_res(<?php echo $i;?>)" tabindex="<?php echo $i;?>"></td>
+                <td class="max"><a href="#" onMouseUp="add_res(<?php echo $i;?>);" onClick="return false;">(<?php echo number_format($avail[$i]); ?>)</a></td>
             </tr>
             <?php endfor;?>
         </table>
-
-        <table id="target_select" class="res_target" cellpadding="1" cellspacing="1">
-            <tr><td class="mer"><?php echo MERCHANT;?> <?php echo $merchantAvail;?>/<?php echo $totalMerchants;?></td></tr>
-            <tr><td class="vil"><span><?php echo VILLAGES;?>:</span> <input class="text" type="text" name="dname" value="" maxlength="30" tabindex="5" list="dnameSuggest" autocomplete="off"><?php include("Templates/villageAutocomplete.tpl"); ?></td></tr>
-            <tr><td class="or"><?php echo OR_;?></td></tr>
-            <tr>
-                <td class="coo">
-                    <span>X:</span><input class="text" type="text" name="x" value="<?php echo htmlspecialchars($coor['x']);?>" maxlength="4" tabindex="6">
-                    <span>Y:</span><input class="text" type="text" name="y" value="<?php echo htmlspecialchars($coor['y']);?>" maxlength="4" tabindex="7">
-                </td>
-            </tr>
-        </table>
+        </div>
+        <div class="gk-market-col-target">
+        <div class="gk-market-row gk-market-mer"><?php echo $merchantAvail; ?>/<?php echo $totalMerchants; ?> <?php echo MERCHANT; ?></div>
+        <div class="gk-market-row gk-market-vil">
+            <span class="gk-market-label"><?php echo $villageLabel; ?>:</span>
+            <input class="text" type="text" name="dname" value="<?php echo htmlspecialchars($dname, ENT_QUOTES, 'UTF-8'); ?>" maxlength="30" tabindex="5" list="dnameSuggest" autocomplete="off">
+            <?php include("Templates/villageAutocomplete.tpl"); ?>
+        </div>
+        <div class="gk-market-row gk-market-or"><?php echo OR_; ?></div>
+        <div class="gk-market-row gk-market-coo">
+            <span class="gk-market-label"><?php echo $coordXLabel; ?>:</span>
+            <input class="text" type="text" name="x" value="<?php echo htmlspecialchars($x !== '' ? $x : $coor['x'], ENT_QUOTES, 'UTF-8'); ?>" maxlength="4" tabindex="6">
+            <span class="gk-market-label"><?php echo $coordYLabel; ?>:</span>
+            <input class="text" type="text" name="y" value="<?php echo htmlspecialchars($y !== '' ? $y : $coor['y'], ENT_QUOTES, 'UTF-8'); ?>" maxlength="4" tabindex="7">
+        </div>
+        </div>
+        </div>
         <div class="clear"></div>
         <?php if ($session->goldclub == 1):?>
-            <p><select name="send3"><option value="1" selected>1x</option><option value="2">2x</option><option value="3">3x</option></select> <?php echo GO;?></p>
+            <p class="gk-market-repeat"><select name="send3"><option value="1" selected>1x</option><option value="2">2x</option><option value="3">3x</option></select> <?php echo GO;?></p>
         <?php else:?>
             <input type="hidden" name="send3" value="1">
         <?php endif;?>
-        <p><input type="image" value="ok" name="s1" id="btn_ok" class="dynamic_img" src="img/x.gif" tabindex="8" alt="OK" <?php if(!$merchantAvail) echo 'disabled';?> /></p>
+        <p class="gk-market-ok"><button type="submit" name="s1" id="btn_ok" class="gk-market-btn" tabindex="8"<?php if(!$merchantAvail) echo ' disabled';?>><?php echo YES; ?></button></p>
     </form>
 
     <?php
@@ -216,9 +239,12 @@ if (isset($_GET['z'])) {
         echo $error;
     }
    ?>
+    </div>
 <?php endif;?>
 
-<p><?php echo MERCHANT_CARRY;?> <b><?php echo $maxcarry;?></b> <?php echo UNITS_OF_RESOURCE;?></p>
+<p class="gk-market-carry"><?php echo MERCHANT_CARRY;?> <b><?php echo $maxcarry;?></b> <?php echo UNITS_OF_RESOURCE;?></p>
+
+<?php include('17_merchants_info.tpl'); ?>
 
 <?php
 // --- comercianți care vin ---

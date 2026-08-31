@@ -86,9 +86,9 @@ if (count($rankArray) > 1) {
             continue;
         }
         $row = $rankArray[$i];
-        $uid = (int) ($row['uid'] ?? 0);
+        $rowUid = (int) ($row['uid'] ?? 0);
         $gkUid = isset($session->uid) ? (int) $session->uid : 0;
-        $isHighlight = ($i === $search) || ($uid > 0 && $uid === $gkUid);
+        $isHighlight = ($i === $search) || ($rowUid > 0 && $rowUid === $gkUid);
         $hlCls = $isHighlight ? ' hl' : '';
         $fcCls = $isHighlight ? ' fc' : '';
         $lcCls = $isHighlight ? ' lc' : '';
@@ -114,7 +114,7 @@ if (count($rankArray) > 1) {
         echo '<img class="' . $iconCls . '" alt="" title="" src="img/x.gif" /> ';
         echo $heroName;
         echo '</th>';
-        echo '<th class="ow"><a href="spieler.php?uid=' . $uid . '">' . $owner . '</a></th>';
+        echo '<th class="ow"><a href="spieler.php?uid=' . $rowUid . '">' . $owner . '</a></th>';
         echo '<th class="lev">' . (int) ($row['level'] ?? 0) . '</th>';
         echo '<th class="xp"><bdi dir="ltr">' . number_format((int) ($row['experience'] ?? 0)) . '</bdi></th>';
         echo '<th class="off' . ($offZero ? ' gk-sta-zero' : '') . '">%'

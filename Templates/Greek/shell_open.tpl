@@ -2,7 +2,7 @@
 $gkOpen = isset($gkShellOpenOpts) && is_array($gkShellOpenOpts) ? $gkShellOpenOpts : array();
 $gkWrapContent = !empty($gkOpen['contentWrap']);
 $gkShowVTitle = !empty($gkOpen['showVillageTitle']);
-$gkNavUid = isset($uid) ? (int) $uid : (isset($session->uid) ? (int) $session->uid : 0);
+$gkNavUid = (isset($session) && is_object($session) && isset($session->uid)) ? (int) $session->uid : 0;
 ?>
 <table class="gk-shell" cellpadding="0" cellspacing="0">
 <tr>

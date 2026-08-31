@@ -5132,25 +5132,36 @@ img.vip {
     height: 1px;
     width: 1px;
 }
-img.r1, img.r2, img.r3, img.r4, img.r5 {
+img.r1, img.r2, img.r3, img.r4, img.r5,
+img.warehouse, img.granary {
     background-image: url("../../img/a/res2.gif");
-    height: 12px;
-    width: 18px;
+    height: 16px;
+    width: 16px;
 }
 img.r1 {
     background-position: 0 0;
 }
 img.r2 {
-    background-position: -21px 0;
+    background-position: 0 -26px;
 }
 img.r3 {
-    background-position: -42px 0;
+    background-position: 0 -52px;
 }
 img.r4 {
-    background-position: -63px 0;
+    background-position: 0 -78px;
 }
 img.r5 {
-    background-position: -84px 0;
+    background-position: 0 -104px;
+}
+img.warehouse {
+    height: 21px;
+    width: 18px;
+    background-position: 0 -130px;
+}
+img.granary {
+    height: 24px;
+    width: 18px;
+    background-position: 0 -161px;
 }
 img.r100,
 img.r200,

@@ -39,11 +39,11 @@ if (!function_exists('ps_line_chart')) {
         $out = '<svg width="' . $w . '" height="' . $h . '" viewBox="0 0 ' . $w . ' ' . $h . '"'
             . ' xmlns="http://www.w3.org/2000/svg" class="gk-ps-svg">';
         $out .= '<rect width="' . $w . '" height="' . $h . '" fill="#fff" stroke="#c9c9c9"/>';
-        $out .= '<text x="8" y="14" font-family="Tahoma,Arial" font-size="11" font-weight="bold" fill="#333">'
+        $out .= '<text x="8" y="14" font-family="Expo Arabic,Tahoma,Arial" font-size="11" font-weight="bold" fill="#333">'
             . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</text>';
 
         if (count($points) < 2) {
-            $out .= '<text x="' . ($w / 2) . '" y="' . ($h / 2) . '" font-family="Tahoma,Arial" font-size="11"'
+            $out .= '<text x="' . ($w / 2) . '" y="' . ($h / 2) . '" font-family="Expo Arabic,Tahoma,Arial" font-size="11"'
                 . ' fill="#999" text-anchor="middle">'
                 . htmlspecialchars(defined('PLUSSTATS_NODATA') ? PLUSSTATS_NODATA : 'Not enough data yet', ENT_QUOTES, 'UTF-8')
                 . '</text></svg>';
@@ -76,7 +76,7 @@ if (!function_exists('ps_line_chart')) {
             $yy = $y($v);
             $out .= '<line x1="' . $padL . '" y1="' . round($yy, 1) . '" x2="' . ($w - $padR)
                 . '" y2="' . round($yy, 1) . '" stroke="#eee" stroke-width="1"/>';
-            $out .= '<text x="' . ($padL - 5) . '" y="' . (round($yy, 1) + 3) . '" font-family="Tahoma,Arial"'
+            $out .= '<text x="' . ($padL - 5) . '" y="' . (round($yy, 1) + 3) . '" font-family="Expo Arabic,Tahoma,Arial"'
                 . ' font-size="9" fill="#888" text-anchor="end">' . number_format($v) . '</text>';
         }
 
@@ -95,11 +95,11 @@ if (!function_exists('ps_line_chart')) {
             $out .= '<circle cx="' . round($x($p[0]), 1) . '" cy="' . round($y($p[1]), 1)
                 . '" r="3" fill="' . $color . '"/>';
         }
-        $out .= '<text x="' . $padL . '" y="' . ($h - 8) . '" font-family="Tahoma,Arial" font-size="9" fill="#888">'
+        $out .= '<text x="' . $padL . '" y="' . ($h - 8) . '" font-family="Expo Arabic,Tahoma,Arial" font-size="9" fill="#888">'
             . date('d.m', $minT) . '</text>';
-        $out .= '<text x="' . ($w - $padR) . '" y="' . ($h - 8) . '" font-family="Tahoma,Arial" font-size="9"'
+        $out .= '<text x="' . ($w - $padR) . '" y="' . ($h - 8) . '" font-family="Expo Arabic,Tahoma,Arial" font-size="9"'
             . ' fill="#888" text-anchor="end">' . date('d.m', $maxT) . '</text>';
-        $out .= '<text x="' . ($w - $padR) . '" y="14" font-family="Tahoma,Arial" font-size="11"'
+        $out .= '<text x="' . ($w - $padR) . '" y="14" font-family="Expo Arabic,Tahoma,Arial" font-size="11"'
             . ' font-weight="bold" fill="' . $color . '" text-anchor="end">'
             . number_format($lastP[1]) . '</text>';
         $out .= '</svg>';

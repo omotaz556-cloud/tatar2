@@ -17,12 +17,15 @@
 #################################################################################
 ?>
 
-<table id="troops" cellpadding="1" cellspacing="1">
+<table id="troops" class="<?php echo !empty($gkShell) ? 'gk-troops' : ''; ?>" cellpadding="1" cellspacing="1">
 
 <thead>
 <tr>
-    <th colspan="3">
-        <?php echo !empty($gkShell) ? GK_TROOPS : TROOPS; ?>
+    <th colspan="<?php echo !empty($gkShell) ? '2' : '3'; ?>">
+        <?php
+        $gkTroopsLabel = defined('GK_TROOPS') ? GK_TROOPS : TROOPS;
+        echo $gkTroopsLabel;
+        ?>
     </th>
 </tr>
 </thead>
@@ -64,7 +67,23 @@ for ($i = 1; $i <= 90; $i++) {
 
         $unitName = $unitNameCache[$i];
 
-        echo '
+        if (!empty($gkShell)) {
+            echo '
+        <tr>
+            <td class="ico">
+                <a href="build.php?id=39">
+                    <img
+                        class="unit u' . $i . '"
+                        src="img/x.gif"
+                        alt="' . $unitName . '"
+                        title="' . $unitName . '"
+                    />
+                </a>
+            </td>
+            <td class="gk-troop-label">' . (int) $troops[$unitKey] . ' ' . $unitName . '</td>
+        </tr>';
+        } else {
+            echo '
         <tr>
             <td class="ico">
                 <a href="build.php?id=39">
@@ -85,6 +104,7 @@ for ($i = 1; $i <= 90; $i++) {
                 ' . $unitName . '
             </td>
         </tr>';
+        }
 
         $troopsPresent = true;
     }
@@ -97,7 +117,23 @@ for ($i = 1; $i <= 90; $i++) {
  */
 if (!empty($troops['hero'])) {
 
-    echo '
+    if (!empty($gkShell)) {
+        echo '
+    <tr>
+        <td class="ico">
+            <a href="build.php?id=39">
+                <img
+                    class="unit uhero"
+                    src="img/x.gif"
+                    alt="'.U0.'"
+                    title="'.U0.'"
+                />
+            </a>
+        </td>
+        <td class="gk-troop-label">' . (int) $troops['hero'] . ' ' . U0 . '</td>
+    </tr>';
+    } else {
+        echo '
     <tr>
         <td class="ico">
             <a href="build.php?id=39">
@@ -118,6 +154,7 @@ if (!empty($troops['hero'])) {
             ' . U0 . '
         </td>
     </tr>';
+    }
 
     $troopsPresent = true;
 }
@@ -129,7 +166,10 @@ if (!empty($troops['hero'])) {
  */
 if (!$troopsPresent) {
     $rtlClass = (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) ? ' class="arabic-text"' : '';
-    echo '<tr><td' . $rtlClass . '>' . (!empty($gkShell) ? GK_NONE : NONE) . '</td></tr>';
+    $gkNoneLabel = !empty($gkShell)
+        ? (defined('GK_NONE') ? GK_NONE : NONE)
+        : NONE;
+    echo '<tr><td' . $rtlClass . '>' . $gkNoneLabel . '</td></tr>';
 }
 ?>
 

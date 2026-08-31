@@ -1,4 +1,5 @@
 <?php
+include_once 'GameEngine/config.php';
 include_once 'GameEngine/Generator.php';
 include_once 'GameEngine/CentralGold.php';
 include_once 'GameEngine/PaymentShop.php';
@@ -29,4 +30,4 @@ if (!isset($session->uid) || !isset($packages[$key])) {
         }
     }
 }
-?><!doctype html><html <?php echo tz_html_dir_attrs(); ?>><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MyFatoorah</title></head><body><h1><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></h1><?php if (isset($packages[$key])): ?><p><?php echo (int) $packages[$key]['gold']; ?> Gold - <?php echo number_format($packages[$key]['amount'], 2); ?></p><form method="post"><input type="hidden" name="package" value="<?php echo htmlspecialchars($key, ENT_QUOTES, 'UTF-8'); ?>"><button type="submit">Pay with MyFatoorah</button></form><?php endif; ?></body></html>
+?><!doctype html><html <?php echo tz_html_dir_attrs(); ?>><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MyFatoorah</title><?php echo tz_global_stylesheet_tag(); ?></head><body><h1><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></h1><?php if (isset($packages[$key])): ?><p><?php echo (int) $packages[$key]['gold']; ?> Gold - <?php echo number_format($packages[$key]['amount'], 2); ?></p><form method="post"><input type="hidden" name="package" value="<?php echo htmlspecialchars($key, ENT_QUOTES, 'UTF-8'); ?>"><button type="submit">Pay with MyFatoorah</button></form><?php endif; ?></body></html>

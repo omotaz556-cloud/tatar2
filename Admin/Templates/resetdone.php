@@ -32,7 +32,7 @@ $mh_password = $_SESSION['mh_reset_password'] ?? '(unavailable — check admin_l
 unset($_SESSION['mh_reset_password']);
 ?>
 <style>
-.reset-wrap{max-width:720px;margin:20px auto;font-family:Tahoma,Verdana,Arial,sans-serif;padding:0 10px;box-sizing:border-box}
+.reset-wrap{max-width:720px;margin:20px auto;font-family:"Expo Arabic",Tahoma,Verdana,Arial,sans-serif;padding:0 10px;box-sizing:border-box}
 .reset-card{background:#fff;border:1px solid #bbb;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
 .reset-head{background:#27ae60;color:#fff;padding:12px 16px;display:flex;align-items:center;gap:8px}
 .reset-head h2{margin:0;font-size:16px;font-weight:bold}

@@ -30,8 +30,21 @@ AccessLogger::logRequest();
 $battle->procSim($_POST);
 $gkShell = true;
 $gkPageTitle = SERVER_NAME . ' - ' . COMBAT_SIMULATOR;
-tz_greek_shell_head($gkPageTitle, 'pg-warsim', array('includeNew2Js' => false));
+$gkBuildCss = 'css/greek_maxb_build.css';
+$gkExtraCss = array();
+if (is_file(__DIR__ . '/' . $gkBuildCss)) {
+	$gkExtraCss[] = $gkBuildCss . '?v=' . ((int) @filemtime(__DIR__ . '/' . $gkBuildCss));
+}
+tz_greek_shell_head($gkPageTitle, 'pg-warsim', array(
+	'includeNew2Js' => false,
+	'extraCss' => $gkExtraCss,
+));
 tz_greek_shell_open('warsim', array('contentWrap' => true));
+$rallyFieldId = 39;
+$warsimPage = true;
+if (!empty($village->resarray['f39'])) {
+	include('Templates/Build/16_menu.tpl');
+}
 ?>
 <h1><?php echo COMBAT_SIMULATOR; ?></h1>
 <form action="warsim.php" method="post">

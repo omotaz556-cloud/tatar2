@@ -670,6 +670,7 @@ trait DatabaseUserQueries {
     $stmt->bind_param("issssi", $gender, $location, $birthday, $desc1, $desc2, $uid);
     $stmt->execute();
     $stmt->close();
+    $this->clearUserArrayCache($uid);
     return true;
 	}
 

@@ -19,6 +19,10 @@
 #################################################################################
 
 $dataarray = array_map('tz_expand_report', explode(",", $message->readingNotice['data']));
+if (function_exists('tz_rpt_enrich_masked_nature_defender')) {
+    tz_rpt_enrich_masked_nature_defender($dataarray, $database, (int) ($message->readingNotice['type'] ?? 0));
+}
+$gkRptGreek = !empty($GLOBALS['gkBerichteLiteralPage']);
 
 // ======================== CONFIG ========================
 $hasHero = (isset($dataarray[284]) && $dataarray[284] > 0);
@@ -42,9 +46,12 @@ if ($isAdmin) {
 $attackerId = $dataarray[0];
 $attackerName = $database->getUserField($attackerId, 'username', 0);
 $attackerUid  = $database->getUserField($attackerId, 'id', 0);
+$attackerDisplay = function_exists('tz_loc_report_player')
+    ? tz_loc_report_player($attackerName, $attackerId)
+    : $attackerName;
 
 if ($attackerName != "[?]") {
-    $user_url = "<a href=\"".$playerUrl.$attackerUid."\">".$attackerName."</a>";
+    $user_url = "<a href=\"".$playerUrl.$attackerUid."\">".htmlspecialchars($attackerDisplay, ENT_QUOTES, 'UTF-8')."</a>";
 } else {
     $user_url = "<font color=\"grey\"><b>[?]</b></font>";
 }
@@ -53,7 +60,7 @@ if ($attackerName != "[?]") {
 $fromVillage = $database->getVillageField($dataarray[1], 'name');
 
 if ($fromVillage != "[?]") {
-    $from_url = "<a href=\"".$mapUrl.$dataarray[1]."&c=".$generator->getMapCheck($dataarray[1])."\">".$fromVillage."</a>";
+    $from_url = "<a href=\"".$mapUrl.$dataarray[1]."&c=".$generator->getMapCheck($dataarray[1])."\">".htmlspecialchars($fromVillage, ENT_QUOTES, 'UTF-8')."</a>";
 } else {
     $from_url = "<font color=\"grey\"><b>[?]</b></font>";
 }
@@ -62,60 +69,60 @@ if ($fromVillage != "[?]") {
 $defId = $dataarray[28];
 $defName = $database->getUserField($defId, 'username', 0);
 $defUid  = $database->getUserField($defId, 'id', 0);
+$defDisplay = function_exists('tz_loc_report_player')
+    ? tz_loc_report_player($defName, $defId)
+    : $defName;
 
-if ($defName != "[?]") {
-    $defuser_url = "<a href=\"".$playerUrl.$defUid."\">".$defName."</a>";
+if ($defName != "[?]" && (int) $defId !== 2) {
+    $defuser_url = "<a href=\"".$playerUrl.$defUid."\">".htmlspecialchars($defDisplay, ENT_QUOTES, 'UTF-8')."</a>";
 } else {
-    $defuser_url = "<font color=\"grey\"><b>[?]</b></font>";
+    $defuser_url = "<span class=\"gk-rpt-npc\">".htmlspecialchars($defDisplay, ENT_QUOTES, 'UTF-8')."</span>";
 }
 
 // DEF VILLAGE / OASIS HANDLING
 $defVillageName = $database->getVillageField($dataarray[29], 'name');
 
 if ($database->isVillageOases($dataarray[29])) {
-    $deffrom_url = "<a href=\"".$mapUrl.$dataarray[29]."&c=".$generator->getMapCheck($dataarray[29])."\">".$dataarray[30]."</a>";
+    $oasisLabel = function_exists('tz_loc_report_place')
+        ? tz_loc_report_place($dataarray[30], $defVillageName)
+        : $dataarray[30];
+    $deffrom_url = "<a href=\"".$mapUrl.$dataarray[29]."&c=".$generator->getMapCheck($dataarray[29])."\">"
+        . htmlspecialchars($oasisLabel, ENT_QUOTES, 'UTF-8') . "</a>";
 } elseif ($defVillageName != "[?]") {
-    $deffrom_url = "<a href=\"".$mapUrl.$dataarray[29]."&c=".$generator->getMapCheck($dataarray[29])."\">".$defVillageName."</a>";
+    $placeLabel = function_exists('tz_loc_report_place')
+        ? tz_loc_report_place($defVillageName, $defVillageName)
+        : $defVillageName;
+    $deffrom_url = "<a href=\"".$mapUrl.$dataarray[29]."&c=".$generator->getMapCheck($dataarray[29])."\">"
+        . htmlspecialchars($placeLabel, ENT_QUOTES, 'UTF-8') . "</a>";
 } else {
     $deffrom_url = "<font color=\"grey\"><b>[?]</b></font>";
 }
 
 ?>
-
-<table cellpadding="1" cellspacing="1" id="report_surround">
-<thead>
-
-<tr>
-    <th><?php echo SUBJECT; ?>:</th>
-    <th><?php echo tz_loc_topic($message->readingNotice['topic']); ?></th>
-</tr>
-
-<tr>
-    <?php $date = $generator->procMtime($message->readingNotice['time']); ?>
-    <td class="sent"><?php echo TZ_SENT; ?></td>
-    <td><?php echo ON; ?> <span><?php echo $date[0]." ".TZ_AT." ".$date[1]; ?></span> <span><?php echo TZ_HOUR; ?></span></td>
-</tr>
-
-</thead>
+<?php include __DIR__ . '/gk_rpt_head.inc.tpl'; ?>
 
 <tbody>
-<tr><td colspan="2" class="empty"></td></tr>
-<tr><td colspan="2" class="report_content">
+<tr><td colspan="<?php echo (int) ($gkRptSurroundCols ?? 2); ?>" class="empty"></td></tr>
+<tr><td colspan="<?php echo (int) ($gkRptSurroundCols ?? 2); ?>" class="report_content">
 
 <!-- ======================== ATTACKER ======================== -->
 <table cellpadding="1" cellspacing="1" id="attacker">
 <thead>
 <tr>
-<td class="role"><?php echo ATTACKER; ?></td>
+<td class="role"><?php echo $gkRptGreek && defined('TZ_RPT_ATTACKER_SHORT') ? TZ_RPT_ATTACKER_SHORT : ATTACKER; ?></td>
 <td colspan="<?php echo $colspan; ?>">
-    <?php echo $user_url; ?> <?php echo FROM_THE_VILL; ?> <?php echo $from_url; ?>
+    <?php
+    echo function_exists('tz_rpt_from_village_line')
+        ? tz_rpt_from_village_line($user_url, $from_url, $fromVillage)
+        : ($user_url . ' ' . FROM_THE_VILL . ' ' . $from_url);
+    ?>
 </td>
 </tr>
 </thead>
 
 <tbody class="units">
 <tr>
-<td>&nbsp;</td>
+<th><?php echo ($gkRptGreek && defined('TZ_RPT_TYPES')) ? TZ_RPT_TYPES : '&nbsp;'; ?></th>
 
 <?php
 // UNIT DISPLAY (attacker)
@@ -145,7 +152,7 @@ if ($hasHero) {
 }
 
 // CASUALTIES
-echo "<tr><th>".CASUALTIES."</th>";
+echo "</tr><tr><th>".CASUALTIES."</th>";
 
 for ($i = 13; $i <= 22; $i++) {
     echo ($dataarray[$i] == 0)
@@ -240,7 +247,7 @@ if (!empty($dataarray[304])) {
 <tr>
 <th><?php echo INFORMATION; ?></th>
 <td colspan="<?php echo $colspan; ?>">
-<?php echo $dataarray[304]; ?>
+<?php echo tz_expand_report($dataarray[304]); ?>
 </td>
 </tr>
 </tbody>
@@ -251,46 +258,91 @@ if (!empty($dataarray[304])) {
 
 <!-- ======================== DEFENDER ======================== -->
 <?php
-$target = $dataarray[34] - 1;
-$start = ($target * 10) + 1;
-$troopsStart = ($target * 21) + 35;
+$targetTribe = (int) $dataarray[34];
+$defUnitStart = ($targetTribe - 1) * 10 + 1;
+$troopsStart = 35;
+$defHasHero = !empty($dataarray[272]);
+$defColspan = $defHasHero ? 11 : 10;
 ?>
 
-<table cellpadding="1" cellspacing="1" class="defender">
+<table cellpadding="1" cellspacing="1" id="defender" class="defender">
 <thead>
 <tr>
-<td class="role"><?php echo DEFENDER; ?></td>
-<td colspan="<?php echo $colspan2; ?>">
-    <?php echo $defuser_url." ".FROM_THE_VILL." ".$deffrom_url; ?>
+<td class="role"><?php echo $gkRptGreek && defined('TZ_RPT_DEFENDER_SHORT') ? TZ_RPT_DEFENDER_SHORT : DEFENDER; ?></td>
+<td colspan="<?php echo $defColspan; ?>">
+    <?php
+    echo function_exists('tz_rpt_from_village_line')
+        ? tz_rpt_from_village_line($defuser_url, $deffrom_url, $database->isVillageOases($dataarray[29]) ? ($dataarray[30] ?? '') : $defVillageName)
+        : ($defuser_url . ' ' . FROM_THE_VILL . ' ' . $deffrom_url);
+    ?>
 </td>
 </tr>
 </thead>
 
 <tbody class="units">
 <tr>
-<td>&nbsp;</td>
+<th><?php echo ($gkRptGreek && defined('TZ_RPT_TYPES')) ? TZ_RPT_TYPES : '&nbsp;'; ?></th>
 
 <?php
-for ($i = $start; $i <= ($start + 9); $i++) {
+for ($i = $defUnitStart; $i <= ($defUnitStart + 9); $i++) {
     $unitName = $technology->getUnitName($i);
     echo "<td><img src=\"img/x.gif\" class=\"unit u$i\" title=\"$unitName\" alt=\"$unitName\" /></td>";
 }
 
-echo "</tr><tr><th>".TROOPS."</th>";
-
-for ($i = $troopsStart; $i <= $troopsStart + 9; $i++) {
-    echo "<td class=\"none\">?</td>";
+if ($defHasHero) {
+    echo '<td><img src="img/x.gif" class="unit uhero" /></td>';
 }
 
-echo "<tr><th>".CASUALTIES."</th>";
+echo '</tr><tr><th>' . TROOPS . '</th>';
+
+for ($i = $troopsStart; $i <= $troopsStart + 9; $i++) {
+    echo tz_rpt_battle_cell($dataarray[$i] ?? '?');
+}
+
+if ($defHasHero) {
+    echo '<td>' . (int) ($dataarray[272] ?? 0) . '</td>';
+}
+
+echo '</tr><tr><th>' . CASUALTIES . '</th>';
 
 for ($i = $troopsStart + 10; $i <= $troopsStart + 19; $i++) {
-    echo "<td class=\"none\">?</td>";
+    echo tz_rpt_battle_cell($dataarray[$i] ?? '?');
+}
+
+if ($defHasHero) {
+    $heroDead = (int) ($dataarray[273] ?? 0);
+    $tdclass1 = $heroDead === 0 ? 'class="none"' : '';
+    echo '<td ' . $tdclass1 . '>' . $heroDead . '</td>';
 }
 ?>
 
 </tr>
 </tbody>
+<?php
+$defAllMasked = function_exists('tz_rpt_defender_cells_masked')
+    ? tz_rpt_defender_cells_masked($dataarray, $troopsStart)
+    : true;
+$gkRptNatureLegacyHint = function_exists('tz_rpt_casualties_masked')
+    && tz_rpt_casualties_masked($dataarray, $troopsStart)
+    && ((int) ($dataarray[34] ?? 0) === 4 || (int) ($dataarray[28] ?? 0) === 2);
+if ($gkRptNatureLegacyHint) {
+?>
+<tbody class="goods">
+<tr>
+<th><?php echo INFORMATION; ?></th>
+<td colspan="<?php echo $defColspan; ?>"><?php echo TZ_RPT_NATURE_LEGACY_HINT; ?></td>
+</tr>
+</tbody>
+<?php } elseif ($defAllMasked) {
+?>
+<tbody class="goods">
+<tr>
+<th><?php echo INFORMATION; ?></th>
+<td colspan="<?php echo $defColspan; ?>"><?php echo defined('TZ_RPT_NO_DEF_INTEL') ? TZ_RPT_NO_DEF_INTEL : 'No defender data.'; ?></td>
+</tr>
+</tbody>
+<?php } ?>
 </table>
 
 </td></tr></tbody></table>
+<?php include __DIR__ . '/gk_rpt_foot.inc.tpl'; ?>

@@ -1,154 +1,178 @@
-﻿<?php
+<?php
 #################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Filename       support.tpl                                                 ##
-##  Developed by:  Dzoki                                                       ##
-##  Refactored by: Shadow Incremental Refactor 			                       ##
-##  License:       Novaterra Project                                            ##
-##  Copyright:     Novaterra (c) 2010-2026. All rights reserved.                ##
-##                                                                             ##
-##  Incremental Refactor Notes:                                                ##
-##  - Preserved original HTML structure                                        ##
-##  - Added safe PHP wrapper for consistent include behavior                   ##
-##  - Kept compatibility with legacy PHP 7+                                    ##
-##                                                                             ##
+##  Filename       : rules.tpl                                                 ##
+##  In-game game rules — all text via lang constants (ar.php / en.php)          ##
 #################################################################################
 ?>
 
-<h3 class="pop popgreen bold"><?php echo GAME_RULES; ?></h3> 
-<div id="rules"> 
-    <p> 
-        <?php echo TZ_THE_FOLLOWING_SET_OF_RULES_ARE_IN; ?> 
-        <br /> 
-        <br /> 
-        <?php echo TZ_INCITING_MANIPULATING_ENCOURAGING; ?> 
-    </p> 
-    <ul class="rules"> 
-        <li> 
-            <strong color="#2A720B">&sect;1 Password, Registration &amp; ownership</strong> 
-            <br /> 
-            <?php echo TZ_EACH_PLAYER_MAY_ONLY_OWN_AND_PLAY; ?> 
-            <ul> 
-                <li> 
-                    <strong color="#3BAE18">&sect;1.1 Registration</strong> 
-                    <br /> 
-                    <?php echo TZ_THE_E_MAIL_ADDRESS_USED_FOR_THE_RE; ?>  
-                </li> 
-                <li> 
-                    <strong color="#3BAE18">&sect;1.2 Password</strong> 
-                    <br /> 
-                    <?php echo TZ_THE_OWNER_OF_AN_ACCOUNT_MAY_NOT_TR; ?> 
-                    <br /> 
-                    <br /> 
-                    <?php echo TZ_HOWEVER_IT_IS_PERMISSIBLE_TO_TRANS; ?> 
-                    <br /> 
-                    <br /> 
-                    <?php echo TZ_THERE_IS_NO_COMPENSATION_FOR_DAMAG_2; ?> 
-                </li> 
-                <li> 
-                    <strong color="#3BAE18">&sect;1.3 Email changes / account transfers</strong> 
-                    <br /> 
-                    In order to change the email address of your account or to transfer your account to another player NOT playing on the same server, go into your account profile (/spieler.php?s=3) and fill out the new email information. 
-                </li> 
-                <li> 
-                    <strong color="#3BAE18">&sect;1.4 Switching accounts</strong> 
-                    <br /> 
-                    <?php echo TZ_IN_ORDER_TO_SWITCH_AN_ACCOUNT_WITH; ?> 
-                    <ul> 
-                        <ol> 
-                            <li><?php echo TZ_THE_GAME_WORLD_ON_WHICH_THE_ACCOUN; ?></li> 
-                            <li><?php echo TZ_THE_NICKNAME_OF_THE_ACCOUNT; ?></li> 
-                            <li><?php echo TZ_THE_E_MAIL_ADDRESS_OF_THE_NEW_OWNE; ?> </li> 
-                        </ol> 
-                    </ul> 
-                    <?php echo TZ_AFTERWARDS_BOTH_PARTIES_MUST_REQUE; ?> 
-                </li> 
-            </ul> 
-        </li> 
-        <li> 
-            <strong color="#2A720B">&sect;2 Sitting &amp; same pc usage</strong> 
-            <br /> 
-            <ul> 
-                <li> 
-                    <strong color="#3BAE18">&sect;2.1 Sitting</strong> 
-                    <br /> 
-                    <?php echo TZ_ML_TWO_SITTERS_RIGHT; ?> 
-                    <br /> 
-                    The sitter of an account must sit the account using the ingame account sitting function. The sitter of an account may not tend to an account by logging in with the password of the account they are sitting (see &sect;1.2). 
-                    <br /> 
-                    <?php echo TZ_THERE_IS_NO_COMPENSATION_FOR_DAMAG; ?> 
-                </li> 
-                <li> 
-                    <strong color="#3BAE18">&sect;2.2 Same pc usage</strong> 
-                    <br /> 
-                    <?php echo TZ_ML_SAME_COMPUTER_SITTER; ?> 
-                </li> 
-            </ul> 
-        </li> 
-        <li> 
-            <strong color="#2A720B">&sect;3 Use of externals</strong> 
-            <br /> 
-            <?php echo TZ_THE_GAME_MUST_BE_PLAYED_WITH_AN_UN; ?>  
-        </li> 
-        <li> 
-            <strong color="#2A720B">&sect;4 Program errors</strong> 
-            <br /> 
-            <?php echo TZ_PROGRAM_ERRORS_ALSO_CALLED_BUGS_MA; ?>  
-        </li> 
-        <li> 
-            <strong color="#2A720B">&sect;5 Money transactions</strong> 
-            <br /> 
-            <?php echo TZ_ANY_SALES_OR_PURCHASES_CONCERNING; ?> 
-        </li> 
-        <li> 
-            <strong color="#2A720B">&sect;6 Netiquette</strong> 
-            <br /> 
-            <?php echo TZ_ML_POLITE_TONE; ?> 
-            <ol> 
-                <li> 
-                    <?php echo TZ_FOLLOWING_BEHAVIOR_IS_PUNISHABLE_A; ?> 
-                    <br /> 
-                    <?php echo TZ_PARTICIPATION_IN_ABUSIVE_DEFAMATOR; ?> 
-                    <br /> 
-                    <?php echo TZ_ML_MATERIAL_UNDERAGE; ?> 
-                    <br /> 
-                    <?php echo TZ_BLACKMAILING_PLAYERS_IN_A_WAY_THAT; ?> 
-                    <br /> 
-                    <?php echo TZ_DISPLAYING_BATTLE_REPORTS_OR_MESSA; ?> 
-                </li> 
-                <li><?php echo TZ_NO_REAL_WORLD_POLITICS_ARE_ALLOWED; ?></li> 
-                <li><?php echo TZ_ENGLISH_IS_THE_ONLY_LANGUAGE_TOLER; ?> </li> 
-                <li><?php echo TZ_IMPERSONATING_OFFICIALS_OR_OFFICIA; ?></li> 
-                <li><?php echo TZ_ADVERTISEMENT_OF_ANY_KIND_THAT_HAS; ?></li> 
-            </ol> 
-        </li> 
-        <li> 
-            <strong color="#2A720B">&sect;7 Punishments</strong> 
-            <br /> 
-            <?php echo TZ_IF_THERE_IS_AN_OFFENCE_AGAINST_THE; ?> 
-            <br /> 
-            <?php echo TZ_RESOURCES_BUILDINGS_VILLAGES_OR_TR; ?> 
-            <br /> 
-            <?php echo TZ_THERE_IS_NO_SPECIAL_TREATMENT_FOR; ?> 
-            <br /> 
-            <br /> 
-            <?php echo TZ_PLAYERS_MAY_TALK_TO_THE_MULTIHUNTE; ?> 
-            <br /> 
-            <?php echo TZ_ADDITIONALLY_THE_NOVATERRA_TEAM_WILL; ?>   
-            <br /> 
-            <br /> 
-            <?php echo TZ_MULTIACCOUNTS_ON_THE_SPEED_SERVER; ?> 
-        </li> 
-        <li> 
-            <strong color="#2A720B">&sect;8 Changing of rules</strong> 
-            <br /> 
-            <?php echo TZ_THE_NOVATERRA_TEAM_RESERVES_THE_RIGH; ?> 
-        </li> 
-        <li> 
-            <strong color="#2A720B">&sect;9 Correction clause</strong> 
-            <br /> 
-            <?php echo TZ_IF_INDIVIDUAL_REGULATIONS_OF_THIS; ?> 
-        </li> 
-    </ul> 
+<style>
+html[dir="rtl"] #rules,
+html[dir="rtl"] #rules .rules,
+html[dir="rtl"] body.contentPage .rules {
+    direction: rtl;
+    text-align: right;
+}
+html[dir="rtl"] #rules .rules,
+html[dir="rtl"] body.contentPage .rules {
+    margin-right: 0;
+    margin-left: 0;
+}
+html[dir="rtl"] #rules .rules > li,
+html[dir="rtl"] body.contentPage .rules > li {
+    list-style: none;
+    margin-bottom: 1em;
+}
+html[dir="rtl"] #rules .rules ul,
+html[dir="rtl"] body.contentPage .rules ul {
+    padding-right: 1.25em;
+    padding-left: 0;
+    margin-top: 0.5em;
+}
+html[dir="rtl"] #rules .rules ol,
+html[dir="rtl"] body.contentPage .rules ol {
+    padding-right: 1.75em;
+    padding-left: 0;
+    margin: 0.5em 0;
+    list-style-type: decimal;
+    list-style-position: outside;
+}
+html[dir="rtl"] #rules .rules ol li,
+html[dir="rtl"] body.contentPage .rules ol li {
+    margin-bottom: 0.35em;
+}
+</style>
+
+<h3 class="pop popgreen bold"><?php echo GAME_RULES; ?></h3>
+<div id="rules">
+    <p>
+        <?php echo PUBLIC_RULES_INTRO_1; ?>
+        <br /><br />
+        <?php echo PUBLIC_RULES_INTRO_2; ?>
+    </p>
+    <ul class="rules">
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_1; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_ONE_ACCOUNT; ?>
+            <ul>
+                <li>
+                    <strong style="color: #3BAE18"><?php echo PUBLIC_RULES_SECTION_1_1; ?></strong>
+                    <br />
+                    <?php echo PUBLIC_RULES_EMAIL_OWNER; ?>
+                </li>
+                <li>
+                    <strong style="color: #3BAE18"><?php echo PUBLIC_RULES_SECTION_1_2; ?></strong>
+                    <br />
+                    <?php echo PUBLIC_RULES_PASSWORD_SAME_WORLD; ?>
+                    <br /><br />
+                    <?php echo PUBLIC_RULES_PASSWORD_OTHER_WORLD; ?>
+                    <br /><br />
+                    <?php echo PUBLIC_RULES_PASSWORD_DAMAGE; ?>
+                </li>
+                <li>
+                    <strong style="color: #3BAE18"><?php echo PUBLIC_RULES_SECTION_1_3; ?></strong>
+                    <br />
+                    <?php echo PUBLIC_RULES_EMAIL_CHANGE; ?>
+                </li>
+                <li>
+                    <strong style="color: #3BAE18"><?php echo PUBLIC_RULES_SECTION_1_4; ?></strong>
+                    <br />
+                    <?php echo PUBLIC_RULES_SAME_WORLD_TRANSFER; ?>
+                    <ol>
+                        <li><?php echo PUBLIC_RULES_WORLD_NAME; ?></li>
+                        <li><?php echo PUBLIC_RULES_ACCOUNT_NICKNAME; ?></li>
+                        <li><?php echo PUBLIC_RULES_NEW_OWNER_EMAIL; ?></li>
+                    </ol>
+                    <?php echo PUBLIC_RULES_PASSWORD_REQUEST_AFTER_TRANSFER; ?>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_2; ?></strong>
+            <br />
+            <ul>
+                <li>
+                    <strong style="color: #3BAE18"><?php echo PUBLIC_RULES_SECTION_2_1; ?></strong>
+                    <br />
+                    <?php echo PUBLIC_RULES_SITTERS; ?>
+                    <br />
+                    <?php echo PUBLIC_RULES_SITTER_LOGIN; ?>
+                    <br />
+                    <?php echo PUBLIC_RULES_SITTER_DAMAGE; ?>
+                </li>
+                <li>
+                    <strong style="color: #3BAE18"><?php echo PUBLIC_RULES_SECTION_2_2; ?></strong>
+                    <br />
+                    <?php echo PUBLIC_RULES_SHARED_COMPUTER; ?>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_3; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_BROWSER; ?>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_PROGRAM_ERRORS_HEADING; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_BUGS; ?>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_5; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_REAL_MONEY; ?>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_6; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_POLITE_COMMUNICATION; ?>
+            <ol>
+                <li>
+                    <?php echo PUBLIC_RULES_BEHAVIOUR_INTRO; ?>
+                    <br />
+                    <?php echo PUBLIC_RULES_DEFAMATORY; ?>
+                    <br />
+                    <?php echo PUBLIC_RULES_UNDERAGE; ?>
+                    <br />
+                    <?php echo PUBLIC_RULES_BLACKMAIL; ?>
+                    <br />
+                    <?php echo PUBLIC_RULES_DISPLAY_REPORTS; ?>
+                </li>
+                <li><?php echo PUBLIC_RULES_NO_POLITICS; ?></li>
+                <li><?php echo PUBLIC_RULES_LANGUAGE; ?></li>
+                <li><?php echo PUBLIC_RULES_IMPERSONATION; ?></li>
+                <li><?php echo PUBLIC_RULES_ADVERTISING; ?></li>
+            </ol>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_7; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_PUNISHMENT; ?>
+            <br />
+            <?php echo PUBLIC_RULES_NO_REPLACEMENT; ?>
+            <br />
+            <?php echo PUBLIC_RULES_NO_SPECIAL_TREATMENT; ?>
+            <br /><br />
+            <?php echo PUBLIC_RULES_APPEALS; ?>
+            <br />
+            <?php echo PUBLIC_RULES_OWNER_INFORMATION; ?>
+            <br /><br />
+            <?php echo PUBLIC_RULES_MULTI_DELETE; ?>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_8; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_CHANGE_ANY_TIME; ?>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_9; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_SEVERABILITY; ?>
+        </li>
+        <li>
+            <strong style="color: #2A720B"><?php echo PUBLIC_RULES_SECTION_10; ?></strong>
+            <br />
+            <?php echo PUBLIC_RULES_SECTION_10_BODY; ?>
+        </li>
+    </ul>
 </div>

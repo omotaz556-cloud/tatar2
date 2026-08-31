@@ -2,303 +2,310 @@
 use App\Utils\AccessLogger;
 
 #################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Filename       : index.php                      	                       ##
-##  Type           : In Game Index Page                                        ##
-## --------------------------------------------------------------------------- ##
-##  Developed by   : Dzoki 						                               ##
-##  Refactored by  : Shadow                                                    ##
-##  Redesign by    : Shadow                                                    ##
-## --------------------------------------------------------------------------- ##
-##  Contact        : (see project maintainer)                                 ##
-##  Project        : Novaterra                                                  ##
-##  URLs:          : https://novaterra.example                                      ##
-##  GitHub         : https://github.com/omotaz556-cloud/tatar                   ##
-## --------------------------------------------------------------------------- ##
-##  License        : GPLv3 (derived from TravianZ; see project LICENSE)       ##
-##  Copyright      : Novaterra mods (c) 2010-2026; base engine (c) TravianZ authors (GPLv3). ##
-## --------------------------------------------------------------------------- ##
+##  Filename       : index.php
+##  Type           : Portal homepage (tatarwars ndix layout)
 #################################################################################
 
-if(!file_exists('var/installed') && @opendir('install')) {
-    header("Location: install/");
+if (!file_exists('var/installed') && @opendir('install')) {
+    header('Location: install/');
     exit;
 }
 
-include_once("GameEngine/config.php");
-/*
-if($_SERVER['HTTP_HOST'] != '.SERVER.')
-{
-    header('location: '.SERVER.'');
-    exit;
-}
-*/
-
-// delete the /* and the */ if you not use localhost.
+include_once('GameEngine/config.php');
 
 error_reporting(E_ALL || E_NOTICE);
 
-if(file_exists('Security/Security.class.php'))
-{
+if (file_exists('Security/Security.class.php')) {
     require 'Security/Security.class.php';
     Security::instance();
-}
-else
-{
+} else {
     die('Security: Please activate security class!');
 }
 
-include_once "GameEngine/Database.php";
-require_once __DIR__ . "/GameEngine/Lang/loader.php";
+include_once 'GameEngine/Database.php';
+require_once __DIR__ . '/GameEngine/Lang/loader.php';
 tz_load_language(LANG);
 
 AccessLogger::logRequest();
+
+$stats = function_exists('tz_portal_player_stats') ? tz_portal_player_stats() : array('players' => 0, 'active' => 0, 'online' => 0);
+$world = function_exists('tz_portal_world_meta') ? tz_portal_world_meta() : array();
+
+$ageSec = !empty($world['startTs']) ? max(0, time() - (int) $world['startTs']) : 0;
+$worldDays = (int) floor($ageSec / 86400);
+$worldHours = (int) floor(($ageSec % 86400) / 3600);
+
+if (!empty($world['time']) && COMMENCE > (int) $world['time']) {
+    $serverStartHtml = "<font color='blue'>لم تبدأ بعد</font>";
+} elseif ($ageSec > 0) {
+    $serverStartHtml = '<b>' . $worldDays . '</b> أيام و <b>' . $worldHours . '</b> ساعة';
+} else {
+    $serverStartHtml = "<font color='red'>بانتظار البدء</font>";
+}
+
+$serverLabel = defined('SERVER_NAME') ? SERVER_NAME : 'حروب التتار';
+$pageTitle = $serverLabel . ' | أقوى سيرفرات حرب التتار الكلاسيكية';
+$heroTitle = 'لعبة ' . $serverLabel . ' الكلاسيكي';
+$heroPara = 'سجل الان في أقوى سيرفرات ' . $serverLabel . ' واستمتع بمنافسة شرسة مع الاف اللاعبين الحقيقين بدون أي بوتات إطلاقاً !';
+$aboutTitle = 'ماهي ' . $serverLabel . ' ؟';
+$whatIs = defined('TZ_INDEX_WHAT_IS') ? TZ_INDEX_WHAT_IS : ('ما هي لعبة ' . $serverLabel);
+$indexDesc = isset($lang['index'][0][5]) ? $lang['index'][0][5] : '';
+$ndixVer = (int) (@filemtime(__DIR__ . '/css/ndix/style.css') ?: time());
+$jsVer = (int) (@filemtime(__DIR__ . '/js/ndix-portal.js') ?: time());
+$weltenImg = is_file(__DIR__ . '/img/ndix/images/welten/en1_big.jpg')
+    ? 'img/ndix/images/welten/en1_big.jpg'
+    : 'img/en/welten/en1_big.jpg';
+$heroImg = is_file(__DIR__ . '/img/ndix/newIndex/imgs/hero.png')
+    ? 'img/ndix/newIndex/imgs/hero.png'
+    : (is_file(__DIR__ . '/img/login/reg_soldier.png') ? 'img/login/reg_soldier.png' : 'img/en/welten/en1_big.jpg');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" <?php echo tz_html_dir_attrs(); ?>>
+<!DOCTYPE html>
+<html <?php echo tz_html_dir_attrs(); ?> class="pg-portal-index">
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME; ?></title>
-	<link rel="shortcut icon" href="favicon.ico" />
-	<link rel="stylesheet" type="text/css" href="gpack/novaterra/main.css" />
-	<link rel="stylesheet" type="text/css" href="gpack/novaterra/flaggs.css" />
-	<link rel="stylesheet" type="text/css" href="gpack/novaterra/main_en.css" />
-	<meta name="content-language" content="<?php echo LANG; ?>" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<script src="mt-core.js" type="text/javascript"></script>
-	<script src="new.js?22102017" type="text/javascript"></script>
-	<script src="new2.js?22102017" type="text/javascript"></script>
-	<style type="text/css">
-		<!-- li.c4 {background-image:url('img/en/welten/en1_big.jpg');} -->
-		<!-- li.c3 {background-image:url('img/en/welten/en1_big_g.jpg');} -->
-		div.c2 {left:237px;}
-		ul.c1 {position:absolute; left:0px; width: 686px;}
-	</style>
-	<?php echo tz_rtl_stylesheet_tag(); ?>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?> هى لعبة مجانية لا تحتاج الى تحميل ,لعبة حرب في عالم مليء باللاعبين الحقيقين الذين يبدأون جميعهم كزعماء لقرى صغيرة." />
+    <meta name="content-language" content="<?php echo htmlspecialchars(LANG, ENT_QUOTES, 'UTF-8'); ?>" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <?php echo function_exists('tz_portal_ndix_stylesheet_tag') ? tz_portal_ndix_stylesheet_tag() : ''; ?>
+    <style id="portal-header-align">
+    /* Coordinates from main.jpg 1332×421 — must load after ndix/style.css */
+    body.pg-portal-index header .hero-section nav.nav ul,
+    body.pg-portal-index header .hero-section .nav ul {
+        position: static !important;
+        top: 0 !important;
+        right: auto !important;
+        margin: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        justify-content: space-between !important;
+        gap: 0 !important;
+        padding: 0 14% 0 8% !important;
+    }
+    body.pg-portal-index header .hero-section nav.nav,
+    body.pg-portal-index header .hero-section .nav {
+        left: calc(50% + 150px) !important;
+        top: calc(10.45% + 55px) !important;
+        width: 30% !important;
+        max-width: none !important;
+        height: 6.2% !important;
+        transform: translateX(-50%) !important;
+        display: flex !important;
+        align-items: center !important;
+        background: none !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+    body.pg-portal-index header .hero-section .world {
+        position: absolute !important;
+        display: table !important;
+        left: calc(50% - 108px) !important;
+        top: calc(61.28% + 50px) !important;
+        transform: translateX(-50%) !important;
+        margin: 0 auto !important;
+    }
+    body.pg-portal-index header .hero-section .world a {
+        position: relative !important;
+        height: 42px !important;
+        color: #691009 !important;
+        top: auto !important;
+        left: auto !important;
+    }
+    </style>
 </head>
+<body class="pg-portal-index">
 
-<body class="presto indexPage">
-	<div class="wrapper">
-		<div id="country_select">
-			<div id="flags"></div>
-			<script src="flaggen.js?a" type="text/javascript"></script>
-			<script type="text/javascript">
-			var region_list = new Array('Europe','America','Asia','Middle East','Africa','Oceania');
-			show_flags('', '', region_list);
-			</script>
-		</div>
-		<div id="header"><h1><?php echo $lang['index'][0][1]; ?></h1></div>
-		<div id="navigation">
-			<a href="index.php" class="home"><img src="img/x.gif" alt="Novaterra" /></a>
-			<table class="menu">
-				<tr>
-					<td><a href="tutorial.php"><span><?php echo TUTORIAL; ?></span></a></td>
-					<td><a href="anleitung.php"><span><?php echo $lang['index'][0][2]; ?></span></a></td>
-					<td><a href="https://github.com/omotaz556-cloud/tatar/discussions" target="_blank"><span><?php echo FORUM; ?></span></a></td>
-					<td><a href="?signup" class="signup_link mark"><span><?php echo $lang['register']; ?></span></a></td>
-					<td><a href="?login" class="login_link"><span><?php echo LOGIN; ?></span></a></td>
-				</tr>
-			</table>
-		</div>
-		<?php
-		if(T4_COMING==true){
-		?>
-		<div id="t4play">
-		<a href="notification/">
-		<img src="img/t4n/Teaser_Prelandingpage_EN.png" alt="Novaterra 4" />
-		</a>
-		</div>
-		<?php } ?>
-		<div id="register_now">
-			<a href="?signup" class="signup_link"><?php echo $lang['register']; ?></a>
-			<span><?php echo PLAY_NOW; ?></span>
-		</div>
-		<div id="content">
-			<div class="grit">
-				<div class="infobox">
-					<div id="what_is_novaterra">
-						<h2><?php echo $lang['index'][0][4]; ?></h2>
-						<p><?php echo $lang['index'][0][5]; ?></p>
-						<p class="play_now"><a href="?signup" class="signup_link"><?php echo $lang['index'][0][6]; ?></a></p>
-					</div>
-					<div id="player_counter">
-						<table>
-							<tbody>
-								<tr>
-									<th><?php
+<header>
+    <div class="hero-section">
+        <nav class="nav">
+            <ul>
+                <li><a href="anmelden.php" onclick="showModal(2);return false;" title="التسجيل">التسجيل</a></li>
+                <li><a href="login.php" onclick="showModal(1);return false;" title="الدخول">الدخول</a></li>
+                <li><button type="button" onclick="showSide();return false;">صفحات أخرى</button></li>
+            </ul>
+        </nav>
+        <div class="world">
+            <a href="anmelden.php" title="سجل في <?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?>">
+                <span class="world-title">سجل في أخر عالم</span>
+                <span class="world-reg">(<?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?>)</span>
+            </a>
+        </div>
+    </div>
+</header>
 
-										   echo $lang['index'][0][7];
+<div class="container">
+    <aside>
+        <div class="menu">
+            <div class="menu-header">
+                <div class="menu-title">قائمة الصفحات</div>
+                <span class="close" onclick="closeSide()">X</span>
+            </div>
+            <div class="menu-body">
+                <ul>
+                    <li><a href="index.php">الرئيسية</a></li>
+                    <li><a href="anmelden.php">سجل الآن</a></li>
+                    <li><a href="login.php">دخول</a></li>
+                    <li><a href="spielregeln.php"><?php echo defined('SPIELREGELN') ? SPIELREGELN : 'قواعد اللعبة'; ?></a></li>
+                    <li><a href="anleitung.php"><?php echo defined('FAQ') ? FAQ : 'الدليل'; ?></a></li>
+                    <li><a href="manual.php"><?php echo defined('LOGIN_GAME_GUIDE') ? LOGIN_GAME_GUIDE : 'شرح اللعبة'; ?></a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
 
-									?>:</th>
+    <main>
+        <section id="hero-side">
+            <div class="main-data">
+                <h1><?php echo htmlspecialchars($heroTitle, ENT_QUOTES, 'UTF-8'); ?></h1>
+                <p class="para"><?php echo htmlspecialchars($heroPara, ENT_QUOTES, 'UTF-8'); ?></p>
+                <a href="anmelden.php" class="btn-primary" title="التسجيل">التسجيل في أخر عالم</a>
+                <div class="img-container">
+                    <picture>
+                        <img width="288" height="298" src="<?php echo htmlspecialchars($heroImg, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?>" />
+                    </picture>
+                </div>
+            </div>
+        </section>
 
-									<td><?php
+        <section id="about">
+            <div class="max-width">
+                <div class="about">
+                    <h2 class="title"><?php echo htmlspecialchars($aboutTitle, ENT_QUOTES, 'UTF-8'); ?></h2>
+                    <div class="border-right">
+                        <h3 style="font-weight:301">هي لعبة متصفح مجانية لاتحتاج إلى تحميل من العاب <strong>الحرب الاستراتيجية</strong></h3>
+                        <h3 style="font-weight:301">وهي عبارة عن لعبة حرب في عالم مليء باللاعبين الحقيقين الذين يبدأون جميعهم كزعماء لقرى صغيرة.</h3>
+                        <h3 style="font-weight:301">في <?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?> تبني المباني من الثكن الحربية والسفارات والمخازن تتطور القرى الصغيرة لتصبح ممالك.</h3>
+                        <br />
+                        <h2 style="text-align:right"><?php echo $whatIs; ?>:</h2>
+                        <?php if ($indexDesc !== '') { ?>
+                            <div><?php echo $indexDesc; ?></div>
+                        <?php } else { ?>
+                        <ul>
+                            <li style="text-align:right">ستبدأ كرئيس قرية صغيرة</li>
+                            <li style="text-align:right">ستبني قريتك وتطور مواردك وجيشك</li>
+                            <li style="text-align:right">ستحارب مع أو ضد لاعبين حقيقيين وتنضم لتحالف</li>
+                        </ul>
+                        <?php } ?>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn-primary" href="anmelden.php" title="سجل في اللعبة">سجل والعب الان</a>
+                        <a class="btn-secondray" href="#latestServer" title="معلومات عن اللعبة">معلومات عن اللعبة</a>
+                    </div>
+                </div>
 
-											$return = mysqli_query($link, "SELECT Count(*) as Total FROM " . TB_PREFIX . "users WHERE tribe IN(1, 2, 3, 6, 7, 8, 9)");
-											echo ($users = !empty($return) ? mysqli_fetch_assoc($return)['Total'] : 0);
-									?></td>
-								</tr>
+                <div class="left-hero">
+                    <h2 class="title">احصائات اللعبة</h2>
+                    <div class="stat">
+                        <span class="icon">&#9679;</span>
+                        <article class="card-entry__meta">
+                            <strong>عدد اللاعبين:</strong>
+                            <p><span><?php echo (int) $stats['players']; ?></span> لاعب</p>
+                        </article>
+                    </div>
+                    <div class="stat">
+                        <span class="icon">&#9679;</span>
+                        <article class="card-entry__meta">
+                            <strong>اللاعبون النشطون:</strong>
+                            <p><span class="num"><?php echo (int) $stats['active']; ?></span> لاعب</p>
+                        </article>
+                    </div>
+                    <div class="stat">
+                        <span class="icon">&#9679;</span>
+                        <article class="card-entry__meta">
+                            <strong>المتواجدون الان:</strong>
+                            <p><span class="num"><?php echo (int) $stats['online']; ?></span> لاعب</p>
+                        </article>
+                    </div>
+                    <div class="stat">
+                        <span class="icon">&#9679;</span>
+                        <article class="card-entry__meta">
+                            <strong>عدد السيرفرات:</strong>
+                            <p><span class="num"><?php echo defined('TZ_INDEX_SERVERS_COUNT') ? TZ_INDEX_SERVERS_COUNT : '1'; ?></span> سيرفر</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-								<tr>
-									<th><?php
+        <section id="latestServer">
+            <h2 class="title">أخر سيرفر تم افتتاحه : <?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?></h2>
+            <p>سجل الان في أحدث سيرفرات اللعبة لتكون فرصة نجاحك أعلى لحداثة السيرفر.</p>
+            <div class="server-details-box">
+                <h3>مواصفات السيرفر:</h3>
+                <div class="server-data-grid">
+                    <ul>
+                        <li>نوع السيرفر: <span>سيرفر عادي</span></li>
+                        <li>سرعة السيرفر: <span>X<?php echo htmlspecialchars((string) SPEED, ENT_QUOTES, 'UTF-8'); ?></span></li>
+                        <li>عدد اللاعبين: <b><?php echo (int) $stats['players']; ?> لاعب</b></li>
+                        <li>بداية السيرفر: <span>منذ <?php echo $serverStartHtml; ?></span></li>
+                    </ul>
+                    <img loading="lazy" src="<?php echo htmlspecialchars($weltenImg, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?>" width="200" height="120" />
+                </div>
+                <a href="anmelden.php" class="btn-primary full-width center" title="التسجيل">سجل في أخر سيرفر</a>
+            </div>
+        </section>
+    </main>
 
-										   echo $lang['index'][0][8];
+    <footer>
+        <div class="footer-data">
+            <ul>
+                <li><a href="index.php">الرئيسية</a></li>
+                <li><a href="login.php">دخول</a></li>
+                <li><a href="anmelden.php">التسجيل</a></li>
+                <li><a href="spielregeln.php"><?php echo defined('SPIELREGELN') ? SPIELREGELN : 'قوانين اللعب'; ?></a></li>
+                <li><a href="manual.php">شرح اللعب</a></li>
+            </ul>
+        </div>
+    </footer>
 
-									?>:</th>
+<div id="register-box">
+    <div>اخر عالم تم افتتاحه هو : <b><?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?></b></div>
+    <a class="btn-primary" href="anmelden.php" title="سجل الآن">سجل الان</a>
+</div>
 
-									<td><?php
+<div id="modal">
+    <div class="musk"></div>
+    <div class="modal-data">
+        <div class="modal-top">
+            <div class="modal-title">أختر عالماً لتسجيل الدخول</div>
+            <span class="close" onclick="closeModal()">X</span>
+        </div>
+        <div class="modal-body">
+            <div class="server-item1">
+                <div class="serverItem">
+                    <a href="login.php" class="server-href" title="<?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?>">
+                        <img loading="lazy" src="<?php echo htmlspecialchars($weltenImg, ENT_QUOTES, 'UTF-8'); ?>" alt="" />
+                        <div class="serverData">
+                            <div class="serverInfos">عدد اللاعبين: <span class="playerCounts"><?php echo (int) $stats['players']; ?> لاعب</span></div>
+                            <div class="serverInfos">منذ: <span class="startedSince"><?php echo $serverStartHtml; ?></span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="server-item2">
+                <div class="serverItem">
+                    <a href="anmelden.php" class="server-href" title="<?php echo htmlspecialchars($serverLabel, ENT_QUOTES, 'UTF-8'); ?>">
+                        <img loading="lazy" src="<?php echo htmlspecialchars($weltenImg, ENT_QUOTES, 'UTF-8'); ?>" alt="" />
+                        <div class="serverData">
+                            <div class="serverInfos">عدد اللاعبين: <span class="playerCounts"><?php echo (int) $stats['players']; ?> لاعب</span></div>
+                            <div class="serverInfos">منذ: <span class="startedSince"><?php echo $serverStartHtml; ?></span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-									       $return = mysqli_query($link,"SELECT Count(*) as Total FROM " . TB_PREFIX . "users WHERE timestamp > ".(time() - (3600*24))." AND tribe IN(1, 2, 3, 6, 7, 8, 9)");
-									       echo !empty($return) ? mysqli_fetch_assoc($return)['Total'] : 0;
+</div>
 
-									?></td>
-								</tr>
+<script src="js/ndix-portal.js?v=<?php echo $jsVer; ?>" type="text/javascript"></script>
+<?php if (isset($_GET['login'])) { ?>
+<script type="text/javascript">document.addEventListener('DOMContentLoaded', function () { showModal(1); });</script>
+<?php } elseif (isset($_GET['signup'])) { ?>
+<script type="text/javascript">document.addEventListener('DOMContentLoaded', function () { showModal(2); });</script>
+<?php } ?>
 
-								<tr>
-									<th><?php
-
-										   echo $lang['index'][0][9];
-
-									?>:</th>
-
-									<td><?php
-
-										   $return = mysqli_query($link,"SELECT Count(*) as Total FROM " . TB_PREFIX . "users WHERE timestamp > ".(time() - (60*10))." AND tribe IN(1, 2, 3, 6, 7, 8, 9)");
-										   echo ($online = !empty($return) ? mysqli_fetch_assoc($return)['Total'] : 0);
-
-									?></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div id="about_the_game">
-						<h2><?php echo $lang['index'][0][10]; ?>:</h2>
-						<ul>
-							<li><?php echo $lang['index'][0][11]; ?></li>
-							<li><?php echo $lang['index'][0][12]; ?></li>
-							<li><?php echo $lang['index'][0][13]; ?></li>
-						</ul>
-					</div>
-				</div>
-				<div class="secondarybox">
-					<div id="screenshots">
-						<h2><?php echo SCREENSHOTS; ?></h2>
-						<a href="#last" class="navi prev dynamic_btn"><img class="dynamic_btn" src="img/x.gif" alt="previous" /></a>
-						<div id="screenshots_preview">
-							<ul id="screenshot_list" class="c1">
-								<li><a href="#"><img src="img/un/s/s1s.jpg" alt="Screenshot" /></a></li>
-								<li><a href="#"><img src="img/un/s/s2s.jpg" alt="Screenshot" /></a></li>
-								<li><a href="#"><img src="img/un/s/s4s.jpg" alt="Screenshot" /></a></li>
-								<li><a href="#"><img src="img/un/s/s3s.jpg" alt="Screenshot" /></a></li>
-								<li><a href="#"><img src="img/un/s/s5s.jpg" alt="Screenshot" /></a></li>
-								<li><a href="#"><img src="img/un/s/s7s.jpg" alt="Screenshot" /></a></li>
-								<li><a href="#"><img src="img/un/s/s8s.jpg" alt="Screenshot" /></a></li>
-							</ul>
-						</div><a href="#next" class="navi next"><img class="dynamic_btn" src="img/x.gif" alt="next" /></a>
-					</div>
-					<div id="newsbox">
-						<h2><?php echo NEWS; ?></h2>
-						<div class="news"><?php include ("Templates/indexnews.tpl"); ?></div>
-					</div>
-				</div>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<div id="footer">
-			<div class="container">
-				<ul class="menu">
-					<li><a href="anleitung.php?s=3"><?php echo FAQ; ?></a>|</li>
-					<li><a href="index.php?screenshots"><?php echo SCREENSHOTS; ?></a>|</li>
-					<li><a href="spielregeln.php"><?php echo SPIELREGELN; ?></a>|</li>
-					<li><a href="agb.php"><?php echo AGB; ?></a>|</li>
-					<li><a href="impressum.php"><?php echo IMPRINT; ?></a></li>
-					<li class="copyright">&copy; 2011-<?php echo date('Y'); ?> - Novaterra - All rights reserved</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div id="login_layer" class="overlay">
-		<div class="mask closer"></div>
-		<div id="login_list" class="overlay_content">
-			<h2><?php echo CHOOSE; ?></h2>
-			<a href="#" class="closer"><img class="dynamic_img" alt="Close" src="img/un/x.gif" /></a>
-			<ul class="world_list">
-				<li class="w_big c3" style="background-image:url('img/en/welten/en1_big.jpg');">
-					<a href="login.php"><img class="w_button" src="img/un/x.gif" alt="World" title="<?php echo $users; echo "&nbsp;"; echo PLAYERS; echo "&nbsp;|&nbsp;"; echo $active; echo "&nbsp;"; echo ACTIVE; echo "&nbsp;|&nbsp;"; echo $online; echo "&nbsp;"; echo ONLINE; ?>" /></a>
-					<div class="label_players c0"><?php echo PLAYERS; ?>:</div>
-					<div class="label_online c0"><?php echo ONLINE; ?>:</div>
-					<div class="players c1"><?php echo $users; ?></div>
-					<div class="online c1"><?php echo $online; ?></div>
-				</li>
-			</ul>
-			<div class="footer"></div>
-		</div>
-	</div>
-	<div id="signup_layer" class="overlay">
-		<div class="mask closer"></div>
-		<div id="signup_list" class="overlay_content">
-			<h2><?php echo CHOOSE; ?></h2>
-			<a href="#" class="closer"><img class="dynamic_img" alt="Close" src="img/un/x.gif" /></a>
-			<ul class="world_list">
-				<li class="w_big c4" style="background-image:url('img/en/welten/en1_big.jpg');">
-					<a href="anmelden.php"><img class="w_button" src="img/un/x.gif" alt="World" title="<?php echo $users; echo "&nbsp;"; echo PLAYERS; echo "&nbsp;|&nbsp;"; echo $active; echo "&nbsp;"; echo ACTIVE; echo "&nbsp;|&nbsp;"; echo $online; echo "&nbsp;"; echo ONLINE; ?>" /></a>
-					<div class="label_players c0"><?php echo PLAYERS; ?>:</div>
-					<div class="label_online c0"><?php echo ONLINE; ?>:</div>
-					<div class="players c1"><?php echo $users; ?></div>
-					<div class="online c1"><?php echo $online; ?></div>
-				</li>
-			</ul>
-			<div class="footer"></div>
-		</div>
-	</div>
-	<div id="iframe_layer" class="overlay">
-		<div class="mask closer"></div>
-		<div class="overlay_content">
-			<a href="#" class="closer"><img class="dynamic_img" alt="Close" src="img/un/x.gif" /></a>
-			<h2><?php echo $lang['index'][0][2]; ?></h2>
-			<div id="frame_box"></div>
-			<div class="footer"></div>
-		</div>
-	</div>
-	<div id="screenshot_layer" class="overlay">
-		<div class="mask closer"></div>
-		<div class="overlay_content">
-			<h3><?php echo SCREENSHOTS; ?></h3>
-			<a href="#" class="closer"><img class="dynamic_img" alt="Close" src="img/x.gif" /></a>
-			<div class="screenshot_view">
-				<h4 id="screen_hl"></h4>
-				<img id="screen_view" src="img/x.gif" alt="Screenshot" name="screen_view" />
-				<div id="screen_desc"></div>
-			</div>
-			<a href="#prev" class="navi prev" onclick="galarie.showPrev();"><img class="dynamic_img" src="img/x.gif" alt="previous" /></a>
-			<a href="#next" class="navi next" onclick="galarie.showNext();"><img class="dynamic_img" src="img/x.gif" alt="next" /></a>
-			<div class="footer"></div>
-		</div>
-	</div>
-	<script type="text/javascript">
-		var screenshots = [
-			{'img':'img/en/s/s1.png','hl':"<?php echo $lang['screenshots']['title1']; ?>", 'desc':"<?php echo $lang['screenshots']['desc1']; ?>"},{'img':'img/en/s/s2.png','hl':"<?php echo $lang['screenshots']['title2']; ?>", 'desc':"<?php echo $lang['screenshots']['desc2']; ?>"},{'img':'img/en/s/s4.png','hl':"<?php echo $lang['screenshots']['title3']; ?>", 'desc':"<?php echo $lang['screenshots']['desc3']; ?>"},{'img':'img/en/s/s3.png','hl':"<?php echo $lang['screenshots']['title4']; ?>", 'desc':"<?php echo $lang['screenshots']['desc4']; ?>"},{'img':'img/en/s/s5.png','hl':"<?php echo $lang['screenshots']['title5']; ?>", 'desc':"<?php echo $lang['screenshots']['desc5']; ?>"},{'img':'img/en/s/s7.png','hl':"<?php echo $lang['screenshots']['title6']; ?>", 'desc':"<?php echo $lang['screenshots']['desc6']; ?>"},{'img':'img/en/s/s8.png','hl':"<?php echo $lang['screenshots']['title7']; ?>", 'desc':"<?php echo $lang['screenshots']['desc7']; ?>"}
-		];
-		var galarie = new Fx.Screenshots('screen_view', 'screen_hl', 'screen_desc', screenshots);
-	<?php
-	    if (isset($_GET['signup'])) {
-	?>
-		window.addEvent('domready', function() {
-			$$('.signup_link').fireEvent('click');
-		});
-	<?php
-	   }
-	?>
-
-	<?php
-    	if (isset($_GET['login'])) {
-	?>
-		window.addEvent('domready', function() {
-    		$$('.login_link').fireEvent('click');
-    	});
-	<?php
-	   }
-	?>
-	</script>
 </body>
 </html>

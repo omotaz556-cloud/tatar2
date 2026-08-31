@@ -1149,19 +1149,22 @@ trait DatabaseVillageQueries {
 	        $value = [$value];
         }
 
+        $ref = (int) $ref;
         $pairs = [];
 	    foreach ($field as $index => $fieldValue) {
-            $newValue = ((Math::isInt($value[$index]) || Math::isFloat($value[$index])) ? $value[$index] : '"'.$this->escape($value[$index]).'"');
+            $scalar = $value[$index];
+            $newValue = ((Math::isInt($scalar) || Math::isFloat($scalar)) ? $scalar : '"'.$this->escape($scalar).'"');
 	        $pairs[] = $this->escape($fieldValue).' = '.$newValue;
-
-	        // update cache
-	        if (isset(self::$villageFieldsCache[$ref])) {
-                self::$villageFieldsCache[$ref][$fieldValue] = $newValue;
-            }
         }
 
-		$q = "UPDATE " . TB_PREFIX . "vdata SET ".implode(', ', $pairs)." WHERE wref = ".(int) $ref;
-		return mysqli_query($this->dblink,$q);
+		$q = "UPDATE " . TB_PREFIX . "vdata SET ".implode(', ', $pairs)." WHERE wref = ".$ref;
+		$result = mysqli_query($this->dblink, $q);
+
+        if ($result) {
+            self::clearVillageCache();
+        }
+
+		return $result;
 	}
 
     function setVillageFields($ref, $fields, $values) {
@@ -1178,7 +1181,11 @@ trait DatabaseVillageQueries {
         }
 
         $q = "UPDATE " . TB_PREFIX . "vdata set ".implode(', ', $fieldValues)." where wref = $ref";
-        return mysqli_query($this->dblink,$q);
+        $result = mysqli_query($this->dblink,$q);
+        if ($result) {
+            self::clearVillageCache();
+        }
+        return $result;
     }
 
 	function setVillageLevel($ref, $fields, $values) {
@@ -1310,8 +1317,12 @@ trait DatabaseVillageQueries {
                     crop = IF(crop $sign $crop < 0, 0, IF(crop $sign $crop > maxcrop, maxcrop, crop $sign $crop))$lastupdateSql
                 WHERE
                     wref = " . $vid ;
-					
-         return mysqli_query( $this->dblink, $q);
+
+         $result = mysqli_query( $this->dblink, $q);
+         if ($result) {
+             self::clearVillageCache();
+         }
+         return $result;
 	}
 
    	function setMaxStoreForVillage($vid, $maxLevel) {
@@ -2370,7 +2381,7 @@ trait DatabaseVillageQueries {
     // no need to cache this method
 	function getArrayMemberVillage($uid) {
 	    list($uid) = $this->escape_input((int) $uid);
-		$q = 'SELECT a.wref, a.name, b.x, b.y from '.TB_PREFIX.'vdata AS a left join '.TB_PREFIX.'wdata AS b ON b.id = a.wref where owner = '.$uid.' ORDER BY name ASC';
+		$q = 'SELECT a.wref, a.name, a.capital, b.x, b.y from '.TB_PREFIX.'vdata AS a left join '.TB_PREFIX.'wdata AS b ON b.id = a.wref where owner = '.$uid.' ORDER BY name ASC';
 		$result = mysqli_query($this->dblink,$q);
 		$array = $this->mysqli_fetch_all($result);
 		return $array;

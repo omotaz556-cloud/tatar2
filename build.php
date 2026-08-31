@@ -34,6 +34,7 @@ AccessLogger::logRequest();
  * "Undefined variable $route" pe fiecare deschidere de cladire.
  */
 $route = 0;
+$create = 0;
 
 if(isset($_GET['newdid'])){
     $_SESSION['wid'] = $_GET['newdid'];
@@ -230,53 +231,67 @@ if ($session->goldclub == 1 && count($session->villages) > 1) {
     }
 }
 
-if ($session->goldclub == 1) {
-    if (isset($_GET['t']) == 99) {
-        if(isset($_GET['action'])){
-            if($_GET['action'] == 'addList') $create = 1;
-            elseif($_GET['action'] == 'addraid') $create = 2;
-            elseif($_GET['action'] == 'showSlot' && $_GET['eid']) $create = 3; 
-        }       
-        else $create = 0;
+$farmTab = isset($_GET['t']) && (int) $_GET['t'] === 99;
 
-        if(isset($_GET['slid']) && $_GET['slid']){
-            $FLData = $database->getFLData($_GET['slid']);
-            if ($FLData['owner'] == $session->uid) $checked[$_GET['slid']] = 1;
-        }
+if ($farmTab) {
+    if (!isset($checked)) {
+        $checked = array();
+    }
 
-        if(isset($_GET['action']) && $_GET['action'] == 'deleteList') {
-            $database->delFarmList($_GET['lid'], $session->uid);
-            header("Location: build.php?id=39&t=99");
-            exit;
-        } elseif(isset($_GET['action']) && $_GET['action'] == 'deleteSlot') {
-            $database->delSlotFarm($_GET['eid'], $session->uid, $_GET['lid']);
-            header("Location: build.php?id=39&t=99");
-            exit;
-        }
-
-        if(isset($_POST['action']) && $_POST['action'] == 'startRaid') $units->startRaidList($_POST);
-
-        if(isset($_GET['slid']) && is_numeric($_GET['slid'])) {
-            $FLData = $database->getFLData($_GET['slid']);
-            if ($FLData['owner'] == $session->uid) $checked[$_GET['slid']] = 1;
-        }
-
-        if(isset($_GET['evasion']) && is_numeric($_GET['evasion'])) {
-            $evasionvillage = $database->getVillage($_GET['evasion']);
-            if($evasionvillage['owner'] == $session->uid) $database->setVillageEvasion($_GET['evasion']);
-            
-            header("Location: build.php?id=39&t=99");
-            exit;
-        }
-
-        if (isset($_POST['maxevasion']) && is_numeric($_POST['maxevasion'])) {
-            $database->updateUserField($session->uid, "maxevasion", $_POST['maxevasion'], 1);
-            header("Location: build.php?id=39&t=99" );
-            exit;
+    if (isset($_GET['action'])) {
+        if ($_GET['action'] === 'addList') {
+            $create = 1;
+        } elseif ($_GET['action'] === 'addraid') {
+            $create = 2;
+        } elseif ($_GET['action'] === 'showSlot' && !empty($_GET['eid'])) {
+            $create = 3;
         }
     }
+
+    if (isset($_GET['slid']) && $_GET['slid']) {
+        $FLData = $database->getFLData($_GET['slid']);
+        if ($FLData['owner'] == $session->uid) {
+            $checked[$_GET['slid']] = 1;
+        }
+    }
+
+    if (isset($_GET['action']) && $_GET['action'] === 'deleteList' && !empty($_GET['lid'])) {
+        $database->delFarmList((int) $_GET['lid'], $session->uid);
+        header('Location: build.php?id=39&t=99');
+        exit;
+    } elseif (isset($_GET['action']) && $_GET['action'] === 'deleteSlot' && !empty($_GET['eid']) && !empty($_GET['lid'])) {
+        $database->delSlotFarm((int) $_GET['eid'], $session->uid, (int) $_GET['lid']);
+        header('Location: build.php?id=39&t=99');
+        exit;
+    }
+
+    if ($session->goldclub == 1 && isset($_POST['action']) && $_POST['action'] === 'startRaid') {
+        $units->startRaidList($_POST);
+    }
+
+    if (isset($_GET['slid']) && is_numeric($_GET['slid'])) {
+        $FLData = $database->getFLData($_GET['slid']);
+        if ($FLData['owner'] == $session->uid) {
+            $checked[$_GET['slid']] = 1;
+        }
+    }
+
+    if ($session->goldclub == 1 && isset($_GET['evasion']) && is_numeric($_GET['evasion'])) {
+        $evasionvillage = $database->getVillage($_GET['evasion']);
+        if ($evasionvillage['owner'] == $session->uid) {
+            $database->setVillageEvasion($_GET['evasion']);
+        }
+
+        header('Location: build.php?id=39&t=99');
+        exit;
+    }
+
+    if ($session->goldclub == 1 && isset($_POST['maxevasion']) && is_numeric($_POST['maxevasion'])) {
+        $database->updateUserField($session->uid, 'maxevasion', $_POST['maxevasion'], 1);
+        header('Location: build.php?id=39&t=99');
+        exit;
+    }
 }
-else $create = 0;
 
 if(isset($_POST['a']) == 533374 && isset($_POST['id']) == 39) $units->Settlers($_POST);
 
@@ -485,7 +500,7 @@ if ($gkBuildId > 0 && !empty($village->resarray['f' . $gkBuildId . 't'])) {
 }
 $gkExtraCss = array(GP_LOCATE . 'lang/en/build.override.css?v=' . ((int) @filemtime(__DIR__ . '/' . GP_LOCATE . 'lang/en/build.override.css') ?: time()));
 $gkBuildCss = 'css/greek_maxb_build.css';
-if (is_file(__DIR__ . '/' . $gkBuildCss) && in_array($gkBuildGid, array(17, 19, 37), true)) {
+if (is_file(__DIR__ . '/' . $gkBuildCss) && in_array($gkBuildGid, array(16, 17, 19, 37), true)) {
 	$gkExtraCss[] = $gkBuildCss . '?v=' . ((int) @filemtime(__DIR__ . '/' . $gkBuildCss));
 }
 tz_greek_shell_head($gkPageTitle, 'pg-build build-id-' . $gkBuildId . ($gkBuildGid ? ' gid-' . $gkBuildGid : ''), array(

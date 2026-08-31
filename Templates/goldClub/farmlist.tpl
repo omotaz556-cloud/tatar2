@@ -42,9 +42,23 @@ $farmlists = mysqli_query(
      ORDER BY wref DESC"
 );
 
+$farmRaidSlotCount = 0;
+$farmRaidCountRes = mysqli_query(
+    $database->dblink,
+    'SELECT COUNT(*) AS cnt FROM ' . TB_PREFIX . 'raidlist r INNER JOIN ' . TB_PREFIX . 'farmlist f ON r.lid = f.id WHERE f.owner = ' . (int) $session->uid
+);
+if ($farmRaidCountRes && ($farmRaidCountRow = mysqli_fetch_assoc($farmRaidCountRes))) {
+    $farmRaidSlotCount = (int) $farmRaidCountRow['cnt'];
+}
+
+if ($isFarmlistPage && isset($_POST['action']) && $_POST['action'] === 'addSlot') {
+    include __DIR__ . '/farmlist_add_farm_process.inc.tpl';
+}
+
 ?>
 
-<form action="build.php?id=39&t=99&action=startRaid" method="post" name="msg">
+<div class="gk-farms-wrap">
+<form action="build.php?id=39&amp;t=99&amp;action=startRaid" method="post" name="msg">
 <input type="hidden" name="action" value="startRaid">
 
 <?php
@@ -264,33 +278,33 @@ if (mysqli_num_rows($getnotice) > 0) {
 </div>
 
 <div class="addSlot">
-    <button type="button" onclick="window.location.href='?gid=16&t=99&action=addraid';"><?php echo TZ_ADD_RAID; ?></button>
+    <button type="button" onclick="window.location.href='build.php?id=39&amp;t=99#gk-farm-add';"><?php echo TZ_ADD_RAID; ?></button>
+    <?php if (!empty($session->goldclub)): ?>
     <button type="submit"><?php echo TZ_START_RAID; ?></button>
+    <?php endif; ?>
 </div>
 
 <?php } ?>
 
-<div class="options">
-    <a class="arrow" href="build.php?gid=16&t=99&action=addList"><?php echo TZ_CREATE_A_NEW_LIST; ?></a>
-</div>
-
 </form>
 
 <?php
+$showFarmEmptyMsg = ($farmRaidSlotCount === 0);
+include __DIR__ . '/farmlist_add_farm_form.tpl';
+?>
+
+</div>
+
+<?php
 /* =========================
-   INCLUDE FORMS (UNCHANGED)
+   CREATE LIST / EDIT SLOT
 ========================= */
 
 if ($create == 1) {
     $hideevasion = 1;
-    include("Templates/goldClub/farmlist_add.tpl");
-
-} else if ($create == 2) {
+    include __DIR__ . '/farmlist_add.tpl';
+} elseif ($create == 3) {
     $hideevasion = 1;
-    include("Templates/goldClub/farmlist_addraid.tpl");
-
-} else if ($create == 3) {
-    $hideevasion = 1;
-    include("Templates/goldClub/farmlist_editraid.tpl");
+    include __DIR__ . '/farmlist_editraid.tpl';
 }
 ?>

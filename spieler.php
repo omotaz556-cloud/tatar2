@@ -126,7 +126,7 @@ if (
         $cycle = (string) $_POST['hub_cycle'];
         if ($cycle === 'upgrade_redirect') {
             $cur = (int) ($session->userinfo['upgrade_redirect'] ?? 0);
-            $setParts[] = 'upgrade_redirect=' . (($cur + 1) % 3);
+            $setParts[] = 'upgrade_redirect=' . ($cur === 1 ? 0 : 1);
         } elseif ($cycle === 'stats_format') {
             $cur = (int) ($session->userinfo['stats_format'] ?? 0);
             $setParts[] = 'stats_format=' . (($cur + 1) % 3);
@@ -179,8 +179,12 @@ include_once('GameEngine/GreekSpieler.php');
 
 $gkSpielerCss = 'css/greek_maxb_spieler.css';
 $gkSpielerCssVer = is_file(__DIR__ . '/' . $gkSpielerCss) ? (int) @filemtime(__DIR__ . '/' . $gkSpielerCss) : time();
-$gkSpielerGreek = $gkSpielerRtl && class_exists('GreekSpieler');
+$gkSpielerGreekShell = class_exists('GreekSpieler');
+$gkSpielerGreek = $gkSpielerRtl && $gkSpielerGreekShell;
+// Public profile overview (medal wall) uses Greek layout for every viewer.
+$gkSpielerProfileGreek = $gkSpielerGreekShell;
 $GLOBALS['gkSpielerGreek'] = $gkSpielerGreek;
+$GLOBALS['gkSpielerProfileGreek'] = $gkSpielerProfileGreek;
 $GLOBALS['gkSpielerNameReserve'] = false;
 
 if ($gkSpielerGreek && isset($_GET['s']) && (int) $_GET['s'] === 2) {
@@ -286,7 +290,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 }
 $gkHeadOpts = array('includeNew2Js' => false);
-if ($gkSpielerGreek) {
+$gkSpielerCssNeeded = $gkSpielerGreek
+    || ($gkSpielerProfileGreek && isset($_GET['uid']) && (int) $_GET['uid'] >= 2);
+if ($gkSpielerCssNeeded) {
     $gkHeadOpts['extraCss'] = array($gkSpielerCss . '?v=' . $gkSpielerCssVer);
 }
 tz_greek_shell_head($gkPageTitle, 'pg-spieler', $gkHeadOpts);
@@ -305,7 +311,7 @@ if(isset($_GET['uid'])) {
 
     if($_GET['uid'] >= 2) {
 
-        $user = $database->getUserArray(preg_replace("/[^a-zA-Z0-9_-]/","",$_GET['uid']),1);
+        $user = $database->getUserArray((int) $_GET['uid'], 1, false);
 
         if(isset($user['id'])){
 
@@ -321,8 +327,8 @@ if(isset($_GET['uid'])) {
             $viewingSelf = ((int) $user['id'] === (int) $session->uid);
             $wantDetails = !empty($_GET['details']);
             $wantHub = !empty($_GET['hub']);
-            if ($gkSpielerGreek) {
-                if ($wantHub && $viewingSelf
+            if ($gkSpielerProfileGreek) {
+                if ($gkSpielerGreek && $wantHub && $viewingSelf
                     && !(method_exists($session, 'isSitterSession') && $session->isSitterSession())
                 ) {
                     include('Templates/Greek/options_greek.tpl');

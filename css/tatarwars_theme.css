@@ -1,0 +1,208 @@
+@charset "UTF-8";
+
+/**
+ * tatarwars-fv7 visual theme (safe layer)
+ * Typography, resbar, nav links. Shell grid stays Greek 1024px (dorf1_greek.css).
+ * Layout file tatarwars_layout.css is disabled — it breaks pages on Greek shell.
+ */
+
+/* ---- Base typography (tatarwars body 14px) ---- */
+html.pg-gk[dir="rtl"] body.pg-gk,
+body.pg-gk {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+    font-weight: 400 !important;
+}
+
+body.pg-gk .gk-td-main #content,
+body.pg-gk .gk-td-main #bodyWrapper,
+body.pg-gk .gk-td-main #content.build {
+    font-size: 14px !important;
+}
+
+body.pg-gk .gk-td-main p {
+    line-height: 1.45;
+}
+
+/* ---- Headings (tatarwars h1 25px) ---- */
+body.pg-gk .gk-td-main #content > h1,
+body.pg-gk .gk-td-main #content.messages > h1,
+body.pg-gk .gk-td-main #content.reports > h1,
+body.pg-gk .gk-td-main #content.statistics > h1,
+body.pg-gk .gk-td-main #content.player > h1,
+body.pg-gk .gk-td-main #content.plus > h1,
+body.pg-gk.pg-build div#build:not(.gid0) h1 {
+    font-size: 25px !important;
+    font-weight: 400 !important;
+    line-height: 1.2 !important;
+    min-height: 29px !important;
+    color: #000 !important;
+}
+
+body.pg-gk.pg-dorf1 .gk-h1.PaNa,
+body.pg-gk.pg-dorf2 .gk-h1.PaNa {
+    font-weight: 400 !important;
+}
+
+/* ---- Text menu (tatarwars 14px) ---- */
+body.pg-gk #textmenu,
+body.pg-gk #textmenu a {
+    font-size: 14px !important;
+}
+
+html[dir="rtl"] body.pg-gk #textmenu a.selected {
+    color: inherit !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    border-bottom: 1px dashed silver !important;
+}
+
+/* ---- Form controls ---- */
+body.pg-gk input.text,
+body.pg-gk select,
+body.pg-gk textarea {
+    font-size: 12px !important;
+    padding: 2px 3px !important;
+}
+
+body.pg-gk input.text {
+    border: 1px solid #71d000;
+}
+
+/* ---- Resource bar pills (tatarwars style, readable size) ---- */
+body.pg-gk .gk-resbar {
+    width: 1024px !important;
+    max-width: 98% !important;
+    margin: 6px auto 10px !important;
+    justify-content: center !important;
+    gap: 0 !important;
+}
+
+body.pg-gk .gk-resitem {
+    gap: 0 !important;
+}
+
+body.pg-gk .gk-resitem b,
+body.pg-gk .gk-resitem b.gk-cap {
+    display: inline-block !important;
+    width: 62px !important;
+    min-width: 62px !important;
+    max-width: 62px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 16px !important;
+    padding: 3px 5px !important;
+    margin: 0 !important;
+    color: #fff !important;
+    background-color: #54c571 !important;
+    border-radius: 5px !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    box-sizing: border-box !important;
+}
+
+body.pg-gk .gk-resitem b.gk-cap {
+    color: #fff !important;
+}
+
+body.pg-gk .gk-resitem b span {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    font-weight: inherit !important;
+}
+
+body.pg-gk .gk-resitem img {
+    display: inline-block !important;
+    margin-left: 1px !important;
+    margin-right: 0 !important;
+    flex: 0 0 auto !important;
+    visibility: visible !important;
+}
+
+/* Icons: tatarwars res2.gif sprite (r1–r5, warehouse, granary) via dorf1_greek.css. */
+
+/* ---- Right nav (tatarwars side_navi) ---- */
+body.pg-gk .gk-rlista {
+    font-size: 13px !important;
+    line-height: 20px !important;
+}
+
+body.pg-gk .gk-rlista a {
+    display: block !important;
+    padding-right: 12px !important;
+    padding-left: 0 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    font-weight: 400 !important;
+    width: auto !important;
+}
+
+/* ---- Village coord / capital label ---- */
+body.pg-gk .gk-bod .PaNa a.gk-cap,
+body.pg-gk span#cap,
+body.pg-gk span#cap font {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: #a0a0a0 !important;
+}
+
+/* ---- Build pages: logo + description (column stays 588px) ---- */
+body.pg-gk.pg-build div#build:not(.gid0) a.build_logo {
+    width: 75px !important;
+    height: 100px !important;
+    top: 35px !important;
+    left: 13px !important;
+}
+
+body.pg-gk.pg-build div#build:not(.gid0) p.build_desc {
+    padding: 0 0 0 70px !important;
+    min-height: 100px !important;
+    line-height: 19px !important;
+    font-size: 14px !important;
+}
+
+body.pg-gk.pg-build #textmenu a {
+    font-size: 14px !important;
+}
+
+/* ---- Messages / reports / statistics table density ---- */
+body.pg-gk.pg-nachrichten .gk-td-main table td,
+body.pg-gk.pg-nachrichten .gk-td-main table th,
+body.pg-gk.pg-berichte .gk-td-main table td,
+body.pg-gk.pg-berichte .gk-td-main table th,
+body.pg-gk.pg-statistics .gk-td-main table td,
+body.pg-gk.pg-statistics .gk-td-main table th,
+body.pg-gk.pg-plus .gk-td-main table td,
+body.pg-gk.pg-plus .gk-td-main table th {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    padding: 3px 7px !important;
+    line-height: 17px !important;
+}
+
+/* ---- Classic shell pages (manual, etc.) without pg-gk ---- */
+html[dir="rtl"] body.v35:not(.pg-gk),
+html[dir="rtl"] body.v35:not(.pg-gk) #content {
+    font-size: 14px !important;
+}
+
+html[dir="rtl"] body.v35:not(.pg-gk) #content > h1,
+html[dir="rtl"] body.v35:not(.pg-gk) #content.village1 > h1,
+html[dir="rtl"] body.v35:not(.pg-gk) #content.messages > h1,
+html[dir="rtl"] body.v35:not(.pg-gk) #content.reports > h1,
+html[dir="rtl"] body.v35:not(.pg-gk) #content.statistics > h1,
+html[dir="rtl"] body.v35:not(.pg-gk) #content.player > h1,
+html[dir="rtl"] body.v35:not(.pg-gk) #content.plus > h1 {
+    font-size: 25px !important;
+    font-weight: 400 !important;
+}
+
+html[dir="rtl"] body.v35:not(.pg-gk) #textmenu,
+html[dir="rtl"] body.v35:not(.pg-gk) #textmenu a {
+    font-size: 14px !important;
+}
+
+html[dir="rtl"] body.v35:not(.pg-gk) #textmenu a.selected {
+    border-bottom: 1px dashed silver !important;
+    text-decoration: none !important;
+}

@@ -61,9 +61,11 @@ body.pg-gk.pg-nachrichten table.gk-shell > tbody > tr > td.gk-td-main {
     height: auto !important;
     min-height: 480px !important;
     background: #fff !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
     box-shadow:
-        -12px 0 20px -18px rgba(0, 0, 0, 0.12),
-        12px 0 20px -18px rgba(0, 0, 0, 0.12) !important;
+        -20px 0 24px -24px rgba(0, 0, 0, 0.2),
+        20px 0 24px -24px rgba(0, 0, 0, 0.2) !important;
     overflow: visible !important;
     text-align: right !important;
     direction: rtl !important;
@@ -144,7 +146,7 @@ body.pg-gk.pg-nachrichten .gk-td-nav .gk-rlista a.plus {
 
 /* Resbar — same placement/centering as dorf1 (above shell, centered) */
 body.pg-gk.pg-nachrichten > .gk-resbar {
-    width: 1000px !important;
+    width: 1024px !important;
     max-width: 98% !important;
     margin: 8px auto 2px !important;
     padding: 0 !important;
@@ -280,7 +282,7 @@ body.pg-gk.pg-nachrichten #BP .PaNa {
     text-align: right;
     width: 100%;
     font-weight: 900;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     color: #000;
     margin: 0 0 6px;
     padding: 0;
@@ -367,7 +369,7 @@ body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S:not(.gk-sta-ally):not(.gk-sta-her
 
 /* Alliance table — exact greek.sa reference (4 cols: # | التحالف | اللاعبون | النقاط) */
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-ally {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
 }
@@ -386,7 +388,7 @@ body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-ally th,
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-ally th a,
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-ally th bdi,
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-ally tr.gk-sta-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 4px 6px !important;
@@ -432,7 +434,7 @@ body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-ally tbody tr th.al a {
 }
 
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-ally .staTit {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -442,7 +444,7 @@ body.pg-gk.pg-nachrichten #BP table.gk-sta-foot .gk-sta-search input,
 body.pg-gk.pg-nachrichten #BP table.gk-sta-foot .gk-sta-search button,
 body.pg-gk.pg-nachrichten #BP table.gk-sta-foot .gk-sta-navi,
 body.pg-gk.pg-nachrichten #BP table.gk-sta-foot .gk-sta-navi a {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 301;
 }
@@ -499,7 +501,7 @@ body.pg-gk.pg-nachrichten #BP .gk-sta-hero-wrap {
 }
 
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
     table-layout: fixed;
@@ -549,7 +551,7 @@ body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero col.gk-sta-hero-life-
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero th,
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero th a,
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero th bdi {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 4px 5px !important;
@@ -557,7 +559,7 @@ body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero th bdi {
 }
 
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero tr.gk-sta-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 12px !important;
     text-align: center !important;
     padding: 5px 3px !important;
@@ -712,7 +714,7 @@ body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero tbody tr th.life.dead
 }
 
 body.pg-gk.pg-nachrichten #BP table.b0.fl.L6_S.gk-sta-hero .staTit {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -766,7 +768,7 @@ body.pg-gk.pg-nachrichten #BP .gk-sta-natars {
     text-align: center;
     background: transparent;
     border: none;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 body.pg-gk.pg-nachrichten #BP .gk-sta-natars-lab {
@@ -786,7 +788,7 @@ body.pg-gk.pg-nachrichten #BP .gk-sta-natars-clock {
     font-weight: 301;
     line-height: 1.1;
     letter-spacing: 1px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     direction: ltr;
     unicode-bidi: embed;
 }
@@ -804,7 +806,7 @@ body.pg-gk.pg-nachrichten #BP table.a.b0.gk-sta-gen {
     width: 588px !important;
     max-width: 100%;
     margin: 0 0 10px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
     table-layout: fixed;
@@ -968,7 +970,7 @@ body.pg-gk.pg-nachrichten #BP table.a.b0.gk-sta-news {
     table-layout: fixed;
     border-collapse: collapse;
     border: 1px solid #ccc;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.45;
     float: none !important;
@@ -2055,7 +2057,7 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview {
     border-spacing: 0 !important;
     margin: 0;
     font-size: 13px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     direction: rtl;
     table-layout: fixed;
     background: #fff;
@@ -2071,7 +2073,7 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview co
 }
 
 body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview col.gk-msg-c-dat {
-    width: 96px;
+    width: 108px;
 }
 
 body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview col.gk-msg-c-sub {
@@ -2147,14 +2149,42 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview td
     text-decoration: underline;
 }
 
-body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview td.dat {
-    width: 96px;
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview td.dat,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview th.dat {
+    width: 108px;
+    max-width: 108px;
+    min-width: 108px;
     text-align: center;
     color: #666;
     font-weight: 301;
-    white-space: nowrap;
-    padding: 4px 4px;
+    padding: 4px 3px;
     vertical-align: middle;
+    overflow: hidden;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview td.dat .gk-msg-dat,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview th.dat .gk-msg-dat {
+    display: block;
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: center;
+    line-height: 1.25;
+    white-space: normal;
+    word-break: keep-all;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview td.dat .gk-msg-dat-time,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview th.dat .gk-msg-dat-time {
+    display: block;
+    font-size: 11px;
+    color: #555;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview td.dat .gk-msg-dat-day,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview th.dat .gk-msg-dat-day {
+    display: block;
+    font-size: 11px;
+    color: #888;
 }
 
 body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview td.none {
@@ -2197,7 +2227,7 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview tf
     border-radius: 10px;
     background: linear-gradient(180deg, #fefefe 0%, #ececec 45%, #d8d8d8 100%);
     color: #333;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
@@ -2236,7 +2266,9 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview tf
     color: #b0b0b0;
     font-weight: 700;
     font-size: 13px;
-    width: 96px;
+    width: 108px;
+    max-width: 108px;
+    min-width: 108px;
     white-space: nowrap;
     padding: 4px 6px;
     background: #ececec;
@@ -2270,7 +2302,7 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-panel {
     border: 1px solid #c9c9c9;
     background: #fff;
     direction: rtl;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-panel-title {
@@ -2298,7 +2330,7 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body button.gk-msg-del {
     border-radius: 12px;
     background: linear-gradient(180deg, #c8f0b8 0%, #6fcf57 35%, #4dad3a 70%, #3d9630 100%);
     color: #fff;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
     line-height: 20px;
@@ -2311,29 +2343,256 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body button.gk-msg-back {
     margin-inline-start: 6px;
 }
 
-body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content #heading input.text,
-body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content textarea.message {
-    width: 100%;
-    max-width: 100%;
+body.pg-gk.pg-nachrichten .gk-nachrichten-body button.gk-msg-send {
+    min-width: 88px;
+    height: 30px;
+    font-size: 14px;
+}
+
+/* ---- Write message: reset classic Travian msg block inside Greek shell ---- */
+body.pg-gk.pg-nachrichten .gk-nachrichten-body.messages div#write_content,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: static !important;
+    float: none !important;
+    clear: both !important;
+    background: none !important;
+    background-image: none !important;
     box-sizing: border-box;
-    border: 1px solid #c9c9c9;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 13px;
     direction: rtl;
 }
 
-body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content #heading input.text {
-    margin: 0 0 6px;
-    padding: 4px 6px;
+body.pg-gk.pg-nachrichten .gk-nachrichten-body.messages div#write_content .line,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content .line,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content .line.bbLine {
+    height: auto !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    background: none !important;
+    background-image: none !important;
+    border-top: 1px solid #e0e0e0;
+    margin: 8px 0;
+    clear: both;
 }
 
-body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content textarea.message {
-    min-height: 180px;
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content .line.bbLine,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container .line.bbLine {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    padding: 0 !important;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-recipient-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 8px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-field {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-field-subject {
+    margin-bottom: 8px;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 4px;
+    text-align: right;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content input.text,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body.messages div#write_content #heading input,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body.messages div#write_content input.text {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    margin: 0 !important;
+    padding: 4px 8px !important;
+    border: 1px solid #c9c9c9 !important;
+    background: #fff !important;
+    background-image: none !important;
+    box-sizing: border-box;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    direction: rtl;
+    float: none !important;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-adbook,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body.messages div#write_content a#adbook {
+    display: block !important;
+    flex: 0 0 48px;
+    width: 48px !important;
+    height: 29px !important;
+    margin: 0 !important;
+    float: none !important;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-adbook img,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body.messages div#write_content a#adbook img {
+    display: block;
+    width: 48px !important;
+    height: 29px !important;
+    background-image: url(../gpack/novaterra_classic/img/a/friends.gif) !important;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    border: 0;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container {
+    width: 100% !important;
+    clear: both;
+    position: relative;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_toolbar {
+    width: 100% !important;
+    box-sizing: border-box;
+    margin: 0 0 6px;
+    padding: 4px 6px !important;
+    border: 1px solid #dcdcdc;
+    background: #f5f5f5;
+    direction: rtl;
+    position: relative;
+    clear: both;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_toolbar a {
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbButton,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #text_container div.bbButton {
+    background-image: url(../gpack/novaterra_classic/img/msg/bb_buttons.png) !important;
+    float: none !important;
+    display: inline-block !important;
+    height: 25px !important;
+    width: 25px !important;
+    margin: 1px !important;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbBold { background-position: 0 0 !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbItalic { background-position: -27px 0 !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbUnderscore { background-position: -54px 0 !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbAlliance { background-position: -81px 0 !important; margin-left: 8px !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbPlayer { background-position: -108px 0 !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbCoordinate { background-position: -135px 0 !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbReport { background-position: -162px 0 !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbPreview { background-position: -189px 0 !important; float: right !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbResource { background-position: -216px 0 !important; margin-left: 8px !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbSmilie { background-position: -243px 0 !important; }
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div.bbTroop { background-position: -270px 0 !important; }
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_toolbarWindows {
+    position: relative;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_container div#message_toolbarWindows div {
+    background: #efefef !important;
+    border: 1px solid #71d000 !important;
+    display: none;
+    position: absolute;
+    right: 0;
+    left: auto;
+    top: 100%;
+    margin-top: 4px;
+    max-width: 280px;
+    padding: 5px;
+    z-index: 30;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body #message_preview {
+    display: none;
+    width: 100% !important;
+    min-height: 120px;
+    max-height: 260px;
+    overflow: auto;
+    border: 1px solid #c9c9c9;
+    background: #fff;
     padding: 6px;
+    box-sizing: border-box;
     margin-top: 6px;
 }
 
-body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content .line,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-write-content textarea.message,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body.messages div#write_content textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 200px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    border: 1px solid #c9c9c9 !important;
+    background: #fff !important;
+    background-image: none !important;
+    box-sizing: border-box;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+    direction: ltr;
+    text-align: right;
+    unicode-bidi: plaintext;
+    resize: vertical;
+    float: none !important;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-send-row,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body.messages div#write_content p.btn {
+    margin: 12px 0 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    clear: both;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #adressbook {
+    position: relative !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 12px 0 0;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #fafafa !important;
+    background-image: none !important;
+    border: 1px solid #c9c9c9;
+    text-align: right;
+    z-index: 1;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #adressbook.hide {
+    display: none !important;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-warn {
+    margin: 10px 0 0;
+    padding: 0;
+    color: #c00;
+    font-size: 12px;
+    line-height: 1.45;
+    text-align: right;
+}
+
 body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-read-content .line {
     border-top: 1px solid #e0e0e0;
     margin: 8px 0;
@@ -2367,27 +2626,71 @@ body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-notes-area {
     box-sizing: border-box;
     border: 1px solid #c9c9c9;
     padding: 8px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     direction: rtl;
     resize: vertical;
 }
 
-body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-warn {
-    margin: 10px 0 0;
-    color: #c00;
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #adressbook h2 {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    text-align: right;
+    color: #000;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #friendlist {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #friendlist td {
+    padding: 3px 4px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #friendlist td.pla a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #friendlist input.text {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #c9c9c9;
+    padding: 2px 4px;
     font-size: 12px;
 }
 
-body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #adressbook {
-    margin-top: 12px;
-    border: 1px solid #c9c9c9;
-    padding: 8px;
-    background: #fafafa;
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #close {
+    display: block;
+    margin: 8px auto 0;
+    width: 16px;
+    height: 16px;
+    background: url(../gpack/novaterra_classic/img/a/close.gif) no-repeat 0 0;
+    border: 0;
 }
 
-body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-compose #adressbook.hide {
-    display: none;
+body.pg-gk.pg-nachrichten .gk-nachrichten-body .gk-msg-ignored-empty {
+    text-align: center;
+    padding: 24px 12px;
+    color: #666;
+    font-size: 13px;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview tbody tr.unread td.top a {
+    font-weight: 900;
+}
+
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview tbody tr.sup td.send,
+body.pg-gk.pg-nachrichten .gk-nachrichten-body table#overview.gk-msg-overview tbody tr.sup td.send a {
+    color: #c88400;
+    font-weight: 700;
 }
 
 body.pg-gk.pg-nachrichten .gk-nachrichten-body p.btn {

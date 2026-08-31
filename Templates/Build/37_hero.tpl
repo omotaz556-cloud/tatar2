@@ -249,13 +249,13 @@ $safeUnit = htmlspecialchars($unitName, ENT_QUOTES, 'UTF-8');
 		#build.gid37 table#distribution.gk-hero-info .gk-xp-txt {
 			position: absolute; inset: 0; text-align: center; line-height: 22px !important;
 			font-size: 12px !important; font-weight: 400 !important; color: #000 !important;
-			font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+			font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
 		}
 		#build.gid37 table#distribution.gk-hero-info a.gk-edit-link {
 			color: #1a2438 !important; font-size: 12px !important; font-weight: 400 !important;
 			text-decoration: none !important; display: inline-block !important; width: 100%;
 			background: none !important; border: none !important; text-align: center !important;
-			line-height: 22px !important; font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+			line-height: 22px !important; font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
 			cursor: pointer;
 		}
 		#build.gid37 table#distribution.gk-hero-info a.gk-edit-link:hover {

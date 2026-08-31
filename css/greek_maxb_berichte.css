@@ -61,9 +61,11 @@ body.pg-gk.pg-berichte table.gk-shell > tbody > tr > td.gk-td-main {
     height: auto !important;
     min-height: 480px !important;
     background: #fff !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
     box-shadow:
-        -12px 0 20px -18px rgba(0, 0, 0, 0.12),
-        12px 0 20px -18px rgba(0, 0, 0, 0.12) !important;
+        -20px 0 24px -24px rgba(0, 0, 0, 0.2),
+        20px 0 24px -24px rgba(0, 0, 0, 0.2) !important;
     overflow: visible !important;
     text-align: right !important;
     direction: rtl !important;
@@ -144,7 +146,7 @@ body.pg-gk.pg-berichte .gk-td-nav .gk-rlista a.plus {
 
 /* Resbar — same placement/centering as dorf1 (above shell, centered) */
 body.pg-gk.pg-berichte > .gk-resbar {
-    width: 1000px !important;
+    width: 1024px !important;
     max-width: 98% !important;
     margin: 8px auto 2px !important;
     padding: 0 !important;
@@ -280,7 +282,7 @@ body.pg-gk.pg-berichte #BP .PaNa {
     text-align: right;
     width: 100%;
     font-weight: 900;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     color: #000;
     margin: 0 0 6px;
     padding: 0;
@@ -366,7 +368,7 @@ body.pg-gk.pg-berichte #BP table.b0.fl.L6_S:not(.gk-sta-ally):not(.gk-sta-hero):
 
 /* Alliance table — exact greek.sa reference (4 cols: # | التحالف | اللاعبون | النقاط) */
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-ally {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
 }
@@ -385,7 +387,7 @@ body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-ally th,
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-ally th a,
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-ally th bdi,
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-ally tr.gk-sta-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 4px 6px !important;
@@ -431,7 +433,7 @@ body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-ally tbody tr th.al a {
 }
 
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-ally .staTit {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -441,7 +443,7 @@ body.pg-gk.pg-berichte #BP table.gk-sta-foot .gk-sta-search input,
 body.pg-gk.pg-berichte #BP table.gk-sta-foot .gk-sta-search button,
 body.pg-gk.pg-berichte #BP table.gk-sta-foot .gk-sta-navi,
 body.pg-gk.pg-berichte #BP table.gk-sta-foot .gk-sta-navi a {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 301;
 }
@@ -498,7 +500,7 @@ body.pg-gk.pg-berichte #BP .gk-sta-hero-wrap {
 }
 
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
     table-layout: fixed;
@@ -548,7 +550,7 @@ body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero col.gk-sta-hero-life-col
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero th,
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero th a,
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero th bdi {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 4px 5px !important;
@@ -556,7 +558,7 @@ body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero th bdi {
 }
 
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero tr.gk-sta-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 12px !important;
     text-align: center !important;
     padding: 5px 3px !important;
@@ -711,7 +713,7 @@ body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero tbody tr th.life.dead {
 }
 
 body.pg-gk.pg-berichte #BP table.b0.fl.L6_S.gk-sta-hero .staTit {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -765,7 +767,7 @@ body.pg-gk.pg-berichte #BP .gk-sta-natars {
     text-align: center;
     background: transparent;
     border: none;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 body.pg-gk.pg-berichte #BP .gk-sta-natars-lab {
@@ -785,7 +787,7 @@ body.pg-gk.pg-berichte #BP .gk-sta-natars-clock {
     font-weight: 301;
     line-height: 1.1;
     letter-spacing: 1px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     direction: ltr;
     unicode-bidi: embed;
 }
@@ -803,7 +805,7 @@ body.pg-gk.pg-berichte #BP table.a.b0.gk-sta-gen {
     width: 588px !important;
     max-width: 100%;
     margin: 0 0 10px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
     table-layout: fixed;
@@ -967,7 +969,7 @@ body.pg-gk.pg-berichte #BP table.a.b0.gk-sta-news {
     table-layout: fixed;
     border-collapse: collapse;
     border: 1px solid #ccc;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.45;
     float: none !important;
@@ -2054,7 +2056,7 @@ body.pg-gk.pg-berichte .gk-berichte-body table#overview.gk-rpt-overview {
     border-spacing: 0 !important;
     margin: 0;
     font-size: 13px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     direction: rtl;
     table-layout: fixed;
     background: #fff;
@@ -2208,7 +2210,7 @@ body.pg-gk.pg-berichte .gk-berichte-body table#overview.gk-rpt-overview tfoot th
     border-radius: 10px;
     background: linear-gradient(180deg, #fefefe 0%, #ececec 45%, #d8d8d8 100%);
     color: #333;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
@@ -2263,13 +2265,391 @@ body.pg-gk.pg-berichte .gk-berichte-body table#overview.gk-rpt-overview tfoot th
 }
 
 /* Single-report view inside Greek shell */
-body.pg-gk.pg-berichte .gk-berichte-body table#report_surround {
-    width: 100% !important;
-    border-collapse: collapse;
-    direction: rtl;
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-nav {
+    position: relative;
+    height: 0;
+    z-index: 5;
 }
 
-body.pg-gk.pg-berichte .gk-berichte-body div.reports {
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-nav a {
+    position: absolute;
+    top: 6px;
+    display: block;
+    width: 28px;
+    height: 28px;
+    line-height: 26px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #71d000;
+    text-decoration: none;
+    z-index: 6;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-nav a:hover {
+    color: #4dad3a;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-nav-prev {
+    left: 4px;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-nav-next {
+    right: 4px;
+}
+
+/* ---- Report grid (Travian classic #c0c0c0 cell gutters) ---- */
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table#attacker,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table#defender,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table.defender,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table {
+    border-collapse: separate !important;
+    border-spacing: 1px !important;
+    background-color: #c0c0c0 !important;
+    border: 1px solid #c0c0c0 !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround {
     width: 100% !important;
-    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0;
+    table-layout: fixed;
+    direction: rtl;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    position: relative;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround col.gk-rpt-col-label {
+    width: 11%;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround col.gk-rpt-col-main {
+    width: auto;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround col.gk-rpt-col-meta {
+    width: 13%;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround thead {
+    width: 100%;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tr.gk-rpt-head-subject,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tr.gk-rpt-head-date {
+    width: 100%;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tbody td.empty,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tbody td.report_content {
+    width: 100%;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround thead th,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround thead td,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tbody td.empty,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tbody td.report_content {
+    border: none !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround thead th,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround thead td {
+    box-sizing: border-box;
+    padding: 2px 8px;
+    height: 22px;
+    line-height: 1.15;
+    vertical-align: middle;
+    text-align: right;
+    font-weight: 400;
+    color: #333;
+    background-color: #fff !important;
+    background-image: none !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tr.gk-rpt-head-subject td.gk-rpt-label,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tr.gk-rpt-head-date td.gk-rpt-label {
+    width: 11%;
+    font-weight: 700;
+    color: #333;
+    background-color: #f3f3f3 !important;
+    text-align: right;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tr.gk-rpt-head-subject td.gk-rpt-subject-val {
+    width: auto;
+    text-align: center;
+    font-weight: 400;
+    font-size: 12px;
+    color: #333;
+    background: linear-gradient(to bottom, #e8e8e8 0%, #f3f3f3 55%, #f7f7f7 100%) !important;
+    display: table-cell !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tr.gk-rpt-head-date td.gk-rpt-date-val {
+    width: auto;
+    text-align: center;
+    background-color: #fafafa !important;
+    direction: ltr;
+    unicode-bidi: plaintext;
+    font-size: 12px;
+    color: #333;
+    display: table-cell !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tr.gk-rpt-head-subject td.gk-rpt-subject-meta {
+    width: 13%;
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    color: #888 !important;
+    background: linear-gradient(to bottom, #e8e8e8 0%, #f3f3f3 55%, #f7f7f7 100%) !important;
+    background-color: #f3f3f3 !important;
+    background-image: none !important;
+    white-space: nowrap;
+    display: table-cell !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround tr.gk-rpt-head-date td.gk-rpt-date-meta {
+    width: 13%;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 400;
+    color: #999 !important;
+    background-color: #fafafa !important;
+    background-image: none !important;
+    white-space: nowrap;
+    display: table-cell !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround .gk-rpt-hl {
+    color: #71d000;
+    font-weight: 700;
+}
+
+/* Legacy span wrappers (if any template still uses them) */
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround .gk-rpt-date-main {
+    display: inline;
+    text-align: center;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td .gk-rpt-date-meta {
+    display: inline;
+    font-size: 11px;
+    color: #999;
+    direction: rtl;
+    text-align: left;
+    white-space: nowrap;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.empty {
+    height: 2px;
+    padding: 0;
+    border: none !important;
+    background-color: #c0c0c0 !important;
+    line-height: 0;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content {
+    padding: 1px !important;
+    border: none !important;
+    vertical-align: top;
+    background-color: #c0c0c0 !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table#attacker,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table#defender,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table.defender {
+    width: 100% !important;
+    margin: 0 0 1px !important;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table {
+    width: 100% !important;
+    margin: 0 0 1px !important;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table:last-child {
+    margin-bottom: 0 !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table thead td {
+    background-color: #f3f3f3 !important;
+    background-image: none !important;
+    text-align: center;
+    font-weight: 700;
+    color: #71d000;
+    padding: 2px 6px;
+    height: 22px;
+    line-height: 1.15;
+    border: none !important;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table thead td.role {
+    width: 56px;
+    min-width: 56px;
+    max-width: 56px;
+    text-align: right;
+    color: #c00;
+    font-weight: 700;
+    background-color: #f7f7f7 !important;
+    padding: 2px 4px;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table thead td a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table thead td .gk-rpt-npc {
+    color: #71d000;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table thead td a:hover {
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody th {
+    width: 56px;
+    min-width: 56px;
+    max-width: 56px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 11px;
+    color: #333;
+    background-color: #fafafa !important;
+    border: none !important;
+    padding: 2px 4px;
+    height: 22px;
+    line-height: 1.15;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.units td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1px 2px;
+    height: 22px;
+    line-height: 1.1;
+    border: none !important;
+    background-color: #fff !important;
+    width: auto;
+    min-width: 22px;
+    font-size: 11px;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.units td img.unit,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.units td img.uhero {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.goods th,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.goods td,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.infos th,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.infos td {
+    background-color: #fafafa !important;
+    border: none !important;
+    padding: 2px 6px;
+    height: 22px;
+    line-height: 1.15;
+    font-size: 11px;
+    text-align: right;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table td,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table th {
+    border: none !important;
+    background-image: none !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.goods td,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.infos td {
+    background-color: #fff !important;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table#attacker tbody.goods div.res,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table#defender tbody.goods div.res,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table.defender tbody.goods div.res {
+    float: none;
+    display: inline-block;
+    text-align: center;
+    direction: ltr;
+    unicode-bidi: plaintext;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table#attacker tbody.goods div.carry,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table#defender tbody.goods div.carry,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table.defender tbody.goods div.carry {
+    float: none;
+    display: inline-block;
+    margin: 4px 0 0;
+    text-align: center;
+    direction: ltr;
+    unicode-bidi: plaintext;
+    font-weight: 700;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.goods img.r1,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.goods img.r2,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.goods img.r3,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table tbody.goods img.r4 {
+    vertical-align: middle;
+    margin: 0 2px;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.none,
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround.gk-rpt-surround td.report_content table td.none {
+    color: #999;
+    text-align: center;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-permalink {
+    margin: 10px 0 0;
+    padding: 0;
+    font-size: 12px;
+    text-align: right;
+    direction: rtl;
+    color: #333;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-permalink-link {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 3px 8px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    background: #fff;
+    color: #71d000;
+    cursor: pointer;
+    word-break: break-all;
+    text-decoration: none;
+    line-height: 1.4;
+    user-select: none;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-permalink-link:hover {
+    background: #f5f5f5;
+}
+
+body.pg-gk.pg-berichte .gk-berichte-body .gk-rpt-permalink-link.gk-rpt-copied {
+    color: #333;
+    border-color: #71d000;
+}
+
+/* Reset classic compact.css when reports class is absent */
+body.pg-gk.pg-berichte .gk-berichte-body table#report_surround:not(.gk-rpt-surround) {
+    width: 100% !important;
+    direction: rtl;
 }

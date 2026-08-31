@@ -78,7 +78,6 @@ tz_greek_shell_open('', array(
 ));
 ?>
 <div class="gk-bod">
-<?php include __DIR__ . '/Templates/Greek/gk_village_title.tpl'; ?>
 		<table class="gk-inner" cellpadding="0" cellspacing="0">
 		<tr>
 			<td class="gk-stats" id="map_details">
@@ -89,8 +88,11 @@ tz_greek_shell_open('', array(
 				?>
 			</td>
 			<td class="gk-mapcell">
-				<div class="village1">
-					<?php include("Templates/field.tpl"); ?>
+				<div class="gk-mapcol">
+					<?php include __DIR__ . '/Templates/Greek/gk_village_title.tpl'; ?>
+					<div class="village1">
+						<?php include("Templates/field.tpl"); ?>
+					</div>
 				</div>
 			</td>
 		</tr>

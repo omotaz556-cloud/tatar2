@@ -40,17 +40,27 @@ if (!function_exists('rallyPointDisplayDay')) {
 }
 ?>
 <div id="build" class="gid16">
-    <a href="#" onclick="return Popup(16,4);" class="build_logo">
-        <img class="g16" src="img/x.gif" alt="<?php echo RALLYPOINT; ?>" title="<?= RALLYPOINT ?>">
-    </a>
     <h1><?= RALLYPOINT ?> <span class="level"><?= LEVEL ?> <?= $village->resarray['f'.$id] ?></span></h1>
-    <p class="build_desc"><?= RALLYPOINT_DESC ?></p>
+    <div class="gk-build-intro">
+        <a href="#" onclick="return Popup(16,4);" class="build_logo">
+            <img class="g16" src="img/x.gif" alt="<?php echo RALLYPOINT; ?>" title="<?= RALLYPOINT ?>">
+        </a>
+        <p class="build_desc"><?= RALLYPOINT_DESC ?></p>
+    </div>
 
 <?php if ($hasRally): ?>
     <?php include_once '16_menu.tpl'; ?>
 
     <?php
-    // --- INCOMING ---
+    $rallyTt = isset($_GET['tt']) ? (int) $_GET['tt'] : 1;
+    if ($rallyTt < 1 || $rallyTt > 4) {
+        $rallyTt = 1;
+    }
+    $showVillage = ($rallyTt === 1);
+    $showIncoming = ($rallyTt === 2);
+    $showOutgoing = ($rallyTt === 3);
+    $showOther = ($rallyTt === 4);
+
     $units_type = $database->getMovement(34, $village->wid, 1);
     $settlers = $database->getMovement(7, $village->wid, 1);
     $oasis_incoming = 0;
@@ -58,15 +68,52 @@ if (!function_exists('rallyPointDisplayDay')) {
         $oasis_incoming += count($database->getMovement(6, $o['wref'], 0));
     }
     $units_incoming = count($units_type);
-    foreach ($units_type as $u) if ($u['attack_type'] == 1 && $u['sort_type'] == 3) $units_incoming--;
+    foreach ($units_type as $u) {
+        if ($u['attack_type'] == 1 && $u['sort_type'] == 3) {
+            $units_incoming--;
+        }
+    }
     $totalIncoming = $units_incoming + count($settlers) + $oasis_incoming;
+
+    $out = $database->getMovement(3, $village->wid, 0);
+    $set = $database->getMovement(5, $village->wid, 0);
+    $cnt = count($set);
+    foreach ($out as $u) {
+        if ($u['vref'] == $village->wid) {
+            $cnt++;
+        }
+    }
+    if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4) {
+        $cnt += count($database->getMovement(20, $village->wid, 0));
+        $cnt += count($database->getMovement(21, $village->wid, 1));
+    }
+
+    include '16_overview_nav.tpl';
     ?>
 
-    <?php if ($totalIncoming > 0): ?>
+    <?php if ($showIncoming): ?>
         <h4><?= INCOMING_TROOPS ?> (<?= $totalIncoming ?>)</h4>
-        <?php include '16_incomming.tpl'; ?>
+        <?php if ($totalIncoming > 0): ?>
+            <?php include '16_incomming.tpl'; ?>
+        <?php else: ?>
+            <p class="gk-rally-empty"><?php echo defined('TZ_THERE_ARE_NO_INCOMING_TROOPS') ? TZ_THERE_ARE_NO_INCOMING_TROOPS : ''; ?></p>
+        <?php endif; ?>
     <?php endif; ?>
 
+    <?php if ($showVillage): ?>
+    <?php
+    $gkRallyGreek = !empty($GLOBALS['gkShell']);
+    $gkMyTroopsLbl = defined('TZ_RALLY_MY_TROOPS') ? TZ_RALLY_MY_TROOPS : TROOPS_IN_THE_VILLAGE;
+    $gkOwnTroopCols = 11;
+    ?>
+    <?php if ($gkRallyGreek): ?>
+    <table class="troop_details gk-rally-own-troops" cellpadding="1" cellspacing="1">
+        <thead>
+            <tr><th colspan="<?php echo (int) $gkOwnTroopCols; ?>"><?php echo htmlspecialchars($gkMyTroopsLbl, ENT_QUOTES, 'UTF-8'); ?></th></tr>
+        </thead>
+        <tbody class="units"><?php include '16_troops_greek.tpl'; ?></tbody>
+    </table>
+    <?php else: ?>
     <!-- OWN TROOPS -->
     <h4><?= TROOPS_IN_THE_VILLAGE ?></h4>
     <table class="troop_details" cellpadding="1" cellspacing="1">
@@ -78,6 +125,7 @@ if (!function_exists('rallyPointDisplayDay')) {
         </thead>
         <tbody class="units"><?php include '16_troops.tpl'; ?></tbody>
     </table>
+    <?php endif; ?>
 
     <!-- REINFORCEMENTS TO ME -->
     <?php foreach ($village->enforcetome as $e):
@@ -113,17 +161,40 @@ if (!function_exists('rallyPointDisplayDay')) {
     </table>
     <?php endforeach; ?>
 
+    <?php $p3 = $database->getPrisoners3($village->wid); if ($p3): ?>
+        <h4><?= PRISONERS ?></h4>
+        <?php foreach ($p3 as $p):
+            $colspan=10+$p['t11']; $tribe=$database->getUserField($database->getVillageField($p['from'],'owner'),'tribe',0); $start=($tribe-1)*10+1;
+        ?>
+        <table class="troop_details" cellpadding="1" cellspacing="1">
+            <thead><tr>
+                <td class="role"><a href="karte.php?d=<?= $p['wref'] ?>&c=<?= $generator->getMapCheck($p['wref']) ?>"><?= $database->getVillageField($p['wref'],'name') ?></a></td>
+                <td colspan="<?= $colspan ?>"><a href="karte.php?d=<?= $p['wref'] ?>"><?= PRISONERSIN ?> <?= $database->getVillageField($p['wref'],'name') ?></a></td>
+            </tr></thead>
+            <tbody class="units">
+                <tr><th>&nbsp;</th><?php for($i=$start;$i<$start+10;$i++): ?><td><img src="img/x.gif" class="unit u<?= $i ?>"></td><?php endfor; ?><?php if($p['t11']): ?><td><img src="img/x.gif" class="unit uhero"></td><?php endif; ?></tr>
+                <tr><th><?= TROOPS ?></th><?php for($i=1;$i<=10;$i++): ?><td class="<?= $p['t'.$i]==0?'none':'' ?>"><?= $p['t'.$i] ?></td><?php endfor; ?><?php if($p['t11']): ?><td><?= $p['t11'] ?></td><?php endif; ?></tr>
+            </tbody>
+            <tbody class="infos"><tr><th><?= UPKEEP ?></th><td colspan="<?= $colspan+1 ?>">
+                <div class="sup"><?= $technology->getUpkeep($p,$tribe,0,1) ?><img class="r4" src="img/x.gif"> <?= PER_HR ?></div>
+                <div class="sback"><a href="a2b.php?delprisoners=<?= $p['id'] ?>"><?= KILL ?></a></div>
+            </td></tr></tbody>
+        </table>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    <?php endif; ?>
+
     <?php
-    // split my reinforcements
     $enforcevill = []; $enforceoasis = [];
     foreach ($village->enforcetoyou as $e) {
         $conq = (int)$database->getOasisField($e['vref'],'conqured');
         if ($conq>0) { $e['conqured']=$conq; $enforceoasis[]=$e; } else $enforcevill[]=$e;
     }
     foreach ($village->enforceoasis as $e) $enforceoasis[]=$e;
+    $p = $database->getPrisoners($village->wid);
     ?>
 
-    <!-- TROOPS IN OTHER VILLAGES -->
+    <?php if ($showOther): ?>
     <?php if ($enforcevill): ?>
         <h4><?= TROOPS_IN_OTHER_VILLAGE ?></h4>
         <?php foreach ($enforcevill as $e):
@@ -146,7 +217,6 @@ if (!function_exists('rallyPointDisplayDay')) {
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <!-- TROOPS IN OASIS -->
     <?php if ($enforceoasis): ?>
         <h4><?= TROOPS_IN_OASIS ?></h4>
         <?php foreach ($enforceoasis as $e):
@@ -171,33 +241,9 @@ if (!function_exists('rallyPointDisplayDay')) {
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <!-- PRISONERS (held by me) -->
-    <?php $p3 = $database->getPrisoners3($village->wid); if($p3): ?>
+    <?php if ($p): ?>
         <h4><?= PRISONERS ?></h4>
-        <?php foreach($p3 as $p):
-            $colspan=10+$p['t11']; $tribe=$database->getUserField($database->getVillageField($p['from'],'owner'),'tribe',0); $start=($tribe-1)*10+1;
-        ?>
-        <table class="troop_details" cellpadding="1" cellspacing="1">
-            <thead><tr>
-                <td class="role"><a href="karte.php?d=<?= $p['wref'] ?>&c=<?= $generator->getMapCheck($p['wref']) ?>"><?= $database->getVillageField($p['wref'],'name') ?></a></td>
-                <td colspan="<?= $colspan ?>"><a href="karte.php?d=<?= $p['wref'] ?>"><?= PRISONERSIN ?> <?= $database->getVillageField($p['wref'],'name') ?></a></td>
-            </tr></thead>
-            <tbody class="units">
-                <tr><th>&nbsp;</th><?php for($i=$start;$i<$start+10;$i++): ?><td><img src="img/x.gif" class="unit u<?= $i ?>"></td><?php endfor; ?><?php if($p['t11']): ?><td><img src="img/x.gif" class="unit uhero"></td><?php endif; ?></tr>
-                <tr><th><?= TROOPS ?></th><?php for($i=1;$i<=10;$i++): ?><td class="<?= $p['t'.$i]==0?'none':'' ?>"><?= $p['t'.$i] ?></td><?php endfor; ?><?php if($p['t11']): ?><td><?= $p['t11'] ?></td><?php endif; ?></tr>
-            </tbody>
-            <tbody class="infos"><tr><th><?= UPKEEP ?></th><td colspan="<?= $colspan+1 ?>">
-                <div class="sup"><?= $technology->getUpkeep($p,$tribe,0,1) ?><img class="r4" src="img/x.gif"> <?= PER_HR ?></div>
-                <div class="sback"><a href="a2b.php?delprisoners=<?= $p['id'] ?>"><?= KILL ?></a></div>
-            </td></tr></tbody>
-        </table>
-        <?php endforeach; ?>
-    <?php endif; ?>
-
-    <!-- PRISONERS (my troops captured) -->
-    <?php $p = $database->getPrisoners($village->wid); if($p): ?>
-        <h4><?= PRISONERS ?></h4>
-        <?php foreach($p as $pr):
+        <?php foreach ($p as $pr):
             $colspan=10+$pr['t11']; $tribe=$database->getUserField($database->getVillageField($pr['from'],'owner'),'tribe',0); $start=($tribe-1)*10+1;
         ?>
         <table class="troop_details" cellpadding="1" cellspacing="1">
@@ -217,20 +263,18 @@ if (!function_exists('rallyPointDisplayDay')) {
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <?php
-    $out = $database->getMovement(3,$village->wid,0);
-    $set = $database->getMovement(5,$village->wid,0);
-    $cnt = count($set);
-    foreach($out as $u) if($u['vref']==$village->wid) $cnt++;
-    // T4 hero port: adventure legs count as troops on their way too.
-    if (defined('NEW_FUNCTIONS_HERO_T4') && NEW_FUNCTIONS_HERO_T4) {
-        $cnt += count($database->getMovement(20,$village->wid,0));
-        $cnt += count($database->getMovement(21,$village->wid,1));
-    }
-    ?>
-    <?php if($cnt>=1): ?>
+    <?php if (!$enforcevill && !$enforceoasis && !$p): ?>
+        <p class="gk-rally-empty"><?php echo TROOPS_IN_OTHER_VILLAGE; ?></p>
+    <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if ($showOutgoing): ?>
         <h4><?= TROOPS_ON_THEIR_WAY ?></h4>
-        <?php include '16_walking.tpl'; ?>
+        <?php if ($cnt >= 1): ?>
+            <?php include '16_walking.tpl'; ?>
+        <?php else: ?>
+            <p class="gk-rally-empty"><?php echo defined('TZ_THERE_ARE_NO_OUTGOING_TROOPS') ? TZ_THERE_ARE_NO_OUTGOING_TROOPS : ''; ?></p>
+        <?php endif; ?>
     <?php endif; ?>
 
 <?php else: ?>

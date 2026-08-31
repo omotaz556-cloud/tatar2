@@ -1,0 +1,533 @@
+@charset "UTF-8";
+
+/**
+ * Classic tatarwars portal (login / register / guide / terms) — form.phtml layout.
+ */
+
+body.pg-portal-login,
+body.pg-portal-register,
+body.pg-portal-guide,
+body.pg-portal-terms,
+body.pg-portal-manual {
+    direction: rtl;
+    text-align: right;
+    margin: 0;
+    background-color: #fff;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #000;
+    display: block !important;
+}
+
+body.pg-portal-login .wrapper,
+body.pg-portal-register .wrapper,
+body.pg-portal-guide .wrapper,
+body.pg-portal-terms .wrapper {
+    min-height: 100vh;
+    background: transparent url(../gpack/novaterra_classic/img/vip/header-line.webp) repeat-x right top;
+}
+
+body.pg-portal-login #dynamic_header,
+body.pg-portal-register #dynamic_header,
+body.pg-portal-guide #dynamic_header,
+body.pg-portal-terms #dynamic_header {
+    background: transparent url(../gpack/novaterra_classic/img/vip/header-rtl.webp) no-repeat center top;
+    height: 100px;
+}
+
+body.pg-portal-login #header,
+body.pg-portal-register #header,
+body.pg-portal-guide #header,
+body.pg-portal-terms #header {
+    position: relative;
+    z-index: 5;
+    display: block;
+    text-align: center;
+    background-image: url(../gpack/novaterra_classic/img/vip/header-line.webp);
+    background-repeat: repeat-x;
+    background-position: center top;
+    height: 42px;
+    width: 100%;
+    min-width: 0 !important;
+    direction: rtl;
+}
+
+body.pg-portal-login .portal-topnav,
+body.pg-portal-register .portal-topnav,
+body.pg-portal-guide .portal-topnav,
+body.pg-portal-terms .portal-topnav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    width: fit-content;
+    max-width: calc(100% - 24px);
+    height: 42px;
+    margin: 0 auto;
+    padding: 0 12px;
+    box-sizing: border-box;
+    direction: rtl;
+}
+
+body.pg-portal-login .portal-topnav a,
+body.pg-portal-register .portal-topnav a,
+body.pg-portal-guide .portal-topnav a,
+body.pg-portal-terms .portal-topnav a {
+    display: inline-block;
+    position: static;
+    float: none;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    border: 0;
+    border-radius: 0;
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+}
+
+body.pg-portal-login .portal-topnav a.is-current,
+body.pg-portal-register .portal-topnav a.is-current,
+body.pg-portal-guide .portal-topnav a.is-current,
+body.pg-portal-terms .portal-topnav a.is-current {
+    color: #a20327;
+}
+
+body.pg-portal-login #mid,
+body.pg-portal-register #mid,
+body.pg-portal-guide #mid,
+body.pg-portal-terms #mid {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 12px auto 40px !important;
+    float: none !important;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+body.pg-portal-login #side_navi,
+body.pg-portal-register #side_navi,
+body.pg-portal-guide #side_navi,
+body.pg-portal-terms #side_navi,
+body.pg-portal-login #content.login,
+body.pg-portal-register #content.signup,
+body.pg-portal-guide #content.login,
+body.pg-portal-terms #content.login,
+body.pg-portal-login #side_info,
+body.pg-portal-register #side_info,
+body.pg-portal-guide #side_info,
+body.pg-portal-terms #side_info {
+    float: none !important;
+}
+
+body.pg-portal-login #content.login,
+body.pg-portal-register #content.signup,
+body.pg-portal-guide #content.login,
+body.pg-portal-terms #content.login {
+    background: #fff;
+    min-height: 450px;
+    flex: 0 0 auto;
+}
+
+body.pg-portal-login #side_navi,
+body.pg-portal-register #side_navi,
+body.pg-portal-guide #side_navi,
+body.pg-portal-terms #side_navi {
+    background: transparent url(../gpack/novaterra_classic/img/vip/shadow-a-rtl.webp) no-repeat left top !important;
+    min-height: 453px;
+    width: 155px;
+    flex: 0 0 155px;
+}
+
+body.pg-portal-login #side_navi a#logo,
+body.pg-portal-register #side_navi a#logo,
+body.pg-portal-guide #side_navi a#logo,
+body.pg-portal-terms #side_navi a#logo {
+    visibility: visible !important;
+    display: block;
+    margin-bottom: 10px;
+}
+
+body.pg-portal-login #side_info,
+body.pg-portal-register #side_info,
+body.pg-portal-guide #side_info,
+body.pg-portal-terms #side_info {
+    background: transparent url(../gpack/novaterra_classic/img/vip/shadow-b-rtl.webp) no-repeat right top !important;
+    min-height: 453px;
+    width: 257px;
+    flex: 0 0 257px;
+    padding-right: 16px;
+    box-sizing: border-box;
+}
+
+body.pg-portal-login #side_info div.news h6,
+body.pg-portal-register #side_info div.news h6,
+body.pg-portal-guide #side_info div.news h6,
+body.pg-portal-terms #side_info div.news h6 {
+    text-align: center;
+    margin: 10px 0 6px;
+}
+
+body.pg-portal-login div.login table.stats,
+body.pg-portal-register div.signup table.stats,
+body.pg-portal-login #content.login table.stats,
+body.pg-portal-register #content.signup table.stats {
+    margin: 8px auto 0;
+}
+
+body.pg-portal-login #content.login table.stats th,
+body.pg-portal-register #content.signup table.stats th {
+    text-align: right;
+    padding-left: 12px;
+    font-weight: 700;
+}
+
+body.pg-portal-login #content.login table.stats td,
+body.pg-portal-register #content.signup table.stats td {
+    text-align: right;
+    font-weight: 700;
+}
+
+body.pg-portal-login span.error,
+body.pg-portal-register span.error {
+    color: #c00;
+    font-size: 10px;
+}
+
+body.pg-portal-login p.error_box,
+body.pg-portal-register p.error_box {
+    border: 1px dashed #c0c0c0;
+    padding: 6px 10px;
+}
+
+body.pg-portal-login a.portal-link,
+body.pg-portal-register a.portal-link,
+body.pg-portal-guide a.portal-link,
+body.pg-portal-terms a.portal-link {
+    color: #71d000;
+    font-weight: 700;
+}
+
+body.pg-portal-login #side_navi p a,
+body.pg-portal-register #side_navi p a,
+body.pg-portal-guide #side_navi p a,
+body.pg-portal-terms #side_navi p a {
+    display: block;
+    margin-bottom: 4px;
+    text-decoration: none;
+}
+
+/* Guide (tatarwars manual.phtml) */
+body.pg-portal-guide #content.login h1,
+body.pg-portal-terms #content.login h1 {
+    text-align: center;
+    margin: 8px 0 12px;
+}
+
+body.pg-portal-guide #content.login #textmenu {
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+body.pg-portal-guide #content.login #textmenu a.selected {
+    font-weight: 700;
+    color: #71d000;
+}
+
+body.pg-portal-guide #content.login .wholebox {
+    text-align: right;
+}
+
+body.pg-portal-guide #content.login p.f10.e.b,
+body.pg-portal-guide #content.login p.f10 {
+    margin: 14px 0 4px;
+    font-size: 10pt;
+}
+
+body.pg-portal-guide #content.login p.e.b {
+    font-weight: 700;
+}
+
+body.pg-portal-guide #content.login .f10 {
+    font-size: 10pt;
+    line-height: 1.55;
+    margin-bottom: 8px;
+}
+
+body.pg-portal-guide #content.login h3 {
+    margin: 16px 0 8px;
+    color: #2a720b;
+}
+
+body.pg-portal-terms #content.login h3,
+body.pg-portal-terms #content.login h4 {
+    margin: 14px 0 8px;
+    color: #2a720b;
+}
+
+body.pg-portal-terms #content.login p {
+    line-height: 1.6;
+    margin: 0 0 10px;
+}
+
+@media screen and (max-width: 900px) {
+    body.pg-portal-login #header,
+    body.pg-portal-register #header,
+    body.pg-portal-guide #header,
+    body.pg-portal-terms #header {
+        min-width: 0 !important;
+    }
+
+    body.pg-portal-login .portal-topnav,
+    body.pg-portal-register .portal-topnav,
+    body.pg-portal-guide .portal-topnav,
+    body.pg-portal-terms .portal-topnav {
+        gap: 28px;
+        max-width: calc(100% - 16px);
+        padding: 0 8px;
+    }
+
+    body.pg-portal-login #mid,
+    body.pg-portal-register #mid,
+    body.pg-portal-guide #mid,
+    body.pg-portal-terms #mid {
+        width: 100% !important;
+        padding: 0 8px;
+    }
+
+    body.pg-portal-login #side_navi,
+    body.pg-portal-register #side_navi,
+    body.pg-portal-guide #side_navi,
+    body.pg-portal-terms #side_navi,
+    body.pg-portal-login #side_info,
+    body.pg-portal-register #side_info,
+    body.pg-portal-guide #side_info,
+    body.pg-portal-terms #side_info {
+        display: none;
+    }
+
+    body.pg-portal-login #content.login,
+    body.pg-portal-register #content.signup,
+    body.pg-portal-guide #content.login,
+    body.pg-portal-terms #content.login {
+        width: 100%;
+        max-width: 522px;
+        margin: 0 auto;
+        padding: 0 12px;
+        box-sizing: border-box;
+    }
+
+    body.pg-portal-login div.login h1 img.img_login,
+    body.pg-portal-register div.signup h1 img.anmelden {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* --- شرح اللعبة (encyclopedia) --- */
+body.pg-portal-manual {
+    direction: rtl;
+    text-align: right;
+    margin: 0;
+    background-color: #fff;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #000;
+    display: block !important;
+    overflow-y: auto !important;
+    zoom: 1 !important;
+}
+
+body.pg-portal-manual .wrapper {
+    min-height: 100vh;
+    background: transparent url(../gpack/novaterra_classic/img/vip/header-line.webp) repeat-x right top;
+}
+
+body.pg-portal-manual #dynamic_header {
+    background: transparent url(../gpack/novaterra_classic/img/vip/header-rtl.webp) no-repeat center top;
+    height: 100px;
+}
+
+body.pg-portal-manual #header {
+    position: relative;
+    z-index: 5;
+    display: block;
+    text-align: center;
+    background-image: url(../gpack/novaterra_classic/img/vip/header-line.webp);
+    background-repeat: repeat-x;
+    background-position: center top;
+    height: 42px;
+    width: 100%;
+    min-width: 0 !important;
+    direction: rtl;
+}
+
+body.pg-portal-manual .portal-topnav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    width: fit-content;
+    max-width: calc(100% - 24px);
+    height: 42px;
+    margin: 0 auto;
+    padding: 0 12px;
+    box-sizing: border-box;
+    direction: rtl;
+}
+
+body.pg-portal-manual .portal-topnav a {
+    display: inline-block;
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+}
+
+body.pg-portal-manual #mid {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 12px auto 40px !important;
+    float: none !important;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+body.pg-portal-manual #side_navi,
+body.pg-portal-manual #content.login,
+body.pg-portal-manual #side_info {
+    float: none !important;
+}
+
+body.pg-portal-manual #content.login {
+    position: relative;
+    background: #fff;
+    min-height: 450px;
+    padding-bottom: 36px;
+    flex: 0 0 auto;
+}
+
+body.pg-portal-manual #side_navi {
+    background: transparent url(../gpack/novaterra_classic/img/vip/shadow-a-rtl.webp) no-repeat left top !important;
+    min-height: 453px;
+    width: 155px;
+    flex: 0 0 155px;
+}
+
+body.pg-portal-manual #side_navi a#logo {
+    visibility: visible !important;
+    display: block;
+    margin-bottom: 10px;
+}
+
+body.pg-portal-manual #side_navi p a {
+    display: block;
+    margin-bottom: 4px;
+    text-decoration: none;
+}
+
+body.pg-portal-manual #side_info {
+    background: transparent url(../gpack/novaterra_classic/img/vip/shadow-b-rtl.webp) no-repeat right top !important;
+    min-height: 453px;
+    width: 257px;
+    flex: 0 0 257px;
+    padding-right: 16px;
+    box-sizing: border-box;
+}
+
+body.pg-portal-manual #content.login h1 {
+    text-align: right;
+    margin: 8px 0 12px;
+    font-size: 18px;
+}
+
+body.pg-portal-manual #content.login ul {
+    margin: 0 18px 12px 0;
+    padding: 0;
+}
+
+body.pg-portal-manual #content.login li {
+    margin: 3px 0;
+}
+
+body.pg-portal-manual img.troops {
+    position: absolute;
+    left: 18px;
+    top: 70px;
+}
+
+body.pg-portal-manual img.buildings {
+    position: absolute;
+    left: 18px;
+    top: 165px;
+}
+
+body.pg-portal-manual img.navi {
+    position: static !important;
+    display: block;
+    margin: 18px auto 0;
+    right: auto;
+    top: auto;
+}
+
+body.pg-portal-manual #content.login a {
+    color: #252525;
+    text-decoration: none;
+}
+
+body.pg-portal-manual #content.login a:hover {
+    color: #71d000;
+}
+
+@media screen and (max-width: 900px) {
+    body.pg-portal-manual #header {
+        min-width: 0 !important;
+    }
+
+    body.pg-portal-manual .portal-topnav {
+        gap: 28px;
+    }
+
+    body.pg-portal-manual #mid {
+        width: 100% !important;
+        padding: 0 8px;
+    }
+
+    body.pg-portal-manual #side_navi,
+    body.pg-portal-manual #side_info {
+        display: none;
+    }
+
+    body.pg-portal-manual #content.login {
+        width: 100%;
+        max-width: 522px;
+        margin: 0 auto;
+        padding: 0 12px 36px;
+        box-sizing: border-box;
+    }
+
+    body.pg-portal-manual img.troops,
+    body.pg-portal-manual img.buildings {
+        position: static;
+        display: block;
+        margin: 8px auto;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    body.pg-portal-manual.manual {
+        zoom: 1 !important;
+    }
+}
+

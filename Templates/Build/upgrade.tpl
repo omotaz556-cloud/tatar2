@@ -90,8 +90,7 @@ switch ($bindicate) {
         $upgradeRedirect = isset($session->userinfo['upgrade_redirect'])
             ? (int)$session->userinfo['upgrade_redirect']
             : 0;
-        $stayInBuilding = $upgradeRedirect === 2
-            || ($upgradeRedirect === 0 && $lvl > 1);
+        $stayInBuilding = $upgradeRedirect !== 1;
         if ($stayInBuilding && $session->access != BANNED) {
             $href .= '&return=build';
         }
@@ -114,8 +113,7 @@ if (in_array($bindicate, [2,3,7]) && $session->goldclub == 1) {
     $upgradeRedirect = isset($session->userinfo['upgrade_redirect'])
         ? (int)$session->userinfo['upgrade_redirect']
         : 0;
-    $currentLevel = (int)($village->resarray['f'.$id] ?? 0);
-    if ($upgradeRedirect === 2 || ($upgradeRedirect === 0 && $currentLevel > 0)) {
+    if ($upgradeRedirect !== 1) {
         $masterHref .= '&return=build';
     }
     if ($session->gold >= 1 && $village->master == 0) {

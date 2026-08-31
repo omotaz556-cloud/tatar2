@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+
+/**
+ * Expo Arabic — same family as tatarwars-fv7 (greekFont / ndix/newIndex).
+ */
+@font-face {
+    font-display: swap;
+    font-family: "Expo Arabic";
+    font-style: normal;
+    font-weight: 400;
+    src: url("ExpoArabic-Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Expo Arabic";
+    font-style: normal;
+    font-weight: 500;
+    src: url("ExpoArabic-Medium.ttf") format("truetype");
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Expo Arabic";
+    font-style: normal;
+    font-weight: 700;
+    src: url("ExpoArabic-Bold.otf") format("opentype");
+}

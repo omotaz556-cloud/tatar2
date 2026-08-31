@@ -1117,20 +1117,25 @@ trait AutomationBattleResolution {
             $data2 .= ','.($info_trap !== '' ? addslashes($info_trap) : '').',,'.$info_troop.','.$info_hero;
         }
 
+        // Player villages: hide defender intel when all attackers die. Nature/Natars show real counts.
+        $maskDefFail = ($targettribe != 4 && $targettribe != 5);
+        $failSendDef = $maskDefFail ? $unitssend_deff : $unitssend_def;
+        $failDeadDef = $maskDefFail ? $unitsdead_deff : $unitsdead_def;
+
         $data_fail = ''.$from['owner'].','.$from['wref'].','.$owntribe.','.$unitssend_att.','.$unitsdead_att
                     .','.$steal[0].','.$steal[1].','.$steal[2].','.$steal[3].','.$battlepart['bounty']
                     .','.$to['owner'].','.$to['wref'].','.addslashes($to['name'])
                     .',,,,'.$targettribe
-                    .','.$unitssend_deff[0].','.$unitsdead_deff[0].','.$rom
-                    .','.$unitssend_deff[1].','.$unitsdead_deff[1].','.$ger
-                    .','.$unitssend_deff[2].','.$unitsdead_deff[2].','.$gal
-                    .','.$unitssend_deff[3].','.$unitsdead_deff[3].','.$nat
-                    .','.$unitssend_deff[4].','.$unitsdead_deff[4].','.$natar
-                    .','.$unitssend_deff[5].','.$unitsdead_deff[5]
-                    .','.$hun.','.$unitssend_deff[6].','.$unitsdead_deff[6]
-                    .','.$egy.','.$unitssend_deff[7].','.$unitsdead_deff[7]
-                    .','.$spa.','.$unitssend_deff[8].','.$unitsdead_deff[8]
-                    .','.$vik.','.$unitssend_deff[9].','.$unitsdead_deff[9]
+                    .','.$failSendDef[0].','.$failDeadDef[0].','.$rom
+                    .','.$failSendDef[1].','.$failDeadDef[1].','.$ger
+                    .','.$failSendDef[2].','.$failDeadDef[2].','.$gal
+                    .','.$failSendDef[3].','.$failDeadDef[3].','.$nat
+                    .','.$failSendDef[4].','.$failDeadDef[4].','.$natar
+                    .','.$failSendDef[5].','.$failDeadDef[5]
+                    .','.$hun.','.$failSendDef[6].','.$failDeadDef[6]
+                    .','.$egy.','.$failSendDef[7].','.$failDeadDef[7]
+                    .','.$spa.','.$failSendDef[8].','.$failDeadDef[8]
+                    .','.$vik.','.$failSendDef[9].','.$failDeadDef[9]
                     .','.$DefenderHeroesTot.','.$DefenderHeroesDead
                     .',,,'.$data['t11'].','.$dead11.','.$unitstraped_att
                     .',,'.$info_ram.','.$info_cat.','.$info_chief.','.$info_troop.','.$info_hero;
@@ -1435,7 +1440,7 @@ trait AutomationBattleResolution {
 
         //Collecting informations for the report
         $unitssend_def[0] = implode(",", $ownTroops);
-        $unitssend_deff[0] = '?,?,?,?,?,?,?,?,?,?,';
+        $unitssend_deff[0] = '?,?,?,?,?,?,?,?,?,?';
 
         for ($i = 1; $i <= 9; $i++) {
             //Reinforcements
@@ -2804,7 +2809,7 @@ trait AutomationBattleResolution {
                     
                     //Collecting informations for the report
                     $unitsdead_def[0] = implode(",", $ownDeadTroops);
-                    $unitsdead_deff[0] = '?,?,?,?,?,?,?,?,?,?,';
+                    $unitsdead_deff[0] = '?,?,?,?,?,?,?,?,?,?';
                     for($i = 1; $i <= 9; $i++){
                         //Counting reinforcements total dead troops
                         $deadTroops = array_slice($alldead, ($i - 1) * 10, 10);

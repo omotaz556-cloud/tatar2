@@ -87,8 +87,8 @@ if (count($rankArray) > 1) {
             continue;
         }
         $row = $rankArray[$i];
-        $uid = (int) ($row['userid'] ?? 0);
-        $isHighlight = ($i === $search) || ($uid === $gkUid);
+        $rowUid = (int) ($row['userid'] ?? 0);
+        $isHighlight = ($i === $search) || ($rowUid === $gkUid);
         $hlCls = $isHighlight ? ' hl' : '';
         $fcCls = $isHighlight ? ' fc' : '';
         $lcCls = $isHighlight ? ' lc' : '';
@@ -99,9 +99,9 @@ if (count($rankArray) > 1) {
         echo '<th class="pla">';
         $username = htmlspecialchars((string) $row['username'], ENT_QUOTES, 'UTF-8');
         if (!empty($row['access']) && $row['access'] > 2) {
-            echo '<u><a href="spieler.php?uid=' . $uid . '">' . $username . '</a></u>';
+            echo '<u><a href="spieler.php?uid=' . $rowUid . '">' . $username . '</a></u>';
         } else {
-            echo '<a href="spieler.php?uid=' . $uid . '">' . $username . '</a>';
+            echo '<a href="spieler.php?uid=' . $rowUid . '">' . $username . '</a>';
         }
         echo '</th>';
         echo '<th class="al">';
@@ -114,7 +114,7 @@ if (count($rankArray) > 1) {
         echo '<th class="vil">' . (int) ($row['totalvillage'] ?? 0) . '</th>';
         echo '<th class="pop">' . (int) ($row['totalpop'] ?? 0) . '</th>';
         $msgTitle = defined('WRITE_MESSAGE') ? WRITE_MESSAGE : 'Message';
-        echo '<th class="' . trim($msgCls) . '"><a href="nachrichten.php?t=1&amp;id=' . $uid . '" title="'
+        echo '<th class="' . trim($msgCls) . '"><a href="nachrichten.php?t=1&amp;id=' . $rowUid . '" title="'
             . htmlspecialchars($msgTitle, ENT_QUOTES, 'UTF-8') . '">'
             . '<svg class="statMsgIcon" viewBox="0 0 16 12" width="16" height="12" aria-hidden="true">'
             . '<rect x="0.5" y="0.5" width="15" height="11" rx="1.2" fill="#f0a000" stroke="#c87800" stroke-width="1"/>'

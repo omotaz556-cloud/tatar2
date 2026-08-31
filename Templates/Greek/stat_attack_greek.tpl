@@ -78,8 +78,8 @@ if (count($rankArray) > 1) {
             continue;
         }
         $row = $rankArray[$i];
-        $uid = (int) ($row['userid'] ?? $row['id'] ?? 0);
-        $isHighlight = ($i === $search) || ($uid === $gkUid);
+        $rowUid = (int) ($row['userid'] ?? $row['id'] ?? 0);
+        $isHighlight = ($i === $search) || ($rowUid === $gkUid);
         $hlCls = $isHighlight ? ' hl' : '';
         $fcCls = $isHighlight ? ' fc' : '';
         $lcCls = $isHighlight ? ' lc' : '';
@@ -89,9 +89,9 @@ if (count($rankArray) > 1) {
         echo '<th class="pla">';
         $username = htmlspecialchars((string) $row['username'], ENT_QUOTES, 'UTF-8');
         if (!empty($row['access']) && (int) $row['access'] > 2) {
-            echo '<u><a href="spieler.php?uid=' . $uid . '">' . $username . '</a></u>';
+            echo '<u><a href="spieler.php?uid=' . $rowUid . '">' . $username . '</a></u>';
         } else {
-            echo '<a href="spieler.php?uid=' . $uid . '">' . $username . '</a>';
+            echo '<a href="spieler.php?uid=' . $rowUid . '">' . $username . '</a>';
         }
         echo '</th>';
         echo '<th class="pop"><bdi dir="ltr">' . (int) ($row['totalpop'] ?? 0) . '</bdi></th>';

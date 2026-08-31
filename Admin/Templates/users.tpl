@@ -69,7 +69,7 @@ function accessBadge($a){
 function shortEmail($e){if(!$e)return '-';if(strlen($e)>22)return substr($e,0,19).'...';return $e;}
 ?>
 <style>
-.users-wrap{max-width:100%;margin:8px 0;font-family:Tahoma,Verdana,Arial,sans-serif;color:#e2e8f0}
+.users-wrap{max-width:100%;margin:8px 0;font-family:"Expo Arabic",Tahoma,Verdana,Arial,sans-serif;color:#e2e8f0}
 .users-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .users-head h2{margin:0;font-size:15px;display:flex;align-items:center;gap:6px;color:#f1f5f9}
 .users-filters{display:flex;gap:5px;margin-bottom:6px;flex-wrap:wrap}

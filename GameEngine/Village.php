@@ -458,6 +458,38 @@ class Village {
 			exit;
 		}
 	}
+
+	/**
+	 * Re-read storage caps and resource amounts from DB after automation may have
+	 * updated maxstore/maxcrop (e.g. granary upgrade completed in this request).
+	 */
+	public function refreshStorageFromDb(): void {
+		$fresh = $this->db->getVillage($this->wid, 0, false);
+		if (!is_array($fresh) || empty($fresh['wref'])) {
+			return;
+		}
+
+		$this->infoarray['maxstore'] = (int) $fresh['maxstore'];
+		$this->infoarray['maxcrop']  = (int) $fresh['maxcrop'];
+		$this->infoarray['wood']     = $fresh['wood'];
+		$this->infoarray['clay']     = $fresh['clay'];
+		$this->infoarray['iron']     = $fresh['iron'];
+		$this->infoarray['crop']     = $fresh['crop'];
+
+		$this->maxstore = (int) $fresh['maxstore'];
+		$this->maxcrop  = (int) $fresh['maxcrop'];
+		$this->awood    = $fresh['wood'];
+		$this->aclay    = $fresh['clay'];
+		$this->airon    = $fresh['iron'];
+		$this->acrop    = $fresh['crop'];
+
+		if ($this->awood > $this->maxstore) { $this->awood = $this->maxstore; }
+		if ($this->aclay > $this->maxstore) { $this->aclay = $this->maxstore; }
+		if ($this->airon > $this->maxstore) { $this->airon = $this->maxstore; }
+		if ($this->acrop > $this->maxcrop)  { $this->acrop = $this->maxcrop; }
+
+		$this->atotal = (int) ($this->awood + $this->aclay + $this->airon + $this->acrop);
+	}
 }
 
 // W2: bootstrap with EXPLICIT side effects, in the same order as the old
@@ -504,4 +536,6 @@ if (!$__cronActive) {
 		fclose($__automationLock);
 	}
 }
+
+$village->refreshStorageFromDb();
 ?>

@@ -47,23 +47,17 @@ if (!function_exists('getFieldData')) {
  * Determină titlul zidului
  */
 if ($building->walling()) {
-
-    $wtitle = Building::procResType($building->walling()) .
-              " Level " .
-              (int)$village->resarray['f40'];
-
+    $wtitle = Building::procBuildingHoverTitle(
+        (int) $building->walling(),
+        (int) $village->resarray['f40']
+    );
+} elseif ((int) $village->resarray['f40'] === 0) {
+    $wtitle = Building::procBuildingHoverTitle(0, 0, 'outer');
 } else {
-
-    if ((int)$village->resarray['f40'] === 0) {
-
-        $wtitle = "Outer building site";
-
-    } else {
-
-        $wtitle = Building::procResType($village->resarray['f40t'], 0) .
-                  " Level " .
-                  (int)$village->resarray['f40'];
-    }
+    $wtitle = Building::procBuildingHoverTitle(
+        (int) $village->resarray['f40t'],
+        (int) $village->resarray['f40']
+    );
 }
 ?>
 
@@ -135,15 +129,10 @@ for ($t = 19; $t <= 39; $t++) {
         // World Wonder
         if ($t == 33) {
 
-            if ((int)$village->resarray['f99'] > 0) {
-
-                $title = Building::procResType(40) .
-                         " Level " .
-                         (int)$village->resarray['f99'];
-
+            if ((int) $village->resarray['f99'] > 0) {
+                $title = Building::procBuildingHoverTitle(40, (int) $village->resarray['f99']);
             } else {
-
-                $title = Building::procResType(40);
+                $title = Building::procBuildingHoverTitle(40, 0, 'name_only');
             }
 
             echo '<area href="build.php?id=99"
@@ -159,18 +148,11 @@ for ($t = 19; $t <= 39; $t++) {
 
     // Titlu clădire
     if ($field['type'] > 0) {
-
-        $title = Building::procResType($field['type']) .
-                 " Level " .
-                 $field['level'];
-
+        $title = Building::procBuildingHoverTitle($field['type'], $field['level']);
+    } elseif ($t == 39 && $field['level'] == 0) {
+        $title = Building::procBuildingHoverTitle(0, 0, 'rally_site');
     } else {
-
-        $title = "Building site";
-
-        if ($t == 39 && $field['level'] == 0) {
-            $title = "Rally Point building site";
-        }
+        $title = Building::procBuildingHoverTitle(0, 0);
     }
 
     echo '<area href="build.php?id=' . $t . '"
@@ -253,16 +235,12 @@ for ($i = 1; $i <= 20; $i++) {
 
     $field = getFieldData($village->resarray, $fieldId);
 
-    $text = "Building site";
+    $text = Building::procBuildingHoverTitle(0, 0);
     $img  = "iso";
 
     // Clădire existentă
     if ($field['type'] != 0) {
-
-        $text = Building::procResType($field['type']) .
-                " Level " .
-                $field['level'];
-
+        $text = Building::procBuildingHoverTitle($field['type'], $field['level']);
         $img = "g" . $field['type'];
     }
 
@@ -277,9 +255,7 @@ for ($i = 1; $i <= 20; $i++) {
 
                 $img = 'g' . (int)$job['type'] . 'b';
 
-                $text = Building::procResType($job['type']) .
-                        " Level " .
-                        $field['level'];
+                $text = Building::procBuildingHoverTitle((int) $job['type'], $field['level']);
 
                 break;
             }
@@ -332,26 +308,20 @@ if (
 /**
  * Rally Point
  */
-if ((int)$village->resarray['f39'] == 0) {
-
+if ((int) $village->resarray['f39'] == 0) {
     if ($building->rallying()) {
-
         echo '<img src="img/x.gif"
                    class="dx1 g16b"
-                   alt="Rally Point Level ' . (int)$village->resarray['f39'] . '" />';
-
+                   alt="' . safeHTML(Building::procBuildingHoverTitle(16, (int) $village->resarray['f39'])) . '" />';
     } else {
-
         echo '<img src="img/x.gif"
                    class="dx1 g16e"
-                   alt="Rally Point building site" />';
+                   alt="' . safeHTML(Building::procBuildingHoverTitle(0, 0, 'rally_site')) . '" />';
     }
-
 } else {
-
     echo '<img src="img/x.gif"
                class="dx1 g16"
-               alt="Rally Point Level ' . (int)$village->resarray['f39'] . '" />';
+               alt="' . safeHTML(Building::procBuildingHoverTitle(16, (int) $village->resarray['f39'])) . '" />';
 }
 ?>
 
@@ -381,28 +351,30 @@ if (
     include_once('GameEngine/Data/ww_tribe.php');
     $wwClass = tz_ww_tribe_class($village->owner_tribe ?? $session->tribe ?? 0);
 
+    $wwAlt = safeHTML(Building::procBuildingHoverTitle(0, 0, 'worldwonder'));
+
     if ($wwLevel >= 0 && $wwLevel <= 19) {
-        echo '<img class="ww g40' . $wwClass . '" src="img/x.gif" alt="Worldwonder">';
+        echo '<img class="ww g40' . $wwClass . '" src="img/x.gif" alt="' . $wwAlt . '">';
     }
 
     if ($wwLevel >= 20 && $wwLevel <= 39) {
-        echo '<img class="ww g40_1' . $wwClass . '" src="img/x.gif" alt="Worldwonder">';
+        echo '<img class="ww g40_1' . $wwClass . '" src="img/x.gif" alt="' . $wwAlt . '">';
     }
 
     if ($wwLevel >= 40 && $wwLevel <= 59) {
-        echo '<img class="ww g40_2' . $wwClass . '" src="img/x.gif" alt="Worldwonder">';
+        echo '<img class="ww g40_2' . $wwClass . '" src="img/x.gif" alt="' . $wwAlt . '">';
     }
 
     if ($wwLevel >= 60 && $wwLevel <= 79) {
-        echo '<img class="ww g40_3' . $wwClass . '" src="img/x.gif" alt="Worldwonder">';
+        echo '<img class="ww g40_3' . $wwClass . '" src="img/x.gif" alt="' . $wwAlt . '">';
     }
 
     if ($wwLevel >= 80 && $wwLevel <= 99) {
-        echo '<img class="ww g40_4' . $wwClass . '" src="img/x.gif" alt="Worldwonder">';
+        echo '<img class="ww g40_4' . $wwClass . '" src="img/x.gif" alt="' . $wwAlt . '">';
     }
 
     if ($wwLevel == 100) {
-        echo '<img class="ww g40_5' . $wwClass . '" src="img/x.gif" alt="Worldwonder">';
+        echo '<img class="ww g40_5' . $wwClass . '" src="img/x.gif" alt="' . $wwAlt . '">';
     }
 }
 ?>

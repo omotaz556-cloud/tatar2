@@ -5,6 +5,7 @@
 
 $gkMsgGreek = !empty($GLOBALS['gkNachrichtenLiteralPage']);
 $gkMsgWriteTitle = defined('TZ_MSG_WRITE_TITLE') ? TZ_MSG_WRITE_TITLE : WRITE;
+$gkMsgCoorIdx = isset($_GET['coor']) ? (int) $_GET['coor'] : 0;
 
 if (!$gkMsgGreek) {
     echo '<div id="content" class="messages">';
@@ -57,7 +58,7 @@ function submitDefault(type,uid) {
 </script>
 
 <?php if (!$gkMsgGreek) { ?><div id="write_head" class="msg_head"></div><?php } ?>
-<div id="write_content" class="msg_content<?php echo $gkMsgGreek ? ' gk-msg-write-content' : ''; ?>">
+<div id="write_content" class="<?php echo $gkMsgGreek ? 'gk-msg-write-content' : 'msg_content'; ?>">
 
 <form method="post" action="nachrichten.php" accept-charset="UTF-8" name="msg">
 <input type="hidden" name="c" value="3e9" />
@@ -65,11 +66,40 @@ function submitDefault(type,uid) {
 
 <?php if (!$gkMsgGreek) { ?><img src="img/x.gif" id="label" class="send" alt="" /><?php } ?>
 
+<?php if ($gkMsgGreek) { ?>
+<div class="gk-msg-recipient-row">
+    <div class="gk-msg-field gk-msg-field-recipient">
+        <label class="gk-msg-label" for="receiver"><?php echo RECIPIENT; ?></label>
+        <input class="text" type="text" name="an" id="receiver"
+        value="<?php
+        if (isset($id)) {
+            echo getCachedUsername($id, $database, $userCache);
+        }
+        ?>"
+        maxlength="20" tabindex="1" />
+    </div>
+    <a id="adbook" class="gk-msg-adbook" href="#" onclick="toggleFriendsList(); return false;" title="<?php echo ADDRESSBOOK; ?>">
+        <img src="img/x.gif" alt="<?php echo ADDRESSBOOK; ?>" />
+    </a>
+</div>
+<div class="gk-msg-field gk-msg-field-subject">
+    <label class="gk-msg-label" for="subject"><?php echo SUBJECT; ?></label>
+    <input class="text" type="text" name="be" id="subject"
+    value="<?php
+    if (isset($message->reply['topic'])) {
+        if (preg_match("/re([0-9]+)/i", $message->reply['topic'], $c)) {
+            $c = $c[1] + 1;
+            echo strip_tags(preg_replace("/re[0-9]+/i", "re" . ($c), $message->reply['topic']));
+        } else {
+            echo "re1:" . strip_tags($message->reply['topic']);
+        }
+    }
+    ?>"
+    maxlength="35" tabindex="2" />
+</div>
+<?php } else { ?>
 <div id="heading">
 
-<!-- ======================================================
-     RECEIVER
-====================================================== -->
 <input class="text" type="text" name="an" id="receiver"
 value="<?php
 if (isset($id)) {
@@ -78,9 +108,6 @@ if (isset($id)) {
 ?>"
 maxlength="20" tabindex="1" /><br />
 
-<!-- ======================================================
-     SUBJECT (reply logic păstrată 100%)
-====================================================== -->
 <input class="text" type="text" name="be" id="subject"
 value="<?php
 if (isset($message->reply['topic'])) {
@@ -100,6 +127,7 @@ maxlength="35" tabindex="2" />
 <a id="adbook" href="#" onclick="toggleFriendsList(); return false;">
     <img src="img/x.gif" alt="<?php echo ADDRESSBOOK; ?>" title="<?php echo ADDRESSBOOK; ?>" />
 </a>
+<?php } ?>
 
 <div class="clear"></div>
 <div class="line"></div>
@@ -114,7 +142,7 @@ maxlength="35" tabindex="2" />
 					<a href="javascript:void(0);" bbType="d" bbTag="u" ><div title="<?php echo TZ_UNDERLINE; ?>" alt="<?php echo TZ_UNDERLINE; ?>" class="bbButton bbUnderscore"></div></a>
 					<a href="javascript:void(0);" bbType="d" bbTag="alliance0" ><div title="<?php echo ALLIANCE; ?>" alt="<?php echo ALLIANCE; ?>" class="bbButton bbAlliance"></div></a>
 					<a href="javascript:void(0);" bbType="d" bbTag="player0" ><div title="<?php echo PLAYER; ?>" alt="<?php echo PLAYER; ?>" class="bbButton bbPlayer"></div></a>
-					<a href="javascript:void(0);" bbType="d" bbTag="coor0" ><div title="<?php echo COORDINATES; ?>" alt="<?php echo COORDINATES; ?>" class="bbButton bbCoordinate" onclick="this.form.submit(); window.location.href = '?t=1&coor=<?php echo ($coor ?? 0)+1; ?>';"></div></a>
+					<a href="javascript:void(0);" bbType="d" bbTag="coor0" ><div title="<?php echo COORDINATES; ?>" alt="<?php echo COORDINATES; ?>" class="bbButton bbCoordinate"></div></a>
 					<a href="javascript:void(0);" bbType="d" bbTag="report0" ><div title="<?php echo REPORT; ?>" alt="<?php echo REPORT; ?>" class="bbButton bbReport"></div></a>
 					<a href="javascript:void(0);" bbWin="resources" id="message_resourceButton"><div title="<?php echo RESOURCES; ?>" alt="<?php echo RESOURCES; ?>" class="bbButton bbResource"></div></a>
 					<a href="javascript:void(0);" bbWin="smilies" id="message_smilieButton"><div title="<?php echo TZ_SMILIES_2; ?>" alt="<?php echo TZ_SMILIES_2; ?>" class="bbButton bbSmilie"></div></a>
@@ -131,9 +159,10 @@ maxlength="35" tabindex="2" />
 				</div>
 				<div class="line bbLine"></div>
 
-<textarea id="message" name="message" tabindex="3" class="textarea write message"><?php
+<textarea id="message" name="message" tabindex="3" dir="ltr" class="textarea write message"><?php
 if (isset($message->reply['message'])) {
-    echo "\n\n_________________________\nReply: "
+    $gkMsgReplyPrefix = defined('TZ_MSG_REPLY_PREFIX') ? TZ_MSG_REPLY_PREFIX : 'رد:';
+    echo "\n\n_________________________\n" . $gkMsgReplyPrefix . ' '
         . getCachedUsername($id, $database, $userCache)
         . "\n"
         . stripslashes($message->reply['message']);
@@ -143,14 +172,18 @@ if (isset($message->reply['message'])) {
 <div id="message_preview" class="message"></div>
 </div>
 
-<script>
-var bbEditor = new BBEditor("message");
+<script type="text/javascript">
+window.addEvent('domready', function() {
+    if (document.getElementById('message') && typeof BBEditor !== 'undefined') {
+        window.bbEditor = new BBEditor('message');
+    }
+});
 </script>
 
-<p class="btn">
+<p class="btn gk-msg-send-row">
 <input type="hidden" name="ft" value="m2" />
-<button name="delmsg" id="btn_save" class="<?php echo $gkMsgGreek ? 'gk-msg-del gk-msg-send' : 'trav_buttons'; ?>"
-onclick="this.disabled=true;this.form.submit();" tabindex="4"><?php echo SEND; ?></button>
+<button type="submit" id="btn_send_msg" class="<?php echo $gkMsgGreek ? 'gk-msg-del gk-msg-send' : 'trav_buttons'; ?>"
+tabindex="4"><?php echo SEND; ?></button>
 
 <?php
 // ======================================================
@@ -161,14 +194,14 @@ if ($session->access == ADMIN && ADMIN_RECEIVE_SUPPORT_MESSAGES && !empty($_GET[
 <br />
 <input type="checkbox" name="as_support"
 <?php echo ((!empty($_GET['tid']) && $_GET['tid'] == 1) ? 'checked="checked"' : ''); ?> />
-Send as Support
+<?php echo SEND_AS_SUP; ?>
 <?php
 } elseif ($session->access == MULTIHUNTER) {
 ?>
 <br />
 <input type="checkbox" name="as_multihunter"
 <?php echo ((!empty($_GET['tid']) && $_GET['tid'] == 5) ? 'checked="checked"' : ''); ?> />
-Send as Multihunter
+<?php echo SEND_AS_MH; ?>
 <?php } ?>
 </p>
 
@@ -258,13 +291,17 @@ for ($i = 0; $i < 20; $i++) {
 </table>
 
 <p class="btn">
+<?php if ($gkMsgGreek) { ?>
+<button type="submit" id="btn_save_friends" name="s1" class="gk-msg-del gk-msg-save"><?php echo SAVE; ?></button>
+<?php } else { ?>
 <input type="image" id="btn_save" class="dynamic_img" src="img/x.gif" alt="<?php echo SAVE; ?>" />
+<?php } ?>
 </p>
 
 </form>
 
 <a href="#" onclick="closeFriendsList(); return false;">
-<img src="img/x.gif" id="close" alt="<?php echo TZ_CLOSE_ADRESSBOOK; ?>" />
+<img src="img/x.gif" id="close" alt="<?php echo defined('CLOSE_ADDRESSBOOK') ? CLOSE_ADDRESSBOOK : TZ_CLOSE_ADRESSBOOK; ?>" title="<?php echo defined('CLOSE_ADDRESSBOOK') ? CLOSE_ADDRESSBOOK : TZ_CLOSE_ADRESSBOOK; ?>" />
 </a>
 
 </div>
@@ -273,7 +310,7 @@ for ($i = 0; $i < 20; $i++) {
 <?php if (!$gkMsgGreek) { ?><div id="write_foot" class="msg_foot"></div><?php } ?>
 
 <?php if ($gkMsgGreek) { ?>
-<p class="gk-msg-warn"><?php echo TZ_WARNING; ?> <?php echo TZ_YOU_CAN_T_USE_THE_VALUES; ?> <b>[message]</b> <?php echo constant('OR'); ?> <b>[/message]</b></p>
+<p class="gk-msg-warn"><?php echo WRITE_MESS_WARN; ?></p>
 <?php } else { ?>
 <br />
 <span style="color: #DD0000">

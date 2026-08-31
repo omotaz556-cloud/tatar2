@@ -133,6 +133,14 @@ tz_def('LUMBER', 'Lumber');
 tz_def('CLAY', 'Clay');
 tz_def('IRON', 'Iron');
 tz_def('CROP', 'Crop');
+tz_def('GK_LUMBER', 'Lumber');
+tz_def('GK_CLAY', 'Clay');
+tz_def('GK_IRON', 'Iron');
+tz_def('GK_CROP', 'Crop');
+tz_def('GK_COORD_X', 'X');
+tz_def('GK_COORD_Y', 'Y');
+tz_def('GK_TROOPS', 'Troops');
+tz_def('GK_NONE', 'none');
 tz_def('LEVEL', 'Level');
 tz_def('CROP_COM', CROP.' consumption');
 tz_def('PER_HR', 'per hour');
@@ -161,6 +169,8 @@ tz_def('REMAINING_GOLD', 'Remaining gold');
 // HEADER && MENU && Messages && Reports
 tz_def('REPORTS', 'Reports');
 tz_def('MESSAGES', 'Messages');
+tz_def('TZ_NAV_COUNT_REPORT', 'report');
+tz_def('TZ_NAV_COUNT_MESSAGE', 'message');
 tz_def('PLUS_MENU', 'Plus menu');
 tz_def('LINKS', 'Links');
 tz_def('CANCEL_PROCESS', 'Cancel process');
@@ -184,6 +194,8 @@ tz_def('MESS_FOR_SUP', 'Message for Support');
 tz_def('MESS_FOR_MH', 'Message for Multihunter');
 tz_def('SEND_AS_SUP', 'Send as Support');
 tz_def('SEND_AS_MH', 'Send as Multihunter');
+tz_def('SENT_AS_SUP', 'Sent as Support');
+tz_def('SENT_AS_MH', 'Sent as Multihunter');
 tz_def('SAVE', 'Save');
 tz_def('ANSWER', 'Answer');
 tz_def('REPLY', 'Reply');
@@ -797,6 +809,9 @@ tz_def('BECOME_COMUNITY', 'Become part of our community now!');
 tz_def('BECOME_COMUNITY2', 'Become a part of one of<br>the biggest gaming<br>communities in the<br>world.');
 tz_def('NEWS', 'News');
 tz_def('SCREENSHOTS', 'Screenshots');
+tz_def('TZ_SCREENSHOT', 'Screenshot');
+tz_def('TZ_CLOSE', 'Close');
+tz_def('TZ_WORLD', 'World');
 tz_def('AGB', 'Terms and Conditions');
 tz_def('LEARN1', 'Upgrade your fields and mines to increase your resource production. You will need resources to construct buildings and train soldiers.');
 tz_def('LEARN2', 'Construct and expand the buildings in your village. Buildings improve your overall infrastructure, increase your resource production and allow you to research, train and upgrade your troops.');
@@ -1059,10 +1074,38 @@ tz_def('SEND_TROOPS_AWAY_MAX', 'Send troops away a maximum of');
 tz_def('TIMES', 'times');
 tz_def('PER_EVASION', 'per evasion');
 tz_def('RALLYPOINT_DESC', 'Your village`s troops gather here. From here, you can send them out to conquer, raid or reinforce other villages.<br>If there are less attacking units than the level of the rally point, you can see the type of unit attacking.');
+tz_def('TZ_RALLY_SEND_TROOPS', 'Send troops');
+tz_def('TZ_RALLY_FARMS', 'Farms');
+tz_def('TZ_RALLY_IN_VILLAGE', 'In the village');
+tz_def('TZ_RALLY_MY_TROOPS', 'My troops in the village');
+tz_def('TZ_RALLY_INCOMING', 'Incoming');
+tz_def('TZ_RALLY_OUTGOING', 'Outgoing');
+tz_def('TZ_RALLY_IN_OTHER', 'In other villages');
+tz_def('TZ_PLUS_CLUB', 'Plus club');
+tz_def('TZ_INDEX_NEWS_TUTORIALS', 'News and tutorials');
+tz_def('TZ_INDEX_SERVERS', 'Number of servers');
+tz_def('TZ_INDEX_SERVERS_COUNT', '1');
+tz_def('TZ_INDEX_SCREENSHOTS', 'Screenshots from the game');
+tz_def('TZ_INDEX_NAV_REGISTER', 'Register');
+tz_def('TZ_INDEX_NAV_LOGIN', 'Login');
+tz_def('TZ_INDEX_GAME_TITLE', 'War of the Greeks');
+tz_def('TZ_INDEX_BROWSER_GAME', 'BROWSER GAME');
+tz_def('TZ_BATTLE_SIMULATOR', 'Battle simulator');
+tz_def('TZ_A2B_SEND_COL', 'Send');
+tz_def('TZ_A2B_AVAILABLE', 'Available');
+tz_def('TZ_A2B_LAST_SEND', 'Last send');
+tz_def('TZ_A2B_TARGET_INFO', 'Dispatch info');
+tz_def('TZ_VILLAGE_NAME_LABEL', 'Village name');
+tz_def('TZ_OR_COORDINATES_LABEL', 'Or coordinates');
+tz_def('TZ_FULL_ATTACK', 'Full attack');
+tz_def('TZ_RAID_ATTACK', 'Raid attack');
 tz_def('COMBAT_SIMULATOR', 'Combat Simulator');
 
 tz_def('MARKETPLACE', 'Marketplace');
 tz_def('MERCHANT', 'Merchants');
+tz_def('MERCHANT_ONE', 'merchant');
+tz_def('MERCHANTS_COUNT_NOW', 'Number of merchants now:');
+tz_def('MERCHANTS_COUNT_AT_LEVEL', 'Number of merchants at level');
 tz_def('OR_', 'or');
 tz_def('GO', 'go');
 tz_def('UNITS_OF_RESOURCE', 'units of resource');
@@ -1122,13 +1165,16 @@ tz_def('ALL', 'All');
 tz_def('NPC_TRADE', 'NPC Trade');
 tz_def('SUM', 'Sum');
 tz_def('REST', 'Rest');
-tz_def('TRADE_RESOURCES', 'Trade resources at (step 2 of 2');
+tz_def('TRADE_RESOURCES', 'Complete trade (step 2 of 2)');
 tz_def('DISTRIBUTE_RESOURCES', 'Distribute resources at (step 1 of 2)');
 tz_def('OF', 'of');
 tz_def('NPC_COMPLETED', 'NPC completed');
+tz_def('NPC_TRADE_MISMATCH', 'Could not complete the trade. Distribute resources until Remain is 0, then try again.');
+tz_def('NPC_TRADE_CAPACITY', 'Not enough warehouse/granary space for all resources. Lower amounts or upgrade storage.');
 tz_def('BACK_BUILDING', 'Back to building');
 tz_def('YOU_CAN_NAT_NPC_WW', 'You can`t use NPC trade in WW village.');
 tz_def('NPC_TRADING', 'NPC trading');
+tz_def('BUY_AND_SELL', 'Buy and sell');
 tz_def('SEND_RESOURCES', 'Send Resources');
 tz_def('BUY', 'Buy');
 tz_def('TRADE_ROUTES', 'Trade routes');
@@ -1164,7 +1210,7 @@ tz_def('CREATE_TRADE_ROUTE', 'Create trade route');
 tz_def('TARGET_VILLAGE', 'Target village');
 tz_def('EDIT_TRADE_ROUTES', 'Edit trade route');
 tz_def('TRADE_ROUTES_DESC', 'Trade route allows you to set up routes for your merchant that he will walk every day at a certain hour. <br><br> Standard this holds on for <b>7</b> days, but you can extend it with <b>7</b> days for the cost of');
-tz_def('NPC_TRADE_DESC', 'With the NPC merchant you can distribute the resources in your warehouse as you desire. <br><br> The first line shows the current stock. In the second line you can choose another distribution. The third line shows the difference between the old and new stock.');
+tz_def('NPC_TRADE_DESC', 'You can distribute the raw materials in your warehouse with the NPC merchant as you wish.<br><br>The <b>"Have"</b> column shows the current stock.<br>The <b>"Want"</b> column lets you distribute the different resources.<br>The <b>"Rest"</b> column shows the difference between the old and new amounts.');
 tz_def('MARKETPLACE_DESC', 'At the marketplace, you can trade resources with other players. The higher its level, the more resources can be transported by your merchants at the same time');
 
 tz_def('EMBASSY', 'Embassy');
@@ -1238,6 +1284,8 @@ tz_def('INHABITANTS', 'Inhabitants');
 tz_def('COORDINATES', 'Coordinates');
 tz_def('EXPANSION', 'Expansion');
 tz_def('TRAIN', 'Train');
+tz_def('TRAINING_DURATION_NOW', 'Training duration now:');
+tz_def('TRAINING_DURATION_AT_LEVEL', 'Training duration at level');
 tz_def('DATE', 'Date');
 tz_def('CONQUERED_BY_VILLAGE', 'Villages founded or conquered by this village');
 tz_def('NONE_CONQUERED_BY_VILLAGE', 'No other village has been founded or conquered by this village yet.');
@@ -1582,6 +1630,15 @@ tz_def('WW_V_M', 'Official World Wonder Village'); // WW Village
 tz_def('ROMAN_T_M', 'The Romans : Because of its high level of social and technological development the Romans are masters at building and its coordination. Also, their troops are part of the elite in Novaterra. They are very balanced and useful in attacking and defending'); // roman tribe medal
 tz_def('TEUTON_T_M', 'The Teutons : The Teutons are the most aggressive tribe. Their troops are notorious and feared for their rage and frenzy when they attack. They move around as a plundering horde, not even afraid of death'); // teuton tribe medal
 tz_def('GAUL_T_M', 'The Gauls : The Gauls are the most peaceful of all three tribes in Novaterra. Their troops are trained for an excellent defence, but their ability to attack can still compete with the other two tribes. The Gauls are born riders and their horses are famous for their speed. This means that their riders can hit the enemy exactly where they can cause the most damage and swiftly take care of them'); // gaul tribe medal
+tz_def('HUNS_T_M', 'The Huns: Fast and deadly, the Huns are known for their lightning raids and powerful cavalry. They live to conquer and leave nothing but ashes behind.');
+tz_def('EGYPTIANS_T_M', 'The Egyptians: Masters of architecture and ancient magic. Their troops are resilient and their cities are fortified with monumental structures.');
+tz_def('SPARTANS_T_M', 'The Spartans: Born warriors with unbreakable discipline. "Come back with your shield or on it" is their creed.');
+tz_def('VIKINGS_T_M', 'The Vikings: Fierce seafarers and feared raiders. Their axes sing songs of glory and their longships strike terror across the seas.');
+tz_def('MEDAL_MH_DESC', 'The Multihunter is an official position mainly used for enforcement of game rules within a server. Multihunters all use the account named Multihunter with its only village located in (0|0). A Multihunter may not play on the server on which they are the Multihunter, but be an active player on other servers.');
+tz_def('MEDAL_TEAM_DESC', 'A persistent, browser-based, massively multiplayer, online real-time strategy game set in classical antiquity.');
+tz_def('MEDAL_ARTEFACT_SMALL', 'Small (Village Effect)');
+tz_def('MEDAL_ARTEFACT_LARGE', 'Large (Account Effect)');
+tz_def('MEDAL_ARTEFACT_UNIQUE', 'Unique (Account Effect)');
 tz_def('ADMIN_M', 'Official Server Administrator');
 tz_def('MH_M', 'Official Server Global Multihunter');
 tz_def('MH_M2', 'The Multihunter is an official Novaterra position mainly used for enforcement of Novaterra rules within a server. Multihunters all use the account named Multihunter with its only village located in (0|0). A Multihunter may not play on the server on which they are the Multihunter, but be an active player on other servers');
@@ -1675,6 +1732,7 @@ tz_def('PREF_MAP_STYLE_HINT', 'Large map or normal');
 tz_def('PREF_STATUS_BLOCKED', 'Blocked');
 tz_def('PREF_NAME_SLOT', '%d/%d');
 tz_def('PREF_STAY_IN_BUILDING', 'Stay in building');
+tz_def('PREF_GO_TO_MAP', 'Go to the map');
 tz_def('TZ_LINK_GENERATOR', 'Game link generator');
 tz_def('TZ_LINK_GENERATOR_DESC', 'Builds a link by building type instead of slot location, so it works in every village regardless of where that building is built there. Copy the result below into the Link target field.');
 tz_def('TZ_TAB_OPTIONAL', 'Tab (optional)');
@@ -2108,6 +2166,11 @@ tz_def('TZ_MSG_ARCHIVE_TITLE', 'Archive');
 tz_def('TZ_MSG_MARK_ALL_READ_OR', 'or mark as read');
 tz_def('TZ_MSG_MARK_ALL_READ_OR_PREFIX', 'or');
 tz_def('TZ_MSG_MARK_ALL_READ_LINK', 'mark as read');
+tz_def('TZ_MSG_NEW', '(new)');
+tz_def('TZ_MSG_UNREAD', '(unread)');
+tz_def('TZ_MSG_REPLY_PREFIX', 'Reply:');
+tz_def('TZ_MSG_IGNORED_TITLE', 'Ignored players');
+tz_def('TZ_NO_IGNORED_PLAYERS', 'No ignored players.');
 tz_def('TZ_PROF_TAB_OVERVIEW', 'Overview');
 tz_def('TZ_PROF_TAB_ABOUT', 'About us');
 tz_def('TZ_PROF_TAB_MEMBERSHIP', 'Profile');
@@ -2122,6 +2185,19 @@ tz_def('TZ_RPT_ATTACK_TAB', 'Attack');
 tz_def('TZ_RPT_DEFENSE', 'Defense');
 tz_def('TZ_RPT_SCOUT_TAB', 'Scouting');
 tz_def('TZ_RPT_MISSION', 'Mission');
+tz_def('TZ_RPT_TYPES', 'Types');
+tz_def('TZ_RPT_ATTACKER_SHORT', 'Attacker');
+tz_def('TZ_RPT_DEFENDER_SHORT', 'Defender');
+tz_def('TZ_RPT_RESOURCES_ROW', 'Resources');
+tz_def('TZ_RPT_LINK', 'Report link');
+tz_def('TZ_RPT_TRAVEL', 'Travel');
+tz_def('TZ_RPT_MIN_ABBR', 'm');
+tz_def('TZ_RPT_HOUR_ABBR', 'h');
+tz_def('TZ_RPT_ATTACKS_ON_VILLAGE', 'attacks village');
+tz_def('TZ_RPT_SCOUTS_ON_VILLAGE', 'scouts village');
+tz_def('TZ_RPT_WORLD_DAY', 'Day');
+tz_def('TZ_RPT_NO_DEF_INTEL', 'No defender troop information is available because all attackers were killed.');
+tz_def('TZ_RPT_NATURE_LEGACY_HINT', 'Troop counts show animals currently in the oasis. Attack again for exact battle and casualty details.');
 tz_def('TZ_MARK_ALL_READ', 'Mark all as read');
 tz_def('TZ_RPT_MARK_ALL_READ_OR_PREFIX', 'or');
 tz_def('TZ_RPT_MARK_ALL_READ_LINK', 'mark as read');
@@ -2134,6 +2210,23 @@ tz_def('TZ_BOLD', 'bold');
 tz_def('TZ_BUILDING', 'Building');
 tz_def('TZ_CATAPULT_TARGET', 'catapult target');
 tz_def('TZ_CLICK_TO_COPY', 'Click to copy');
+tz_def('TZ_COPIED', 'Link copied.');
+
+if (!function_exists('tz_day_night_image_class')) {
+    function tz_day_night_image_class()
+    {
+        $hour = (int) date('Hi');
+        return ($hour > 1759 || $hour < 500) ? 'night_image' : 'day_image';
+    }
+}
+
+if (!function_exists('tz_day_night_icon_html')) {
+    function tz_day_night_icon_html($extraClass = 'gk-daynight')
+    {
+        $classes = trim(tz_day_night_image_class() . ' ' . trim((string) $extraClass));
+        return '<img src="img/x.gif" class="' . htmlspecialchars($classes, ENT_QUOTES, 'UTF-8') . '" alt="" aria-hidden="true" />';
+    }
+}
 tz_def('TZ_CLIMBERS_OF_THE_WEEK', 'Climbers of the week');
 tz_def('TZ_CLOCK', 'Clock');
 tz_def('TZ_CONTINUE_WITH_THE_NEXT_TASK', 'Continue with the next task.');
@@ -2248,6 +2341,20 @@ tz_def('TZ_ACCOUNT_STATEMENT', 'Account Statement');
 tz_def('TZ_ACTIVATE_VACATION_MODE', 'Activate Vacation Mode');
 tz_def('TZ_ADD_RAID', 'Add Raid');
 tz_def('TZ_ADD_SLOT', 'Add Slot');
+tz_def('TZ_ADD_FARM', 'Add farm');
+tz_def('TZ_FARMS_ATTACK_ADD', 'Attack | Add farm');
+tz_def('TZ_NO_FARMS_MUST_ADD', 'There are no farms; you must add a farm.');
+tz_def('TZ_FARM_COORDS', 'Coordinates');
+tz_def('TZ_FARM_TROOP_TYPE', 'Troop type');
+tz_def('TZ_FARM_TROOP_COUNT', 'Troop count');
+tz_def('TZ_FARM_ENTER_COORDS', 'Enter coordinates.');
+tz_def('TZ_FARM_COORDS_INVALID', 'Enter valid coordinates.');
+tz_def('TZ_FARM_NO_VILLAGE', 'There is no village on those coordinates.');
+tz_def('TZ_FARM_NO_TROOPS', 'You must select at least one troop.');
+tz_def('TZ_FARM_BEGINNER_PROT', 'Player is under beginners protection.');
+tz_def('TZ_FARM_SAME_VILLAGE', 'You cannot attack the same village you send troops from.');
+tz_def('TZ_FARM_LIST_INVALID', 'Invalid farm list.');
+tz_def('TZ_FARM_LIST_CREATE_FAIL', 'Could not create farm list.');
 tz_def('TZ_ADVANTAGES', 'Advantages');
 tz_def('TZ_AFTER_PAYMENT_YOU_WILL_BE_CREDITED', 'After payment you will be credited automatically.');
 tz_def('TZ_AGRESOR', 'Agresor');
@@ -2265,6 +2372,8 @@ tz_def('TZ_AUTHOR', 'Author');
 tz_def('TZ_BEGINNERS_PROT', 'Beginners Prot.');
 tz_def('TZ_BEST_PLAYER', 'Best Player');
 tz_def('TZ_BUILDING_SITE', 'building site');
+tz_def('TZ_OUTER_BUILDING_SITE', 'Outer building site');
+tz_def('TZ_RALLY_POINT_BUILDING_SITE', 'Rally Point building site');
 tz_def('TZ_BUILD_A_PALACE_OR_RESIDENCE_TO_LEV', 'Build a palace or residence to level 10.');
 tz_def('TZ_BUILD_CROPPER', 'Build Cropper');
 tz_def('TZ_BUY_IT_IN_THE_GOLD_SHOP', 'Buy it in the Gold Shop');
@@ -2964,6 +3073,409 @@ if (!function_exists('tz_loc_topic')) {
     }
 }
 
+if (!function_exists('tz_loc_report_player')) {
+    function tz_loc_report_player($username, $uid = 0)
+    {
+        $uid = (int) $uid;
+        $username = (string) $username;
+        if ($username === '' || $username === '[?]') {
+            return $username;
+        }
+        if ($uid === 2 || strcasecmp($username, 'Nature') === 0) {
+            return defined('TRIBE4') ? TRIBE4 : $username;
+        }
+        if ($uid === 1 || strcasecmp($username, 'Support') === 0) {
+            return defined('SUPPORT') ? SUPPORT : $username;
+        }
+        if ($uid === 3 || strcasecmp($username, 'Natars') === 0) {
+            return defined('NATARS') ? NATARS : $username;
+        }
+        return $username;
+    }
+}
+
+if (!function_exists('tz_loc_report_place')) {
+    function tz_loc_report_place($label, $villageName = '')
+    {
+        $label = trim((string) $label);
+        $villageName = trim((string) $villageName);
+        $candidate = ($label !== '' && $label !== '[?]') ? $label : $villageName;
+        if ($candidate === '' || $candidate === '[?]') {
+            return $candidate;
+        }
+        $mapped = tz_loc_topic($candidate);
+        if ($mapped !== $candidate) {
+            return $mapped;
+        }
+        static $placeMap = null;
+        if ($placeMap === null) {
+            $placeMap = array(
+                'Unoccupied Oasis' => defined('UNOCCUOASIS') ? UNOCCUOASIS : 'Unoccupied Oasis',
+                'Unoccupied oasis' => defined('UNOCCUOASIS') ? UNOCCUOASIS : 'Unoccupied oasis',
+                'Occupied oasis'   => defined('OCCUOASIS') ? OCCUOASIS : 'Occupied oasis',
+                'Occupied Oasis'   => defined('OCCUOASIS') ? OCCUOASIS : 'Occupied Oasis',
+            );
+        }
+        return isset($placeMap[$candidate]) ? $placeMap[$candidate] : $candidate;
+    }
+}
+
+if (!function_exists('tz_rpt_from_village_line')) {
+    function tz_rpt_from_village_line($playerHtml, $placeHtml, $plainName = '')
+    {
+        if ($placeHtml === '' || $placeHtml === null) {
+            return $playerHtml;
+        }
+        $fromTheVill = defined('FROM_THE_VILL') ? FROM_THE_VILL : 'from the village';
+        $plain = trim(strip_tags((string) $plainName));
+        if ($plain !== '' && preg_match('/^(قرية|village)\s/ui', $plain)) {
+            return $playerHtml . ' ' . $placeHtml;
+        }
+        if ($plain !== '' && (preg_match('/^(واحة|unoccupied|occupied)/ui', $plain) || preg_match('/oasis/i', $plain))) {
+            $fromWord = defined('FROM') ? FROM : 'from';
+            return $playerHtml . ' ' . $fromWord . ' ' . $placeHtml;
+        }
+        return $playerHtml . ' ' . $fromTheVill . ' ' . $placeHtml;
+    }
+}
+
+if (!function_exists('tz_rpt_hl')) {
+    function tz_rpt_hl($text)
+    {
+        return '<span class="gk-rpt-hl">' . htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8') . '</span>';
+    }
+}
+
+if (!function_exists('tz_rpt_format_head_subject_html')) {
+    function tz_rpt_format_head_subject_html($notice)
+    {
+        global $database;
+
+        $rawTopic = (string) ($notice['topic'] ?? '');
+        if ($rawTopic === '') {
+            return '';
+        }
+
+        $data = (string) ($notice['data'] ?? '');
+        $parts = $data !== '' ? explode(',', $data) : array();
+
+        if (count($parts) >= 30 && isset($database)) {
+            $atkUid = (int) ($parts[0] ?? 0);
+            $fromWref = (int) ($parts[1] ?? 0);
+            $defUid = (int) ($parts[28] ?? 0);
+            $toWref = (int) ($parts[29] ?? 0);
+
+            $atkPlayer = $database->getUserField($atkUid, 'username', 0);
+            if (function_exists('tz_loc_report_player')) {
+                $atkPlayer = tz_loc_report_player($atkPlayer, $atkUid);
+            }
+            $fromVillage = $database->getVillageField($fromWref, 'name');
+            $toVillage = $database->getVillageField($toWref, 'name');
+            $isOasis = $toWref > 0 && $database->isVillageOases($toWref);
+            $oasisLabel = function_exists('tz_loc_report_place')
+                ? tz_loc_report_place($parts[30] ?? '', $toVillage)
+                : ($parts[30] ?? $toVillage);
+            if ($oasisLabel === '' || $oasisLabel === '[?]') {
+                $oasisLabel = function_exists('tz_loc_report_place')
+                    ? tz_loc_report_place($toVillage, $toVillage)
+                    : $toVillage;
+            }
+
+            $attacksOnVillage = defined('TZ_RPT_ATTACKS_ON_VILLAGE') ? TZ_RPT_ATTACKS_ON_VILLAGE : 'attacks village';
+            $scoutsOnVillage = defined('TZ_RPT_SCOUTS_ON_VILLAGE') ? TZ_RPT_SCOUTS_ON_VILLAGE : 'scouts village';
+            $attacksVerb = defined('TZ_RT_ATTACKS') ? TZ_RT_ATTACKS : 'attacks';
+            $scoutsVerb = defined('TZ_RT_SCOUTS') ? trim(TZ_RT_SCOUTS) : 'scouts';
+            $villageWord = defined('VILLAGE') ? VILLAGE : 'Village';
+
+            $fromLabel = $fromVillage;
+            if ($fromVillage !== '' && $fromVillage !== '[?]' && !preg_match('/^(قرية|village)\s/ui', $fromVillage)) {
+                $fromLabel = $villageWord . ' ' . $fromVillage;
+            }
+
+            if (preg_match('/\bscouts\b/i', $rawTopic)) {
+                if ($isOasis || $defUid === 2) {
+                    return tz_rpt_hl($fromLabel) . ' ' . $scoutsVerb . ' ' . tz_rpt_hl($oasisLabel);
+                }
+                return tz_rpt_hl($atkPlayer) . ' ' . $scoutsOnVillage . ' ' . tz_rpt_hl($toVillage);
+            }
+
+            if (preg_match('/\battacks\b/i', $rawTopic)) {
+                if ($isOasis || $defUid === 2) {
+                    return tz_rpt_hl($fromLabel) . ' ' . $attacksVerb . ' ' . tz_rpt_hl($oasisLabel);
+                }
+                return tz_rpt_hl($atkPlayer) . ' ' . $attacksOnVillage . ' ' . tz_rpt_hl($toVillage);
+            }
+        }
+
+        if (preg_match('/^(.+?)\s+(attacks|scouts|reinforcement)\s+(.+)$/i', $rawTopic, $m)) {
+            $left = function_exists('tz_loc_topic') ? tz_loc_topic($m[1]) : $m[1];
+            $mid = function_exists('tz_loc_topic') ? trim(tz_loc_topic(' ' . $m[2] . ' ')) : $m[2];
+            $right = function_exists('tz_loc_topic') ? tz_loc_topic($m[3]) : $m[3];
+            return tz_rpt_hl($left) . ' ' . htmlspecialchars($mid, ENT_QUOTES, 'UTF-8') . ' ' . tz_rpt_hl($right);
+        }
+
+        return htmlspecialchars(function_exists('tz_loc_topic') ? tz_loc_topic($rawTopic) : $rawTopic, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('tz_rpt_format_head_date_main')) {
+    function tz_rpt_format_head_date_main($reportTime)
+    {
+        if (class_exists('GreekBerichte')) {
+            return GreekBerichte::formatReportDateMain($reportTime);
+        }
+
+        $reportTime = (int) $reportTime;
+        return $reportTime > 0 ? date('Y/m/d - H:i:s', $reportTime) : '';
+    }
+}
+
+if (!function_exists('tz_rpt_battle_cell')) {
+    function tz_rpt_battle_cell($value)
+    {
+        $value = trim((string) $value);
+        if ($value === '' || $value === '?') {
+            return '<td class="none">?</td>';
+        }
+        if ((int) $value === 0) {
+            return '<td class="none">0</td>';
+        }
+        return '<td>' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '</td>';
+    }
+}
+
+if (!function_exists('tz_rpt_defender_cells_masked')) {
+    function tz_rpt_defender_cells_masked(array $dataarray, $troopsStart = 35, $span = 20)
+    {
+        for ($i = $troopsStart; $i < $troopsStart + $span; $i++) {
+            $cell = trim((string) ($dataarray[$i] ?? ''));
+            if ($cell !== '' && $cell !== '?') {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+if (!function_exists('tz_rpt_casualties_masked')) {
+    function tz_rpt_casualties_masked(array $dataarray, $troopsStart = 35)
+    {
+        for ($i = $troopsStart + 10; $i < $troopsStart + 20; $i++) {
+            $cell = trim((string) ($dataarray[$i] ?? ''));
+            if ($cell !== '' && $cell !== '?') {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+if (!function_exists('tz_rpt_build_attacker_from_report')) {
+    function tz_rpt_build_attacker_from_report(array $dataarray)
+    {
+        $owntribe = (int) ($dataarray[2] ?? 0);
+        if ($owntribe < 1 || $owntribe > 9) {
+            return null;
+        }
+
+        $start = ($owntribe - 1) * 10 + 1;
+        $attacker = [];
+        for ($i = $start; $i <= $start + 9; $i++) {
+            $attacker['u' . $i] = (int) ($dataarray[3 + ($i - $start)] ?? 0);
+        }
+        $attacker['uhero'] = (int) ($dataarray[284] ?? 0);
+
+        return ['attacker' => $attacker, 'owntribe' => $owntribe];
+    }
+}
+
+if (!function_exists('tz_rpt_reconstruct_nature_casualties')) {
+  /**
+   * Re-run the oasis battle from report attacker data + current survivors to
+   * recover defender troop counts and casualties for legacy masked reports.
+   */
+    function tz_rpt_reconstruct_nature_casualties(array $dataarray, $database, $noticeType)
+    {
+        global $battle;
+        if (!isset($battle) || !is_object($battle)) {
+            return null;
+        }
+
+        $atk = tz_rpt_build_attacker_from_report($dataarray);
+        if ($atk === null) {
+            return null;
+        }
+
+        $defWref = (int) ($dataarray[29] ?? 0);
+        $defOwner = (int) ($dataarray[28] ?? 0);
+        $defTribe = (int) ($dataarray[34] ?? 0);
+        if ($defTribe <= 0) {
+            $defTribe = 4;
+        }
+
+        $attackerWref = (int) ($dataarray[1] ?? 0);
+        $attackerId = (int) ($dataarray[0] ?? 0);
+        $unitStart = ($defTribe - 1) * 10 + 1;
+
+        $units = $database->getUnit($defWref, false);
+        if (!$units) {
+            return null;
+        }
+
+        $survivors = [];
+        for ($j = 0; $j < 10; $j++) {
+            $survivors[$j] = (int) ($units['u' . ($unitStart + $j)] ?? 0);
+        }
+
+        $pre = $survivors;
+        $dead = array_fill(0, 10, 0);
+        $attackType = ($noticeType === 19) ? 1 : 3;
+
+        $defAb = [];
+        for ($i = 31; $i <= 38; $i++) {
+            $defAb[$i] = 0;
+        }
+
+        $attpop = 0;
+        if ($attackerWref > 0) {
+            $attVillage = $database->getVillage($attackerWref);
+            if ($attVillage) {
+                $attpop = (int) ($attVillage['pop'] ?? 0);
+            }
+        }
+
+        for ($iter = 0; $iter < 12; $iter++) {
+            $defender = [];
+            for ($i = 1; $i <= 90; $i++) {
+                $defender['u' . $i] = 0;
+            }
+            for ($j = 0; $j < 10; $j++) {
+                $defender['u' . ($unitStart + $j)] = max(0, (int) $pre[$j]);
+            }
+            $defender['hero'] = 0;
+
+            $battlepart = $battle->calculateBattle(
+                $atk['attacker'],
+                $defender,
+                0,
+                $atk['owntribe'],
+                $defTribe,
+                0,
+                $attpop,
+                500,
+                $attackType,
+                $defAb,
+                0, 0, 0, 0, 0, 0, 0, 0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                $attackerId,
+                $defOwner,
+                $attackerWref,
+                $defWref,
+                0,
+                []
+            );
+
+            $rate = isset($battlepart[2]) ? (float) $battlepart[2] : 0.0;
+            if ($rate < 0) {
+                $rate = 0;
+            }
+            if ($rate > 1) {
+                $rate = 1;
+            }
+
+            $nextPre = [];
+            $nextDead = [];
+            for ($j = 0; $j < 10; $j++) {
+                $nextDead[$j] = (int) round($rate * (float) $pre[$j]);
+                $nextPre[$j] = $survivors[$j] + $nextDead[$j];
+            }
+
+            $changed = false;
+            for ($j = 0; $j < 10; $j++) {
+                if ($nextPre[$j] !== $pre[$j] || $nextDead[$j] !== $dead[$j]) {
+                    $changed = true;
+                    break;
+                }
+            }
+
+            $pre = $nextPre;
+            $dead = $nextDead;
+
+            if (!$changed) {
+                break;
+            }
+        }
+
+        return ['pre' => $pre, 'dead' => $dead];
+    }
+}
+
+if (!function_exists('tz_rpt_enrich_masked_nature_defender')) {
+    /**
+     * Legacy fail-reports stored masked defender values (?). For Nature/oasis animals,
+     * reconstruct troop counts and casualties from the oasis unit row + battle sim.
+     */
+    function tz_rpt_enrich_masked_nature_defender(array &$dataarray, $database, $noticeType = 0)
+    {
+        $troopsStart = 35;
+        $troopsMasked = tz_rpt_defender_cells_masked($dataarray, $troopsStart, 10);
+        $casualtiesMasked = tz_rpt_casualties_masked($dataarray, $troopsStart);
+
+        if (!$troopsMasked && !$casualtiesMasked) {
+            return;
+        }
+
+        $targetTribe = (int) ($dataarray[34] ?? 0);
+        $defOwner = (int) ($dataarray[28] ?? 0);
+        $defWref = (int) ($dataarray[29] ?? 0);
+
+        if ($defWref <= 0) {
+            return;
+        }
+
+        $isNature = ($targetTribe === 4 || $defOwner === 2);
+        $isOasis = $database->isVillageOases($defWref);
+
+        if (!$isNature && !$isOasis) {
+            return;
+        }
+
+        $recon = tz_rpt_reconstruct_nature_casualties($dataarray, $database, (int) $noticeType);
+        if ($recon !== null) {
+            for ($j = 0; $j < 10; $j++) {
+                if ($casualtiesMasked) {
+                    $dataarray[$troopsStart + $j] = (int) $recon['pre'][$j];
+                    $dataarray[$troopsStart + 10 + $j] = (int) $recon['dead'][$j];
+                } elseif ($troopsMasked) {
+                    $dataarray[$troopsStart + $j] = (int) $recon['pre'][$j];
+                }
+            }
+            return;
+        }
+
+        if (!$troopsMasked) {
+            return;
+        }
+
+        $units = $database->getUnit($defWref, false);
+        if (!$units) {
+            return;
+        }
+
+        $tribe = $targetTribe > 0 ? $targetTribe : 4;
+        $unitStart = ($tribe - 1) * 10 + 1;
+
+        for ($j = 0; $j < 10; $j++) {
+            $dataarray[$troopsStart + $j] = (int) ($units['u' . ($unitStart + $j)] ?? 0);
+        }
+    }
+}
+
 /* =============================================================================
  * T4 HERO PORT (Phase 6) - items / adventures / auction house
  * ========================================================================== */
@@ -3622,6 +4134,23 @@ tz_def('PUBLIC_RULES_MULTI_DELETE', 'Multi accounts on the speed server and mult
 tz_def('PUBLIC_RULES_SECTION_8', '&sect;8 Changing of rules');
 tz_def('PUBLIC_RULES_CHANGE_ANY_TIME', 'The Novaterra Team reserves the right to change the rules at any time.');
 tz_def('PUBLIC_RULES_SEVERABILITY', 'If individual regulations of this set of rules should be ineffective, it does not affect the validity of the remaining regulations of this set of rules. The Administrators commit themselves to replace ineffective regulations with new regulations which replace the ineffective regulations as fast as possible.');
+tz_def('PUBLIC_RULES_SECTION_1_1', '&sect;1.1 Registration');
+tz_def('PUBLIC_RULES_SECTION_1_4', '&sect;1.4 Switching accounts');
+tz_def('PUBLIC_RULES_SECTION_2', '&sect;2 Sitting &amp; same pc usage');
+tz_def('PUBLIC_RULES_SECTION_2_1', '&sect;2.1 Sitting');
+tz_def('PUBLIC_RULES_SECTION_2_2', '&sect;2.2 Same pc usage');
+tz_def('PUBLIC_RULES_SECTION_3', '&sect;3 Use of externals');
+tz_def('PUBLIC_RULES_SECTION_5', '&sect;5 Money transactions');
+tz_def('PUBLIC_RULES_SECTION_6', '&sect;6 Netiquette');
+tz_def('PUBLIC_RULES_SECTION_7', '&sect;7 Punishments');
+tz_def('PUBLIC_RULES_SECTION_9', '&sect;9 Correction clause');
+tz_def('PUBLIC_RULES_SECTION_10', '&sect;10 Server rules and penalties');
+tz_def('PUBLIC_RULES_SECTION_10_BODY', 'Before any penalty is applied, the current server rules, prohibited conduct, and penalty levels must be published clearly on this page. Players may review the rules and submit an appeal through support.');
+tz_def('PUBLIC_RULES_DEFAMATORY', 'Participation in abusive, defamatory, sexist, racist or profane language; disparaging any religion, race, nation, gender, age group, or sexual orientation; threatening persons with actions in real life.');
+tz_def('PUBLIC_RULES_UNDERAGE', 'Posting or transmission of any material not suitable for underage persons.');
+tz_def('PUBLIC_RULES_DISPLAY_REPORTS', 'Displaying battle reports or messages in public without consent of both concerned persons.');
+tz_def('PUBLIC_RULES_NO_POLITICS', 'No real world politics are allowed in names, messages and descriptions.');
+tz_def('PUBLIC_RULES_IMPERSONATION', 'Impersonation of officials or official positions is illegal in any way.');
 tz_def('ANL_BUILDINGS', 'Buildings');
 tz_def('ANL_WAREHOUSE', 'Warehouse');
 tz_def('ANL_GRANARY', 'Granary');

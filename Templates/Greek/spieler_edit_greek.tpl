@@ -4,9 +4,16 @@
  */
 
 $varmedal = $database->getProfileMedal($session->uid);
+require_once dirname(__DIR__, 2) . '/GameEngine/GreekMedalLayout.php';
 $gkMedalClass = 'gk-prof-medals gk-prof-medals-greek';
 $gkMedalGreekLayout = true;
 $gkSpielerGreek = true;
+
+$gkMedalWeekMapEdit = GreekMedalLayout::weekMapFromVarmedal($varmedal);
+$gkMedalWallText = GreekMedalLayout::layoutBbByWeekRuns(
+    (string) ($session->userinfo['desc2'] ?? ''),
+    $gkMedalWeekMapEdit
+);
 
 $ranking->procRankReq($_GET);
 
@@ -78,8 +85,8 @@ $gkBdayYear = htmlspecialchars($bday[0] ?? '', ENT_QUOTES, 'UTF-8');
 <tbody>
 <tr class="gk-prof-main-row">
 <td class="desc1 gk-prof-desc-cell">
-<textarea tabindex="1" name="be1" id="desc_be1" maxlength="3000" hidden><?php echo htmlspecialchars($session->userinfo['desc2'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
-<div class="profile-editor gk-prof-editor" contenteditable="true" data-source="be1" tabindex="1"></div>
+<textarea tabindex="1" name="be1" id="desc_be1" maxlength="3000" hidden><?php echo htmlspecialchars($gkMedalWallText, ENT_QUOTES, 'UTF-8'); ?></textarea>
+<div class="profile-editor gk-prof-editor gk-prof-medals-wall" contenteditable="true" data-source="be1" tabindex="1"></div>
 </td>
 <td class="details gk-prof-detail-cell">
 <div class="gk-prof-detail-stack">
@@ -166,17 +173,14 @@ for ($i = 0, $cnt = count($varray); $i < $cnt; $i++) {
 </form>
 
 <?php
-$gkProfileBadgeMap = array(
-    '0' => GP_LOCATE . 'img/t/tn.gif',
-    'g2300' => GP_LOCATE . 'img/t/Veteran_Medal.jpg',
-    'g2301' => GP_LOCATE . 'img/t/5year_medal.png',
-    'g2302' => GP_LOCATE . 'img/t/10_year_medal.png',
-    'roman' => GP_LOCATE . 'img/t/roman.gif',
-    'teuton' => GP_LOCATE . 'img/t/teutons.gif',
-    'gaul' => GP_LOCATE . 'img/t/gauls.gif',
-    'multihunter' => GP_LOCATE . 'img/t/t6_1.png',
-    'mh' => GP_LOCATE . 'img/t/MH.png',
-    'team' => GP_LOCATE . 'img/t/team.png',
+require_once dirname(__DIR__, 2) . '/GameEngine/GreekMedalAssets.php';
+require_once dirname(__DIR__, 2) . '/GameEngine/GreekMedalLayout.php';
+
+$gkProfileBadgeMap = [];
+foreach (GreekMedalAssets::MAP as $gkBadgeKey => $gkBadgeBase) {
+    $gkProfileBadgeMap[$gkBadgeKey] = GreekMedalAssets::url(GP_LOCATE, $gkBadgeKey);
+}
+$gkProfileBadgeMap += array(
     'artefact' => GP_LOCATE . 'img/gloriamedals/artifact.png',
     'wwbuilder' => GP_LOCATE . 'img/gloriamedals/ww_builder.png',
     'winnerww' => GP_LOCATE . 'img/gloriamedals/ww_winner.png',
@@ -186,67 +190,109 @@ $gkProfileBadgeMap = array(
 );
 foreach ($database->getProfileMedal($session->uid) as $gkMedalRow) {
     $gkMedalImg = preg_replace('/[^a-zA-Z0-9_.-]/', '', (string) ($gkMedalRow['img'] ?? ''));
-    if ($gkMedalImg !== '') {
-        $gkProfileBadgeMap[(string) $gkMedalRow['id']] = GP_LOCATE . 'img/t/' . rawurlencode($gkMedalImg) . '.jpg';
+    if ($gkMedalImg !== '' && !in_array($gkMedalImg, GreekMedalAssets::BANNERS, true)) {
+        $gkProfileBadgeMap[(string) $gkMedalRow['id']] = GreekMedalAssets::url(GP_LOCATE, $gkMedalImg);
     }
 }
+$gkProfileMedalWeeks = GreekMedalLayout::weekMapFromVarmedal($varmedal);
 ?>
 
 <script>
 window.gkProfileBadgeMap = <?php echo json_encode($gkProfileBadgeMap, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
+window.gkProfileMedalWeeks = <?php echo json_encode($gkProfileMedalWeeks, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
 
 function medalKeyFromPart(part) {
     return String(part).replace(/^\[|\]$/g, '').replace(/^#/, '').toLowerCase();
 }
 
+function medalGroupKey(key) {
+    const weeks = window.gkProfileMedalWeeks || {};
+    const normalized = String(key).toLowerCase();
+    if (weeks[normalized] !== undefined) {
+        return weeks[normalized];
+    }
+    return 'special:' + normalized;
+}
+
+function nodeToBBCode(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+        return node.textContent;
+    }
+    if (node.nodeName === 'IMG' && node.dataset.code) {
+        return node.dataset.code;
+    }
+    if (node.nodeName === 'BR') {
+        return '\n';
+    }
+  let value = '';
+    if (node.childNodes && node.childNodes.length) {
+        node.childNodes.forEach(function (child) {
+            value += nodeToBBCode(child);
+        });
+    }
+    return value;
+}
+
 function renderProfileEditor(textarea, editor) {
     const badges = window.gkProfileBadgeMap || {};
     editor.innerHTML = '';
-    const parts = textarea.value.split(/(\[(?:#?[\w]+|[\w]+#)\])/ig);
-    parts.forEach(function (part) {
-        if (!part) {
+    const lines = textarea.value.split('\n');
+
+    lines.forEach(function (line) {
+        if (line === '' && lines.length > 1) {
             return;
         }
-        if (!/^\[/.test(part)) {
-            editor.appendChild(document.createTextNode(part));
-            return;
-        }
-        const key = medalKeyFromPart(part);
-        const src = badges[key];
-        if (src) {
-            const image = document.createElement('img');
-            image.src = src;
-            image.alt = part;
-            image.dataset.code = part;
-            image.className = 'gk-medal-badge';
-            image.contentEditable = 'false';
-            editor.appendChild(image);
-        } else {
-            editor.appendChild(document.createTextNode(part));
+        const row = document.createElement('div');
+        row.className = 'gk-medal-row';
+        const parts = line.split(/(\[(?:#?[\w]+|[\w]+#)\])/ig);
+        parts.forEach(function (part) {
+            if (!part) {
+                return;
+            }
+            if (!/^\[/.test(part)) {
+                if (part) {
+                    row.appendChild(document.createTextNode(part));
+                }
+                return;
+            }
+            const key = medalKeyFromPart(part);
+            const src = badges[key];
+            if (src) {
+                const image = document.createElement('img');
+                image.src = src;
+                image.alt = part;
+                image.dataset.code = part;
+                image.className = 'gk-inline-medal gk-medal-badge';
+                image.contentEditable = 'false';
+                row.appendChild(image);
+            } else {
+                row.appendChild(document.createTextNode(part));
+            }
+        });
+        if (row.childNodes.length) {
+            editor.appendChild(row);
         }
     });
 }
 
 function editorToBBCode(editor) {
-    let value = '';
-    function walk(node) {
-        if (node.nodeType === Node.TEXT_NODE) {
-            value += node.textContent;
-            return;
-        }
-        if (node.nodeName === 'IMG' && node.dataset.code) {
-            value += node.dataset.code;
-            return;
-        }
-        if (node.nodeName === 'BR') {
-            value += '\n';
-            return;
-        }
-        if (node.childNodes && node.childNodes.length) {
-            node.childNodes.forEach(walk);
-        }
+    const rows = editor.querySelectorAll('.gk-medal-row');
+    if (rows.length) {
+        const lines = [];
+        rows.forEach(function (row) {
+            let line = '';
+            row.childNodes.forEach(function (node) {
+                line += nodeToBBCode(node);
+            });
+            lines.push(line);
+        });
+        return lines.join('\n').replace(/\n+$/, '').substring(0, 3000);
     }
-    editor.childNodes.forEach(walk);
+
+    let value = '';
+    editor.childNodes.forEach(function (node) {
+        value += nodeToBBCode(node);
+    });
     return value.substring(0, 3000);
 }
 
@@ -254,6 +300,39 @@ function syncProfileEditor(editor) {
     const textarea = document.getElementById('desc_' + editor.dataset.source);
     if (!textarea) return;
     textarea.value = editorToBBCode(editor);
+}
+
+function getLastMedalGroupInEditor(editor) {
+    const rows = editor.querySelectorAll('.gk-medal-row');
+    if (!rows.length) {
+        return null;
+    }
+    const lastRow = rows[rows.length - 1];
+    const imgs = lastRow.querySelectorAll('img[data-code]');
+    if (!imgs.length) {
+        return null;
+    }
+    return medalGroupKey(medalKeyFromPart(imgs[imgs.length - 1].dataset.code));
+}
+
+function appendMedalToEditor(editor, image, newGroupKey) {
+    const lastGroup = getLastMedalGroupInEditor(editor);
+    let targetRow = null;
+
+    if (lastGroup !== null && lastGroup === newGroupKey) {
+        const rows = editor.querySelectorAll('.gk-medal-row');
+        if (rows.length) {
+            targetRow = rows[rows.length - 1];
+        }
+    }
+
+    if (!targetRow) {
+        targetRow = document.createElement('div');
+        targetRow.className = 'gk-medal-row';
+        editor.appendChild(targetRow);
+    }
+
+    targetRow.appendChild(image);
 }
 
 function insertMedal(code) {
@@ -268,9 +347,9 @@ function insertMedal(code) {
         image.src = src;
         image.alt = code;
         image.dataset.code = code;
-        image.className = 'gk-medal-badge';
+        image.className = 'gk-inline-medal gk-medal-badge';
         image.contentEditable = 'false';
-        editor.appendChild(image);
+        appendMedalToEditor(editor, image, medalGroupKey(key));
         syncProfileEditor(editor);
     } else {
         textarea.value = (textarea.value + code).substring(0, 3000);

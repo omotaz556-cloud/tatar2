@@ -19,15 +19,19 @@
 ## --------------------------------------------------------------------------- ##
 #################################################################################
 
-$t = isset($_GET['t']) ? (int)$_GET['t'] : 0;
-$isOverview = ($t === 0) || ($t === 99 && !$session->goldclub);
-$isGold = ($t === 99 && $session->goldclub);
+$t = isset($_GET['t']) ? (int) $_GET['t'] : 0;
+$isOverview = ($t === 0);
+$isGold = ($t === 99);
+$isA2bSend = !empty($a2bSendPage);
+$isWarsim = !empty($warsimPage);
+$rallyMenuId = isset($rallyFieldId) ? (int) $rallyFieldId : (isset($id) ? (int) $id : 39);
+$sendTroopsLabel = defined('TZ_RALLY_SEND_TROOPS') ? TZ_RALLY_SEND_TROOPS : SEND_TROOPS;
+$battleSimLabel = defined('TZ_BATTLE_SIMULATOR') ? TZ_BATTLE_SIMULATOR : Q20_RESP1;
+$farmsLabel = defined('TZ_RALLY_FARMS') ? TZ_RALLY_FARMS : GOLD_CLUB;
 ?>
-<div id="textmenu">
-    <a href="build.php?id=<?= $id ?>" <?= $isOverview ? 'class="selected"' : '' ?>><?= OVERVIEW ?></a> |
-    <a href="a2b.php"><?= SEND_TROOPS ?></a> |
-    <a href="warsim.php"><?= Q20_RESP1 ?></a>
-    <?php if ($session->goldclub == 1): ?> |
-        <a href="build.php?id=<?= $id ?>&amp;t=99" <?= $isGold ? 'class="selected"' : '' ?>><?php echo GOLD_CLUB; ?></a>
-    <?php endif; ?>
+<div id="textmenu" class="gk-rally-nav">
+    <a href="build.php?id=<?php echo $rallyMenuId; ?>"<?php if ($isOverview && !$isA2bSend && !$isWarsim) echo ' class="selected"'; ?>><?php echo OVERVIEW; ?></a>
+    | <a href="a2b.php"<?php if ($isA2bSend) echo ' class="selected"'; ?>><?php echo $sendTroopsLabel; ?></a>
+    | <a href="warsim.php"<?php if ($isWarsim) echo ' class="selected"'; ?>><?php echo $battleSimLabel; ?></a>
+    | <a href="build.php?id=<?php echo $rallyMenuId; ?>&amp;t=99"<?php if ($isGold) echo ' class="selected"'; ?>><?php echo $farmsLabel; ?></a>
 </div>

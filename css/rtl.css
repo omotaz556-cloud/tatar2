@@ -37,8 +37,7 @@
 
 /* ---------------------------------------------------------------------
  * Whole-page zoom for Arabic: scales EVERYTHING (text, icons, map,
- * spacing) uniformly to 150%, as if the player pressed Ctrl/Cmd "+"
- * twice in Chrome at 100% browser zoom.
+ * spacing) uniformly to 110% site-wide.
  *
  * FIX: this must be set on <html>, not <body>. zoom on <body> resizes
  * body's rendered box (and everything inside it, including #mid) while
@@ -58,17 +57,15 @@
  * The !important guard prevents a graphic pack from changing this value.
  * --------------------------------------------------------------------- */
 html[dir="rtl"] {
-    zoom: 132% !important;
+    zoom: 1.1 !important;
 }
 
-/* Portal / marketing pages keep 100% zoom: html zoom mis-aligns
- * artwork.jpg against main_background_front.jpg and leaves white
- * gutters beside the hero. In-game pages keep the 132% zoom above. */
+/* Portal / marketing pages use the same 110% zoom as in-game pages. */
 html[dir="rtl"]:has(body.indexPage),
 html[dir="rtl"]:has(body.indexpage),
 html[dir="rtl"]:has(body.contentPage),
 html[dir="rtl"]:has(body.contentpage) {
-    zoom: 1 !important;
+    zoom: 1.1 !important;
 }
 
 /* Map tile and oasis details should read as Arabic, not as an LTR table. */
@@ -79,6 +76,59 @@ html[dir="rtl"] div#content.map div#map_details th,
 html[dir="rtl"] div#content.map div#map_details td {
     direction: rtl;
     text-align: right;
+}
+
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page {
+    direction: rtl !important;
+    display: block !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-details-col,
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-details-col #map_details,
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-details-col table,
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-details-col th,
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-details-col td,
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-right-col,
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts,
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-h,
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-opts-links {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+/* details (left) | map (right); explicit grid pinned to container right edge */
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-body,
+html[dir="rtl"] body.pg-gk.pg-map #content.map .gk-map-body {
+    display: grid !important;
+    grid-template-columns: 227px 300px !important;
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    align-items: start !important;
+    gap: 15px !important;
+    width: 542px !important;
+    max-width: 100% !important;
+    margin: 0 0 0 auto !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-details-col,
+html[dir="rtl"] body.pg-gk.pg-map #content.map .gk-map-details-col {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-right-col,
+html[dir="rtl"] body.pg-gk.pg-map #content.map .gk-map-right-col {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-right-col {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 0 0 300px !important;
+    width: 300px !important;
+    max-width: 300px !important;
+    align-items: stretch !important;
 }
 
 /* شريط الموارد absolute، لذلك نترك مساحة واضحة تحته قبل بداية الأعمدة. */
@@ -196,7 +246,9 @@ html[dir="rtl"] #side_navi {
 /* Pack CSS uses lowercase body.indexpage; HTML uses indexPage. */
 html[dir="rtl"] body.indexPage,
 html[dir="rtl"] body.indexpage {
-    background: #fff url("../gpack/novaterra/images/main_background_front.jpg") repeat-x top !important;
+    background: #fff !important;
+    direction: rtl !important;
+    text-align: right !important;
 }
 html[dir="rtl"] body.contentPage,
 html[dir="rtl"] body.contentpage {
@@ -204,8 +256,7 @@ html[dir="rtl"] body.contentpage {
 }
 html[dir="rtl"] body.indexPage #header,
 html[dir="rtl"] body.indexpage #header {
-    background: transparent url("../gpack/novaterra/images/artwork.jpg") no-repeat top center !important;
-    background-size: auto !important;
+    background: none !important;
     height: 389px !important;
     overflow: hidden !important;
     width: 100% !important;
@@ -216,7 +267,7 @@ html[dir="rtl"] body.indexpage #header {
     padding: 0 !important;
     position: absolute !important;
     top: 0 !important;
-    z-index: 10 !important;
+    z-index: 1 !important;
     direction: ltr !important;
     unicode-bidi: isolate;
 }
@@ -226,10 +277,12 @@ html[dir="rtl"] body.indexpage #navigation {
     right: auto !important;
     margin-left: -437px !important;
     margin-right: 0 !important;
+    transform: none !important;
     width: 830px !important;
-    top: 52px !important;
     height: 114px !important;
+    top: 52px !important;
     z-index: 80 !important;
+    background: none !important;
     direction: ltr !important;
 }
 html[dir="rtl"] body.indexPage #register_now,
@@ -274,11 +327,13 @@ html[dir="rtl"] body.contentpage #content {
 }
 html[dir="rtl"] body.indexPage #content,
 html[dir="rtl"] body.indexpage #content {
-    /* Pack value: sits just under the 389px artwork (22px intentional overlap) */
-    padding-top: 367px !important;
+    margin-top: 12px !important;
+    padding-top: 0 !important;
     padding-bottom: 120px !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    background: #fff !important;
+    z-index: 10 !important;
 }
 html[dir="rtl"] body.contentPage #content,
 html[dir="rtl"] body.contentpage #content {
@@ -831,7 +886,8 @@ html[dir="rtl"] #topNavIcons > a#n1,
 html[dir="rtl"] #topNavIcons > a#n2,
 html[dir="rtl"] #topNavIcons > a#n3,
 html[dir="rtl"] #topNavIcons > a#n4,
-html[dir="rtl"] #topNavIcons > div#n5 {
+html[dir="rtl"] #topNavIcons > div#n5,
+html[dir="rtl"] #topNavIcons > .gk-n5-wrap {
     float: none !important;
     flex: 0 0 70px;
 }
@@ -843,7 +899,8 @@ html[dir="rtl"] #topNavIcons > a#n4 {
     margin-left: -2px;
 }
 
-html[dir="rtl"] #topNavIcons > div#n5 { order: 1; }
+html[dir="rtl"] #topNavIcons > div#n5,
+html[dir="rtl"] #topNavIcons > .gk-n5-wrap { order: 1; }
 html[dir="rtl"] #topNavIcons > a#n4 { order: 2; }
 html[dir="rtl"] #topNavIcons > a#n3 { order: 3; }
 html[dir="rtl"] #topNavIcons > a#n2 { order: 4; }
@@ -857,8 +914,9 @@ html[dir="rtl"] #topNavIcons > a#n1:hover img {
     transform-origin: center center;
 }
 
-/* Reports/messages (n5, left end): mirror in place only. */
-html[dir="rtl"] #topNavIcons > div#n5 {
+/* Reports/messages (n5, left end): original sprite. */
+html[dir="rtl"] #topNavIcons > div#n5,
+html[dir="rtl"] #topNavIcons div#n5 {
     transform: scaleX(-1) !important;
     -webkit-transform: scaleX(-1) !important;
     transform-origin: center center;
@@ -1142,7 +1200,7 @@ html[dir="rtl"] div.village1 div#map_details {
  * touch #header/#mtop/#village_map/#res (kept LTR/isolated above).
  * --------------------------------------------------------------------- */
 html[dir="rtl"] body {
-    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, sans-serif;
 }
 html[dir="rtl"] #mid,
 html[dir="rtl"] #content,
@@ -1208,6 +1266,29 @@ html[dir="rtl"] #content h1 {
         overflow-x: auto !important;
         overflow-y: visible !important;
         width: 100% !important;
+    }
+    html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page {
+        direction: rtl !important;
+        overflow-x: visible !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-body,
+    html[dir="rtl"] body.pg-gk.pg-map #content.map .gk-map-body {
+        display: grid !important;
+        grid-template-columns: 227px 300px !important;
+        direction: ltr !important;
+        unicode-bidi: isolate !important;
+        gap: 15px !important;
+        width: 542px !important;
+        max-width: 100% !important;
+        margin: 0 0 0 auto !important;
+    }
+    html[dir="rtl"] body.pg-gk.pg-map #content.map.gk-map-page .gk-map-right-col {
+        flex: 0 0 300px !important;
+        width: 300px !important;
+        max-width: 300px !important;
     }
     html[dir="rtl"] div#content.map #map {
         left: 0 !important;
@@ -1824,7 +1905,7 @@ html[dir="rtl"] #content table#upgrade_navigation tbody td:not(.sel) {
 html[dir="rtl"] body.pg-dorf2:not(.pg-gk) #content.village2,
 html[dir="rtl"] body.pg-dorf2:not(.pg-gk) #side_info,
 html[dir="rtl"] body.pg-dorf2:not(.pg-gk) #side_navi {
-    font-family: Tahoma, Arial, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, sans-serif;
 }
 
 html[dir="rtl"] body.pg-dorf2:not(.pg-gk) #content.village2 {
@@ -1874,6 +1955,12 @@ html[dir="rtl"] div#build.gid25 a.build_logo img.g25 {
 
 html[dir="rtl"] body.pg-build div#build.gid16 a.build_logo img.g16 {
     top: 74px !important;
+}
+
+html[dir="rtl"] body.pg-gk.pg-a2b div#build.gid16 a.build_logo img.g16 {
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
 }
 
 /* ---------------------------------------------------------------------

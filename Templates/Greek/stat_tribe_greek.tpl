@@ -42,7 +42,7 @@ $tribeTitles = array(
     12 => defined('TZ_THE_LARGEST_TEUTONS') ? TZ_THE_LARGEST_TEUTONS : TRIBE2,
     13 => defined('TZ_THE_LARGEST_GAULS') ? TZ_THE_LARGEST_GAULS : TRIBE3,
     16 => defined('TZ_THE_LARGEST_HUNS') ? TZ_THE_LARGEST_HUNS : (defined('TRIBE6') ? TRIBE6 : 'هون'),
-    17 => defined('TZ_THE_LARGEST_EGYPTIANS') ? TZ_THE_LARGEST_EGYPTIANS : (defined('TRIBE7') ? TRIBE7 : 'مصريون'),
+    17 => defined('TZ_THE_LARGEST_EGYPTIANS') ? TZ_THE_LARGEST_EGYPTIANS : (defined('TRIBE7') ? TRIBE7 : 'العرب'),
     18 => defined('TZ_THE_LARGEST_SPARTANS') ? TZ_THE_LARGEST_SPARTANS : (defined('TRIBE8') ? TRIBE8 : 'إسبرطيون'),
     19 => defined('TZ_THE_LARGEST_VIKINGS') ? TZ_THE_LARGEST_VIKINGS : (defined('TRIBE9') ? TRIBE9 : 'فايكنج'),
 );
@@ -112,8 +112,8 @@ if (count($rankArray) > 1) {
             continue;
         }
         $row = $rankArray[$i];
-        $uid = (int) ($row['userid'] ?? 0);
-        $isHighlight = ($i === $search) || ($uid === $gkUid);
+        $rowUid = (int) ($row['userid'] ?? 0);
+        $isHighlight = ($i === $search) || ($rowUid === $gkUid);
         $hlCls = $isHighlight ? ' hl' : '';
         $fcCls = $isHighlight ? ' fc' : '';
         $lcCls = $isHighlight ? ' lc' : '';
@@ -123,9 +123,9 @@ if (count($rankArray) > 1) {
         echo '<th class="pla">';
         $username = htmlspecialchars((string) $row['username'], ENT_QUOTES, 'UTF-8');
         if (!empty($row['access']) && (int) $row['access'] > 2) {
-            echo '<u><a href="spieler.php?uid=' . $uid . '">' . $username . '</a></u>';
+            echo '<u><a href="spieler.php?uid=' . $rowUid . '">' . $username . '</a></u>';
         } else {
-            echo '<a href="spieler.php?uid=' . $uid . '">' . $username . '</a>';
+            echo '<a href="spieler.php?uid=' . $rowUid . '">' . $username . '</a>';
         }
         echo '</th>';
         echo '<th class="al">';

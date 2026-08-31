@@ -1,0 +1,562 @@
+/* index_page.css — public homepage (حرب الإغريق style) */
+
+html.pg-index,
+body.pg-index {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #000;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    min-height: 100%;
+    direction: rtl;
+}
+
+body.pg-index a {
+    color: #000;
+    text-decoration: none;
+}
+
+body.pg-index .idx-nav a {
+    float: none;
+    display: inline-block;
+    width: auto;
+}
+
+/* --- Hero banner + overlaid header --- */
+.idx-hero-wrap {
+    position: relative;
+    width: 100%;
+    background: #d9f0fb;
+}
+
+.idx-banner {
+    display: block;
+    width: 100%;
+    height: 210px;
+    background-color: #d9f0fb;
+    background-image: url("../img/login/banner.png");
+    background-repeat: no-repeat;
+    background-position: 12% top;
+    background-size: cover;
+}
+
+/* Header overlaid on banner sky */
+.idx-top {
+    position: absolute;
+    top: 14px;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: transparent;
+    padding: 0;
+    pointer-events: none;
+}
+
+.idx-top__inner,
+.idx-header-bar {
+    pointer-events: auto;
+}
+
+.idx-top__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    direction: ltr;
+    gap: 0;
+}
+
+.idx-logo {
+    display: block;
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 3;
+    margin-right: -12px;
+    text-decoration: none;
+}
+
+.idx-logo-ribbon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 210px;
+    height: 80px;
+    padding: 8px 26px 8px 22px;
+    background: linear-gradient(180deg, #b51a32 0%, #8f1224 52%, #6e0c1a 100%);
+    border: 2px solid #d4a84b;
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
+}
+
+.idx-logo-ribbon::before {
+    content: "";
+    position: absolute;
+    left: -18px;
+    top: -2px;
+    bottom: -2px;
+    width: 20px;
+    background: linear-gradient(180deg, #b51a32 0%, #8f1224 52%, #6e0c1a 100%);
+    border: 2px solid #d4a84b;
+    border-right: none;
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.idx-logo__title {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.15;
+    color: #ffd54f;
+    text-shadow: 1px 1px 0 #4a0810, 0 0 8px rgba(255, 213, 79, 0.35);
+    text-align: center;
+}
+
+.idx-logo__sub {
+    margin-top: 2px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    color: #fff;
+    text-align: center;
+    line-height: 1;
+}
+
+.idx-nav {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+    direction: rtl;
+    gap: 4px;
+    min-height: 54px;
+    padding: 6px 24px 6px 30px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97) 0%, rgba(248, 248, 248, 0.95) 55%, rgba(235, 235, 235, 0.93) 100%);
+    border: 1px solid rgba(190, 190, 190, 0.9);
+    border-left: none;
+    border-radius: 0 42px 42px 0;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.idx-nav a {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    color: #222;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+    line-height: 1.2;
+}
+
+.idx-nav a.idx-nav-reg {
+    color: #8b1530 !important;
+}
+
+.idx-nav a.idx-nav-login {
+    color: #111;
+    border: 1px solid #b8b8b8;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ffffff 0%, #f3f3f3 48%, #e6e6e6 100%);
+    padding: 7px 22px;
+    margin: 0 6px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.06);
+    text-shadow: 0 1px 0 #fff;
+}
+
+.idx-nav a.idx-nav-rules {
+    color: #222;
+}
+
+.idx-nav a.idx-nav-login:hover,
+.idx-nav a.idx-nav-login:focus {
+    color: #111 !important;
+    border-color: #999;
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+}
+
+.idx-nav a.idx-nav-reg:hover,
+.idx-nav a.idx-nav-rules:hover {
+    color: #71d000 !important;
+}
+
+.idx-world-sign {
+    position: absolute;
+    left: 28%;
+    bottom: 22px;
+    max-width: 220px;
+    padding: 6px 10px;
+    background: linear-gradient(180deg, #f4e8c8 0%, #e8d4a0 100%);
+    border: 2px solid #8b6914;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #3a2a10;
+    text-align: center;
+    line-height: 1.35;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Main two-column area --- */
+.idx-main {
+    max-width: 984px;
+    margin: 22px auto 36px;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+.idx-columns {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 22px;
+    direction: ltr;
+}
+
+.idx-col--media {
+    flex: 1 1 52%;
+    min-width: 0;
+}
+
+.idx-col--info {
+    flex: 1 1 44%;
+    min-width: 280px;
+}
+
+/* Screenshots box */
+.idx-shots {
+    border: 1px solid #b8b8b8;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    background: #fff;
+}
+
+.idx-shots__head {
+    background: linear-gradient(180deg, #6e6e6e 0%, #4a4a4a 100%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    padding: 7px 10px;
+}
+
+.idx-shots__body {
+    padding: 10px 12px;
+    background: #fff;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.idx-shots__body a {
+    display: block;
+    border: 2px solid #ddd;
+    background: #f5f5f5;
+    line-height: 0;
+}
+
+.idx-shots__body img {
+    display: block;
+    width: 118px;
+    height: auto;
+}
+
+.idx-news-head {
+    background: linear-gradient(180deg, #ececec 0%, #d8d8d8 100%);
+    border-top: 1px solid #b8b8b8;
+    padding: 7px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: right;
+    color: #000;
+}
+
+.idx-news-body {
+    border: 1px solid #b8b8b8;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    min-height: 120px;
+    padding: 12px 14px;
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.55;
+    text-align: right;
+}
+
+.idx-news-body .date {
+    color: #888;
+    font-size: 12px;
+    margin: 0 0 6px;
+}
+
+/* Info card */
+.idx-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+    padding: 18px 20px 16px;
+    box-sizing: border-box;
+}
+
+.idx-card__title {
+    margin: 0 0 12px;
+    padding: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #71d000;
+    text-align: right;
+    line-height: 1.35;
+}
+
+.idx-card__text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #000;
+    text-align: right;
+    margin-bottom: 14px;
+}
+
+.idx-card__text p {
+    margin: 0 0 10px;
+}
+
+.idx-card__stats {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    background: linear-gradient(180deg, #f3f3f3 0%, #e8e8e8 100%);
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    direction: rtl;
+}
+
+.idx-soldier {
+    flex: 0 0 auto;
+    height: 88px;
+    width: auto;
+    display: block;
+}
+
+.idx-stats {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 1.75;
+    text-align: right;
+}
+
+.idx-stats div {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.idx-stats span.lbl {
+    color: #000;
+}
+
+.idx-stats span.val {
+    font-weight: 700;
+    color: #000;
+}
+
+/* About section */
+.idx-about {
+    margin-top: 28px;
+    text-align: right;
+}
+
+.idx-about h2 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+}
+
+.idx-about ul {
+    margin: 0;
+    padding: 0 22px 0 0;
+    list-style: disc;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.idx-about li {
+    margin-bottom: 4px;
+}
+
+.idx-footer {
+    max-width: 984px;
+    margin: 0 auto 24px;
+    padding: 0 12px;
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+}
+
+/* Screenshot overlay */
+body.pg-index .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 400;
+}
+
+body.pg-index .overlay.open,
+body.pg-index .overlay[style*="block"] {
+    display: block;
+}
+
+body.pg-index .overlay .mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.35;
+}
+
+body.pg-index .overlay_content {
+    position: fixed;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 600;
+    width: 644px;
+    max-width: 96vw;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+body.pg-index #screenshot_layer h3 {
+    display: none;
+}
+
+body.pg-index #screenshot_layer h4 {
+    margin: 0;
+    padding: 16px 20px 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+body.pg-index #screenshot_layer #screen_desc {
+    font-size: 12px;
+    margin: 12px 0 16px;
+    padding: 0 28px;
+    line-height: 1.5;
+}
+
+body.pg-index .screenshot_view img {
+    border: 1px solid #ccc;
+    max-width: 100%;
+    height: auto;
+}
+
+body.pg-index .overlay_content .closer img {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    width: 22px;
+    height: 22px;
+    background: #eee;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+}
+
+body.pg-index #screenshot_layer .navi img {
+    position: absolute;
+    top: 42%;
+    width: 28px;
+    height: 28px;
+    background: #f0f0f0;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+}
+
+body.pg-index #screenshot_layer .next img {
+    right: 10px;
+}
+
+body.pg-index #screenshot_layer .prev img {
+    left: 10px;
+}
+
+body.pg-index .overlay_content .footer {
+    clear: both;
+    height: 8px;
+}
+
+@media (max-width: 820px) {
+    .idx-top {
+        top: 6px;
+    }
+
+    .idx-top__inner {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .idx-logo-ribbon {
+        min-width: 160px;
+        height: 68px;
+        padding: 6px 18px 6px 16px;
+    }
+
+    .idx-logo__title {
+        font-size: 18px;
+    }
+
+    .idx-nav {
+        border-left: 1px solid rgba(190, 190, 190, 0.9);
+        border-radius: 42px;
+        padding: 6px 14px;
+    }
+
+    .idx-nav a {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+
+    .idx-nav a.idx-nav-login {
+        padding: 6px 14px;
+        margin: 0 4px;
+    }
+
+    .idx-columns {
+        flex-direction: column;
+    }
+
+    .idx-col--info {
+        min-width: 0;
+    }
+
+    .idx-world-sign {
+        left: 12px;
+        bottom: 10px;
+        max-width: 180px;
+        font-size: 11px;
+    }
+
+    .idx-hero-wrap .idx-banner {
+        height: 140px;
+    }
+}

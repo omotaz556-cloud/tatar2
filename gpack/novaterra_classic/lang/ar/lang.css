@@ -1,18 +1,9 @@
 @CHARSET "UTF-8";
 
 /*
- * Arabic (RTL) stylesheet.
- *
- * Loaded LAST in <head> (see tz_rtl_stylesheet_tag() in GameEngine/config.php),
- * after lang/en/compact.css, lang/en/lang.css and novaterra.css, which are
- * always loaded first regardless of language. That load order means the
- * rules below override the English/LTR layout on equal selector specificity,
- * without editing the base English files.
- *
- * There is no separate Arabic sprite/graphic set in this pack, so button
- * artwork and sprite icons keep their original English images; what is
- * mirrored here is direction, text alignment, column order (menu / content /
- * hero) and the font used for text.
+ * Arabic (RTL) + localized sprites (tatarwars-fv7-ex-lts-last).
+ * Loaded via tz_rtl_stylesheet_tag() after lang/en/*.css.
+ * Pill GIF buttons: css/tatarwars_ar_buttons.css (loads last on RTL).
  */
 
 html, body {
@@ -26,17 +17,9 @@ div#side_navi,
 div#side_info,
 div#footer {
     text-align: right;
-    font-family: Tahoma, Arial, "Segoe UI", sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, "Segoe UI", sans-serif;
 }
 
-/* --- village overview (dorf1.php): remove the gap between the resource
-   bar above and the village title + map below. Base rule in
-   lang/en/compact.css sets padding: 43px 0 0 15px on div.village1 - only
-   the top value is overridden here, right/bottom/left stay as they are.
-   padding-top is 0 (was 8px) and the title's own bottom margin (8px,
-   from the global "h1 { margin-bottom: 8px; }" rule in compact.css) is
-   zeroed here too, so nothing separates the resource bar from the
-   village title/map under the RTL zoom. */
 div.village1 {
     padding-top: 0;
 }
@@ -44,9 +27,6 @@ div.village1 h1 {
     margin-bottom: 0;
 }
 
-/* Keep the classic 980px centered strip under Arabic (new_layout_ltr.css
- * already sets this for LTR; rtl.css used to force width:100% and flex,
- * which opened huge gaps on dorf1). */
 div#mid {
     width: 980px !important;
     max-width: 980px !important;
@@ -56,15 +36,9 @@ div#mid {
     left: 0 !important;
 }
 
-/* --- swap the 3-column layout: menu (side_navi) / map (content) / hero (side_info) --- */
 div#side_navi {
     float: right;
-    /* the base LTR stylesheet paints this shadow at the box's right edge,
-       which used to be the edge touching #content. Now that the column is
-       mirrored to float:right, that same right edge is the outer page edge
-       instead - so swap in the mirrored asset and flip the anchor to the
-       left edge (now the one touching #content). */
-    background-image: url(../../images/shadow-a-rtl.png);
+    background-image: url(../../img/vip/shadow-a-rtl.webp);
     background-position: left top;
 }
 div#side_navi p a {
@@ -96,23 +70,11 @@ div#side_info {
     padding-left: 0;
     padding-right: 10px;
 }
-/* same mirroring fix as #side_navi above. The base rule in
-   modules/new_images.css is actually a GROUPED selector:
-       div#side_info,
-       body.mod1 div#side_info,
-       body.mod2 div#side_info,
-       body.mod3 div#side_info { background: ... shadow-b-ltr.png ... left top; }
-   The bare "div#side_info" (no body class needed) is what paints the
-   shadow on every page regardless of mod state - only overriding the
-   "body.mod3" variant (as an earlier version of this file did) misses
-   every page that isn't in mod3 and leaves the unmirrored LTR shadow
-   showing on the left. All four selectors must be repeated here so the
-   override wins in every case, same as the base rule does. */
 div#side_info,
 body.mod1 div#side_info,
 body.mod2 div#side_info,
 body.mod3 div#side_info {
-    background-image: url(../../images/shadow-b-rtl.png);
+    background-image: url(../../img/vip/shadow-b-rtl.webp);
     background-position: right top;
 }
 div#side_info h5 {
@@ -131,7 +93,6 @@ div#side_info div.news ul {
     margin-right: 15px;
 }
 
-/* --- top bar icon groups --- */
 div#mtop div#n5 .reports {
     float: right;
 }
@@ -139,7 +100,6 @@ div#mtop div#n5 .messages {
     float: left;
 }
 
-/* --- footer --- */
 div#footer ul.menu li {
     float: right;
     margin: 0 5px;
@@ -153,8 +113,69 @@ div#footer ul.menu li.copyright {
     direction: ltr;
 }
 
-/* --- opt-in helper kept for existing scoped usages in the templates --- */
 .arabic-text {
     direction: rtl;
     text-align: right;
 }
+
+/* --- Arabic button GIFs (legacy inputs; not .trav_buttons pills) --- */
+input#btn_login:not(.trav_buttons) { width: 97px; background-image: url(b/login.gif); }
+input#btn_signup:not(.trav_buttons) { width: 97px; background-image: url(b/signup.gif); }
+input#btn_ok:not(.trav_buttons):not(.gk-market-btn),
+input[type="image"]#btn_ok { width: 47px; background-image: url(b/ok.gif); }
+input#btn_reply:not(.trav_buttons),
+button#btn_reply:not(.trav_buttons) { width: 97px; background-image: url(b/reply.gif); }
+input#btn_send:not(.trav_buttons) { width: 97px; background-image: url(b/send.gif); }
+input#btn_save:not(.trav_buttons),
+button#btn_save:not(.trav_buttons) { width: 97px; background-image: url(b/save.gif); }
+input#btn_delete:not(.trav_buttons),
+button#btn_delete:not(.trav_buttons) { width: 97px; background-image: url(b/delete.gif); }
+input#btn_archiv:not(.trav_buttons),
+button#btn_archiv:not(.trav_buttons) { width: 97px; background-image: url(b/archiv.gif); }
+input#btn_back:not(.trav_buttons),
+button#btn_back:not(.trav_buttons) { width: 97px; background-image: url(b/back.gif); }
+input#btn_train:not(.trav_buttons),
+button#btn_train:not(.trav_buttons):not(.gk-train-btn) { width: 97px; background-image: url(b/train.gif); }
+input#btn_forward:not(.trav_buttons) { width: 97px; background-image: url(b/forward.gif); }
+input#btn_demolish:not(.trav_buttons) { width: 97px; background-image: url(b/demolish.gif); }
+input#btn_search:not(.trav_buttons) { width: 47px; background-image: url(b/search.gif); }
+
+div.forum input#fbtn_ok { width: 47px; background-image: url(b/ok.gif); }
+div.forum input#fbtn_vote { width: 97px; background-image: url(f/vote.gif); }
+div.forum input#fbtn_result { width: 97px; background-image: url(f/result.gif); }
+div.forum input#fbtn_voting { width: 97px; background-image: url(f/voting.gif); }
+div.forum img#fbtn_reply { width: 97px; background-image: url(f/reply.gif); }
+div.forum img#fbtn_post { width: 97px; background-image: url(f/post.gif); }
+div.forum img#fbtn_newforum { width: 97px; background-image: url(f/newforum.gif); }
+
+div#side_info h5 img { width: 160px; height: 15px; }
+
+div.login h1 img.img_login { width: 468px; height: 60px; background-image: url(t1/login.gif); }
+div.login h5 img.img_u04 { width: 160px; height: 15px; background-image: url(t2/u04.gif); }
+
+div.signup h1 img.anmelden { width: 468px; height: 60px; background-image: url(t1/anmelden.gif); }
+div.signup h5 img.img_u05 { width: 160px; height: 15px; background-image: url(t2/u05.gif); }
+div.signup img.img_u06 { width: 160px; height: 15px; background-image: url(t2/u06.gif); }
+div.signup img.img_u07 { width: 160px; height: 15px; background-image: url(t2/u07.gif); }
+
+div.activate h1 img.passwort { width: 468px; height: 60px; background-image: url(t1/passwort.gif); }
+div.activate h5 img.img_u22 { width: 160px; height: 15px; background-image: url(t2/u22.gif); }
+
+div.messages div.msg_content img.send { background-image: url(msg/block_bg24b.gif); }
+div.messages div.msg_content img.read { background-image: url(msg/block_bg24a.gif); }
+
+div#side_navi a#logo img { width: 116px; height: 60px; background-image: url(a/travian0.gif); }
+
+div.plus table#plus_features td.preview img.autovv { width: 200px; height: 56px; background-image: url(p/autovv.gif); }
+div.plus table#plus_features td.preview img.bfilter { width: 200px; height: 45px; background-image: url(p/bfilter.gif); }
+div.plus table#plus_features td.preview img.dorf3 { width: 200px; height: 186px; background-image: url(p/dorf3.jpg); }
+div.plus table#plus_features td.preview img.p1 { width: 179px; height: 29px; background-image: url(p/p1.gif); }
+div.plus table#plus_features td.preview img.p3 { width: 163px; height: 120px; background-image: url(p/p3.gif); }
+div.plus table#plus_features td.preview img.p4 { width: 197px; height: 41px; background-image: url(p/p4.gif); }
+div.plus table#plus_features td.preview img.p5 { width: 132px; height: 51px; background-image: url(p/p5.gif); }
+div.plus table#plus_features td.preview img.p6 { width: 111px; height: 29px; background-image: url(p/p6.gif); }
+div.plus table#plus_features td.preview img.p7 { width: 61px; height: 86px; background-image: url(p/p7.gif); }
+div.plus table#plus_features td.preview img.p8 { width: 117px; height: 121px; background-image: url(p/p8.gif); }
+div.plus table#plus_features td.preview img.sort { width: 200px; height: 38px; background-image: url(p/sort.jpg); }
+div.plus table#plus_features td.preview img.st1 { width: 200px; height: 90px; background-image: url(p/st1.gif); }
+div.plus table#plus_features td.preview img.xxl_map { width: 146px; height: 112px; background-image: url(p/xxl_map.gif); }

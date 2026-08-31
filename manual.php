@@ -1,83 +1,69 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
 
 #################################################################################
-##              -= YOU MAY NOT REMOVE OR CHANGE THIS NOTICE =-                 ##
-## --------------------------------------------------------------------------- ##
-##  Filename       : manual.php                      	                       ##
-##  Type           : In Game Manual Page                                       ##
-## --------------------------------------------------------------------------- ##
-##  Developed by   : Dzoki 						                               ##
-##  Refactored by  : Shadow                                                    ##
-##  Redesign by    : Shadow                                                    ##
-## --------------------------------------------------------------------------- ##
-##  Contact        : (see project maintainer)                                 ##
-##  Project        : Novaterra                                                  ##
-##  URLs:          : https://novaterra.example                                      ##
-##  GitHub         : https://github.com/omotaz556-cloud/tatar                   ##
-## --------------------------------------------------------------------------- ##
-##  License        : GPLv3 (derived from TravianZ; see project LICENSE)       ##
-##  Copyright      : Novaterra mods (c) 2010-2026; base engine (c) TravianZ authors (GPLv3). ##
-## --------------------------------------------------------------------------- ##
+##  Filename       : manual.php
+##  Purpose        : Portal game encyclopedia (شرح اللعبة) — tatarwars help.phtml
 #################################################################################
 
-include_once("GameEngine/config.php");
-require_once __DIR__ . "/GameEngine/Lang/loader.php";
+use App\Utils\AccessLogger;
+
+include_once('GameEngine/config.php');
+require_once __DIR__ . '/GameEngine/Lang/loader.php';
 tz_load_language(LANG);
-?>
+if (!function_exists('tz_portal_form_shell_open')) {
+    require_once __DIR__ . '/GameEngine/PortalClassic.php';
+}
+if (class_exists('App\\Utils\\AccessLogger')) {
+    AccessLogger::logRequest();
+}
 
-<html <?php echo tz_html_dir_attrs(); ?>>
-	<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo SERVER_NAME; ?> - Manual</title>
-		<link rel="shortcut icon" href="favicon.ico"/>
-	<meta name="content-language" content="en" />
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="imagetoolbar" content="no" />
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<script src="mt-core.js?0faab" type="text/javascript"></script>
-	<script src="mt-more.js?0faab" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
-	<script src="new.js?0faab" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-	<link href="<?php echo GP_LOCATE; ?>novaterra.css?f4b7d" rel="stylesheet" type="text/css" />
-		<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css" rel="stylesheet" type="text/css" />
-	   	<?php echo tz_rtl_stylesheet_tag(); ?>
+if (isset($_GET['s']) && !ctype_digit((string) $_GET['s'])) {
+    $_GET['s'] = '0';
+}
+if (isset($_GET['typ']) && !ctype_digit((string) $_GET['typ'])) {
+    $_GET['typ'] = null;
+}
+
+$serverName = defined('SERVER_NAME') ? SERVER_NAME : 'Novaterra';
+$pageTitle = defined('LOGIN_GAME_GUIDE') ? LOGIN_GAME_GUIDE : 'شرح اللعبة';
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html <?php echo tz_html_dir_attrs(); ?> class="pg-portal-manual">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><?php echo htmlspecialchars($serverName . ' - ' . $pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <?php echo tz_portal_classic_stylesheet_tag(); ?>
 </head>
-	<body class="manual pg-manual">
-<?php
+<body class="webkit v35 manual pg-portal-manual">
 
-if (isset($_GET['s']) && !ctype_digit($_GET['s'])) {
-	$_GET['s'] = "0";
-}
-if (isset($_GET['typ']) && !ctype_digit($_GET['typ'])) {
-	$_GET['typ'] = null;
-}
-if(!isset($_GET['typ']) && !isset($_GET['s'])) {
-	include("Templates/Manual/00.tpl");
-}
-else if (!isset($_GET['typ']) && $_GET['s'] == 1) {
-	include("Templates/Manual/00.tpl");
-}
-else if (!isset($_GET['typ']) && $_GET['s'] == 2) {
-	include("Templates/Manual/direct.tpl");
-}
-else if (isset($_GET['typ']) && $_GET['typ'] == 5 && $_GET['s'] == 3) {
-	include("Templates/Manual/medal.tpl");
-}
-else {
-	if(isset($_GET['gid'])) {
-		include("Templates/Manual/".$_GET['typ'].(preg_replace("/[^a-zA-Z0-9_-]/","",$_GET['gid'])).".tpl");
-	}
-	else {
-		if($_GET['typ'] == 4 && $_GET['s'] == 0) {
-			$_GET['s'] = 1;
-		}
-		include("Templates/Manual/".$_GET['typ'].preg_replace("/[^a-zA-Z0-9_-]/","",(isset($_GET['s']) ? $_GET['s'] : '')).".tpl");
-	}
+<?php echo tz_portal_form_shell_open('manual'); ?>
+
+<?php
+if (!isset($_GET['typ']) && !isset($_GET['s'])) {
+    include 'Templates/Manual/00.tpl';
+} elseif (!isset($_GET['typ']) && isset($_GET['s']) && (int) $_GET['s'] === 1) {
+    include 'Templates/Manual/00.tpl';
+} elseif (!isset($_GET['typ']) && isset($_GET['s']) && (int) $_GET['s'] === 2) {
+    include 'Templates/Manual/direct.tpl';
+} elseif (isset($_GET['typ']) && (int) $_GET['typ'] === 5 && isset($_GET['s']) && (int) $_GET['s'] === 3) {
+    include 'Templates/Manual/medal.tpl';
+} else {
+    if (isset($_GET['gid'])) {
+        $gid = preg_replace('/[^a-zA-Z0-9_-]/', '', (string) $_GET['gid']);
+        include 'Templates/Manual/' . $_GET['typ'] . $gid . '.tpl';
+    } else {
+        if (isset($_GET['typ']) && (int) $_GET['typ'] === 4 && (!isset($_GET['s']) || (int) $_GET['s'] === 0)) {
+            $_GET['s'] = 1;
+        }
+        $s = isset($_GET['s']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', (string) $_GET['s']) : '';
+        include 'Templates/Manual/' . $_GET['typ'] . $s . '.tpl';
+    }
 }
 ?>
-</body>
 
+<?php echo tz_portal_form_shell_close(); ?>
+
+</body>
 </html>

@@ -1,0 +1,668 @@
+/* index_content.css — TravianZ hero stage + centered RTL content */
+
+/* Arabic: override gpack main_en.css (direction:ltr on body) + enforce 110% zoom */
+html[dir="rtl"] {
+    zoom: 1.1 !important;
+}
+
+html[dir="rtl"] body.indexPage,
+html[dir="rtl"] body.indexpage {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+html[dir="rtl"] body.indexPage .wrapper,
+html[dir="rtl"] body.indexpage .wrapper {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+html[dir="rtl"] body.indexPage #content,
+html[dir="rtl"] body.indexpage #content {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+body.indexPage,
+body.indexpage {
+    background: #fff;
+}
+
+body.indexPage .wrapper,
+body.indexpage .wrapper {
+    background: #fff;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Hero: in document flow (fixes blank gap + hidden banner) */
+body.indexPage .idx-hero-stage,
+body.indexpage .idx-hero-stage {
+    position: relative;
+    width: 100%;
+    height: 389px;
+    margin: 0;
+    background: #dceef8 url("../gpack/travian/images/artwork.jpg") no-repeat center top;
+    background-size: 100% 389px;
+    z-index: 5;
+}
+
+body.indexPage #header,
+body.indexpage #header {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    height: 389px !important;
+    background: none !important;
+    overflow: hidden !important;
+    z-index: 1 !important;
+}
+
+body.indexPage #country_select,
+body.indexpage #country_select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0 !important;
+    overflow: hidden;
+    background: none !important;
+    z-index: 500;
+}
+
+/* TravianZ #navigation bar — repo dims: 830×114, top 52px, centered */
+body.indexPage #navigation,
+body.indexpage #navigation {
+    position: absolute !important;
+    top: 52px !important;
+    left: 50% !important;
+    right: auto !important;
+    margin-left: -437px !important;
+    margin-right: 0 !important;
+    transform: none !important;
+    width: 830px !important;
+    height: 114px !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 0 !important;
+    z-index: 80 !important;
+    /* Index bar is already painted in artwork.jpg — do not stack logo_background on top. */
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    direction: ltr !important;
+}
+
+body.indexPage #navigation table.menu,
+body.indexpage #navigation table.menu {
+    position: absolute !important;
+    right: 25px !important;
+    top: 30px !important;
+    width: 500px !important;
+    left: auto !important;
+    margin: 0 !important;
+}
+
+body.indexPage #navigation a.home,
+body.indexpage #navigation a.home {
+    width: 250px !important;
+    height: 85px !important;
+    position: absolute !important;
+    left: 55px !important;
+    top: 0 !important;
+    display: block !important;
+}
+
+body.indexPage #navigation .menu a,
+body.indexpage #navigation .menu a {
+    text-decoration: none !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    color: #333 !important;
+    text-shadow: 1px 1px 1px #fff !important;
+    padding: 6px 10px 7px 0 !important;
+    font-weight: 700;
+}
+
+body.indexPage #navigation .menu a span,
+body.indexpage #navigation .menu a span {
+    padding: 6px 0 7px 10px !important;
+}
+
+body.indexPage #navigation .menu a.mark,
+body.indexpage #navigation .menu a.mark {
+    color: #a20327 !important;
+}
+
+body.indexPage #navigation .menu a:hover,
+body.indexpage #navigation .menu a:hover {
+    color: #71d000 !important;
+}
+
+body.indexPage #register_now,
+body.indexpage #register_now {
+    display: none;
+}
+
+body.indexPage #content,
+body.indexpage #content {
+    margin-top: 12px;
+    padding-top: 0;
+    padding-bottom: 40px;
+    background: #fff !important;
+    position: relative;
+    z-index: 10;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+body.indexPage #content .idx-main,
+body.indexpage #content .idx-main,
+body.indexPage #content .idx-main *,
+body.indexpage #content .idx-main * {
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+body.indexPage .idx-main,
+body.indexpage .idx-main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 16px 24px;
+    box-sizing: border-box;
+    direction: rtl;
+}
+
+body.indexPage .idx-columns,
+body.indexpage .idx-columns {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 22px;
+    direction: ltr;
+}
+
+body.indexPage .idx-col--media,
+body.indexpage .idx-col--media {
+    flex: 1 1 52%;
+    min-width: 0;
+}
+
+body.indexPage .idx-col--info,
+body.indexpage .idx-col--info {
+    flex: 1 1 44%;
+    min-width: 280px;
+}
+
+/* Screenshots + news box */
+body.indexPage .idx-shots,
+body.indexpage .idx-shots {
+    border: 1px solid #b8b8b8;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+body.indexPage .idx-shots__head,
+body.indexpage .idx-shots__head {
+    background: linear-gradient(180deg, #6e6e6e 0%, #4a4a4a 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px 10px;
+}
+
+body.indexPage .idx-shots__body,
+body.indexpage .idx-shots__body {
+    padding: 10px 12px;
+    background: #fff;
+}
+
+body.indexPage .idx-shots__thumbs,
+body.indexpage .idx-shots__thumbs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: static !important;
+    left: auto !important;
+    width: auto !important;
+}
+
+body.indexPage .idx-shots__thumbs li,
+body.indexpage .idx-shots__thumbs li {
+    margin: 0;
+    padding: 0;
+    float: none;
+}
+
+body.indexPage .idx-shots__thumbs a,
+body.indexpage .idx-shots__thumbs a {
+    display: block;
+    border: 2px solid #ddd;
+    background: #f5f5f5;
+    line-height: 0;
+}
+
+body.indexPage .idx-shots__thumbs img,
+body.indexpage .idx-shots__thumbs img {
+    display: block;
+    width: 118px;
+    height: 88px;
+    object-fit: cover;
+    object-position: top center;
+}
+
+body.indexPage .idx-news-head,
+body.indexpage .idx-news-head {
+    background: linear-gradient(180deg, #ececec 0%, #d8d8d8 100%);
+    border-top: 1px solid #b8b8b8;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: right;
+    color: #000;
+}
+
+body.indexPage .idx-news-body,
+body.indexpage .idx-news-body {
+    border: 1px solid #b8b8b8;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    min-height: 120px;
+    padding: 12px 14px;
+    background: #fff;
+    font-size: 13px;
+    line-height: 1.55;
+    text-align: right;
+}
+
+body.indexPage .idx-news-body .date,
+body.indexpage .idx-news-body .date {
+    color: #888;
+    font-size: 12px;
+    margin: 0 0 6px;
+}
+
+body.indexPage .idx-news-body p,
+body.indexpage .idx-news-body p {
+    margin: 0 0 8px;
+}
+
+/* Info card */
+body.indexPage .idx-card,
+body.indexpage .idx-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+    padding: 18px 20px 16px;
+    box-sizing: border-box;
+}
+
+body.indexPage .idx-card__title,
+body.indexpage .idx-card__title {
+    margin: 0 0 12px;
+    padding: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #71d000;
+    text-align: right;
+    line-height: 1.35;
+}
+
+body.indexPage .idx-card__text,
+body.indexpage .idx-card__text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #000;
+    text-align: right;
+    margin-bottom: 14px;
+}
+
+body.indexPage .idx-card__text p,
+body.indexpage .idx-card__text p {
+    margin: 0 0 10px;
+}
+
+body.indexPage .idx-card__stats,
+body.indexpage .idx-card__stats {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    background: linear-gradient(180deg, #f3f3f3 0%, #e8e8e8 100%);
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    direction: rtl;
+}
+
+body.indexPage .idx-soldier,
+body.indexpage .idx-soldier {
+    flex: 0 0 auto;
+    height: 88px;
+    width: auto;
+    display: block;
+}
+
+body.indexPage .idx-stats,
+body.indexpage .idx-stats {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 13px;
+    line-height: 1.75;
+    text-align: right;
+}
+
+body.indexPage .idx-stats div,
+body.indexpage .idx-stats div {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+body.indexPage .idx-stats span.lbl,
+body.indexpage .idx-stats span.lbl {
+    color: #000;
+}
+
+body.indexPage .idx-stats span.val,
+body.indexpage .idx-stats span.val {
+    font-weight: 700;
+    color: #000;
+}
+
+/* About section */
+body.indexPage .idx-about,
+body.indexpage .idx-about {
+    margin-top: 24px;
+    text-align: right;
+    direction: rtl;
+}
+
+body.indexPage .idx-about h2,
+body.indexpage .idx-about h2 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+}
+
+body.indexPage .idx-about ul,
+body.indexpage .idx-about ul {
+    margin: 0;
+    padding: 0 22px 0 0;
+    list-style: disc;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+body.indexPage .idx-about li,
+body.indexpage .idx-about li {
+    margin-bottom: 4px;
+}
+
+body.indexPage #footer,
+body.indexpage #footer {
+    position: relative;
+    background: transparent;
+    margin-top: 0;
+}
+
+body.indexPage #footer .container,
+body.indexpage #footer .container {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1040px) {
+    html[dir="rtl"]:has(body.indexPage),
+    html[dir="rtl"]:has(body.indexpage),
+    html[dir="ltr"]:has(body.indexPage),
+    html[dir="ltr"]:has(body.indexpage) {
+        zoom: 1 !important;
+    }
+
+    body.indexPage .idx-main,
+    body.indexpage .idx-main {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
+@media (max-width: 900px) {
+    body.indexPage .idx-hero-stage,
+    body.indexpage .idx-hero-stage {
+        height: auto !important;
+        min-height: 0 !important;
+        background-size: cover !important;
+        background-position: center top !important;
+    }
+
+    body.indexPage #header,
+    body.indexpage #header {
+        position: relative !important;
+        height: 168px !important;
+        min-height: 0 !important;
+    }
+
+    /* Override rtl.css fixed 830px nav bar on narrow screens */
+    html[dir="rtl"] body.indexPage #navigation,
+    html[dir="rtl"] body.indexpage #navigation,
+    html[dir="ltr"] body.indexPage #navigation,
+    html[dir="ltr"] body.indexpage #navigation,
+    body.indexPage #navigation,
+    body.indexpage #navigation {
+        position: relative !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        top: auto !important;
+        padding: 8px 10px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+        background: #f3f3f3 !important;
+        border-bottom: 1px solid #d8d8d8 !important;
+        direction: ltr !important;
+    }
+
+    body.indexPage #navigation a.home,
+    body.indexpage #navigation a.home {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 118px !important;
+        height: 44px !important;
+        flex: 0 0 auto !important;
+    }
+
+    body.indexPage #navigation table.menu,
+    body.indexpage #navigation table.menu {
+        position: relative !important;
+        right: auto !important;
+        top: auto !important;
+        left: auto !important;
+        width: auto !important;
+        flex: 1 1 auto !important;
+        margin: 0 !important;
+    }
+
+    body.indexPage #navigation .menu tr,
+    body.indexpage #navigation .menu tr {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-end !important;
+        gap: 2px 10px !important;
+    }
+
+    body.indexPage #navigation .menu td,
+    body.indexpage #navigation .menu td {
+        display: block !important;
+        padding: 0 !important;
+    }
+
+    body.indexPage #navigation .menu a,
+    body.indexpage #navigation .menu a {
+        font-size: 13px !important;
+        padding: 4px 0 !important;
+    }
+
+    body.indexPage .idx-columns,
+    body.indexpage .idx-columns {
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    body.indexPage .idx-col--info,
+    body.indexpage .idx-col--info {
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+    }
+}
+
+@media (max-width: 700px) {
+    body.indexPage #header,
+    body.indexpage #header {
+        height: 130px !important;
+    }
+
+    body.indexPage .idx-card__stats,
+    body.indexpage .idx-card__stats {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    body.indexPage .idx-soldier,
+    body.indexpage .idx-soldier {
+        height: 76px !important;
+    }
+
+    body.indexPage .idx-stats,
+    body.indexpage .idx-stats {
+        text-align: center !important;
+    }
+
+    body.indexPage .idx-stats div,
+    body.indexpage .idx-stats div {
+        justify-content: center !important;
+    }
+
+    body.indexPage #footer,
+    body.indexpage #footer {
+        position: relative !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 14px 0 22px !important;
+    }
+
+    body.indexPage #footer .container,
+    body.indexpage #footer .container {
+        padding: 0 10px !important;
+    }
+
+    body.indexPage #footer .menu,
+    body.indexpage #footer .menu {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 4px 10px !important;
+        float: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+    }
+
+    body.indexPage #footer .menu li,
+    body.indexpage #footer .menu li {
+        display: inline !important;
+        float: none !important;
+    }
+
+    body.indexPage #footer .copyright,
+    body.indexpage #footer .copyright {
+        position: relative !important;
+        right: auto !important;
+        top: auto !important;
+        left: auto !important;
+        clear: both !important;
+        display: block !important;
+        text-align: center !important;
+        margin-top: 10px !important;
+        padding: 0 8px !important;
+        direction: rtl !important;
+    }
+
+    body.indexPage .overlay_content,
+    body.indexpage .overlay_content {
+        width: min(644px, 94vw) !important;
+        max-width: 94vw !important;
+        left: 50% !important;
+        right: auto !important;
+        margin-right: 0 !important;
+        transform: translateX(-50%) !important;
+        box-sizing: border-box !important;
+    }
+
+    body.indexPage #screenshot_layer .overlay_content,
+    body.indexpage #screenshot_layer .overlay_content {
+        width: min(644px, 94vw) !important;
+        margin-right: 0 !important;
+        transform: translateX(-50%) !important;
+        left: 50% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    body.indexPage .idx-main,
+    body.indexpage .idx-main {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    body.indexPage #header,
+    body.indexpage #header {
+        height: 110px !important;
+    }
+
+    body.indexPage #navigation a.home,
+    body.indexpage #navigation a.home {
+        width: 88px !important;
+        height: 36px !important;
+    }
+
+    body.indexPage #navigation .menu a,
+    body.indexpage #navigation .menu a {
+        font-size: 12px !important;
+    }
+
+    body.indexPage .idx-shots__thumbs img,
+    body.indexpage .idx-shots__thumbs img {
+        width: 88px !important;
+        height: 66px !important;
+    }
+
+    body.indexPage .idx-card,
+    body.indexpage .idx-card {
+        padding: 14px 12px !important;
+    }
+}

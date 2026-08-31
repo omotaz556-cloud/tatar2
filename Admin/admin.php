@@ -102,7 +102,7 @@ function admin_validated_page(string $raw): string
         'addUsers', 'users', 'admin_log', 'config', 'debug_log',
         'editServerSet', 'editPlusSet', 'editLogSet', 'editNewsboxSet',
         'editCronSet',
-        'editExtraSet', 'editAdminInfo', 'resetServer', 'player', 'editUser',
+        'editExtraSet', 'editAdminInfo', 'resetServer', 'resetdone', 'player', 'editUser',
         'deletion', 'Newmessage', 'editPlus', 'editSitter', 'editPassword',
         'editProtection', 'editOverall',
         'editWeek', 'userlogin', 'userillegallog', 'editHero', 'editHeroT4', 'editAdditional',
@@ -117,6 +117,19 @@ function admin_validated_page(string $raw): string
         'goldShop', 'grantResources',
         'featureFlags',
         'questEditor',
+    ];
+
+    return in_array($raw, $whitelist, true) ? $raw : '';
+}
+
+/**
+ * Whitelist for search result types (POST name="p" on search form).
+ * Separate from page whitelist — search uses alliances/villages/email/ip etc.
+ */
+function admin_validated_search_type(string $raw): string
+{
+    static $whitelist = [
+        'player', 'alliances', 'villages', 'email', 'ip', 'deleted_players',
     ];
 
     return in_array($raw, $whitelist, true) ? $raw : '';
@@ -376,6 +389,14 @@ if ($page !== '') {
             $subpage = ADMIN_SERVER_RESETTING;
             break;
 
+        case 'resetdone':
+            $subpage = ADMIN_SERVER_RESETTING . ' — Done';
+            break;
+
+        case 'grantResources':
+            $subpage = 'منح موارد للاعب';
+            break;
+
         // ── User-context pages (require a valid ?uid=) ───────────────────────
         case 'player':
             $uid = admin_input_id($_GET, 'uid');
@@ -574,8 +595,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_EDIT_TROOPS . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if (is_array($village) && !empty($village['owner'])) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_EDIT_TROOPS . ' (' . e($village['name']) . ' » ' . e($user['username'] ?? '?') . ')';
+                } else {
+                    $subpage = ADMIN_EDIT_TROOPS . ' (' . ADMIN_NO_VILLAGE . ')';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_EDIT_TROOPS . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -585,8 +611,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_UPGRADE_TROOPS . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if (is_array($village) && !empty($village['owner'])) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_UPGRADE_TROOPS . ' (' . e($village['name']) . ' » ' . e($user['username'] ?? '?') . ')';
+                } else {
+                    $subpage = ADMIN_UPGRADE_TROOPS . ' (' . ADMIN_NO_VILLAGE . ')';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_UPGRADE_TROOPS . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -596,8 +627,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_EDIT_VILLAGE . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if (is_array($village) && !empty($village['owner'])) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_EDIT_VILLAGE . ' (' . e($village['name']) . ' » ' . e($user['username'] ?? '?') . ')';
+                } else {
+                    $subpage = ADMIN_EDIT_VILLAGE . ' (' . ADMIN_NO_VILLAGE . ')';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_EDIT_VILLAGE . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -638,8 +674,13 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_BUILD_LOG . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if (is_array($village) && !empty($village['owner'])) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_BUILD_LOG . ' (' . e($village['name']) . ' » ' . e($user['username'] ?? '?') . ')';
+                } else {
+                    $subpage = ADMIN_BUILD_LOG . ' (' . ADMIN_NO_VILLAGE . ')';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_BUILD_LOG . ' (' . ADMIN_NO_VILLAGE . ')';
             }
@@ -649,12 +690,32 @@ if ($page !== '') {
             $did = admin_input_id($_GET, 'did');
             if ($did !== null) {
                 $village = $database->getVillage($did);
-                $user    = $database->getUserArray($village['owner'], 1);
-                $subpage = ADMIN_RESEARCH_LOG . ' (' . e($village['name']) . ' » ' . e($user['username']) . ')';
+                if (is_array($village) && !empty($village['owner'])) {
+                    $user    = $database->getUserArray($village['owner'], 1);
+                    $subpage = ADMIN_RESEARCH_LOG . ' (' . e($village['name']) . ' » ' . e($user['username'] ?? '?') . ')';
+                } else {
+                    $subpage = ADMIN_RESEARCH_LOG . ' (' . ADMIN_NO_VILLAGE . ')';
+                    $village = null;
+                }
             } else {
                 $subpage = ADMIN_RESEARCH_LOG . ' (' . ADMIN_NO_VILLAGE . ')';
             }
             break;
+    }
+}
+
+// ─── ADMIN ACTIONS (GET/POST) ───────────────────────────────────────────────
+// Dispatch after CSRF verification so POST handlers (punish, addVillage, etc.)
+// cannot bypass the token check that used to run too late in the template block.
+if ($funct->CheckLogin()) {
+    if (!empty($_POST) && ($_POST['action'] ?? '') !== 'login') {
+        csrf_verify();
+    }
+    if (!empty($_GET['action'])) {
+        $funct->Act($_GET);
+    }
+    if (!empty($_POST['action']) && ($_POST['action'] ?? '') !== 'login') {
+        $funct->Act2($_POST);
     }
 }
 
@@ -696,7 +757,7 @@ if (!headers_sent()) {
         <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 /* === NOVATERRA ADMIN === */
-body{margin:0;font-family:Verdana,Arial,sans-serif}
+body{margin:0;font-family:"Expo Arabic",Tahoma,Verdana,Arial,sans-serif}
 #ltop1{border-bottom:3px solid #f59e0b}
 .tz-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;min-height:64px}
 .tz-brand{display:flex;align-items:center;gap:12px}
@@ -983,13 +1044,6 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                 <div id="lmid3">
                     <?php
                     if ($funct->CheckLogin()) {
-                        // CSRF: verifică token-ul pe ORICE request POST înainte de a
-                        // include orice template. GET-urile nu modifică starea serverului
-                        // (sunt doar citiri), deci nu necesită verificare CSRF.
-                        if ($_POST) {
-                            csrf_verify();
-                        }
-
                         if ($_POST || $_GET) {
                             // SECURITY: $page is already whitelist-validated above.
                             // Direct string concat with include() is now safe.
@@ -1001,13 +1055,17 @@ body.app #menu li.sub ul li a:hover{color:#d97706!important}
                                     include('Templates/404.tpl');
                                 }
                             } else {
-                                include('Templates/search.tpl');
+                                if ($rawPage !== '' && $page === '') {
+                                    include('Templates/404.tpl');
+                                } else {
+                                    include('Templates/search.tpl');
+                                }
                             }
 
                             // Handle POST-based results template.
                             $postPage = isset($_POST['p']) ? trim((string)$_POST['p']) : '';
                             $postSub  = isset($_POST['s']) ? trim((string)$_POST['s']) : '';
-                            $postPage = admin_validated_page($postPage); // whitelist POST too
+                            $postPage = admin_validated_search_type($postPage);
                             if ($postPage !== '' && $postSub !== '') {
                                 $filename = 'Templates/results_' . $postPage . '.tpl';
                                 if (file_exists($filename)) {

@@ -61,9 +61,11 @@ body.pg-gk.pg-statistics table.gk-shell > tbody > tr > td.gk-td-main {
     height: auto !important;
     min-height: 480px !important;
     background: #fff !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
     box-shadow:
-        -12px 0 20px -18px rgba(0, 0, 0, 0.12),
-        12px 0 20px -18px rgba(0, 0, 0, 0.12) !important;
+        -20px 0 24px -24px rgba(0, 0, 0, 0.2),
+        20px 0 24px -24px rgba(0, 0, 0, 0.2) !important;
     overflow: visible !important;
     text-align: right !important;
     direction: rtl !important;
@@ -144,7 +146,7 @@ body.pg-gk.pg-statistics .gk-td-nav .gk-rlista a.plus {
 
 /* Resbar — same placement/centering as dorf1 (above shell, centered) */
 body.pg-gk.pg-statistics > .gk-resbar {
-    width: 1000px !important;
+    width: 1024px !important;
     max-width: 98% !important;
     margin: 8px auto 2px !important;
     padding: 0 !important;
@@ -279,7 +281,7 @@ body.pg-gk.pg-statistics #BP .PaNa {
     text-align: right;
     width: 100%;
     font-weight: 900;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     color: #000;
     margin: 0 0 6px;
     padding: 0;
@@ -361,7 +363,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S:not(.gk-sta-ally):not(.gk-sta-hero
 
 /* Alliance table — exact greek.sa reference (4 cols: # | التحالف | اللاعبون | النقاط) */
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-ally {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.1;
 }
@@ -386,7 +388,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-ally th,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-ally th a,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-ally th bdi,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-ally tr.gk-sta-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 1px 6px !important;
@@ -436,7 +438,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-ally tbody tr th.al a {
 }
 
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-ally .staTit {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -446,7 +448,7 @@ body.pg-gk.pg-statistics #BP table.gk-sta-foot .gk-sta-search input,
 body.pg-gk.pg-statistics #BP table.gk-sta-foot .gk-sta-search button,
 body.pg-gk.pg-statistics #BP table.gk-sta-foot .gk-sta-navi,
 body.pg-gk.pg-statistics #BP table.gk-sta-foot .gk-sta-navi a {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 301;
 }
@@ -496,7 +498,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-ally tr.gk-sta-head th {
 
 /* Villages table — greek.sa reference column widths (7 cols RTL) */
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-vil {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.1;
     table-layout: fixed;
@@ -557,7 +559,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-vil tbody tr th.coo .gk-coo
     unicode-bidi: embed;
     display: inline;
     white-space: nowrap;
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     font-weight: 301 !important;
     color: #333 !important;
@@ -574,7 +576,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-vil th:not(.ra),
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-vil th:not(.ra) a,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-vil th:not(.ra) bdi,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-vil tr.gk-sta-cols th:not(.ra) {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 1px 6px !important;
@@ -709,7 +711,7 @@ body.pg-gk.pg-statistics #BP .gk-sta-hero-wrap {
 }
 
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 12px;
     line-height: 1.1;
     table-layout: fixed;
@@ -766,7 +768,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero col.gk-sta-hero-life-c
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero th,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero th a,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero th bdi {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 12px !important;
     text-align: center !important;
     padding: 1px 2px !important;
@@ -775,7 +777,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero th bdi {
 }
 
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero tr.gk-sta-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 11px !important;
     text-align: center !important;
     padding: 2px 1px !important;
@@ -937,7 +939,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero tbody tr th.life.dead 
 }
 
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-hero .staTit {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -991,7 +993,7 @@ body.pg-gk.pg-statistics #BP .gk-sta-natars {
     text-align: center;
     background: transparent;
     border: none;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 body.pg-gk.pg-statistics #BP .gk-sta-natars-lab {
@@ -1011,7 +1013,7 @@ body.pg-gk.pg-statistics #BP .gk-sta-natars-clock {
     font-weight: 301;
     line-height: 1.1;
     letter-spacing: 1px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     direction: ltr;
     unicode-bidi: embed;
 }
@@ -1029,7 +1031,7 @@ body.pg-gk.pg-statistics #BP table.a.b0.gk-sta-gen {
     width: 100% !important;
     max-width: 100%;
     margin: 0 0 10px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.35;
     table-layout: fixed;
@@ -1193,7 +1195,7 @@ body.pg-gk.pg-statistics #BP table.a.b0.gk-sta-news {
     table-layout: fixed;
     border-collapse: collapse;
     border: 1px solid #ccc;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.45;
     float: none !important;
@@ -1294,7 +1296,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-gen {
 }
 
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-players {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.1;
 }
@@ -1324,7 +1326,7 @@ body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-players th,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-players th a,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-players th bdi,
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-players tr.gk-sta-cols th {
-    font-family: Tahoma, Arial, Helvetica, sans-serif !important;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     text-align: center !important;
     padding: 1px 6px !important;
@@ -2426,7 +2428,7 @@ body.pg-gk.pg-statistics #BP .gk-sta-plusstats table.ps-sum.gk-sta-ps-sum {
     clear: both;
     border-collapse: collapse;
     margin: 10px 0 8px;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.1;
     direction: rtl;
@@ -2564,7 +2566,7 @@ body.pg-gk.pg-statistics #BP table.gk-sta-foot {
 
 /* Undefeated defense list (id=3) — greek.sa reference */
 body.pg-gk.pg-statistics #BP table.b0.fl.L6_S.gk-sta-undef {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 13px;
     line-height: 1.1;
 }

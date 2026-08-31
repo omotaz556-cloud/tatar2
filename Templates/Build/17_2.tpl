@@ -39,6 +39,7 @@ $totalMerchants = (int)$market->merchant;
     <p class="build_desc"><?php echo MARKETPLACE_DESC;?></p>
 
     <?php include("17_menu.tpl");?>
+    <?php include("17_buysell_sub.tpl");?>
 
     <form method="POST" action="build.php">
         <input type="hidden" name="id" value="<?php echo (int)$id;?>" />
