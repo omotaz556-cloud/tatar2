@@ -45,6 +45,15 @@ if (!function_exists('tz_portal_classic_stylesheet_tag')) {
     {
         $tag = '';
         $root = dirname(__DIR__);
+
+        $globalDisk = $root . '/css/global.css';
+        if (is_file($globalDisk)) {
+            $href = $relPath . 'css/global.css';
+            $ver = (int) @filemtime($globalDisk);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES)
+                . '?v=' . $ver . '" rel="stylesheet" type="text/css" />';
+        }
+
         $lang = defined('LANG') ? LANG : 'ar';
         $gp = tz_portal_gp();
 
@@ -87,6 +96,18 @@ if (!function_exists('tz_portal_classic_stylesheet_tag')) {
                 . '?v=' . $ver . '" rel="stylesheet" type="text/css" />';
         }
 
+        if (function_exists('tz_rtl_stylesheet_tag')) {
+            $tag .= tz_rtl_stylesheet_tag(null, $relPath);
+        }
+
+        $responsiveDisk = $root . '/css/responsive.css';
+        if (is_file($responsiveDisk)) {
+            $href = $relPath . 'css/responsive.css';
+            $ver = (int) @filemtime($responsiveDisk);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES)
+                . '?v=' . $ver . '" rel="stylesheet" type="text/css" />';
+        }
+
         return $tag;
     }
 }
@@ -96,6 +117,14 @@ if (!function_exists('tz_portal_ndix_stylesheet_tag')) {
     {
         $tag = '';
         $root = dirname(__DIR__);
+
+        $globalDisk = $root . '/css/global.css';
+        if (is_file($globalDisk)) {
+            $href = $relPath . 'css/global.css';
+            $ver = (int) @filemtime($globalDisk);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES)
+                . '?v=' . $ver . '" rel="stylesheet" type="text/css" />';
+        }
 
         $fontDisk = $root . '/css/site-font.css';
         if (is_file($fontDisk)) {
@@ -112,6 +141,18 @@ if (!function_exists('tz_portal_ndix_stylesheet_tag')) {
             }
             $href = $relPath . 'css/ndix/' . $file;
             $ver = (int) @filemtime($disk);
+            $tag .= "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES)
+                . '?v=' . $ver . '" rel="stylesheet" type="text/css" />';
+        }
+
+        if (function_exists('tz_rtl_stylesheet_tag')) {
+            $tag .= tz_rtl_stylesheet_tag(null, $relPath);
+        }
+
+        $responsiveDisk = $root . '/css/responsive.css';
+        if (is_file($responsiveDisk)) {
+            $href = $relPath . 'css/responsive.css';
+            $ver = (int) @filemtime($responsiveDisk);
             $tag .= "\n\t" . '<link href="' . htmlspecialchars($href, ENT_QUOTES)
                 . '?v=' . $ver . '" rel="stylesheet" type="text/css" />';
         }

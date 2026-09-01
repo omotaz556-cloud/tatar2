@@ -425,13 +425,6 @@ body.indexpage #footer .container {
 }
 
 @media (max-width: 1040px) {
-    html[dir="rtl"]:has(body.indexPage),
-    html[dir="rtl"]:has(body.indexpage),
-    html[dir="ltr"]:has(body.indexPage),
-    html[dir="ltr"]:has(body.indexpage) {
-        zoom: 1 !important;
-    }
-
     body.indexPage .idx-main,
     body.indexpage .idx-main {
         padding-left: 12px;

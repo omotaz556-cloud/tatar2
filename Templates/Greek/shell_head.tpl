@@ -21,13 +21,11 @@ $gkDorf1CssVer = $gkLoadDorf1Css ? (int) @filemtime(__DIR__ . '/../../gpack/nova
 		var html = document.documentElement;
 		if (!m) return;
 		if (w >= DESKTOP_MIN) {
-			m.setAttribute('content', 'width=device-width, initial-scale=1.0');
+			m.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover');
 			html.classList.add('gk-desktop-layout');
 		} else {
-			var s = Math.min(REF, w / DESIGN_W);
-			if (s < 0.05) { s = 0.05; }
-			m.setAttribute('content', 'width=1024, initial-scale=' + s.toFixed(4) + ', viewport-fit=cover');
-			html.classList.add('gk-scaled-layout');
+			m.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5, viewport-fit=cover');
+			html.classList.add('gk-stacked-layout');
 		}
 	})();
 	</script>
@@ -54,6 +52,12 @@ if ($gkResbarJsVer > 0) {
 	<link href="<?php echo GP_LOCATE; ?>main.css?e21d2" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE; ?>main_en.css?e21d2" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE; ?>novaterra.css?e21d2" rel="stylesheet" type="text/css" />
+<?php
+$gkGlobalVer = (int) @filemtime(__DIR__ . '/../../css/global.css');
+if ($gkGlobalVer > 0) {
+?>
+	<link href="css/global.css?v=<?php echo $gkGlobalVer; ?>" rel="stylesheet" type="text/css" />
+<?php } ?>
 	<?php echo tz_greek_stylesheet_tag(); ?>
 <?php if ($gkLoadDorf1Css) { ?>
 	<link href="<?php echo htmlspecialchars(GP_LOCATE . 'lang/en/dorf1.css?v=' . $gkDorf1CssVer, ENT_QUOTES, 'UTF-8'); ?>" rel="stylesheet" type="text/css" />
@@ -85,6 +89,12 @@ if ($gkTwBtnVer > 0 && function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) {
 <?php } ?>
 <?php if ($gkInlineStyle !== '') { ?>
 	<style type="text/css"><?php echo $gkInlineStyle; ?></style>
+<?php } ?>
+<?php
+$gkGkRespVer = (int) @filemtime(__DIR__ . '/../../css/gk_responsive.css');
+if ($gkGkRespVer > 0) {
+?>
+	<link href="css/gk_responsive.css?v=<?php echo $gkGkRespVer; ?>" rel="stylesheet" type="text/css" />
 <?php } ?>
 <?php
 global $session;

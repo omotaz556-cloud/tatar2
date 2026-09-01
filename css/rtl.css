@@ -1214,9 +1214,6 @@ html[dir="rtl"] #content h1 {
 }
 
 @media screen and (max-width: 640px) {
-    html[dir="rtl"] {
-        zoom: 1 !important;
-    }
     html[dir="rtl"] body {
         width: auto !important;
         overflow-x: hidden;

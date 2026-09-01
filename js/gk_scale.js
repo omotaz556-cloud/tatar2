@@ -1,6 +1,6 @@
 /**
- * Greek shell — desktop: original layout (device-width + site zoom).
- * Narrow screens: proportional scaling (layout viewport 1024 + initial-scale).
+ * Greek shell — desktop: device-width + CSS zoom 110%.
+ * Mobile/tablet: stacked reflow layout (gk-stacked-layout), no viewport shrink.
  */
 (function () {
     'use strict';
@@ -8,13 +8,15 @@
     var DESIGN_W = 1024;
     var REF_ZOOM = 1.1;
     var DESKTOP_MIN = DESIGN_W * REF_ZOOM;
+    var VIEWPORT_DESKTOP = 'width=device-width, initial-scale=1.0, viewport-fit=cover';
+    var VIEWPORT_STACKED = 'width=device-width, initial-scale=1.0, maximum-scale=5, viewport-fit=cover';
 
     function isDesktopLayout(vw) {
         return vw >= DESKTOP_MIN;
     }
 
     function applyGkScale() {
-        if (!document.body.classList.contains('pg-gk')) {
+        if (!document.body || !document.body.classList.contains('pg-gk')) {
             return;
         }
 
@@ -23,28 +25,18 @@
         var meta = document.querySelector('meta[name="viewport"]');
 
         if (isDesktopLayout(vw)) {
-            html.classList.remove('gk-scaled-layout');
+            html.classList.remove('gk-stacked-layout');
             html.classList.add('gk-desktop-layout');
             if (meta) {
-                meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+                meta.setAttribute('content', VIEWPORT_DESKTOP);
             }
-            document.body.style.minHeight = '';
             return;
         }
 
         html.classList.remove('gk-desktop-layout');
-        html.classList.add('gk-scaled-layout');
-
-        var scale = Math.min(REF_ZOOM, vw / DESIGN_W);
-        if (scale < 0.05) {
-            scale = 0.05;
-        }
-
+        html.classList.add('gk-stacked-layout');
         if (meta) {
-            meta.setAttribute(
-                'content',
-                'width=' + DESIGN_W + ', initial-scale=' + scale.toFixed(4) + ', viewport-fit=cover'
-            );
+            meta.setAttribute('content', VIEWPORT_STACKED);
         }
     }
 

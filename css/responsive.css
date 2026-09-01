@@ -35,19 +35,22 @@ table.vis,
 }
 
 /* =====================================================================
- * Greek shell — proportional scaling on narrow viewports only.
- * Desktop (≥1126px): original layout — device-width + global 110% zoom.
- * Disable site-wide html zoom inside pg-gk (breaks village map sprites).
+ * Greek shell — desktop (≥1126px): device-width + html zoom 110%.
+ * Mobile/tablet: stacked reflow — see css/gk_responsive.css + gk_scale.js.
  * ===================================================================== */
 html.pg-gk,
-html.pg-gk.gk-scaled-layout,
-html.pg-gk.gk-scaled-layout[dir="ltr"],
-html.pg-gk.gk-scaled-layout[dir="rtl"],
+html.pg-gk.gk-stacked-layout,
+html.pg-gk.gk-stacked-layout[dir="ltr"],
+html.pg-gk.gk-stacked-layout[dir="rtl"] {
+    zoom: 1 !important;
+}
+
 html.pg-gk.gk-desktop-layout,
 html.pg-gk.gk-desktop-layout[dir="ltr"],
 html.pg-gk.gk-desktop-layout[dir="rtl"] {
-    zoom: 1 !important;
+    zoom: 1.1 !important;
 }
+
 body.pg-gk {
     overflow-x: hidden;
     overflow-y: auto;
@@ -65,15 +68,16 @@ html.pg-gk.gk-desktop-layout #gk-scale-root.gk-scale-root {
     box-sizing: border-box;
     position: relative;
 }
-/* Scaled mobile/tablet: 1024px assembly scaled via viewport initial-scale */
-html.pg-gk.gk-scaled-layout #gk-scale-root.gk-scale-root {
-    width: 1024px;
-    max-width: none;
-    margin: 0 auto;
+
+html.pg-gk.gk-stacked-layout #gk-scale-root.gk-scale-root {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
     box-sizing: border-box;
     position: relative;
 }
-/* Fallback before JS runs on wide screens */
+
+/* Fallback before JS runs */
 #gk-scale-root.gk-scale-root {
     width: 100%;
     max-width: none;
@@ -206,6 +210,48 @@ body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.map2 {
 
 /* ---- Login / register / index ---- */
 @media screen and (max-width: 1040px) {
+    html[dir="rtl"]:has(body.pg-portal-index),
+    html[dir="ltr"]:has(body.pg-portal-index) {
+        zoom: 1 !important;
+    }
+
+    body.pg-portal-index header {
+        padding-bottom: 38% !important;
+        background-size: cover !important;
+    }
+
+    body.pg-portal-index header .hero-section nav.nav,
+    body.pg-portal-index header .hero-section .nav {
+        left: 50% !important;
+        top: 12% !important;
+        width: 88% !important;
+        max-width: 420px !important;
+        height: auto !important;
+        min-height: 36px;
+        transform: translateX(-50%) !important;
+        padding: 6px 10px !important;
+        box-sizing: border-box;
+    }
+
+    body.pg-portal-index header .hero-section nav.nav ul,
+    body.pg-portal-index header .hero-section .nav ul {
+        position: static !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 8px 14px !important;
+        padding: 0 !important;
+        height: auto !important;
+    }
+
+    body.pg-portal-index header .hero-section .world {
+        left: 50% !important;
+        top: auto !important;
+        bottom: 8% !important;
+        transform: translateX(-50%) !important;
+        width: 90% !important;
+        max-width: 360px !important;
+    }
+
     body.pg-index .wrapper,
     body.indexPage .wrapper,
     body.indexpage .wrapper {
@@ -253,6 +299,25 @@ body.pg-gk.pg-dorf2 #village_map_wrap #village_map img.map2 {
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    body.pg-portal-index header {
+        padding-bottom: 52% !important;
+    }
+
+    body.pg-portal-index header .hero-section nav.nav ul a,
+    body.pg-portal-index header .hero-section .nav ul a {
+        font-size: 0.85rem !important;
+    }
+
+    body.pg-portal-index .container main #hero-side h1 {
+        font-size: 1.65rem !important;
+    }
+
+    body.pg-portal-index .container {
+        padding: 0 10px !important;
     }
 }
 
