@@ -54,7 +54,8 @@ if(SPEED == '1'){
 if (isset($qact)){
 	// check that the quest we're on is not lower than the quest we're requesting
 	$currentQuest = $database->getUserField($_SESSION['username'],"quest",1);
-	if ($qact < $currentQuest) {
+	// Only clamp numeric quest steps — never rewrite actions like rank/enter/skip/coor
+	if (is_numeric($qact) && is_numeric($currentQuest) && (int) $qact < (int) $currentQuest) {
 		$qact = $currentQuest;
 	}
 
@@ -97,7 +98,13 @@ if (isset($qact)){
 			break;
 
 		case 'rank':
-			$rSubmited=$qact2;
+			if (isset($_POST['val']) && (string) $_POST['val'] !== '') {
+				$rSubmited = preg_replace("/[^a-zA-Z0-9_-]/", "", (string) $_POST['val']);
+			} elseif (isset($qact2) && $qact2 !== null && $qact2 !== '' && $qact2 !== 'false') {
+				$rSubmited = $qact2;
+			} else {
+				$rSubmited = null;
+			}
 			break;
 
 		case '5':
@@ -453,16 +460,37 @@ if ($vName==$session->userinfo['username']."'s village"){?>
 
 <?php } elseif($_SESSION['qst']== 4){
 
-// Compare real player rank with submited rank
-$temp['uid']=$session->userinfo['id'];
-$ranking->procRankReq($temp);
-$displayarray = $database->getUserArray($temp['uid'],1);
-$rRes=$ranking->searchRank($displayarray['username'],"username");
-if (!isset($rSubmited)) {
-	$rSubmited = null;
+// Compare real player rank with submitted rank (by userid — username lookup is unreliable)
+if (!isset($rSubmited) || $rSubmited === null || $rSubmited === '' || $rSubmited === 'false') {
+	if (isset($_POST['val']) && (string) $_POST['val'] !== '') {
+		$rSubmited = preg_replace("/[^a-zA-Z0-9_-]/", "", (string) $_POST['val']);
+	} elseif (isset($qact2) && $qact2 !== null && $qact2 !== '' && $qact2 !== 'false') {
+		$rSubmited = $qact2;
+	} else {
+		$rSubmited = null;
+	}
 }
-if ($rRes!=$rSubmited && $rRes !== 'Multihunter'){?>
-{"markup":"\n\t\t<div id=\"qstd\"><h1> <img class=\"point\" src=\"img\/x.gif\" alt=\"\" title=\"\"\/><?php echo Q4; ?><\/h1><br \/><i>&rdquo;<?php echo Q4_DESC; ?>&rdquo;<\/i><br \/><br \/><div class=\"rew\"><p class=\"ta_aw\"><?php echo Q4_ORDER; ?><\/div><br \/><input id=\"qst_val\" class=\"text\" type=\"text\" name=\"qstin\" \/> <input onclick=\"qst_next('','rank',document.getElementById('qst_val').value)\" type=\"button\" value=\"<?php echo Q_BUTN; ?>\"\/><br \/><span id=\"qst_accpt\"><\/span><\/div>\n\t\t<div id=\"qstbg\" class=\"rank\"><\/div>\n\t\t","number":-4,"reward":false,"qgsrc":"q_l<?php echo $session->userinfo['tribe'];?>","msrc":"<?php echo $messagelol; ?>","altstep":99}
+$ranking->procRankReq([]);
+$uid = (int) $session->uid;
+$rRes = $ranking->searchRank($uid, 'userid');
+if (!is_numeric($rRes) || (int) $rRes <= 0) {
+	$uname = isset($session->userinfo['username']) ? $session->userinfo['username'] : $session->username;
+	$byName = $ranking->searchRank($uname, 'username');
+	$rRes = is_numeric($byName) ? (int) $byName : 0;
+} else {
+	$rRes = (int) $rRes;
+}
+if ((int) $rRes <= 0) {
+	$rankOk = ($rSubmited !== null && $rSubmited !== '');
+} else {
+	$rankOk = ($rSubmited !== null && $rSubmited !== '' && (int) $rSubmited === (int) $rRes);
+}
+if (!$rankOk){
+	$rankHint = ((int) $rRes > 0)
+		? ('رتبتك الحالية في الإحصائيات هي: '.(int)$rRes.' — اكتب هذا الرقم')
+		: 'افتح الإحصائيات من القائمة العلوية واكتب رقم رتبتك (#) بجانب اسمك';
+?>
+{"markup":"\n\t\t<div id=\"qstd\"><h1> <img class=\"point\" src=\"img\/x.gif\" alt=\"\" title=\"\"\/><?php echo Q4; ?><\/h1><br \/><i>&rdquo;<?php echo Q4_DESC; ?>&rdquo;<\/i><br \/><br \/><div class=\"rew\"><p class=\"ta_aw\"><?php echo Q4_ORDER; ?><\/div><br \/><input id=\"qst_val\" class=\"text\" type=\"text\" name=\"qstin\" value=\"<?php echo htmlspecialchars((string)$rSubmited, ENT_QUOTES, 'UTF-8'); ?>\" \/> <input onclick=\"qst_next('','rank')\" type=\"button\" value=\"<?php echo Q_BUTN; ?>\"\/><?php if ($rSubmited !== null && $rSubmited !== '') { ?><br \/><font color=\"#FF0000\"><?php echo htmlspecialchars($rankHint, ENT_QUOTES, 'UTF-8'); ?><\/font><?php } ?><br \/><span id=\"qst_accpt\"><\/span><\/div>\n\t\t<div id=\"qstbg\" class=\"rank\"><\/div>\n\t\t","number":-4,"reward":false,"qgsrc":"q_l<?php echo $session->userinfo['tribe'];?>","msrc":"<?php echo $messagelol; ?>","altstep":99}
 <?php $_SESSION['qstnew']='0'; }else{ $_SESSION['qstnew']='1'; ?>
 {"markup":"\n\t\t<div id=\"qstd\"><h1> <img class=\"point\" src=\"img\/x.gif\" alt=\"\" title=\"\"\/><?php echo Q4; ?><\/h1><br \/><i>&rdquo;<?php echo Q4_RESP; ?>&rdquo;<\/i><br \/><br \/><div class=\"rew\"><p class=\"ta_aw\"><input type=\"hidden\" id=\"qst_val\" value=\"2\" \/><?php echo Q_REWARD; ?><\/p><img src=\"img\/x.gif\" class=\"r1\" alt=\"Lumber\" title=\"Lumber\" \/>40&nbsp;&nbsp;<img src=\"img\/x.gif\" class=\"r2\" alt=\"Clay\" title=\"Clay\" \/>30&nbsp;&nbsp;<img src=\"img\/x.gif\" class=\"r3\" alt=\"Iron\" title=\"Iron\" \/>20&nbsp;&nbsp;<img src=\"img\/x.gif\" class=\"r4\" alt=\"Crop\" title=\"Crop\" \/>30&nbsp;&nbsp;<\/div><br \/><span id=\"qst_accpt\"><a href=\"javascript: qst_next('','5');\"><?php echo Q_CONTINUE; ?><\/a><\/span><\/div>\n\t\t<div id=\"qstbg\" class=\"rank\"><\/div>\n\t\t","number":4,"reward":{"wood":40,"clay":30,"iron":20,"crop":30},"qgsrc":"q_l<?php echo $session->userinfo['tribe'];?>","msrc":"<?php echo $messagelol; ?>","altstep":99}
 <?php }?>

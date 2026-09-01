@@ -19,9 +19,6 @@ if ($gkQst === 0 || $gkQstNew === 1) {
 
 $gkCharTitle = defined('TO_THE_TASK') ? TO_THE_TASK : 'المهام';
 $gkCharSrc = $gkCharImg;
-if ($gkCharSrc !== '' && $gkCharSrc[0] !== '/' && !preg_match('#^https?://#i', $gkCharSrc)) {
-    $gkCharSrc = '/' . ltrim($gkCharSrc, '/');
-}
 $gkCharEsc = htmlspecialchars($gkCharSrc, ENT_QUOTES, 'UTF-8');
 $gkCharTitleEsc = htmlspecialchars($gkCharTitle, ENT_QUOTES, 'UTF-8');
 
@@ -41,7 +38,7 @@ $gkCy = (!empty($village) && is_object($village) && isset($village->coor['y'])) 
 $gkIsCap = (!empty($village) && is_object($village) && !empty($village->capital));
 ?>
 <aside class="gk-stat-left">
-	<div id="anm" style="width:0;height:0;visibility:hidden;overflow:hidden;" aria-hidden="true"></div>
+	<div id="anm" style="width:120px;height:140px;visibility:hidden;" aria-hidden="true"></div>
 	<div class="gk-char-portrait" data-char-src="<?php echo $gkCharEsc; ?>" data-char-title="<?php echo $gkCharTitleEsc; ?>">
 		<img id="gkCharImg" onclick="qst_handle();" src="<?php echo $gkCharEsc; ?>"
 			title="<?php echo $gkCharTitleEsc; ?>" alt="<?php echo $gkCharTitleEsc; ?>" />

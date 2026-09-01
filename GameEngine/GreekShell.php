@@ -49,7 +49,7 @@ if (!function_exists('tz_greek_shell_open')) {
      * @param array  $opts contentWrap (bool), showVillageTitle (bool)
      */
     function tz_greek_shell_open($contentClass = '', array $opts = array()) {
-        global $gkShell, $gkContentClass, $gkShellOpenOpts, $session, $village, $database, $uid, $gold, $serverLabel, $vDisplayName;
+        global $gkShell, $gkContentClass, $gkShellOpenOpts, $session, $village, $database, $message, $uid, $gold, $serverLabel, $vDisplayName;
         $gkShell = true;
         $GLOBALS['gkShell'] = true;
         $gkContentClass = $contentClass;
@@ -72,6 +72,10 @@ if (!function_exists('tz_greek_shell_open')) {
             $vDisplayName = function_exists('tz_display_village_name')
                 ? tz_display_village_name($village->vname, $session->username ?? null)
                 : $village->vname;
+        }
+        // Ensure message counts are available inside this function scope for topnav_icons.tpl
+        if (!isset($message) && isset($GLOBALS['message'])) {
+            $message = $GLOBALS['message'];
         }
 
         include dirname(__DIR__) . '/Templates/Greek/gk_head.tpl';

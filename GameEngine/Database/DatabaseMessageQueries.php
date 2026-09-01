@@ -35,17 +35,19 @@ trait DatabaseMessageQueries {
             $ids[] = 5;
         }
 
-        $q = 'SELECT Count(*) as numUnread FROM '.TB_PREFIX.'mdata WHERE target IN('.implode(', ', $ids).') AND viewed = 0';
-        return mysqli_fetch_array(mysqli_query($this->dblink, $q), MYSQLI_ASSOC)['numUnread'];
+        $q = 'SELECT Count(*) as numUnread FROM '.TB_PREFIX.'mdata WHERE target IN('.implode(', ', $ids).') AND viewed = 0 AND deltarget = 0 AND send = 0 AND archived = 0';
+        $row = mysqli_fetch_array(mysqli_query($this->dblink, $q), MYSQLI_ASSOC);
+        return (int) ($row['numUnread'] ?? 0);
     }
 
     // no need to cache this method
     function getUnreadNoticesCount($uid) {
         $uid = (int) $uid;
 
-        return mysqli_fetch_array(mysqli_query($this->dblink, '
-            SELECT Count(*) as numUnread FROM '.TB_PREFIX.'ndata WHERE uid = '.$uid.' AND viewed = 0'
-        ), MYSQLI_ASSOC)['numUnread'];
+        $row = mysqli_fetch_array(mysqli_query($this->dblink, '
+            SELECT Count(*) as numUnread FROM '.TB_PREFIX.'ndata WHERE uid = '.$uid.' AND viewed = 0 AND del = 0'
+        ), MYSQLI_ASSOC);
+        return (int) ($row['numUnread'] ?? 0);
     }
 
     function sendMessage($client, $owner, $topic, $message, $send, $alliance, $player, $coor, $report, $skip_escaping = false) {

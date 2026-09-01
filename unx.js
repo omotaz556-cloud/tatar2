@@ -70,6 +70,7 @@ if(jf){id={'x':document.getElementById('qst_val_x').value,'y':document.getElemen
 
 else{id={'val':document.getElementById('qst_val').value};}
 
+quest.markup=false;
 pi();
 
 fd(fi2(act,act2,act3),function(mf){for(var qd in mf){quest[qd]=mf[qd];}},'POST',id);
@@ -205,9 +206,13 @@ function PopupMap(i){
 }
 
 function uc(){if($('drag')){return;}
-$$('.popup3')[0].grab(new Element('div',{'id':'drag'}
-),'top').makeDraggable({'handle':'drag'}
-);if($$('body')[0].getStyle('direction').toLowerCase()=='rtl'){$$('.popup3')[0].setStyle('direction','rtl').getParent().setStyle('direction','ltr');}
+var p=$$('.popup3')[0];if(!p){return;}
+p.grab(new Element('div',{'id':'drag'}),'top').makeDraggable({'handle':'drag'});
+/* Quest frame must stay LTR (anl.gif padding). Arabic text is styled in #qstd. */
+if($$('body')[0].getStyle('direction').toLowerCase()=='rtl'){
+if(p.hasClass('quest')){p.setStyle('direction','ltr');if(p.getParent()){p.getParent().setStyle('direction','ltr');}}
+else{p.setStyle('direction','rtl').getParent().setStyle('direction','ltr');}
+}
 }
 function uc2(){
     if($('drag')){return;}
@@ -758,10 +763,22 @@ function qst_next(jf,act,act2){
 
 var id;
 
-if(jf){id={'x':document.getElementById('qst_val_x').value,'y':document.getElementById('qst_val_y').value};}
+if(jf){
+var qx=document.getElementById('qst_val_x');
+var qy=document.getElementById('qst_val_y');
+id={'x':qx?qx.value:'','y':qy?qy.value:''};
+}
+else{
+var qv=document.getElementById('qst_val');
+id={'val':qv?qv.value:''};
+}
 
-else{id={'val':document.getElementById('qst_val').value};}
+/* Always send the typed rank in qact2 (don't rely on onclick arg) */
+if(act==='rank'){
+act2=id.val||'';
+}
 
+quest.markup=false;
 pi();
 
 fd(fi(act,act2),function(mf){for(var qd in mf){quest[qd]=mf[qd];}},'POST',id);
@@ -787,7 +804,7 @@ function li(step){step.i++;if(step.i==2){step.anm.style.visibility='visible';}
 for(var ji in step.target){step.current[ji]+=step.step[ji];}
 return step;}
 function ii(mi){if(mi===undefined){mi==false;}
-var ni=document.getElementById('ce');if(mi){var oi='<div class="popup3 quest"><a href="#" onClick="qst_handle()"><img src="img/x.gif" border="1" class="popup4" alt="Close" title="Close"></a><div id="popup3"</div></div>';ni.innerHTML=oi;pi();qst_wfm();vc();qi(true);uc();}
+var ni=document.getElementById('ce');if(mi){var oi='<div class="popup3 quest"><a href="#" onClick="qst_handle();return false;"><img src="img/x.gif" border="1" class="popup4" alt="Close" title="Close"></a><div id="popup3"></div></div>';ni.innerHTML=oi;pi();qst_wfm();vc();qi(true);uc();}
 else{ni.innerHTML='';qi(false);}
 }
 function qi(vis){if(!is_ie6){return;}
@@ -832,8 +849,8 @@ else{
 	vi.innerHTML=quest.markup;
 	uc();
 	xi=false;
-	
-	if(quest.reward.finish&&window.bld) {
+	/* reward is often boolean false — never read .finish/.plus on it */
+	if(quest.reward && quest.reward.finish && window.bld) {
 		var yi=document.getElementById('building_contract');
 		if (bld.length<2 && bld[0].gid==1) {
 			yi.innerHTML='';
@@ -862,7 +879,7 @@ else{
 		auto_reload=-1;
 	}
 
-	if (quest.reward.plus) {
+	if (quest.reward && quest.reward.plus) {
 		var of=document.getElementById('logo').className='plus';
 	}
 
@@ -889,7 +906,7 @@ var id;if(jf){id={'x':document.getElementById('qst_val_x').value,'y':document.ge
 ;}
 else{id={'val':document.getElementById('qst_val').value}
 ;}
-pi();fd(fi(),function(mf){for(var qd in mf){quest[qd]=mf[qd];}
+quest.markup=false;pi();fd(fi(),function(mf){for(var qd in mf){quest[qd]=mf[qd];}
 }
 ,'POST',id
 );qst_wfm();}

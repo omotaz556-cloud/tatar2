@@ -21,9 +21,6 @@
 
 		$gkCharTitle = defined('TO_THE_TASK') ? TO_THE_TASK : 'المهام';
 		$gkCharSrc = $gkCharImg;
-		if ($gkCharSrc !== '' && $gkCharSrc[0] !== '/' && !preg_match('#^https?://#i', $gkCharSrc)) {
-			$gkCharSrc = '/' . ltrim($gkCharSrc, '/');
-		}
 		$gkCharEsc = htmlspecialchars($gkCharSrc, ENT_QUOTES, 'UTF-8');
 		$gkCharTitleEsc = htmlspecialchars($gkCharTitle, ENT_QUOTES, 'UTF-8');
 

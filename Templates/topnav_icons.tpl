@@ -21,16 +21,23 @@ $reportsLink = $isRestrictedUser ? '#' : 'berichte.php';
 $class = 'i4';
 $gkReportUnread = 0;
 $gkMessageUnread = 0;
-if (isset($message)) {
+if (!isset($message) && isset($GLOBALS['message'])) {
+	$message = $GLOBALS['message'];
+}
+if (!isset($message) && isset($database, $session) && !empty($session->uid)) {
+	// Fallback if Message wasn't constructed yet
+	$gkReportUnread = (int) $database->getUnreadNoticesCount($session->uid);
+	$gkMessageUnread = (int) $database->getUnreadMessagesCount($session->uid);
+} elseif (isset($message)) {
 	$gkReportUnread = (int) $message->nunread;
 	$gkMessageUnread = (int) $message->unread;
-	if ($gkMessageUnread && !$gkReportUnread) {
-		$class = 'i2';
-	} elseif (!$gkMessageUnread && $gkReportUnread) {
-		$class = 'i3';
-	} elseif ($gkMessageUnread && $gkReportUnread) {
-		$class = 'i1';
-	}
+}
+if ($gkMessageUnread && !$gkReportUnread) {
+	$class = 'i2';
+} elseif (!$gkMessageUnread && $gkReportUnread) {
+	$class = 'i3';
+} elseif ($gkMessageUnread && $gkReportUnread) {
+	$class = 'i1';
 }
 $gkReportTip = $gkReportUnread . ' ' . (defined('TZ_NAV_COUNT_REPORT') ? TZ_NAV_COUNT_REPORT : REPORTS);
 $gkMessageTip = $gkMessageUnread . ' ' . (defined('TZ_NAV_COUNT_MESSAGE') ? TZ_NAV_COUNT_MESSAGE : MESSAGES);
@@ -57,7 +64,7 @@ $gkMessageTip = $gkMessageUnread . ' ' . (defined('TZ_NAV_COUNT_MESSAGE') ? TZ_N
 				<img src="img/x.gif" class="r" title="<?php echo MESSAGES; ?>" alt="<?php echo MESSAGES; ?>" />
 			</a>
 		</div>
-		<span class="gk-nav-count-tip gk-tip-reports" aria-hidden="true"><?php echo safeHTML($gkReportTip); ?></span>
-		<span class="gk-nav-count-tip gk-tip-messages" aria-hidden="true"><?php echo safeHTML($gkMessageTip); ?></span>
+		<span class="gk-nav-count-tip gk-tip-reports<?php echo $gkReportUnread > 0 ? ' is-on' : ''; ?>" aria-hidden="true"><?php echo safeHTML($gkReportTip); ?></span>
+		<span class="gk-nav-count-tip gk-tip-messages<?php echo $gkMessageUnread > 0 ? ' is-on' : ''; ?>" aria-hidden="true"><?php echo safeHTML($gkMessageTip); ?></span>
 	</div>
 </div>

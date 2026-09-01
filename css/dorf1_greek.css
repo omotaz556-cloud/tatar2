@@ -39,10 +39,16 @@ body.pg-gk .footer-stopper,
 body.pg-gk #msfilter,
 body.pg-gk .wrapper { display: none !important; }
 
-/* Shared 80px right shift — bar / icons / resbar / shell on one axis */
+/* Shared 80px right shift — use left (not transform) so absolute quest #anm keeps working */
 body.pg-gk .gk-bar-inner,
-body.pg-gk .gk-resbar,
 body.pg-gk table.gk-shell {
+    position: relative !important;
+    left: 80px !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+}
+/* Resbar is position:static later — left is ignored there; keep transform shift */
+body.pg-gk .gk-resbar {
     -webkit-transform: translateX(80px) !important;
     transform: translateX(80px) !important;
 }
@@ -142,23 +148,24 @@ body.pg-gk table.gk-shell {
     margin-left: 4px;
 }
 
-/* Vs nav — center + same 80px right shift as bar/res/shell */
+/* Vs nav — center under banner + same 80px right shift as bar/res/shell */
 body.pg-gk .gk-head #mtop.gk-mtop,
 html[dir="rtl"] body.pg-gk .gk-head #mtop.gk-mtop {
     position: absolute !important;
-    left: 0 !important;
-    right: 0 !important;
+    left: 80px !important;
+    right: auto !important;
     top: 92px !important;
     width: 350px !important;
     max-width: 350px !important;
     height: 72px !important;
     margin: 0 auto !important;
+    margin-left: calc(50% - 175px) !important;
     padding: 0 !important;
     font-size: 0 !important;
     z-index: 40 !important;
     float: none !important;
-    -webkit-transform: translateX(80px) !important;
-    transform: translateX(80px) !important;
+    -webkit-transform: none !important;
+    transform: none !important;
     background: transparent !important;
     border: 0 !important;
 }
@@ -272,7 +279,9 @@ body.pg-gk .gk-head #topNavIcons .gk-tip-messages,
 body.pg-gk .gk-head #topNavIcons .gk-n5-wrap:has(.gk-nav-reports:hover) .gk-tip-reports,
 body.pg-gk .gk-head #topNavIcons .gk-n5-wrap:has(.gk-nav-messages:hover) .gk-tip-messages,
 #mtop #topNavIcons .gk-n5-wrap:has(.gk-nav-reports:hover) .gk-tip-reports,
-#mtop #topNavIcons .gk-n5-wrap:has(.gk-nav-messages:hover) .gk-tip-messages {
+#mtop #topNavIcons .gk-n5-wrap:has(.gk-nav-messages:hover) .gk-tip-messages,
+body.pg-gk .gk-head #topNavIcons .gk-nav-count-tip.is-on,
+#mtop #topNavIcons .gk-nav-count-tip.is-on {
     display: block;
 }
 
@@ -631,10 +640,17 @@ body.pg-gk #res {
     width: auto;
     text-align: center;
 }
+/* Quest fly animation host — must stay absolute (compact #side_info #anm) */
+body.pg-gk .gk-td-left #anm,
 .gk-td-left #anm {
+    position: absolute !important;
+    z-index: 1000 !important;
     visibility: hidden;
-    height: 0 !important;
-    overflow: hidden;
+    height: 140px !important;
+    width: 120px !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+    margin: 0 !important;
 }
 .gk-vlist-side {
     display: block;
@@ -1282,6 +1298,8 @@ body.pg-gk .gk-resbar {
     margin: 8px auto 0 !important;
     float: none !important;
     position: static !important;
+    -webkit-transform: translateX(80px) !important;
+    transform: translateX(80px) !important;
 }
 body.pg-gk .gk-shell {
     width: 1024px !important;
@@ -1368,6 +1386,8 @@ body.pg-gk.pg-dorf2 > .gk-resbar {
     top: auto !important;
     margin: 6px auto 12px !important;
     padding: 0 !important;
+    -webkit-transform: translateX(80px) !important;
+    transform: translateX(80px) !important;
 }
 body.pg-gk.pg-dorf1 > table.gk-shell,
 body.pg-gk.pg-dorf2 > table.gk-shell {
@@ -1528,36 +1548,132 @@ body.pg-gk.pg-feeding .gk-shell > tbody > tr > td.gk-td-main {
         20px 0 24px -24px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Popup host (#ce): full-viewport overlay, quest/manual popups centered */
+/* Popup host (#ce): quest popup — classic frame, draggable, Arabic text inside #qstd only */
 body.pg-gk #ce {
     position: fixed !important;
     inset: 0 !important;
     z-index: 10000 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    pointer-events: none !important;
     width: 100% !important;
     height: 100% !important;
     overflow: visible !important;
     margin: 0 !important;
     padding: 0 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+}
+body.pg-gk #ce:empty {
+    display: none !important;
 }
 body.pg-gk #ce:not(:empty) {
-    width: 100% !important;
-    height: 100% !important;
+    display: block !important;
+    pointer-events: none !important;
 }
 body.pg-gk #ce > * {
     pointer-events: auto !important;
-    flex-shrink: 0;
 }
+/*
+ * Frame geometry stays LTR (anl.gif). Do NOT !important left/top/margin —
+ * MooTools makeDraggable must be able to move the window.
+ */
 body.pg-gk #ce > div.popup3,
-body.pg-gk #ce > div.popup3.quest {
-    position: relative !important;
-    left: auto !important;
+body.pg-gk #ce > div.popup3.quest,
+html[dir="rtl"] body.pg-gk #ce > div.popup3,
+html[dir="rtl"] body.pg-gk #ce > div.popup3.quest {
+    position: absolute;
+    left: calc(50% - 215px);
+    right: auto;
+    top: 99px;
+    margin: 0;
+    -webkit-transform: none !important;
+    transform: none !important;
+    display: block !important;
+    width: 430px !important;
+    height: 456px !important;
+    min-height: 456px !important;
+    max-width: none !important;
+    padding: 31px 0 0 20px !important;
+    box-sizing: content-box !important;
+    direction: ltr !important;
+    text-align: left !important;
+    z-index: 10001 !important;
+    overflow: visible !important;
+}
+/* Drag bar (created by uc()) */
+body.pg-gk #ce > div.popup3 #drag,
+html[dir="rtl"] body.pg-gk #ce > div.popup3 #drag {
+    position: absolute !important;
+    left: 11px !important;
     right: auto !important;
-    top: auto !important;
-    margin: 0 !important;
+    top: 11px !important;
+    width: 408px !important;
+    height: 22px !important;
+    cursor: move !important;
+    z-index: 10005 !important;
+    pointer-events: auto !important;
+    background: transparent !important;
+}
+body.pg-gk #ce > div.popup3 img.popup4,
+html[dir="rtl"] body.pg-gk #ce > div.popup3 img.popup4 {
+    position: absolute !important;
+    right: 0 !important;
+    left: auto !important;
+    top: 0 !important;
+    z-index: 10006 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+/* Arabic copy lives only in #qstd — keep padding so text never hits the border */
+body.pg-gk #ce > div.popup3 #qstd,
+html[dir="rtl"] body.pg-gk #ce > div.popup3 #qstd {
+    position: relative !important;
+    direction: rtl !important;
+    text-align: right !important;
+    width: 390px !important;
+    max-width: 390px !important;
+    padding: 0 10px 0 6px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    overflow-wrap: anywhere !important;
+    word-wrap: break-word !important;
+    z-index: 20 !important;
+    pointer-events: auto !important;
+}
+body.pg-gk #ce > div.popup3 #qstd h1,
+body.pg-gk #ce > div.popup3 #qstd i,
+body.pg-gk #ce > div.popup3 #qstd .rew,
+body.pg-gk #ce > div.popup3 #qstd .rew p.ta_aw,
+body.pg-gk #ce > div.popup3 #qstd p {
+    direction: rtl !important;
+    text-align: right !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+body.pg-gk #ce > div.popup3 #qstd input.text,
+body.pg-gk #ce > div.popup3 #qstd input[type="text"] {
+    max-width: 120px !important;
+    box-sizing: border-box !important;
+}
+body.pg-gk #ce > div.popup3 div#qstbg,
+html[dir="rtl"] body.pg-gk #ce > div.popup3 div#qstbg {
+    left: 11px !important;
+    right: auto !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+body.pg-gk #ce > div.popup3 #qstd a,
+body.pg-gk #ce > div.popup3 #qstd input,
+body.pg-gk #ce > div.popup3 #qstd button {
+    position: relative !important;
+    z-index: 21 !important;
+    pointer-events: auto !important;
+}
+body.pg-gk #ce > div.popup3 a,
+body.pg-gk #ce > div.popup3 input,
+body.pg-gk #ce > div.popup3 button,
+body.pg-gk #ce > div.popup3 #qstd,
+body.pg-gk #ce > div.popup3 #popup3,
+body.pg-gk #ce > div.popup3 #drag {
+    pointer-events: auto !important;
 }
 
 /* Classic #content inside Greek main column */

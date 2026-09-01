@@ -101,6 +101,9 @@ if ($showQuest) {
 <?php } else { ?>
     quest.last = 30;
 <?php } ?>
+<?php if (function_exists('tz_is_rtl_lang') && tz_is_rtl_lang()) { ?>
+    quest.rtl = true;
+<?php } ?>
 
 cache_preload = new Image();
 cache_preload.src = "img/x.gif";
