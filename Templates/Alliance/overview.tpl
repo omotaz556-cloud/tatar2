@@ -107,27 +107,39 @@ if (!isset($profiel[0])) { $profiel[0] = ''; }
 if (!isset($profiel[1])) { $profiel[1] = ''; }
 
 include("alli_menu.tpl");
+
+$gkNum = static function ($value) {
+    return '<bdi dir="ltr" class="gk-num">' . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8') . '</bdi>';
+};
 ?>
 
 <!-- ========================= PROFILE ========================= -->
-<table cellpadding="1" cellspacing="1" id="profile">
+<table cellpadding="1" cellspacing="1" id="profile" class="gk-alli-overview" dir="ltr">
+<colgroup>
+    <col class="gk-alli-col-desc" />
+    <col class="gk-alli-col-detail" />
+</colgroup>
 <thead>
-<tr>
+<tr class="gk-alli-title">
     <th colspan="2"><?php echo ALLIANCE; ?></th>
 </tr>
-<tr>
-    <td><?php echo DETAIL; ?></td>
-    <td><?php echo DESCRIPTION; ?></td>
+<tr class="gk-alli-cols">
+    <th class="gk-alli-h-desc"><?php echo DESCRIPTION; ?></th>
+    <th class="gk-alli-h-detail"><?php echo DETAIL; ?></th>
 </tr>
 </thead>
 
 <tbody>
 <tr><td class="empty"></td><td class="empty"></td></tr>
 
-<tr>
-<td class="details">
+<tr class="gk-alli-main-row">
+<td class="desc1 gk-alli-desc-cell">
+<div class="desc1div gk-alli-desc1"><?php echo stripslashes(nl2br($profiel[1])); ?></div>
+</td>
 
-<table cellpadding="0" cellspacing="0">
+<td class="details gk-alli-detail-cell">
+
+<table cellpadding="0" cellspacing="0" class="gk-alli-detail-table" dir="rtl">
 
 <tr>
     <th><?php echo TAG; ?></th>
@@ -139,12 +151,12 @@ include("alli_menu.tpl");
     <td><?php echo htmlspecialchars($allianceinfo['name']); ?></td>
 </tr>
 
-<tr><td colspan="2" class="empty"></td></tr>
+<tr><td colspan="2" class="gk-alli-spacer"></td></tr>
 
 <!-- ========================= RANK FIX ========================= -->
 <tr>
     <th><?php echo RANK; ?></th>
-    <td>
+    <td class="gk-val-num">
 <?php
 // FORCE ranking initialization (Novaterra safe trigger)
 if (!isset($ranking) || !is_object($ranking)) {
@@ -160,22 +172,22 @@ if ($rankValue < 1) {
     $rankValue = 1;
 }
 
-echo $rankValue . ".";
+echo $gkNum($rankValue) . '.';
 ?>
     </td>
 </tr>
 
 <tr>
     <th><?php echo POINTS; ?></th>
-    <td><?php echo (int)$totalpop; ?></td>
+    <td class="gk-val-num"><?php echo $gkNum((int) $totalpop); ?></td>
 </tr>
 
 <tr>
     <th><?php echo TZ_MEMBERS; ?></th>
-    <td><?php echo count($memberlist); ?></td>
+    <td class="gk-val-num"><?php echo $gkNum(count($memberlist)); ?></td>
 </tr>
 
-<tr><td colspan="2" class="empty"></td></tr>
+<tr><td colspan="2" class="gk-alli-spacer"></td></tr>
 
 <?php
 foreach ($memberlist as $member) {
@@ -205,10 +217,6 @@ if (!empty($allianceinfo['forumlink']) && $allianceinfo['forumlink'] != '0') {
 </tr>
 
 </table>
-</td>
-
-<td class="desc1">
-<div class="desc1div"><?php echo stripslashes(nl2br($profiel[1])); ?></div>
 </td>
 
 </tr>
@@ -246,7 +254,7 @@ foreach ($memberlist as $member) {
     $villages = $database->getProfileVillages($uid);
 
     echo "<tr>";
-    echo "<td class='ra'>" . $rank . ".</td>";
+    echo "<td class='ra'>" . $gkNum($rank) . ".</td>";
     echo "<td class='pla'><a href='spieler.php?uid=" . $uid . "'>" . htmlspecialchars($member['username']) . "</a></td>";
     echo "<td class='hab'>" . $pop . "</td>";
     echo "<td class='vil'>" . count($villages) . "</td>";

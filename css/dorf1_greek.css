@@ -2070,4 +2070,254 @@ body.pg-gk #building_contract.gk-build-queue .gk-bq-finish {
     padding: 0 !important;
 }
 
+/* ---- Alliance overview profile table (Greek shell; compact.css targets div.alliance) ---- */
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview {
+    width: 100% !important;
+    max-width: 588px;
+    border-collapse: separate !important;
+    border-spacing: 1px !important;
+    margin: 0 0 14px;
+    font-size: 13px;
+    line-height: 16px;
+    table-layout: fixed;
+    background: #c0c0c0 !important;
+    border: 0;
+    empty-cells: show;
+    direction: ltr;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview col.gk-alli-col-detail,
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview col.gk-alli-col-desc {
+    width: 50%;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview > thead th,
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview > tbody > tr > td {
+    border: 0 !important;
+    padding: 0;
+    vertical-align: middle;
+    background: #fff !important;
+    font-weight: 301;
+    line-height: 16px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview thead th {
+    background-image: url(../gpack/novaterra/img/a/c2.gif);
+    background-repeat: repeat;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview tr.gk-alli-title th {
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    padding: 4px 7px;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview tr.gk-alli-cols th {
+    background-color: #f3f3f3 !important;
+    background-image: none !important;
+    font-weight: 700;
+    text-align: center;
+    padding: 4px 7px;
+    direction: rtl;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview tr.gk-alli-main-row > td {
+    vertical-align: top;
+    padding: 0;
+    text-align: right;
+    direction: rtl;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview td.gk-alli-detail-cell {
+    width: 50%;
+    height: 156px;
+    max-height: 156px;
+    min-height: 156px;
+    padding: 0;
+    vertical-align: top;
+    overflow: hidden;
+    border-bottom: 0 !important;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview td.gk-alli-desc-cell {
+    width: 50%;
+    height: 156px;
+    max-height: 156px;
+    min-height: 156px;
+    padding: 4px 7px;
+    vertical-align: top;
+    text-align: right !important;
+    overflow: hidden;
+    box-sizing: border-box;
+    direction: rtl;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview .gk-alli-desc1 {
+    padding: 2px 0;
+    line-height: 1.35;
+    word-wrap: break-word;
+    text-align: right !important;
+    direction: rtl;
+    font-size: 13px;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table {
+    width: 100% !important;
+    height: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    background: #fff !important;
+    direction: rtl;
+    table-layout: fixed;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table th,
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table td {
+    border: 0 !important;
+    border-bottom: 1px solid #c0c0c0 !important;
+    padding: 2px 7px;
+    background: #fff !important;
+    vertical-align: middle;
+    line-height: 16px;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table th {
+    width: 50%;
+    font-weight: 700;
+    text-align: right !important;
+    white-space: nowrap;
+    color: #000;
+    border-left: 1px solid #c0c0c0 !important;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table td {
+    width: 50%;
+    text-align: right !important;
+    color: #333;
+    font-weight: 301;
+    direction: rtl;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table td.gk-alli-spacer {
+    height: 5px;
+    padding: 0 !important;
+    line-height: 0;
+    border-bottom: 0 !important;
+    background: #fff !important;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table td.desc2 {
+    border-bottom: 0 !important;
+    text-align: right !important;
+    padding: 4px 7px 6px;
+    vertical-align: top;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table td a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table td a:hover {
+    text-decoration: underline;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table td.gk-val-num {
+    text-align: right !important;
+    direction: rtl;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview table.gk-alli-detail-table td.gk-val-num .gk-num {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+    font-variant-numeric: lining-nums;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#profile.gk-alli-overview td.empty {
+    height: 1px;
+    line-height: 0;
+    padding: 0;
+    font-size: 0;
+}
+
+/* ---- Alliance member list table ---- */
+body.pg-gk.pg-allianz #content.alliance table#member {
+    width: 100% !important;
+    max-width: 588px;
+    border-collapse: separate !important;
+    border-spacing: 1px !important;
+    margin: 14px 0 0;
+    font-size: 13px;
+    line-height: 16px;
+    table-layout: fixed;
+    background: #c0c0c0 !important;
+    border: 0;
+    direction: rtl;
+    font-family: "Expo Arabic", Tahoma, Arial, Helvetica, sans-serif !important;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member > thead th,
+body.pg-gk.pg-allianz #content.alliance table#member > tbody > tr > td {
+    border: 0 !important;
+    padding: 3px 7px;
+    vertical-align: middle;
+    background: #fff !important;
+    font-weight: 301;
+    line-height: 16px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member > thead th {
+    background-image: url(../gpack/novaterra/img/a/c2.gif);
+    background-repeat: repeat;
+    font-weight: 700;
+    padding: 4px 7px;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member > tbody > tr:nth-child(even) > td {
+    background: #f3f3f3 !important;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member td.ra {
+    width: 5%;
+    text-align: center;
+    white-space: nowrap;
+    direction: rtl;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member td.ra .gk-num {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member td.pla {
+    text-align: right;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member td.pla a {
+    color: #71d000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member td.hab {
+    width: 25%;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member td.vil {
+    width: 20%;
+}
+
+body.pg-gk.pg-allianz #content.alliance table#member td.on {
+    width: 5%;
+}
 
